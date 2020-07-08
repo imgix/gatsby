@@ -2,6 +2,8 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "lint": "prettier --write .",
+    "lint:ci": "prettier --check .",
     "test": "yarn jest",
     "tdd": "yarn jest --watch"
   },
@@ -9,6 +11,7 @@
     "@types/jest": "^26.0.4",
     "jest": "^26.1.0",
     "lerna": "^3.22.1",
+    "prettier": "^2.0.5",
     "ts-jest": "^26.1.1",
     "typescript": "^3.9.6"
   },
