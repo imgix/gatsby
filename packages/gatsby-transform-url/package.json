@@ -9,5 +9,9 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "imgix-core-js": "^2.3.1"
+  },
+  "gitHead": "67d64747c0274fc433216b1b49f2a65656cdba7c",
+  "publishConfig": {
+    "access": "public"
   }
 }
