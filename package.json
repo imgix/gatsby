@@ -1,8 +1,16 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "test": "yarn jest",
+    "tdd": "yarn jest --watch"
+  },
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "@types/jest": "^26.0.4",
+    "jest": "^26.1.0",
+    "lerna": "^3.22.1",
+    "ts-jest": "^26.1.1",
+    "typescript": "^3.9.6"
   },
   "workspaces": [
     "packages/*"
