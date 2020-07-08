@@ -24,6 +24,7 @@ Below is a list of issues that contain all the high-level use-cases that we thou
 - [I have an image stored locally that I want to upload to image-manager and render](https://github.com/imgix/gatsby/issues/7)
 
 Other features:
+
 - [I want to have my imgix parameters in my Gatsby/GraphQL query be strongly-typed](https://github.com/imgix/gatsby/issues/5)
 
 # Why use imgix with Gatsby?
@@ -34,5 +35,3 @@ Integrating imgix with Gatsby provides a few key advantages over the core image 
 2. Access to imgix's suite of transformations and optimizations. imgix has a larger variety of image transformations than are possible with the built in Gatsby system. Furthermore, we are continuously improving our image optimization to push the boundaries of image performance.
 3. Better responsiveness than Gatsby. Since we offload the image rendering to our cloud, rather than the developer's device, we are able to create far more derivative images at different resolutions, resulting in better responsive image performance, meaning faster load times and less bandwidth usage for your users.
 4. Faster time-to-awesome. imgix offers a set of default optimizations which allow you to achieve outstanding image quality which still keeping image size small, and allows you to focus on other aspects of your website.
-
-
