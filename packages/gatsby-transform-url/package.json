@@ -1,0 +1,13 @@
+{
+  "name": "@imgix/gatsby-transform-url",
+  "version": "0.0.1",
+  "description": "A function to transform imgix urls into data for gatsby-image",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://github.com/imgix/gatsby.git",
+  "author": "Frederick Fogerty <frederick.fogerty@gmail.com> (https://github.com/frederickfogerty)",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "imgix-core-js": "^2.3.1"
+  }
+}
