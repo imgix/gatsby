@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "build": "lerna exec --parallel -- tsc --build",
     "lint": "prettier --write .",
     "lint:ci": "prettier --check .",
     "test": "yarn jest",
