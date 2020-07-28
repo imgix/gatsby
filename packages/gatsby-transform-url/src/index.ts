@@ -37,14 +37,21 @@ function buildImageData(
     (client as any).settings.libraryParam = `gatsby-transform-url-${VERSION}`;
   }
 
-  const src = client.buildURL(path, imgixParams);
-  const srcset = client.buildSrcSet(path, imgixParams);
+  const transformedImgixParams = {
+    fit: 'crop', // needed for fluid (ar) and fixed (w&h) cropping, can be overriden
+    ...imgixParams,
+    ar: imgixParams.ar != null ? `${imgixParams.ar}:1` : undefined,
+  };
+
+  const src = client.buildURL(path, transformedImgixParams);
+  const srcset = client.buildSrcSet(path, transformedImgixParams);
 
   if (options.type === 'fluid') {
     return {
       sizes: '100vw',
       src,
       srcSet: srcset,
+      aspectRatio: imgixParams.ar,
     };
   } else if (options.type === 'fixed') {
     return {
