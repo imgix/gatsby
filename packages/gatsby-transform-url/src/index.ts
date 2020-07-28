@@ -30,26 +30,16 @@ function buildImageData(
   const src = client.buildURL(path, imgixParams);
   const srcset = client.buildSrcSet(path, imgixParams);
 
-  // aspectRatio same
-  // src same
-  // srcset same
-  // sizes passthrough?
-  // originalImg
-
   if (options.type === 'fluid') {
-    // const aspectRatio =
     return {
-      // base64,
-      // aspectRatio,
+      sizes: '100vw',
       src,
       srcSet: srcset,
     };
   } else if (options.type === 'fixed') {
     return {
-      // base64?: string;
-      // tracedSvg?: string;
-      width: imgixParams.w,
-      height: imgixParams.h,
+      width: imgixParams.w as number,
+      height: imgixParams.h as number,
       src,
       srcSet: srcset,
     };
@@ -60,8 +50,8 @@ function buildImageData(
 
 export function buildFixedImageData(
   url: string,
-  imgixParams: { w: number; h: number },
-  options?: {},
+  imgixParams: { w: number; h: number } & IImgixParams,
+  options: {} = {},
 ): IGatsbyImageFixedData {
   return buildImageData(
     url,
@@ -70,4 +60,10 @@ export function buildFixedImageData(
   );
 }
 
-export function buildFluidImageData() {}
+export function buildFluidImageData(
+  url: string,
+  imgixParams: IImgixParams = {},
+  options: {} = {},
+) {
+  return buildImageData(url, imgixParams, { ...options, type: 'fluid' });
+}
