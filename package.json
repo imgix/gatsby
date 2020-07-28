@@ -2,7 +2,8 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "build": "lerna exec --parallel -- tsc --build",
+    "build": "lerna exec --parallel --ignore dev* -- tsc --build",
+    "build:watch": "lerna exec --parallel --ignore dev* -- tsc --build --watch",
     "lint": "prettier --write .",
     "lint:ci": "prettier --check .",
     "test": "yarn jest",
