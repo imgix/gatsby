@@ -23,7 +23,7 @@ export type IGatsbyImageFluidData = {
   aspectRatio?: number;
   src: string;
   srcSet: string;
-  // sizes: string;
+  sizes: string;
 };
 
 export type IImgixParams = { [k: string]: any };
