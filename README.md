@@ -2,11 +2,27 @@
 
 ![imgix logo](https://assets.imgix.net/sdk-imgix-logo.svg)
 
-This is a library to make the interaction between Gatsby and [imgix](https://www.imgix.com/) far simpler.
+imgix has a collection of plugins to make the interaction between Gatsby and [imgix](https://www.imgix.com/) far simpler.
 
 ---
 
 <!-- /ix-docs-ignore -->
+
+<!-- NB: Run `npx markdown-toc README.md --maxdepth 4 | sed -e 's/[[:space:]]\{2\}/    /g'` to generate TOC :) -->
+
+<!-- prettier-ignore-start -->
+
+- [What plugin should I use?](#what-plugin-should-i-use)
+- [Roadmap](#roadmap)
+- [Why use imgix with Gatsby?](#why-use-imgix-with-gatsby)
+
+<!-- prettier-ignore-end -->
+
+# What plugin should I use?
+
+To find what plugin you should use, select the use case below that best matches your use case:
+
+- I load image urls on the server and client and I want to transform these into a format that is compatible with gatsby-image 👉[gatsby-transform-url](./packages/gatsby-transform-url)
 
 # Roadmap
 
