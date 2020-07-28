@@ -112,34 +112,35 @@ describe('gatsby-transform-url', () => {
   });
   describe('buildFluidImageData', () => {
     test('should return an imgix src', () => {
-      const actual = buildFluidImageData(
-        'https://test.imgix.net/image.jpg',
-        {},
-      );
+      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+        ar: 1,
+      });
 
       expect(actual.src).toMatch(/^https:\/\/test.imgix.net\/image.jpg\?/);
     });
     test('should return an imgix srcset', () => {
-      const actual = buildFluidImageData(
-        'https://test.imgix.net/image.jpg',
-        {},
-      );
+      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+        ar: 1,
+      });
 
       expect(actual.srcSet).toMatch(/^https:\/\/test.imgix.net\/image.jpg\?/);
     });
     test('should return a fluid srcset', () => {
-      const actual = buildFluidImageData(
-        'https://test.imgix.net/image.jpg',
-        {},
-      );
+      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+        ar: 1,
+      });
 
       expect(actual.srcSet).toMatch(/\dw,/);
     });
     shouldHaveIxLib(() =>
-      buildFluidImageData('https://test.imgix.net/image.jpg', {}),
+      buildFluidImageData('https://test.imgix.net/image.jpg', { ar: 1 }),
     );
     shouldBeAbleToDisableIxLib((options: { includeLibraryParam?: boolean }) =>
-      buildFluidImageData('https://test.imgix.net/image.jpg', {}, options),
+      buildFluidImageData(
+        'https://test.imgix.net/image.jpg',
+        { ar: 1 },
+        options,
+      ),
     );
 
     test('should pass aspect ratio to src and srcset', () => {
