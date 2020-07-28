@@ -177,5 +177,16 @@ describe('gatsby-transform-url', () => {
         aspectRatio: 2.1,
       });
     });
+    test('should pass sizes to resulting data object', () => {
+      const actual = buildFluidImageData(
+        'https://test.imgix.net/image.jpg',
+        { ar: 1 },
+        { sizes: '50vw' },
+      );
+
+      expect(actual).toMatchObject({
+        sizes: '50vw',
+      });
+    });
   });
 });
