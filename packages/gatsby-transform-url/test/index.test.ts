@@ -16,6 +16,20 @@ const shouldHaveIxLib = async (
     expect(actual.srcSet).toMatch(expectedIxLibRegex);
   });
 };
+const shouldBeAbleToDisableIxLib = (
+  fut: (options: {
+    includeLibraryParam?: boolean;
+  }) => IGatsbyImageFixedData | IGatsbyImageFluidData,
+) => {
+  test('when ixlib is disabled, src and srcset should not have ixlib set', async () => {
+    const actual = fut({ includeLibraryParam: false });
+
+    const expectedIxLibRegex = RegExp(`ixlib=`);
+
+    expect(actual.src).not.toMatch(expectedIxLibRegex);
+    expect(actual.srcSet).not.toMatch(expectedIxLibRegex);
+  });
+};
 
 describe('gatsby-transform-url', () => {
   describe('buildFixedImageData', () => {
@@ -68,6 +82,13 @@ describe('gatsby-transform-url', () => {
     shouldHaveIxLib(() =>
       buildFixedImageData('https://test.imgix.net/image.jpg', { w: 1, h: 1 }),
     );
+    shouldBeAbleToDisableIxLib((options: { includeLibraryParam?: boolean }) =>
+      buildFixedImageData(
+        'https://test.imgix.net/image.jpg',
+        { w: 1, h: 1 },
+        options,
+      ),
+    );
   });
   describe('buildFluidImageData', () => {
     test('should return an imgix src', () => {
@@ -97,7 +118,8 @@ describe('gatsby-transform-url', () => {
     shouldHaveIxLib(() =>
       buildFluidImageData('https://test.imgix.net/image.jpg', {}),
     );
+    shouldBeAbleToDisableIxLib((options: { includeLibraryParam?: boolean }) =>
+      buildFluidImageData('https://test.imgix.net/image.jpg', {}, options),
+    );
   });
 });
-
-const shouldBeAbleToChangeDisableIxLib = undefined;
