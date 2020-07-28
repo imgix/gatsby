@@ -21,7 +21,11 @@ function buildImageData(
 function buildImageData(
   url: string,
   imgixParams: { w?: number; h?: number } & IImgixParams,
-  options: { type: 'fluid' | 'fixed'; includeLibraryParam?: boolean },
+  options: {
+    type: 'fluid' | 'fixed';
+    includeLibraryParam?: boolean;
+    sizes?: string;
+  },
 ): IGatsbyImageFixedData | IGatsbyImageFluidData {
   const host = parseHost(url);
   const path = parsePath(url);
@@ -48,7 +52,7 @@ function buildImageData(
 
   if (options.type === 'fluid') {
     return {
-      sizes: '100vw',
+      sizes: options.sizes ?? '100vw',
       src,
       srcSet: srcset,
       aspectRatio: imgixParams.ar,
@@ -68,7 +72,7 @@ function buildImageData(
 export function buildFixedImageData(
   url: string,
   imgixParams: { w: number; h: number } & IImgixParams,
-  options: {} = {},
+  options: { includeLibraryParam?: boolean; sizes?: string } = {},
 ): IGatsbyImageFixedData {
   return buildImageData(
     url,
@@ -79,8 +83,8 @@ export function buildFixedImageData(
 
 export function buildFluidImageData(
   url: string,
-  options: {} = {},
   imgixParams: { ar: number } & IImgixParams,
+  options: { includeLibraryParam?: boolean; sizes?: string } = {},
 ) {
   return buildImageData(url, imgixParams, { ...options, type: 'fluid' });
 }
