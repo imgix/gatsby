@@ -1,5 +1,21 @@
+import readPkg from 'read-pkg';
 import { buildFixedImageData, buildFluidImageData } from '../src';
 import { IGatsbyImageFixedData, IGatsbyImageFluidData } from '../src/types';
+
+const shouldHaveIxLib = async (
+  fut: () => IGatsbyImageFluidData | IGatsbyImageFixedData,
+) => {
+  test('src and srcset should have ixlib set to gatsby-transform-url-VERSION', async () => {
+    const actual = fut();
+
+    const expectedIxLibRegex = RegExp(
+      `ixlib=gatsby-transform-url-${(await readPkg()).version}`,
+    );
+
+    expect(actual.src).toMatch(expectedIxLibRegex);
+    expect(actual.srcSet).toMatch(expectedIxLibRegex);
+  });
+};
 
 describe('gatsby-transform-url', () => {
   describe('buildFixedImageData', () => {
@@ -49,6 +65,9 @@ describe('gatsby-transform-url', () => {
       expect(actual.src).toMatch(`w=${expectedWidth}`);
       expect(actual.srcSet).toMatch(`w=${expectedWidth}`);
     });
+    shouldHaveIxLib(() =>
+      buildFluidImageData('https://test.imgix.net/image.jpg', {}),
+    );
   });
   describe('buildFluidImageData', () => {
     test('should return an imgix src', () => {
@@ -75,5 +94,10 @@ describe('gatsby-transform-url', () => {
 
       expect(actual.srcSet).toMatch(/\dw,/);
     });
+    shouldHaveIxLib(() =>
+      buildFluidImageData('https://test.imgix.net/image.jpg', {}),
+    );
   });
 });
+
+const shouldBeAbleToChangeDisableIxLib = undefined;
