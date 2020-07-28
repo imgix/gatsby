@@ -66,7 +66,7 @@ describe('gatsby-transform-url', () => {
       expect(actual.srcSet).toMatch(`w=${expectedWidth}`);
     });
     shouldHaveIxLib(() =>
-      buildFluidImageData('https://test.imgix.net/image.jpg', {}),
+      buildFixedImageData('https://test.imgix.net/image.jpg', { w: 1, h: 1 }),
     );
   });
   describe('buildFluidImageData', () => {
