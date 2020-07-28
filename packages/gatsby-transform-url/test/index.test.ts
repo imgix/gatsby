@@ -89,6 +89,26 @@ describe('gatsby-transform-url', () => {
         options,
       ),
     );
+
+    test('should have fit=crop set', () => {
+      const actual = buildFixedImageData('https://test.imgix.net/image.jpg', {
+        w: 1,
+        h: 1,
+      });
+
+      expect(actual.src).toMatch(`fit=crop`);
+      expect(actual.srcSet).toMatch(`fit=crop`);
+    });
+    test('should be able to override fit', () => {
+      const actual = buildFixedImageData('https://test.imgix.net/image.jpg', {
+        w: 1,
+        h: 1,
+        fit: 'clip',
+      });
+
+      expect(actual.src).toMatch(`fit=clip`);
+      expect(actual.srcSet).toMatch(`fit=clip`);
+    });
   });
   describe('buildFluidImageData', () => {
     test('should return an imgix src', () => {
@@ -121,5 +141,40 @@ describe('gatsby-transform-url', () => {
     shouldBeAbleToDisableIxLib((options: { includeLibraryParam?: boolean }) =>
       buildFluidImageData('https://test.imgix.net/image.jpg', {}, options),
     );
+
+    test('should pass aspect ratio to src and srcset', () => {
+      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+        ar: 2.1,
+      });
+
+      expect(actual.src).toMatch(`ar=2.1%3A1`);
+      expect(actual.srcSet).toMatch(`ar=2.1%3A1`);
+    });
+    test('should have fit=crop set', () => {
+      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+        ar: 2,
+      });
+
+      expect(actual.src).toMatch(`fit=crop`);
+      expect(actual.srcSet).toMatch(`fit=crop`);
+    });
+    test('should be able to override fit', () => {
+      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+        ar: 2,
+        fit: 'clip',
+      });
+
+      expect(actual.src).toMatch(`fit=clip`);
+      expect(actual.srcSet).toMatch(`fit=clip`);
+    });
+    test('should return aspect ratio in resulting data object', () => {
+      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+        ar: 2.1,
+      });
+
+      expect(actual).toMatchObject({
+        aspectRatio: 2.1,
+      });
+    });
   });
 });
