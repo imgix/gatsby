@@ -79,8 +79,8 @@ export function buildFixedImageData(
 
 export function buildFluidImageData(
   url: string,
-  imgixParams: IImgixParams = {},
   options: {} = {},
+  imgixParams: { ar: number } & IImgixParams,
 ) {
   return buildImageData(url, imgixParams, { ...options, type: 'fluid' });
 }
