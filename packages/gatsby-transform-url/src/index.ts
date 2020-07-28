@@ -6,6 +6,8 @@ import {
   IImgixParams,
 } from './types';
 
+const VERSION = '0.0.2';
+
 function buildImageData(
   url: string,
   imgixParams: { w: number; h: number } & IImgixParams,
@@ -19,13 +21,21 @@ function buildImageData(
 function buildImageData(
   url: string,
   imgixParams: { w?: number; h?: number } & IImgixParams,
-  options: { type: 'fluid' | 'fixed' },
+  options: { type: 'fluid' | 'fixed'; includeLibraryParam?: boolean },
 ): IGatsbyImageFixedData | IGatsbyImageFluidData {
   const host = parseHost(url);
   const path = parsePath(url);
   const client = new ImgixClient({
     domain: host,
+    includeLibraryParam: false, // force false so that imgix-core-js doesn't include its own library param
   });
+
+  const includeLibraryParam = options.includeLibraryParam ?? true;
+  // This is not a public API, so it is not included in the type definitions for ImgixClient
+  if (includeLibraryParam) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (client as any).settings.libraryParam = `gatsby-transform-url-${VERSION}`;
+  }
 
   const src = client.buildURL(path, imgixParams);
   const srcset = client.buildSrcSet(path, imgixParams);
