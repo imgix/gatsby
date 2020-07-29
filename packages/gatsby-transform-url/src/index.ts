@@ -70,9 +70,26 @@ function buildImageData(
 }
 
 export function buildFixedImageData(
+  /**
+   * An imgix url to transform, e.g. https://yourdomain.imgix.net/your-image.jpg
+   */
   url: string,
+  /**
+   * A set of imgix parameters to apply to the image.
+   * Parameters ending in 64 will be base64 encoded.
+   * Width (w) and height (h) are required.
+   */
   imgixParams: { w: number; h: number } & IImgixParams,
-  options: { includeLibraryParam?: boolean; sizes?: string } = {},
+  /**
+   * Options that are not imgix parameters.
+   * Optional.
+   */
+  options: {
+    /**
+     * Disable the ixlib diagnostic param that is added to every url.
+     */
+    includeLibraryParam?: boolean;
+  } = {},
 ): IGatsbyImageFixedData {
   return buildImageData(
     url,
@@ -82,9 +99,36 @@ export function buildFixedImageData(
 }
 
 export function buildFluidImageData(
+  /**
+   * An imgix url to transform, e.g. https://yourdomain.imgix.net/your-image.jpg
+   */
   url: string,
-  imgixParams: { ar: number } & IImgixParams,
-  options: { includeLibraryParam?: boolean; sizes?: string } = {},
-) {
+  /**
+   * A set of imgix parameters to apply to the image.
+   * Parameters ending in 64 will be base64 encoded.
+   * The aspect ratio (ar) as a float is required.
+   */
+  imgixParams: {
+    /**
+     * The aspect ratio to set for the rendered image and the placeholder.
+     * Format: float. Can be calculated with ar = width/height.
+     */
+    ar: number;
+  } & IImgixParams,
+  /**
+   * Options that are not imgix parameters.
+   * Optional.
+   */
+  options: {
+    /**
+     * Disable the ixlib diagnostic param that is added to every url.
+     */
+    includeLibraryParam?: boolean;
+    /**
+     * The sizes attribute to set on the underlying image.
+     */
+    sizes?: string;
+  } = {},
+): IGatsbyImageFluidData {
   return buildImageData(url, imgixParams, { ...options, type: 'fluid' });
 }
