@@ -75,6 +75,10 @@ Although `sizes` is optional, it is highly recommended. It has a default of `100
 - `500px` - the image is a fixed width. In this case, you should use fixed mode, described in the next section.
 - `(min-width: 1140px) 1140px, 100vw` - under 1140px, the image is as wide as the viewport. Above 1140px, it is fixed to 1140px.
 
+A playground for this example is attached below.
+
+<img src="docs/playgrounds/fluid.svg" width="800" height="500">
+
 ### Basic fixed image
 
 The following code will render a fixed image with gatsby-image. This code should already be familiar to you if you've used gatsby-image in the past.
