@@ -49,12 +49,22 @@ function buildImageData(
 
   const src = client.buildURL(path, transformedImgixParams);
   const srcset = client.buildSrcSet(path, transformedImgixParams);
+  const srcWebp = client.buildURL(path, {
+    ...transformedImgixParams,
+    fm: 'webp',
+  });
+  const srcsetWebp = client.buildSrcSet(path, {
+    ...transformedImgixParams,
+    fm: 'webp',
+  });
 
   if (options.type === 'fluid') {
     return {
       sizes: options.sizes ?? '100vw',
       src,
       srcSet: srcset,
+      srcWebp,
+      srcSetWebp: srcsetWebp,
       aspectRatio: imgixParams.ar,
     };
   } else if (options.type === 'fixed') {
@@ -63,6 +73,8 @@ function buildImageData(
       height: imgixParams.h as number,
       src,
       srcSet: srcset,
+      srcWebp,
+      srcSetWebp: srcsetWebp,
     };
   }
   const _neverReturn: never = options.type; // Fixes typescript error 'not all code paths return a value'
