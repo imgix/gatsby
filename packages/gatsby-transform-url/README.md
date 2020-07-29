@@ -28,13 +28,13 @@
 
 <!-- prettier-ignore-end -->
 
-# About this library
+# About This Library
 
 This library allows imgix urls to be used with gatsby-image. This library transforms imgix urls into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this library you can either display images that already exist on imgix, or proxy other images through imgix.
 
 Unfortunately, due to limitations of Gatsby, this library does not support placeholder/blur-up images yet. When Gatsby removes this limitation, we plan to implement this for this library. Our other libraries will support blur-up/placeholder images.
 
-# Get started
+# Get Started
 
 Firstly, this library requires an imgix account, so please follow this [quick start guide](https://docs.imgix.com/setup/quick-start) if you don't have an account.
 
@@ -45,7 +45,7 @@ Then, install this library with the following commands, depending on your packag
 
 ## Usage
 
-### Basic fluid image
+### Basic Fluid Image
 
 The following code will render a fluid image with gatsby-image. This code should already be familiar to you if you've used gatsby-image in the past.
 
@@ -75,7 +75,7 @@ Although `sizes` is optional, it is highly recommended. It has a default of `100
 - `500px` - the image is a fixed width. In this case, you should use fixed mode, described in the next section.
 - `(min-width: 1140px) 1140px, 100vw` - under 1140px, the image is as wide as the viewport. Above 1140px, it is fixed to 1140px.
 
-### Basic fixed image
+### Basic Fixed Image
 
 The following code will render a fixed image with gatsby-image. This code should already be familiar to you if you've used gatsby-image in the past.
 
