@@ -59,6 +59,7 @@ import { buildFluidImageData } from '@imgix/gatsby-transform-url';
   fluid={buildFluidImageData(
     'https://assets.imgix.net/examples/pione.jpg',
     {
+      // imgix parameters
       ar: 1.61, // required
       auto: ['format', 'compress'], // recommended for all images
       // pass other imgix parameters here, as needed
@@ -71,6 +72,10 @@ import { buildFluidImageData } from '@imgix/gatsby-transform-url';
 ```
 
 `ar` is required, since gatsby-image requires this to generate placeholders. This `ar` will also crop the rendered photo from imgix to the same aspect ratio. If you don't know the aspect ratio of your image beforehand, it is virtually impossible to use gatsby-image in this format, so we either recommend using another of our plugins, or using an `img` directly.
+
+Setting `auto: ['format', 'compress']` is highly recommended. This will re-format the image to the format that is best optimized for your browser, such as WebP. It will also reduce unnecessary wasted file size, such as transparency on a non-transparent image. More information about the auto parameter can be found [here](https://docs.imgix.com/apis/url/auto/auto).
+
+A full list of imgix parameters can be found [here](https://docs.imgix.com/apis/url).
 
 Although `sizes` is optional, it is highly recommended. It has a default of `100vw`, which means that it might be loading an image too large for your users. Some examples of what you can set sizes as are:
 
@@ -92,6 +97,7 @@ import { buildFixedImageData } from '@imgix/gatsby-transform-url';
 // Later, in a gatsby page/component.
 <Img
   fluid={buildFixedImageData('https://assets.imgix.net/examples/pione.jpg', {
+    // imgix parameters
     w: 960, // required
     h: 540, // required
     auto: ['format', 'compress'], // recommended for all images
@@ -101,6 +107,10 @@ import { buildFixedImageData } from '@imgix/gatsby-transform-url';
 ```
 
 The imgix parameters `w` and `h` are required, since these are used by gatsby-image to display a placeholder while the image is loading. Other imgix parameters can be added below the width and height.
+
+Setting `auto: ['format', 'compress']` is highly recommended. This will re-format the image to the format that is best optimized for your browser, such as WebP. It will also reduce unnecessary wasted file size, such as transparency on a non-transparent image. More information about the auto parameter can be found [here](https://docs.imgix.com/apis/url/auto/auto).
+
+A full list of imgix parameters can be found [here](https://docs.imgix.com/apis/url).
 
 An example of this mode in a full working Gatsby repo can be found on CodeSandbox.
 
@@ -119,6 +129,7 @@ function buildFixedImageData(
   /**
    * A set of imgix parameters to apply to the image.
    * Parameters ending in 64 will be base64 encoded.
+   * A full list of imgix parameters can be found here: https://docs.imgix.com/apis/url
    * Width (w) and height (h) are required.
    */
   imgixParams: { w: number; h: number } & IImgixParams,
@@ -153,6 +164,7 @@ export function buildFluidImageData(
   /**
    * A set of imgix parameters to apply to the image.
    * Parameters ending in 64 will be base64 encoded.
+   * A full list of imgix parameters can be found here: https://docs.imgix.com/apis/url
    * The aspect ratio (ar) as a float is required.
    */
   imgixParams: {
