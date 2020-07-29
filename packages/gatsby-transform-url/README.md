@@ -20,11 +20,12 @@
 
 <!-- prettier-ignore-start -->
 
-- [About this library](#about-this-library)
-- [Get started](#get-started)
+- [About This Library](#about-this-library)
+- [Get Started](#get-started)
     * [Usage](#usage)
-        + [Basic fluid image](#basic-fluid-image)
-        + [Basic fixed image](#basic-fixed-image)
+        + [Basic Fluid Image](#basic-fluid-image)
+        + [Basic Fixed Image](#basic-fixed-image)
+    * [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
 
 <!-- prettier-ignore-end -->
 
