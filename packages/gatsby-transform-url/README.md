@@ -102,3 +102,24 @@ The imgix parameters `w` and `h` are required, since these are used by gatsby-im
 An example of this mode in a full working Gatsby repo can be found on CodeSandbox.
 
 [![Edit @imgix/gatsby-transform-url Fixed Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324?fontsize=14&hidenavigation=1&theme=dark)
+
+## What is the `ixlib` Param on Every Request?
+
+For security and diagnostic purposes, we tag all requests with the language and version of library used to generate the URL.
+
+To disable this, set `includeLibraryParam` in the third parameter to `false` when calling one of the two functions this library exports. For example, for `buildFluidImageData`:
+
+```jsx
+<Img
+  fluid={buildFixedImageData(
+    'https://assets.imgix.net/examples/pione.jpg',
+    {
+      w: 960,
+      h: 540,
+    },
+    {
+      includeLibraryParam: false, // this disables the ixlib parameter
+    },
+  )}
+/>
+```
