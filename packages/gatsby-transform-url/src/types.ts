@@ -1,11 +1,4 @@
 export type IGatsbyImageFixedData = {
-  // Supports blur-up effect
-  base64?: string;
-  // Supports traced svg effect
-  tracedSvg?: string;
-  /**
-   * Float
-   */
   width: number;
   height: number;
   src: string;
@@ -15,15 +8,12 @@ export type IGatsbyImageFixedData = {
 };
 
 export type IGatsbyImageFluidData = {
-  // Supports blur-up effect
-  base64?: string;
-  /**
-   * Float
-   */
-  aspectRatio?: number;
+  aspectRatio: number;
   src: string;
   srcSet: string;
   sizes: string;
+  srcWebp?: string;
+  srcSetWebp?: string;
 };
 
 export type IImgixParams = { [k: string]: any };
