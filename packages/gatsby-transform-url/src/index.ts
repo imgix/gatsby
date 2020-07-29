@@ -89,6 +89,7 @@ export function buildFixedImageData(
   /**
    * A set of imgix parameters to apply to the image.
    * Parameters ending in 64 will be base64 encoded.
+   * A full list of imgix parameters can be found here: https://docs.imgix.com/apis/url
    * Width (w) and height (h) are required.
    */
   imgixParams: { w: number; h: number } & IImgixParams,
@@ -118,6 +119,7 @@ export function buildFluidImageData(
   /**
    * A set of imgix parameters to apply to the image.
    * Parameters ending in 64 will be base64 encoded.
+   * A full list of imgix parameters can be found here: https://docs.imgix.com/apis/url
    * The aspect ratio (ar) as a float is required.
    */
   imgixParams: {
