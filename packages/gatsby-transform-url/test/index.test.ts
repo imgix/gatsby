@@ -109,6 +109,26 @@ describe('gatsby-transform-url', () => {
       expect(actual.src).toMatch(`fit=clip`);
       expect(actual.srcSet).toMatch(`fit=clip`);
     });
+
+    test('should have webp src and srcset with fm=webp', () => {
+      const actual = buildFixedImageData('https://test.imgix.net/image.jpg', {
+        w: 1,
+        h: 1,
+        fit: 'clip',
+      });
+
+      expect(actual.srcWebp).toMatch(`fm=webp`);
+      expect(actual.srcSetWebp).toMatch(`fm=webp`);
+    });
+    test('should not have fm=webp set for main src and srcset', () => {
+      const actual = buildFixedImageData('https://test.imgix.net/image.jpg', {
+        w: 1,
+        h: 1,
+      });
+
+      expect(actual.src).not.toMatch(`fm=webp`);
+      expect(actual.srcSet).not.toMatch(`fm=webp`);
+    });
   });
   describe('buildFluidImageData', () => {
     test('should return an imgix src', () => {
@@ -187,6 +207,22 @@ describe('gatsby-transform-url', () => {
       expect(actual).toMatchObject({
         sizes: '50vw',
       });
+    });
+    test('should have webp src and srcset with fm=webp', () => {
+      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+        ar: 1,
+      });
+
+      expect(actual.srcWebp).toMatch(`fm=webp`);
+      expect(actual.srcSetWebp).toMatch(`fm=webp`);
+    });
+    test('should not have fm=webp set for main src and srcset', () => {
+      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+        ar: 1,
+      });
+
+      expect(actual.src).not.toMatch(`fm=webp`);
+      expect(actual.srcSet).not.toMatch(`fm=webp`);
     });
   });
 });
