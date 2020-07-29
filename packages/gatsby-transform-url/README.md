@@ -137,8 +137,8 @@ function buildFixedImageData(
   height: number;
   src: string;
   srcSet: string;
-  srcWebp?: string;
-  srcSetWebp?: string;
+  srcWebp: string;
+  srcSetWebp: string;
 };
 ```
 
@@ -180,6 +180,8 @@ export function buildFluidImageData(
   aspectRatio: number;
   src: string;
   srcSet: string;
+  srcWebp: string;
+  srcSetWebp: string;
   sizes: string;
 };
 ```
