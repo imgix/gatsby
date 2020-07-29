@@ -75,6 +75,10 @@ Although `sizes` is optional, it is highly recommended. It has a default of `100
 - `500px` - the image is a fixed width. In this case, you should use fixed mode, described in the next section.
 - `(min-width: 1140px) 1140px, 100vw` - under 1140px, the image is as wide as the viewport. Above 1140px, it is fixed to 1140px.
 
+A full example of a fluid image in a working Gatsby repo can be found on CodeSandbox.
+
+[![Edit @imgix/gatsby-transform-url Fluid Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fluid-example-i49fo?fontsize=14&hidenavigation=1&theme=dark)
+
 ### Basic Fixed Image
 
 The following code will render a fixed image with gatsby-image. This code should already be familiar to you if you've used gatsby-image in the past.
@@ -94,3 +98,7 @@ import { buildFixedImageData } from '@imgix/gatsby-transform-url';
 ```
 
 The imgix parameters `w` and `h` are required, since these are used by gatsby-image to display a placeholder while the image is loading. Other imgix parameters can be added below the width and height.
+
+An example of this mode in a full working Gatsby repo can be found on CodeSandbox.
+
+[![Edit @imgix/gatsby-transform-url Fixed Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324?fontsize=14&hidenavigation=1&theme=dark)
