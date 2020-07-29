@@ -6,7 +6,7 @@ import {
   IImgixParams,
 } from './types';
 
-const VERSION = '0.0.2';
+const VERSION = '1.0.0-beta.2';
 
 function buildImageData(
   url: string,
