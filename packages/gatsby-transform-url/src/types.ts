@@ -3,8 +3,8 @@ export type IGatsbyImageFixedData = {
   height: number;
   src: string;
   srcSet: string;
-  srcWebp?: string;
-  srcSetWebp?: string;
+  srcWebp: string;
+  srcSetWebp: string;
 };
 
 export type IGatsbyImageFluidData = {
@@ -12,8 +12,8 @@ export type IGatsbyImageFluidData = {
   src: string;
   srcSet: string;
   sizes: string;
-  srcWebp?: string;
-  srcSetWebp?: string;
+  srcWebp: string;
+  srcSetWebp: string;
 };
 
 export type IImgixParams = { [k: string]: any };
