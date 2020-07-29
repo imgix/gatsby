@@ -7,7 +7,8 @@
     "lint": "prettier --write .",
     "lint:ci": "prettier --check .",
     "test": "yarn jest",
-    "tdd": "yarn jest --watch"
+    "tdd": "yarn jest --watch",
+    "run-publish": "yarn build ; lerna publish"
   },
   "devDependencies": {
     "@types/jest": "^26.0.4",
