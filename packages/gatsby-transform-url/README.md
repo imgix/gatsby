@@ -60,6 +60,7 @@ import { buildFluidImageData } from '@imgix/gatsby-transform-url';
     'https://assets.imgix.net/examples/pione.jpg',
     {
       ar: 1.61, // required
+      auto: ['format', 'compress'], // recommended for all images
       // pass other imgix parameters here, as needed
     },
     {
@@ -93,6 +94,7 @@ import { buildFixedImageData } from '@imgix/gatsby-transform-url';
   fluid={buildFixedImageData('https://assets.imgix.net/examples/pione.jpg', {
     w: 960, // required
     h: 540, // required
+    auto: ['format', 'compress'], // recommended for all images
     // pass other imgix parameters here, as needed
   })}
 />;
