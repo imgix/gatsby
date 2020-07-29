@@ -104,6 +104,84 @@ An example of this mode in a full working Gatsby repo can be found on CodeSandbo
 
 [![Edit @imgix/gatsby-transform-url Fixed Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324?fontsize=14&hidenavigation=1&theme=dark)
 
+# API
+
+### `buildFixedImageData`
+
+```ts
+function buildFixedImageData(
+  /**
+   * An imgix url to transform, e.g. https://yourdomain.imgix.net/your-image.jpg
+   */
+  url: string,
+  /**
+   * A set of imgix parameters to apply to the image.
+   * Parameters ending in 64 will be base64 encoded.
+   * Width (w) and height (h) are required.
+   */
+  imgixParams: { w: number; h: number } & IImgixParams,
+  /**
+   * Options that are not imgix parameters.
+   * Optional.
+   */
+  options?: {
+    /**
+     * Disable the ixlib diagnostic param that is added to every url.
+     */
+    includeLibraryParam?: boolean;
+  },
+): {
+  width: number;
+  height: number;
+  src: string;
+  srcSet: string;
+  srcWebp?: string;
+  srcSetWebp?: string;
+};
+```
+
+### `buildFluidImageData`
+
+```ts
+export function buildFluidImageData(
+  /**
+   * An imgix url to transform, e.g. https://yourdomain.imgix.net/your-image.jpg
+   */
+  url: string,
+  /**
+   * A set of imgix parameters to apply to the image.
+   * Parameters ending in 64 will be base64 encoded.
+   * The aspect ratio (ar) as a float is required.
+   */
+  imgixParams: {
+    /**
+     * The aspect ratio to set for the rendered image and the placeholder.
+     * Format: float. Can be calculated with ar = width/height.
+     */
+    ar: number;
+  } & IImgixParams,
+  /**
+   * Options that are not imgix parameters.
+   * Optional.
+   */
+  options?: {
+    /**
+     * Disable the ixlib diagnostic param that is added to every url.
+     */
+    includeLibraryParam?: boolean;
+    /**
+     * The sizes attribute to set on the underlying image.
+     */
+    sizes?: string;
+  },
+): {
+  aspectRatio: number;
+  src: string;
+  srcSet: string;
+  sizes: string;
+};
+```
+
 ## What is the `ixlib` Param on Every Request?
 
 For security and diagnostic purposes, we tag all requests with the language and version of library used to generate the URL.
