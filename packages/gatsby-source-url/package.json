@@ -10,5 +10,22 @@
   "private": false,
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "imgix",
+    "image",
+    "transform",
+    "optimise",
+    "optimize",
+    "webp",
+    "fluid",
+    "fixed",
+    "responsive",
+    "cdn",
+    "blur-up",
+    "placeholder",
+    "gatsby-image"
+  ]
 }
