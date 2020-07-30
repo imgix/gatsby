@@ -1,0 +1,7 @@
+# We're ignoring these because they're compiled by typescript
+/gatsby*.js
+/gatsby*.ts
+/gatsby*.map
+/index.js
+/index.d.ts
+/index*.map
