@@ -21,5 +21,20 @@
   },
   "devDependencies": {
     "read-pkg": "^5.2.0"
-  }
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "imgix",
+    "image",
+    "transform",
+    "optimise",
+    "optimize",
+    "webp",
+    "fluid",
+    "fixed",
+    "responsive",
+    "cdn",
+    "gatsby-image"
+  ]
 }
