@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["./src/**/*"],
+  "include": ["../dev-and-e2e-test-environment/src/**/*"],
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
