@@ -9,7 +9,6 @@ describe("gatsby-transform-url", () => {
       .should("be.visible")
       .and($img => {
         // "naturalWidth" and "naturalHeight" are set when the image loads
-        console.log($img[0].naturalWidth)
         expect($img[0].naturalWidth).to.eq(10)
       })
   })
