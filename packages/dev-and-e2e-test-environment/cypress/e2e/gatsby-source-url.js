@@ -4,8 +4,8 @@ describe("gatsby-source-url", () => {
     cy.visit("/e2e/gatsby-source-url")
   })
 
-  it("fixed image loads", () => {
-    cy.findByAltText("Fixed Image")
+  it("url image loads", () => {
+    cy.findByAltText("URL Image")
       .should("be.visible")
       .and($img => {
         // "naturalWidth" and "naturalHeight" are set when the image loads
