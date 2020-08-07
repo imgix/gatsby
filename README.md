@@ -44,6 +44,10 @@ Integrating imgix with Gatsby provides a few key advantages over the core image 
 
 Contributions are a vital part of this library and imgix's commitment to open-source. We welcome all contributions which align with this project's goals. More information can be found in the [contributing documentation](CONTRIBUTING.md).
 
+imgix would like to make a special announcement about the prior work of [Angelo Ashmore](https://github.com/angeloashmore) from [Wall-to-Wall Studios](https://www.walltowall.com/) on his gatsby plugin for imgix. The code and API from his plugin has made a significant contribution to the codebase and API for imgix's official plugins, and imgix is very grateful that he agreed to collaborate with us.
+
+<img src="./wall-to-wall-logo.svg" height="100" alt="Wall-to-Wall Studios Logo">
+ 
 <!-- ix-docs-ignore -->
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
