@@ -2,11 +2,10 @@
   "extends": "../../tsconfig.json",
   "include": ["../dev-and-e2e-test-environment/src/**/*"],
   "compilerOptions": {
+    "incremental": false,
     "target": "esnext",
     "module": "esnext",
     "lib": ["dom", "es2017"],
-    // "allowJs": true,
-    // "checkJs": true,
     "jsx": "react",
     "strict": true,
     "esModuleInterop": true,
