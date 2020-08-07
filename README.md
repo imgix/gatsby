@@ -47,7 +47,7 @@ Contributions are a vital part of this library and imgix's commitment to open-so
 
 imgix would like to make a special announcement about the prior work of [Angelo Ashmore](https://github.com/angeloashmore) from [Wall-to-Wall Studios](https://www.walltowall.com/) on his gatsby plugin for imgix. The code and API from his plugin has made a significant contribution to the codebase and API for imgix's official plugins, and imgix is very grateful that he agreed to collaborate with us.
 
-<img src="./wall-to-wall-logo.svg" height="100" alt="Wall-to-Wall Studios Logo">
+<img src="./assets/wall-to-wall-logo.svg" height="100" alt="Wall-to-Wall Studios Logo">
  
 <!-- ix-docs-ignore -->
 
