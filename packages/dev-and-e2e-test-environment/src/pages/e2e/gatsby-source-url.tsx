@@ -1,24 +1,32 @@
 import { graphql } from "gatsby"
+import Img, { FluidObject } from "gatsby-image"
 import React from "react"
 
 const GatsbySourceUrl = ({ data }: { data: IPageData }) => {
-  console.log("data", data)
   return (
     <div>
-      <img src={data.urlImage.url} alt="URL Image" />
+      <img src={data.testImage.url} alt="URL Image" />
+      <Img
+        fluid={{ ...data.testImage.fluid, sizes: "100px" }}
+        alt="Fluid Image"
+      />
     </div>
   )
 }
 
 type IPageData = {
-  urlImage: {
+  testImage: {
     url: string
+    fluid: FluidObject
   }
 }
 export const query = graphql`
   {
-    urlImage: imgixImage(url: "/blog/unsplash-kiss.jpg") {
+    testImage: imgixImage(url: "/blog/unsplash-kiss.jpg") {
       url(imgixParams: { w: 10, h: 10 })
+      fluid {
+        ...GatsbySourceImgixFluid
+      }
     }
   }
 `
