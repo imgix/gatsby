@@ -38,5 +38,3 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
     })),
     E.map(createResolversCb),
   );
-
-  
