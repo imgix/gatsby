@@ -21,10 +21,9 @@ script:
   - yarn build
   - yarn lint:ci
   - yarn test
-
-branches:
-  only:
-    - master
-    - next
-    - beta
-    - alpha
+# branches:
+# only:
+#   - master
+#   - next
+#   - beta
+#   - alpha
