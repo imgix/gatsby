@@ -25,3 +25,19 @@ export type ImgixUrlParams = Partial<
 export interface ImgixUrlArgs {
   imgixParams?: ImgixUrlParams;
 }
+
+export interface ImgixFluidArgs {
+  maxWidth?: number;
+  maxHeight?: number;
+  srcSetBreakpoints?: number[];
+  imgixParams?: ImgixUrlParams;
+  placeholderImgixParams?: ImgixUrlParams;
+}
+
+export interface ImgixFluidArgsResolved {
+  maxWidth: number;
+  maxHeight?: number;
+  srcSetBreakpoints?: number[];
+  imgixParams: ImgixUrlParams;
+  placeholderImgixParams: ImgixUrlParams;
+}
