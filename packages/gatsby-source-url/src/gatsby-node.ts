@@ -17,6 +17,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import fs from 'fs';
 import { CreateResolversArgsPatched, GatsbyNode, PluginOptions } from 'gatsby';
 import path from 'path';
+import readPkgUp from 'read-pkg-up';
 import { createRootImgixImageType } from './createRootImgixImageType';
 import { createImgixClient } from './imgix-core-js-wrapper';
 import { GatsbySourceUrlOptions, IGatsbySourceUrlOptions } from './publicTypes';
@@ -26,16 +27,27 @@ export const onPreInit: GatsbyNode['onPreInit'] = (_: unknown) => {
 };
 
 export const createResolvers: GatsbyNode['createResolvers'] = async (
-  { createResolvers: createResolversCb }: CreateResolversArgsPatched,
+  { createResolvers: createResolversCb, cache }: CreateResolversArgsPatched,
   options: PluginOptions<IGatsbySourceUrlOptions>,
 ) =>
   pipe(
     options,
     GatsbySourceUrlOptions.decode,
     E.chainW(createImgixClient),
+    E.chain((imgixClient) => {
+      const version = readPkgUp.sync({ cwd: __dirname })?.packageJson.version;
+
+      if (version == null || version.trim() === '') {
+        return E.left(new Error('Unable to read package version'));
+      }
+
+      imgixClient.includeLibraryParam = false;
+      (imgixClient as any).settings.libraryParam = `gatsby-source-url-${version}`;
+      return E.right(imgixClient);
+    }),
     E.map((imgixClient) => ({
       Query: {
-        imgixImage: createRootImgixImageType(imgixClient),
+        imgixImage: createRootImgixImageType(imgixClient, cache),
       },
     })),
     E.map(createResolversCb),
