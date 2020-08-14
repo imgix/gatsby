@@ -5,6 +5,8 @@ import {
   GraphQLInputFieldConfigMap,
   GraphQLInputObjectType,
   GraphQLInt,
+  GraphQLNonNull,
+  GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
@@ -72,3 +74,23 @@ export const ImgixUrlParamsInputType = new GraphQLInputObjectType({
     return fields;
   }, {} as GraphQLInputFieldConfigMap),
 });
+
+/**
+ * The GraphQL type of the fluid field.
+ * Corresponding TS type is FluidObject from gatsby-image.
+ */
+export const gatsbySourceImgixFluidFieldType = new GraphQLObjectType({
+  name: 'SourceImgixFluid',
+  fields: {
+    // base64: createImgixBase64UrlFieldConfig({ cache }),
+    src: { type: new GraphQLNonNull(GraphQLString) },
+    srcSet: { type: new GraphQLNonNull(GraphQLString) },
+    srcWebp: { type: new GraphQLNonNull(GraphQLString) },
+    srcSetWebp: { type: new GraphQLNonNull(GraphQLString) },
+    sizes: { type: new GraphQLNonNull(GraphQLString) },
+    aspectRatio: { type: new GraphQLNonNull(GraphQLFloat) },
+  },
+});
+
+export type IGatsbySourceImgixUrlField = string;
+export const gatsbySourceImgixUrlFieldType = GraphQLString;
