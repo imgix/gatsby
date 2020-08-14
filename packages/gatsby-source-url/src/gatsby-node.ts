@@ -14,7 +14,9 @@
 
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
+import fs from 'fs';
 import { CreateResolversArgsPatched, GatsbyNode, PluginOptions } from 'gatsby';
+import path from 'path';
 import { createRootImgixImageType } from './createRootImgixImageType';
 import { createImgixClient } from './imgix-core-js-wrapper';
 import { GatsbySourceUrlOptions, IGatsbySourceUrlOptions } from './publicTypes';
@@ -38,3 +40,15 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
     })),
     E.map(createResolversCb),
   );
+
+export const onPreExtractQueries: GatsbyNode['onPreExtractQueries'] = ({
+  store,
+}) => {
+  const program = store.getState().program;
+
+  // Let's add our fragments to .cache/fragments.
+  fs.copyFileSync(
+    path.resolve(__dirname, '../fragments.js'),
+    `${program.directory}/.cache/fragments/imgix-source-url-fragments.js`,
+  );
+};
