@@ -1,6 +1,8 @@
 /// <reference types="../types/gatsby" />
+/// <reference types="jest" />
 
 import { CreateResolversArgsPatched, PluginOptions } from 'gatsby';
+import { FluidObject } from 'gatsby-image';
 import { createResolvers } from '../src/gatsby-node';
 import { IGatsbySourceUrlOptions } from '../src/publicTypes';
 
@@ -11,7 +13,7 @@ describe('createResolvers', () => {
         field: 'url',
       });
 
-      expect(urlFieldResult).toMatch('test.imgix.net/image.jpg');
+      expect(urlFieldResult).toMatch('assets.imgix.net/amsterdam.jpg');
     });
     it('applies imgixParams correctly', async () => {
       const urlFieldResult = await resolveField({
@@ -22,16 +24,55 @@ describe('createResolvers', () => {
       expect(urlFieldResult).toMatch('w=10');
     });
   });
+
+  describe('fluid field', () => {
+    describe('src field', () => {
+      it('should return return an imgix url in the src field', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+        });
+
+        const {
+          src,
+          srcSet,
+          srcWebp,
+          srcSetWebp,
+          sizes,
+          aspectRatio,
+        } = fluidFieldResult;
+        console.log('fluidFieldResult', fluidFieldResult);
+
+        // Don't need to do too much work here since imgix-core-js handles everything under the hood
+        expect(src).toMatch('ixlib=gatsby');
+        expect(srcWebp).toMatch('ixlib=gatsby');
+        expect(srcSet).toMatch('ixlib=gatsby');
+        expect(srcSetWebp).toMatch('ixlib=gatsby');
+      });
+    });
+  });
 });
+
+const mockGatsbyCache = {
+  store: {} as { [k: string]: any },
+  async get(key: string) {
+    console.log(`Getting cache value for ${key}`);
+    return this.store[key];
+  },
+  async set(key: string, value: any) {
+    console.log(`Setting cache value for ${key} to ${value}`);
+    this.store[key] = value;
+    return value;
+  },
+};
 
 const resolveField = async ({
   appConfig = {
-    domain: 'test.imgix.net',
+    domain: 'assets.imgix.net',
     plugins: [],
   },
   field,
   fieldParams = {},
-  url = 'image.jpg',
+  url = 'amsterdam.jpg',
 }: {
   appConfig?: PluginOptions<IGatsbySourceUrlOptions>;
   field: 'url' | 'fluid' | 'fixed';
@@ -55,6 +96,7 @@ const resolveField = async ({
     createResolvers(
       ({
         createResolvers: mockCreateResolversFunction,
+        cache: mockGatsbyCache,
       } as any) as CreateResolversArgsPatched,
       appConfig,
     );
