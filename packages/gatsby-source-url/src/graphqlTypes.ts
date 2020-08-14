@@ -12,7 +12,7 @@ import {
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
 
 export const ImgixUrlParamsInputType = new GraphQLInputObjectType({
-  name: 'ImgixUrlParamsInput',
+  name: 'GatsbySourceImgixParamsInput',
   fields: Object.keys(imgixUrlParameters.parameters).reduce((fields, param) => {
     const spec =
       imgixUrlParameters.parameters[

@@ -1,15 +1,15 @@
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { GraphQLFieldConfig, GraphQLString } from 'graphql';
+import { GraphQLFieldConfig } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
-import { ImgixUrlParamsInputType } from './graphqlTypes';
-import { ImgixUrlArgs } from './publicTypes';
 import {
-  ImgixSourceDataResolver,
-  taskEitherFromSourceDataResolver,
-} from './utils';
+  gatsbySourceImgixUrlFieldType,
+  ImgixUrlParamsInputType,
+} from './graphqlTypes';
+import { ImgixUrlArgs } from './publicTypes';
+import { ImgixSourceDataResolver, resolveUrlFromSourceData } from './utils';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
   imgixClient: ImgixClient;
@@ -24,7 +24,7 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
   TContext,
   ImgixUrlArgs
 > => ({
-  type: GraphQLString,
+  type: gatsbySourceImgixUrlFieldType,
   args: {
     imgixParams: {
       type: ImgixUrlParamsInputType,
@@ -37,7 +37,7 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
   ): Promise<string | undefined> =>
     pipe(
       rootValue,
-      taskEitherFromSourceDataResolver(resolveUrl),
+      resolveUrlFromSourceData(resolveUrl),
       TE.map((url) => imgixClient.buildURL(url, args.imgixParams)),
       TE.getOrElse<Error, string | undefined>((_) => T.of(undefined)),
     )(),
