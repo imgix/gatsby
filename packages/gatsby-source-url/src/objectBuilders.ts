@@ -35,7 +35,9 @@ export const buildFluidObject = ({
     h: args.maxHeight,
   });
 
-  const srcset = client.buildSrcSet(url, args.imgixParams);
+  const srcset = client.buildSrcSet(url, args.imgixParams, {
+    maxWidth,
+  });
 
   /* TODO: handle these */
   //  ({
