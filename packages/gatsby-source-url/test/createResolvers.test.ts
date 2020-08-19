@@ -8,6 +8,7 @@ import * as R from 'ramda';
 import { createLogger, trace } from '../src/common/log';
 import { createResolvers } from '../src/gatsby-node';
 import { IGatsbySourceUrlOptions } from '../src/publicTypes';
+import { getSrcsetWidths } from './utils/getSrcsetWidths';
 
 const log = createLogger('test:createResolvers');
 
@@ -83,25 +84,14 @@ describe('createResolvers', () => {
           fieldParams: { maxWidth: 500 },
         });
 
-        const getSrcsetWidths: (srcset: string) => string[] = R.pipe(
-          R.split(','),
-          R.map(R.trim),
-          R.map(R.split(' ')),
-          R.map<readonly string[], string>(R.last),
-        );
-
         const expectSrcsetToNotHaveWidthsGT = (maxWidth: number) => (
           srcset: string | undefined,
         ) => {
           if (srcset == null) {
             fail();
           }
-          pipe(
-            srcset,
-            getSrcsetWidths,
-            R.map(parseInt),
-            R.all(R.lte(R.__, maxWidth)),
-            (v) => expect(v).toBe(true),
+          pipe(srcset, getSrcsetWidths, R.all(R.lte(R.__, maxWidth)), (v) =>
+            expect(v).toBe(true),
           );
         };
 
