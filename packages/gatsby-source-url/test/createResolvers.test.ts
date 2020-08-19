@@ -45,6 +45,17 @@ describe('createResolvers', () => {
       });
     });
     describe('when setting maxWidth and maxHeight', () => {
+      it('should set fit=crop by default to ensure image is cropped', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+          fieldParams: {},
+        });
+
+        expect(fluidFieldResult.src).toMatch('fit=crop');
+        expect(fluidFieldResult.srcWebp).toMatch('fit=crop');
+        expect(fluidFieldResult.srcSet).toMatch('fit=crop');
+        expect(fluidFieldResult.srcSetWebp).toMatch('fit=crop');
+      });
       it('should return original image aspect ratio and not set ar in srcs when neither maxWidth nor maxHeight set', async () => {
         const fluidFieldResult: FluidObject = await resolveField({
           field: 'fluid',
