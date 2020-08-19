@@ -10,6 +10,7 @@ import { FluidObject } from 'gatsby-image';
 import { GraphQLFieldConfig, GraphQLInt, GraphQLList } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
+import { trace } from './common/log';
 import {
   gatsbySourceImgixFluidFieldType,
   ImgixUrlParamsInputType,
@@ -122,6 +123,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
             client: imgixClient,
           }),
       ),
+      TE.map(trace('resolveDimensions result')),
     );
 
     // Build fluid object

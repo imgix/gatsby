@@ -5,7 +5,10 @@ import { GatsbyCache } from 'gatsby';
 import ImgixClient from 'imgix-core-js';
 import * as t from 'io-ts';
 import { withCache } from '../cache';
+import { createLogger, trace } from '../common/log';
 import { fetchJSON } from '../utils';
+
+const log = createLogger('fetchImgixMetada');
 
 export const ImgixMetadata = t.type({
   'Content-Type': t.string,
@@ -20,15 +23,9 @@ export const fetchImgixMetadata = (cache: GatsbyCache, client: ImgixClient) => (
   withCache(`gatsby-plugin-imgix-metadata-${url}`, cache, () =>
     pipe(
       client.buildURL(url, { fm: 'json' }),
-      (v) => {
-        console.log(v);
-        return v;
-      },
+      trace('imgix metadata url', log),
       fetchJSON,
-      TE.map((v) => {
-        console.log(v);
-        return v;
-      }),
+      TE.map(trace('imgix metadata result', log)),
       TE.chain(
         flow(
           ImgixMetadata.decode,
@@ -38,5 +35,7 @@ export const fetchImgixMetadata = (cache: GatsbyCache, client: ImgixClient) => (
           TE.fromEither,
         ),
       ),
+      TE.map(trace('decoded data', log)),
+      TE.mapLeft(trace('imgix metadata error', log)),
     ),
   );

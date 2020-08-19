@@ -3,6 +3,7 @@
 
 import { CreateResolversArgsPatched, PluginOptions } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
+import { log } from '../src/common/log';
 import { createResolvers } from '../src/gatsby-node';
 import { IGatsbySourceUrlOptions } from '../src/publicTypes';
 
@@ -40,7 +41,6 @@ describe('createResolvers', () => {
           sizes,
           aspectRatio,
         } = fluidFieldResult;
-        console.log('fluidFieldResult', fluidFieldResult);
 
         // Don't need to do too much work here since imgix-core-js handles everything under the hood
         expect(src).toMatch('ixlib=gatsby');
@@ -55,11 +55,11 @@ describe('createResolvers', () => {
 const mockGatsbyCache = {
   store: {} as { [k: string]: any },
   async get(key: string) {
-    console.log(`Getting cache value for ${key}`);
+    log(`Getting cache value for ${key}`);
     return this.store[key];
   },
   async set(key: string, value: any) {
-    console.log(`Setting cache value for ${key} to ${value}`);
+    log(`Setting cache value for ${key} to ${value}`);
     this.store[key] = value;
     return value;
   },
