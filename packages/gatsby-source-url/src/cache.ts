@@ -19,10 +19,16 @@ export const withCache = <A, B>(
     TE.orElse(() =>
       pipe(
         f(),
-        trace(`Couldn't retrieve ${key} from cache, replacing with value`, log),
+        TE.map(
+          trace(
+            `Couldn't retrieve ${key} from cache, replacing with value`,
+            log,
+          ),
+        ),
         TE.chainW(setToCache(key, cache)),
       ),
     ),
+    TE.mapLeft(trace('Error in withCache', log)),
   );
 
 export const getFromCache = <A>(
