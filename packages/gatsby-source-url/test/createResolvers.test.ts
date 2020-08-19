@@ -3,6 +3,7 @@
 
 import { CreateResolversArgsPatched, PluginOptions } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
+import * as R from 'ramda';
 import { createLogger, trace } from '../src/common/log';
 import { createResolvers } from '../src/gatsby-node';
 import { IGatsbySourceUrlOptions } from '../src/publicTypes';
@@ -30,25 +31,72 @@ describe('createResolvers', () => {
 
   describe('fluid field', () => {
     describe('src field', () => {
-      it('should return return an imgix url in the src field', async () => {
+      it('should return return an imgix url in the src fields', async () => {
         const fluidFieldResult: FluidObject = await resolveField({
           field: 'fluid',
         });
 
-        const {
-          src,
-          srcSet,
-          srcWebp,
-          srcSetWebp,
-          sizes,
-          aspectRatio,
-        } = fluidFieldResult;
+        // Don't need to do too much work here since imgix-core-js handles everything under the hood
+        expect(fluidFieldResult.src).toMatch('ixlib=gatsby');
+        expect(fluidFieldResult.srcWebp).toMatch('ixlib=gatsby');
+        expect(fluidFieldResult.srcSet).toMatch('ixlib=gatsby');
+        expect(fluidFieldResult.srcSetWebp).toMatch('ixlib=gatsby');
+      });
+    });
+    describe('when setting maxWidth and maxHeight', () => {
+      it('should return original image aspect ratio and not set ar in srcs when neither maxWidth nor maxHeight set', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+        });
 
         // Don't need to do too much work here since imgix-core-js handles everything under the hood
-        expect(src).toMatch('ixlib=gatsby');
-        expect(srcWebp).toMatch('ixlib=gatsby');
-        expect(srcSet).toMatch('ixlib=gatsby');
-        expect(srcSetWebp).toMatch('ixlib=gatsby');
+        expect(fluidFieldResult.src).not.toMatch('ar=');
+        expect(fluidFieldResult.srcWebp).not.toMatch('ar=');
+        expect(fluidFieldResult.srcSet).not.toMatch('ar=');
+        expect(fluidFieldResult.srcSetWebp).not.toMatch('ar=');
+      });
+      it('should set width on srcs when maxWidth set', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+          fieldParams: { maxWidth: 500 },
+        });
+
+        // Don't need to do too much work here since imgix-core-js handles everything under the hood
+        expect(fluidFieldResult.src).toMatch('w=500');
+        expect(fluidFieldResult.srcWebp).toMatch('w=500');
+      });
+      it.only('should cap srcset widths when maxWidth set', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+          fieldParams: { maxWidth: 500 },
+        });
+
+        const getSrcsetWidths: (srcset: string) => string[] = R.pipe(
+          R.split(','),
+          R.map(R.trim),
+          R.map(R.split(' ')),
+          R.map<readonly string[], string>(R.last),
+        );
+
+        const expectSrcsetToNotHaveWidthsGT = (maxWidth: number) => (
+          srcset: string | undefined,
+        ) => {
+          if (srcset == null) {
+            fail();
+          }
+          R.pipe(
+            () => srcset,
+            getSrcsetWidths,
+            R.map(parseInt),
+            R.all(R.lte(R.__, maxWidth)),
+            (v) => expect(v).toBe(true),
+          )();
+        };
+        trace('fluidFieldResult.srcSet', log)(fluidFieldResult.srcSet);
+
+        // Don't need to do too much work here since imgix-core-js handles everything under the hood
+        expectSrcsetToNotHaveWidthsGT(500)(fluidFieldResult.srcSet);
+        expectSrcsetToNotHaveWidthsGT(500)(fluidFieldResult.srcSetWebp);
       });
     });
   });
