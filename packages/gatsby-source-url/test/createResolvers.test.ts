@@ -3,9 +3,11 @@
 
 import { CreateResolversArgsPatched, PluginOptions } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
-import { log } from '../src/common/log';
+import { createLogger, trace } from '../src/common/log';
 import { createResolvers } from '../src/gatsby-node';
 import { IGatsbySourceUrlOptions } from '../src/publicTypes';
+
+const log = createLogger('test:createResolvers');
 
 describe('createResolvers', () => {
   describe('url field', () => {
@@ -55,11 +57,11 @@ describe('createResolvers', () => {
 const mockGatsbyCache = {
   store: {} as { [k: string]: any },
   async get(key: string) {
-    log(`Getting cache value for ${key}`);
+    trace(`Getting cache value for`, log)(key);
     return this.store[key];
   },
   async set(key: string, value: any) {
-    log(`Setting cache value for ${key} to ${value}`);
+    trace(`Setting cache value for ${key} to ${value}`, log)(value);
     this.store[key] = value;
     return value;
   },
