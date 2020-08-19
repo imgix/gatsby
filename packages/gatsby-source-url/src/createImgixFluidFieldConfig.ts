@@ -54,16 +54,13 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
       type: ImgixUrlParamsInputType,
       defaultValue: {},
     },
-    // TODO: handle
     maxWidth: {
       type: GraphQLInt,
       defaultValue: DEFAULT_FLUID_MAX_WIDTH,
     },
-    // TODO: handle
     maxHeight: {
       type: GraphQLInt,
     },
-    // TODO: handle
     srcSetBreakpoints: {
       type: new GraphQLList(GraphQLInt),
     },
