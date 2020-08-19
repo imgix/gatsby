@@ -6,10 +6,12 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import ImgixClient from 'imgix-core-js';
 import { fetchImgixMetadata } from './api/fetchImgixMetadata';
+import { createLogger, trace } from './common/log';
 
 const sequenceTTE = sequenceT(TE.taskEither);
 const sequenceSO = sequenceS(O.option);
 
+const log = createLogger('resolveDimensions');
 // TODO: maybe use io-ts PositiveNumber
 export type IResolveDimensionsRight = { width: number; height: number };
 export const resolveDimensions = <TSource>({
@@ -38,10 +40,12 @@ export const resolveDimensions = <TSource>({
 
   return pipe(
     WidthHeightTE,
+    TE.map(trace('manual width and height', log)),
     TE.orElse(() =>
       pipe(
         url,
         fetchImgixMetadata(cache, client),
+        TE.map(trace('fetchImgixMetadata result', log)),
         TE.map(({ PixelWidth, PixelHeight }) => ({
           width: PixelWidth,
           height: PixelHeight,

@@ -18,12 +18,15 @@ import fs from 'fs';
 import { CreateResolversArgsPatched, GatsbyNode, PluginOptions } from 'gatsby';
 import path from 'path';
 import readPkgUp from 'read-pkg-up';
+import { createLogger } from './common/log';
 import { createRootImgixImageType } from './createRootImgixImageType';
 import { createImgixClient } from './imgix-core-js-wrapper';
 import { GatsbySourceUrlOptions, IGatsbySourceUrlOptions } from './publicTypes';
 
+const log = createLogger('gatsby-node');
+
 export const onPreInit: GatsbyNode['onPreInit'] = (_: unknown) => {
-  console.log('Loaded @imgix/gatsby-source-url');
+  log('Loaded @imgix/gatsby-source-url (onPreInit)');
 };
 
 export const createResolvers: GatsbyNode['createResolvers'] = async (
@@ -38,6 +41,7 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
       const version = readPkgUp.sync({ cwd: __dirname })?.packageJson.version;
 
       if (version == null || version.trim() === '') {
+        log('Unable to read package version.');
         return E.left(new Error('Unable to read package version'));
       }
 

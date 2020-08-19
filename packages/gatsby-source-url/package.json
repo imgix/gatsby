@@ -32,6 +32,7 @@
     "@types/node-fetch": "^2.5.7",
     "@types/ramda": "^0.27.14",
     "camel-case": "^4.1.1",
+    "debug": "^4.1.1",
     "fp-ts": "^2.8.1",
     "imgix-core-js": "^2.3.1",
     "imgix-url-params": "^11.7.0",
