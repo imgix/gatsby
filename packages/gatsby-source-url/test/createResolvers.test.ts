@@ -128,6 +128,24 @@ describe('createResolvers', () => {
         expect(fluidFieldResult.srcSet).toMatch('ar=81.92%3A1');
         expect(fluidFieldResult.srcSetWebp).toMatch('ar=81.92%3A1');
       });
+      it('should set aspectRatio when maxWidth and maxHeight set', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+          fieldParams: { maxHeight: 100, maxWidth: 200 },
+        });
+
+        expect(fluidFieldResult.aspectRatio).toBe(2);
+      });
+      it('should set ar when maxWidth and maxHeight set', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+          fieldParams: { maxHeight: 100, maxWidth: 200 },
+        });
+
+        expect(fluidFieldResult.src).toMatch('ar=2%3A1');
+        expect(fluidFieldResult.srcWebp).toMatch('ar=2%3A1');
+        expect(fluidFieldResult.srcSet).toMatch('ar=2%3A1');
+        expect(fluidFieldResult.srcSetWebp).toMatch('ar=2%3A1');
       });
     });
   });
