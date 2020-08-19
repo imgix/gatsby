@@ -18,7 +18,13 @@ export const buildFluidObject = ({
   secureUrlToken,
   args,
 }: BuildImgixFluidArgs): FluidObject => {
-  const aspectRatio = sourceWidth / sourceHeight;
+  const aspectRatio = (() => {
+    console.log('args', args);
+    if (args.maxHeight != null && args.maxWidth != null) {
+      return args.maxWidth / args.maxHeight;
+    }
+    return sourceWidth / sourceHeight;
+  })();
   const maxWidth = args.maxWidth;
 
   // const base64 = buildImgixLqipUrl(
