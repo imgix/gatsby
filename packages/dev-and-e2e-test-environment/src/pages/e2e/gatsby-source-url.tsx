@@ -6,10 +6,12 @@ const GatsbySourceUrl = ({ data }: { data: IPageData }) => {
   return (
     <div>
       <img src={data.testImage.url} alt="URL Image" />
-      <Img
-        fluid={{ ...data.testImage.fluid, sizes: "100px" }}
-        alt="Fluid Image"
-      />
+      <div style={{ width: 100 }}>
+        <Img
+          fluid={{ ...data.testImage.fluid, sizes: "100px" }}
+          alt="Fluid Image"
+        />
+      </div>
     </div>
   )
 }
