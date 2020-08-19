@@ -20,7 +20,7 @@ install:
 script:
   - yarn build
   - yarn lint:ci
-  - yarn test
+  - cross-env-shell DEBUG=imgix:* yarn test
 # branches:
 # only:
 #   - master
