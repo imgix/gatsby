@@ -18,6 +18,7 @@ export const buildFluidObject = ({
   secureUrlToken,
   args,
 }: BuildImgixFluidArgs): FluidObject => {
+  const maxWidthAndHeightSet = args.maxHeight != null && args.maxWidth != null;
   const aspectRatio = (() => {
     console.log('args', args);
     if (args.maxHeight != null && args.maxWidth != null) {
@@ -26,6 +27,12 @@ export const buildFluidObject = ({
     return sourceWidth / sourceHeight;
   })();
   const maxWidth = args.maxWidth;
+
+  const imgixParams = {
+    fit: 'crop',
+    ...args.imgixParams,
+    ...(maxWidthAndHeightSet && { ar: `${aspectRatio}:1` }),
+  };
 
   // const base64 = buildImgixLqipUrl(
   //   url,
@@ -36,12 +43,12 @@ export const buildFluidObject = ({
   // });
 
   const src = client.buildURL(url, {
-    ...args.imgixParams,
+    ...imgixParams,
     w: maxWidth,
     h: args.maxHeight,
   });
 
-  const srcset = client.buildSrcSet(url, args.imgixParams, {
+  const srcset = client.buildSrcSet(url, imgixParams, {
     maxWidth,
   });
 
