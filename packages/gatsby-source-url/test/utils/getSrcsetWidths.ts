@@ -4,4 +4,5 @@ export const getSrcsetWidths: (srcset: string) => number[] = R.pipe(
   R.map(R.trim),
   R.map(R.split(' ')),
   R.map<readonly string[], string>(R.last),
-  R.map(parseInt));
+  R.map(parseInt),
+);
