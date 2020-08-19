@@ -20,7 +20,6 @@ export const buildFluidObject = ({
 }: BuildImgixFluidArgs): FluidObject => {
   const maxWidthAndHeightSet = args.maxHeight != null && args.maxWidth != null;
   const aspectRatio = (() => {
-    console.log('args', args);
     if (args.maxHeight != null && args.maxWidth != null) {
       return args.maxWidth / args.maxHeight;
     }

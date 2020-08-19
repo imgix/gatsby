@@ -127,7 +127,6 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
     );
 
     // Build fluid object
-
     const promiseFactory = pipe(
       sequenceSTE({ imageDimensions: imageDimensionsTE, url: urlTE }),
       TE.map(({ imageDimensions: { width, height }, url }) =>
