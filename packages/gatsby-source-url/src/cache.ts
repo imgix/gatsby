@@ -53,8 +53,10 @@ export const setToCache = <A>(key: string, cache: GatsbyCache) => (
 ): TaskEither<Error, A> =>
   TE.tryCatch(
     () => {
-      trace(`Successfully set "${key}" in cache to`, log)(value);
-      return cache.set(key, value);
+      trace(`Setting "${key}" in cache to`, log)(value);
+      const cacheValue = cache.set(key, value);
+      trace(`Cached value`, log)(cacheValue);
+      return cacheValue;
     },
     () => {
       trace(`Failed to set "${key}" in cache to`, log)(value);
