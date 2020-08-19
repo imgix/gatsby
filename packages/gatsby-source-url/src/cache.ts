@@ -14,7 +14,7 @@ export const withCache = <A, B>(
   pipe(
     trace(`Trying to retrieve ${key} from cache`, log)(''),
     () => getFromCache<B>(cache, key),
-    TE.map(trace(`Successfully retrieved ${key} from cache with value`)),
+    TE.map(trace(`Successfully retrieved ${key} from cache with value`, log)),
     // If no cache hit, run function and store result in cache
     TE.orElse(() =>
       pipe(
