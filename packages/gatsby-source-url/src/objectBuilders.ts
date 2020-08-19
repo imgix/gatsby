@@ -49,13 +49,13 @@ export const buildFluidObject = ({
 
   const srcset = client.buildSrcSet(url, imgixParams, {
     maxWidth,
+    widths: args.srcSetBreakpoints,
   });
 
   /* TODO: handle these */
   //  ({
   //   aspectRatio,
   //   maxWidth: maxWidth,
-  //   srcSetBreakpoints: args.srcSetBreakpoints,
   // });
 
   return {
