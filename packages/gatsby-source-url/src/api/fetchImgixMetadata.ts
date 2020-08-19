@@ -8,7 +8,7 @@ import { withCache } from '../cache';
 import { createLogger, trace } from '../common/log';
 import { fetchJSON } from '../utils';
 
-const log = createLogger('fetchImgixMetada');
+const log = createLogger('fetchImgixMetadata');
 
 export const ImgixMetadata = t.type({
   'Content-Type': t.string,
