@@ -1,6 +1,7 @@
 /// <reference types="../types/gatsby" />
 /// <reference types="jest" />
 
+import { pipe } from 'fp-ts/lib/function';
 import { CreateResolversArgsPatched, PluginOptions } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
 import * as R from 'ramda';
@@ -65,7 +66,7 @@ describe('createResolvers', () => {
         expect(fluidFieldResult.src).toMatch('w=500');
         expect(fluidFieldResult.srcWebp).toMatch('w=500');
       });
-      it.only('should cap srcset widths when maxWidth set', async () => {
+      it('should cap srcset widths when maxWidth set', async () => {
         const fluidFieldResult: FluidObject = await resolveField({
           field: 'fluid',
           fieldParams: { maxWidth: 500 },
@@ -84,19 +85,26 @@ describe('createResolvers', () => {
           if (srcset == null) {
             fail();
           }
-          R.pipe(
-            () => srcset,
+          pipe(
+            srcset,
             getSrcsetWidths,
             R.map(parseInt),
             R.all(R.lte(R.__, maxWidth)),
             (v) => expect(v).toBe(true),
-          )();
+          );
         };
-        trace('fluidFieldResult.srcSet', log)(fluidFieldResult.srcSet);
 
         // Don't need to do too much work here since imgix-core-js handles everything under the hood
         expectSrcsetToNotHaveWidthsGT(500)(fluidFieldResult.srcSet);
         expectSrcsetToNotHaveWidthsGT(500)(fluidFieldResult.srcSetWebp);
+      });
+      it('should set aspectRatio when maxHeight set', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+          fieldParams: { maxHeight: 100 },
+        });
+
+        expect(fluidFieldResult.aspectRatio).toBe(81.92);
       });
     });
   });
@@ -152,13 +160,25 @@ const resolveField = async ({
     );
   const resolverMap = mockCreateResolversFunction.mock.calls[0][0];
 
+  const fieldParamsWithDefaults = {
+    ...pipe(
+      R.chain(
+        (v: any): [string, any][] =>
+          v.defaultValue ? [[v.name, v.defaultValue]] : [],
+        resolverMap.Query.imgixImage.type.getFields()[field].args ?? [],
+      ),
+      (v) => R.fromPairs(v),
+    ),
+    ...fieldParams,
+  };
+
   // Get root value from the root imgixImage resolver. This is passed to child resolvers.
   const imgixImageRootValue = resolverMap.Query.imgixImage.resolve({}, { url });
 
   // Resolve the `url` field in the imgixImage type
   const fieldResult = await resolverMap.Query.imgixImage.type
     .getFields()
-    [field].resolve(imgixImageRootValue, fieldParams);
+    [field].resolve(imgixImageRootValue, fieldParamsWithDefaults);
 
   return fieldResult;
 };
