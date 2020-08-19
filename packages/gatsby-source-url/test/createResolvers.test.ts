@@ -138,6 +138,32 @@ describe('createResolvers', () => {
         expect(fluidFieldResult.srcSetWebp).toMatch('ar=2%3A1');
       });
     });
+
+    it('should create srcsets based off the breakpoints argument', async () => {
+      const srcSetBreakpoints = [100, 200];
+      const fluidFieldResult: FluidObject = await resolveField({
+        field: 'fluid',
+        fieldParams: {
+          srcSetBreakpoints,
+        },
+      });
+
+      const expectSrcsetToHaveWidths = (widths: number[]) => (
+        srcset: string | undefined,
+      ) => {
+        if (srcset == null) {
+          fail();
+        }
+        expect(getSrcsetWidths(srcset)).toEqual(srcSetBreakpoints);
+      };
+
+      const expectSrcSetToHaveBreakpoints = expectSrcsetToHaveWidths(
+        srcSetBreakpoints,
+      );
+
+      expectSrcSetToHaveBreakpoints(fluidFieldResult.srcSet);
+      expectSrcSetToHaveBreakpoints(fluidFieldResult.srcSetWebp);
+    });
   });
 });
 
