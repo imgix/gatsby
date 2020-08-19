@@ -55,7 +55,7 @@ export const setToCache = <A>(key: string, cache: GatsbyCache) => (
     TE.tryCatch(
       () => {
         trace(`Setting "${key}" in cache to`, log)(value);
-        return cache.set(key, value);
+        return cache.set(key, value).then(() => value);
       },
       () => new Error(`Failed to set "${key}" in cache to value: ${value}`),
     ),
