@@ -164,6 +164,22 @@ describe('createResolvers', () => {
       expectSrcSetToHaveBreakpoints(fluidFieldResult.srcSet);
       expectSrcSetToHaveBreakpoints(fluidFieldResult.srcSetWebp);
     });
+    it('should set fm=webp for webp src and srcset', async () => {
+      const fluidFieldResult: FluidObject = await resolveField({
+        field: 'fluid',
+      });
+
+      expect(fluidFieldResult.srcWebp).toMatch('fm=webp');
+      expect(fluidFieldResult.srcSetWebp).toMatch('fm=webp');
+    });
+    it('should not set fm=webp for normal src and srcset', async () => {
+      const fluidFieldResult: FluidObject = await resolveField({
+        field: 'fluid',
+      });
+
+      expect(fluidFieldResult.src).not.toMatch('fm=webp');
+      expect(fluidFieldResult.srcSet).not.toMatch('fm=webp');
+    });
   });
 });
 
