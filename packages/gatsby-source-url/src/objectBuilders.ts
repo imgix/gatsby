@@ -30,9 +30,12 @@ export const buildFluidObject = ({
   const imgixParams = {
     fit: 'crop',
     ...args.imgixParams,
-    ...(maxWidthAndHeightSet && { ar: `${aspectRatio}:1` }),
+    ...(maxWidthAndHeightSet && {
+      ar: `${aspectRatio}:1`,
+    }),
   };
 
+  // TODO
   // const base64 = buildImgixLqipUrl(
   //   url,
   //   secureUrlToken,
@@ -41,30 +44,44 @@ export const buildFluidObject = ({
   //   ...args.placeholderImgixParams,
   // });
 
-  const src = client.buildURL(url, {
+  const srcImgixParams = {
     ...imgixParams,
     w: maxWidth,
     h: args.maxHeight,
+  };
+  const src = client.buildURL(url, srcImgixParams);
+  const srcWebp = client.buildURL(url, {
+    ...srcImgixParams,
+    fm: 'webp',
   });
 
-  const srcset = client.buildSrcSet(url, imgixParams, {
+  const srcsetOptions = {
     maxWidth,
     widths: args.srcSetBreakpoints,
-  });
-
-  /* TODO: handle these */
-  //  ({
-  //   aspectRatio,
-  //   maxWidth: maxWidth,
-  // });
+  };
+  const srcsetImgixParams = imgixParams;
+  // We have to spread parameters because .buildSrcSet mutates params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
+  const srcset = client.buildSrcSet(
+    url,
+    { ...srcsetImgixParams },
+    srcsetOptions,
+  );
+  const srcsetWebp = client.buildSrcSet(
+    url,
+    {
+      ...srcsetImgixParams,
+      fm: 'webp',
+    },
+    srcsetOptions,
+  );
 
   return {
     // base64,
     aspectRatio,
     src,
-    srcWebp: src,
+    srcWebp: srcWebp,
     srcSet: srcset,
-    srcSetWebp: srcset,
+    srcSetWebp: srcsetWebp,
     sizes: '(min-width: 8192px) 8192px, 100vw',
   };
 };
