@@ -1,5 +1,6 @@
 import { FluidObject } from 'gatsby-image';
 import ImgixClient from 'imgix-core-js';
+import * as R from 'ramda';
 import { ImgixFluidArgsResolved } from './publicTypes';
 export type BuildImgixFluidArgs = {
   client: ImgixClient;
@@ -9,6 +10,13 @@ export type BuildImgixFluidArgs = {
   secureUrlToken?: string;
   args: ImgixFluidArgsResolved;
 };
+
+const parseAspectRatioFloatFromString = R.pipe<
+  string,
+  string[],
+  string,
+  number
+>(R.split(':'), R.head, (v) => parseInt(v));
 
 export const buildFluidObject = ({
   client,
@@ -20,6 +28,9 @@ export const buildFluidObject = ({
 }: BuildImgixFluidArgs): FluidObject => {
   const maxWidthAndHeightSet = args.maxHeight != null && args.maxWidth != null;
   const aspectRatio = (() => {
+    if (args.imgixParams.ar != null) {
+      return parseAspectRatioFloatFromString(args.imgixParams.ar);
+    }
     if (args.maxHeight != null && args.maxWidth != null) {
       return args.maxWidth / args.maxHeight;
     }
@@ -60,6 +71,7 @@ export const buildFluidObject = ({
     widths: args.srcSetBreakpoints,
   };
   const srcsetImgixParams = imgixParams;
+
   // We have to spread parameters because .buildSrcSet mutates params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
   const srcset = client.buildSrcSet(
     url,

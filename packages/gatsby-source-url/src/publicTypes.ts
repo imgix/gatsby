@@ -20,7 +20,9 @@ export type ImgixUrlParams = Partial<
     | keyof ImgixUrlParametersSpec['aliases'],
     string | number | boolean | undefined
   >
->;
+> & {
+  ar?: string;
+};
 
 export interface ImgixUrlArgs {
   imgixParams?: ImgixUrlParams;
