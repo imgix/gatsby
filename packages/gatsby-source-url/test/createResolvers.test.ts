@@ -45,6 +45,33 @@ describe('createResolvers', () => {
         expect(fluidFieldResult.srcSetWebp).toMatch('ixlib=gatsby');
       });
     });
+
+    describe('aspectRatio field', () => {
+      it('should be set based on the aspect ratio of the source image', async () => {
+        // These values can be obtained from the "PixelWidth" and "PixelHeight" values from https://assets.imgix.net/amsterdam.jpg?fm=json
+
+        const sourceImageWidth = 2000;
+        const sourceImageHeight = 1250;
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+        });
+
+        expect(fluidFieldResult.aspectRatio).toBe(
+          sourceImageWidth / sourceImageHeight,
+        );
+      });
+
+      it('should be set to the value of the ar param, when set', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+          fieldParams: {
+            imgixParams: { ar: '2:1' },
+          },
+        });
+
+        expect(fluidFieldResult.aspectRatio).toBe(2);
+      });
+    });
     describe('when setting maxWidth and maxHeight', () => {
       it('should set fit=crop by default to ensure image is cropped', async () => {
         const fluidFieldResult: FluidObject = await resolveField({
