@@ -12,7 +12,7 @@ import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { trace } from './common/log';
 import {
-  gatsbySourceImgixFluidFieldType,
+  createGatsbySourceImgixFluidFieldType,
   ImgixUrlParamsInputType,
 } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
@@ -48,7 +48,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   TContext,
   ImgixFluidArgsResolved
 > => ({
-  type: gatsbySourceImgixFluidFieldType,
+  type: createGatsbySourceImgixFluidFieldType(cache),
   args: {
     imgixParams: {
       type: ImgixUrlParamsInputType,

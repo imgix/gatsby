@@ -1,7 +1,7 @@
 import { FluidObject } from 'gatsby-image';
 import ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
-import { ImgixFluidArgsResolved } from './publicTypes';
+import { ImgixFluidArgsResolved, ImgixUrlParams } from './publicTypes';
 export type BuildImgixFluidArgs = {
   client: ImgixClient;
   url: string;
@@ -17,6 +17,8 @@ const parseAspectRatioFloatFromString = R.pipe<
   string,
   number
 >(R.split(':'), R.head, (v) => parseInt(v));
+
+const DEFAULT_LQIP_PARAMS: ImgixUrlParams = { w: 20, blur: 15, q: 20 };
 
 export const buildFluidObject = ({
   client,
@@ -46,14 +48,12 @@ export const buildFluidObject = ({
     }),
   };
 
-  // TODO
-  // const base64 = buildImgixLqipUrl(
-  //   url,
-  //   secureUrlToken,
-  // )({
-  //   ...args.imgixParams,
-  //   ...args.placeholderImgixParams,
-  // });
+  // This base64 url will be resolved by this resolver, and then be resolved again by the base64 resolver which is set on the field. See createImgixBase64FieldConfig
+  const base64 = client.buildURL(url, {
+    ...DEFAULT_LQIP_PARAMS,
+    ...args.imgixParams,
+    ...args.placeholderImgixParams,
+  });
 
   const srcImgixParams = {
     ...imgixParams,
@@ -88,7 +88,7 @@ export const buildFluidObject = ({
   );
 
   return {
-    // base64,
+    base64,
     aspectRatio,
     src,
     srcWebp: srcWebp,

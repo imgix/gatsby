@@ -1,4 +1,10 @@
 import { camelCase } from 'camel-case';
+import { GatsbyCache } from 'gatsby';
+/**
+ * The GraphQL type of the fluid field.
+ * Corresponding TS type is FluidObject from gatsby-image.
+ */
+import { FluidObject } from 'gatsby-image';
 import {
   GraphQLBoolean,
   GraphQLFloat,
@@ -10,6 +16,7 @@ import {
   GraphQLString,
 } from 'graphql';
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
+import { createImgixBase64FieldConfig } from './createImgixBase64FieldConfig';
 
 export const ImgixUrlParamsInputType = new GraphQLInputObjectType({
   name: 'GatsbySourceImgixParamsInput',
@@ -75,22 +82,25 @@ export const ImgixUrlParamsInputType = new GraphQLInputObjectType({
   }, {} as GraphQLInputFieldConfigMap),
 });
 
-/**
- * The GraphQL type of the fluid field.
- * Corresponding TS type is FluidObject from gatsby-image.
- */
-export const gatsbySourceImgixFluidFieldType = new GraphQLObjectType({
-  name: 'SourceImgixFluid',
-  fields: {
-    // base64: createImgixBase64UrlFieldConfig({ cache }),
-    src: { type: new GraphQLNonNull(GraphQLString) },
-    srcSet: { type: new GraphQLNonNull(GraphQLString) },
-    srcWebp: { type: new GraphQLNonNull(GraphQLString) },
-    srcSetWebp: { type: new GraphQLNonNull(GraphQLString) },
-    sizes: { type: new GraphQLNonNull(GraphQLString) },
-    aspectRatio: { type: new GraphQLNonNull(GraphQLFloat) },
-  },
-});
+const createBase64ConfigWithFluidResolver = (cache: GatsbyCache) =>
+  createImgixBase64FieldConfig<FluidObject>({
+    resolveUrl: (obj) => obj.base64,
+    cache,
+  });
+
+export const createGatsbySourceImgixFluidFieldType = (cache: GatsbyCache) =>
+  new GraphQLObjectType({
+    name: 'SourceImgixFluid',
+    fields: {
+      base64: createBase64ConfigWithFluidResolver(cache),
+      src: { type: new GraphQLNonNull(GraphQLString) },
+      srcSet: { type: new GraphQLNonNull(GraphQLString) },
+      srcWebp: { type: new GraphQLNonNull(GraphQLString) },
+      srcSetWebp: { type: new GraphQLNonNull(GraphQLString) },
+      sizes: { type: new GraphQLNonNull(GraphQLString) },
+      aspectRatio: { type: new GraphQLNonNull(GraphQLFloat) },
+    },
+  });
 
 export type IGatsbySourceImgixUrlField = string;
 export const gatsbySourceImgixUrlFieldType = GraphQLString;
