@@ -72,6 +72,37 @@ describe('createResolvers', () => {
         expect(fluidFieldResult.aspectRatio).toBe(2);
       });
     });
+
+    describe('base64 field', () => {
+      it('should set a valid base64 image', async () => {
+        const resolveResult = await resolveFieldInternal({
+          field: 'fluid',
+          fieldParams: {
+            imgixParams: { ar: '2:1' },
+          },
+        });
+
+        // Need to resolve base64 again
+        const base64ResolvedValue = await resolveResult.resolverMap.Query.imgixImage.type
+          .getFields()
+          ['fluid'].type.getFields()
+          ?.base64?.resolve(resolveResult.fieldResult, {});
+
+        expect(base64ResolvedValue).toMatch(/^data:image\/jpeg;base64,.*\//);
+      });
+
+      it('should respond to placeholderParams', async () => {
+        // We are resolving the fluid field here and not the base64 field so that we can just assert on the url.
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+          fieldParams: {
+            placeholderImgixParams: { w: 100 },
+          },
+        });
+
+        expect(fluidFieldResult.base64).toMatch(/w=100/);
+      });
+    });
     describe('when setting maxWidth and maxHeight', () => {
       it('should set fit=crop by default to ensure image is cropped', async () => {
         const fluidFieldResult: FluidObject = await resolveField({
@@ -224,13 +255,10 @@ const mockGatsbyCache = {
 };
 
 const resolveField = async ({
-  appConfig = {
-    domain: 'assets.imgix.net',
-    plugins: [],
-  },
+  appConfig,
   field,
   fieldParams = {},
-  url = 'amsterdam.jpg',
+  url,
 }: {
   appConfig?: PluginOptions<IGatsbySourceUrlOptions>;
   field: 'url' | 'fluid' | 'fixed';
@@ -249,6 +277,72 @@ const resolveField = async ({
   */
 
   // Call createResolvers and capture the result
+  const resolveResult = await resolveFieldInternal({
+    appConfig,
+    field,
+    fieldParams,
+    url,
+  });
+
+  return resolveResult.fieldResult;
+};
+
+type FieldParams = Record<string, any>;
+
+async function resolveFieldInternal({
+  appConfig,
+  field,
+  fieldParams = {},
+  url = 'amsterdam.jpg',
+}: {
+  appConfig?: PluginOptions<{ domain: string }>;
+  field: 'url' | 'fluid' | 'fixed';
+  fieldParams?: Object;
+  url?: string;
+}) {
+  const resolverMap = createRootResolversMap(appConfig);
+
+  const fieldParamsWithDefaults = createFieldParamsWithDefaults(
+    resolverMap,
+    field,
+    fieldParams,
+  );
+
+  // Get root value from the root imgixImage resolver. This is passed to child resolvers.
+  const imgixImageRootValue = resolverMap.Query.imgixImage.resolve({}, { url });
+
+  // Resolve the field specified in the imgixImage type
+  const fieldResult = await resolverMap.Query.imgixImage.type
+    .getFields()
+    [field].resolve(imgixImageRootValue, fieldParamsWithDefaults);
+  return { fieldResult, resolverMap };
+}
+
+function createFieldParamsWithDefaults(
+  resolverMap: any,
+  field: 'url' | 'fluid' | 'fixed',
+  fieldParams: FieldParams,
+) {
+  const defaultParamsForField = pipe(
+    R.chain(
+      (v: any): [string, any][] =>
+        v.defaultValue ? [[v.name, v.defaultValue]] : [],
+      resolverMap.Query.imgixImage.type.getFields()[field].args ?? [],
+    ),
+    (v) => R.fromPairs(v),
+  );
+  return {
+    ...defaultParamsForField,
+    ...fieldParams,
+  };
+}
+
+function createRootResolversMap(
+  appConfig: PluginOptions<{ domain: string }> = {
+    domain: 'assets.imgix.net',
+    plugins: [],
+  },
+) {
   const mockCreateResolversFunction = jest.fn();
   createResolvers &&
     createResolvers(
@@ -259,26 +353,5 @@ const resolveField = async ({
       appConfig,
     );
   const resolverMap = mockCreateResolversFunction.mock.calls[0][0];
-
-  const fieldParamsWithDefaults = {
-    ...pipe(
-      R.chain(
-        (v: any): [string, any][] =>
-          v.defaultValue ? [[v.name, v.defaultValue]] : [],
-        resolverMap.Query.imgixImage.type.getFields()[field].args ?? [],
-      ),
-      (v) => R.fromPairs(v),
-    ),
-    ...fieldParams,
-  };
-
-  // Get root value from the root imgixImage resolver. This is passed to child resolvers.
-  const imgixImageRootValue = resolverMap.Query.imgixImage.resolve({}, { url });
-
-  // Resolve the `url` field in the imgixImage type
-  const fieldResult = await resolverMap.Query.imgixImage.type
-    .getFields()
-    [field].resolve(imgixImageRootValue, fieldParamsWithDefaults);
-
-  return fieldResult;
-};
+  return resolverMap;
+}
