@@ -29,7 +29,7 @@ export const createRootImgixImageType = (
       fluid: createImgixFluidFieldConfig<IRootSource, unknown>({
         imgixClient,
         resolveUrl: R.prop('rawUrl'),
-        cache: cache,
+        cache,
       }),
     },
   }),
