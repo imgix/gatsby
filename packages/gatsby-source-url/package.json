@@ -6,6 +6,9 @@
   "types": "dist/index.d.ts",
   "repository": "https://github.com/imgix/gatsby.git",
   "author": "Frederick Fogerty <frederick@imgix.com>",
+  "contributors": [
+    "Angelo Ashmore <angelo.ashmore@walltowall.com>"
+  ],
   "license": "BSD-2-Clause",
   "private": false,
   "publishConfig": {
