@@ -1,6 +1,5 @@
 import { graphql } from 'gatsby';
 
-// TODO: add base64 when available
 export const GatsbySourceImgixFluid = graphql`
   fragment GatsbySourceImgixFluid on SourceImgixFluid {
     aspectRatio
@@ -9,6 +8,7 @@ export const GatsbySourceImgixFluid = graphql`
     srcSet
     srcSetWebp
     sizes
+    base64
   }
 `;
 
