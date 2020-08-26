@@ -4,7 +4,7 @@ import { GatsbyCache } from 'gatsby';
  * The GraphQL type of the fluid field.
  * Corresponding TS type is FluidObject from gatsby-image.
  */
-import { FluidObject } from 'gatsby-image';
+import { FixedObject, FluidObject } from 'gatsby-image';
 import {
   GraphQLBoolean,
   GraphQLFloat,
@@ -82,8 +82,10 @@ export const ImgixUrlParamsInputType = new GraphQLInputObjectType({
   }, {} as GraphQLInputFieldConfigMap),
 });
 
-const createBase64ConfigWithFluidResolver = (cache: GatsbyCache) =>
-  createImgixBase64FieldConfig<FluidObject>({
+const createBase64ConfigWithResolver = <T extends FluidObject | FixedObject>(
+  cache: GatsbyCache,
+) =>
+  createImgixBase64FieldConfig<T>({
     resolveUrl: (obj) => obj.base64,
     cache,
   });
@@ -92,13 +94,30 @@ export const createGatsbySourceImgixFluidFieldType = (cache: GatsbyCache) =>
   new GraphQLObjectType({
     name: 'SourceImgixFluid',
     fields: {
-      base64: createBase64ConfigWithFluidResolver(cache),
+      base64: createBase64ConfigWithResolver<FluidObject>(cache),
       src: { type: new GraphQLNonNull(GraphQLString) },
       srcSet: { type: new GraphQLNonNull(GraphQLString) },
       srcWebp: { type: new GraphQLNonNull(GraphQLString) },
       srcSetWebp: { type: new GraphQLNonNull(GraphQLString) },
       sizes: { type: new GraphQLNonNull(GraphQLString) },
       aspectRatio: { type: new GraphQLNonNull(GraphQLFloat) },
+    },
+  });
+
+export const createGatsbySourceImgixFixedFieldType = (
+  cache: GatsbyCache,
+): GraphQLObjectType<FixedObject> =>
+  new GraphQLObjectType({
+    name: 'SourceImgixFixed',
+    fields: {
+      base64: createBase64ConfigWithResolver<FixedObject>(cache),
+      src: { type: new GraphQLNonNull(GraphQLString) },
+      srcSet: { type: new GraphQLNonNull(GraphQLString) },
+      srcWebp: { type: new GraphQLNonNull(GraphQLString) },
+      srcSetWebp: { type: new GraphQLNonNull(GraphQLString) },
+      sizes: { type: new GraphQLNonNull(GraphQLString) },
+      width: { type: new GraphQLNonNull(GraphQLInt) },
+      height: { type: new GraphQLNonNull(GraphQLInt) },
     },
   });
 

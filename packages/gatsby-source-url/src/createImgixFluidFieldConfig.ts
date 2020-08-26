@@ -1,6 +1,4 @@
 import { sequenceS } from 'fp-ts/lib/Apply';
-import { flow } from 'fp-ts/lib/function';
-import { none, Option, some } from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
@@ -16,12 +14,13 @@ import {
   ImgixUrlParamsInputType,
 } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
-import { ImgixFluidArgsResolved, ImgixUrlArgs } from './publicTypes';
+import { ImgixFluidArgs, ImgixFluidArgsResolved } from './publicTypes';
 import { resolveDimensions } from './resolveDimensions';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
+  TaskOptionFromTE,
 } from './utils';
 
 const sequenceSTE = sequenceS(taskEither);
@@ -64,7 +63,6 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
     srcSetBreakpoints: {
       type: new GraphQLList(GraphQLInt),
     },
-    // TODO: handle
     placeholderImgixParams: {
       type: ImgixUrlParamsInputType,
       defaultValue: {},
@@ -75,14 +73,6 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
     args: ImgixFluidArgsResolved,
   ): Promise<FluidObject | undefined> => {
     const urlTE = resolveUrlFromSourceData(resolveUrl)(rootValue);
-
-    const TaskOptionFromTE = <T>(
-      taskEither: TE.TaskEither<any, T>,
-    ): T.Task<Option<T>> =>
-      TE.fold<any, T, Option<T>>(
-        () => T.of(none),
-        flow(some, T.of),
-      )(taskEither);
 
     const manualImageDimensionsTaskOption = pipe(
       sequenceST({
@@ -135,6 +125,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
           url,
         }),
       ),
+      // TODO: throw error
       TE.getOrElseW(() => T.of(undefined)),
     );
 
@@ -144,9 +135,9 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
 
 export const createImgixFluidSchemaFieldConfig = <TSource, TContext>(
   args: CreateImgixFluidFieldConfigArgs<TSource>,
-): ComposeFieldConfigAsObject<TSource, TContext, ImgixUrlArgs> =>
+): ComposeFieldConfigAsObject<TSource, TContext, ImgixFluidArgs> =>
   createImgixFluidFieldConfig(args) as ComposeFieldConfigAsObject<
     TSource,
     TContext,
-    ImgixUrlArgs
+    ImgixFluidArgs
   >;
