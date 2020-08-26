@@ -3,7 +3,7 @@
 
 import { pipe } from 'fp-ts/lib/function';
 import { CreateResolversArgsPatched, PluginOptions } from 'gatsby';
-import { FluidObject } from 'gatsby-image';
+import { FixedObject, FluidObject } from 'gatsby-image';
 import * as R from 'ramda';
 import { createLogger, trace } from '../src/common/log';
 import { createResolvers } from '../src/gatsby-node';
@@ -43,6 +43,15 @@ describe('createResolvers', () => {
         expect(fluidFieldResult.srcWebp).toMatch('ixlib=gatsby');
         expect(fluidFieldResult.srcSet).toMatch('ixlib=gatsby');
         expect(fluidFieldResult.srcSetWebp).toMatch('ixlib=gatsby');
+      });
+      it('should generate a fluid width srcset', async () => {
+        const fluidFieldResult: FluidObject = await resolveField({
+          field: 'fluid',
+        });
+
+        // Don't need to do too much work here since imgix-core-js handles everything under the hood
+        expect(fluidFieldResult.srcSet).toMatch(/\d*w,/);
+        expect(fluidFieldResult.srcSetWebp).toMatch(/\d*w,/);
       });
     });
 
@@ -237,6 +246,29 @@ describe('createResolvers', () => {
 
       expect(fluidFieldResult.src).not.toMatch('fm=webp');
       expect(fluidFieldResult.srcSet).not.toMatch('fm=webp');
+    });
+  });
+
+  describe.only('fixed field', () => {
+    describe('src field', () => {
+      it('should return return an imgix url in the src fields', async () => {
+        const fluidFieldResult: FixedObject = await resolveField({
+          field: 'fixed',
+        });
+
+        expect(fluidFieldResult.src).toMatch('ixlib=gatsby');
+        expect(fluidFieldResult.srcWebp).toMatch('ixlib=gatsby');
+        expect(fluidFieldResult.srcSet).toMatch('ixlib=gatsby');
+        expect(fluidFieldResult.srcSetWebp).toMatch('ixlib=gatsby');
+      });
+      it('should generate a fixed width srcset', async () => {
+        const fluidFieldResult: FixedObject = await resolveField({
+          field: 'fixed',
+        });
+
+        expect(fluidFieldResult.srcSet).toMatch('1x');
+        expect(fluidFieldResult.srcSetWebp).toMatch('1x');
+      });
     });
   });
 });
