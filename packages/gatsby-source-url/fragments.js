@@ -22,3 +22,26 @@ export const GatsbySourceImgixFluid_noBase64 = graphql`
     sizes
   }
 `;
+
+export const GatsbySourceImgixFixed = graphql`
+  fragment GatsbySourceImgixFixed on SourceImgixFixed {
+    base64
+    width
+    height
+    src
+    srcSet
+    srcWebp
+    srcSetWebp
+  }
+`;
+
+export const GatsbySourceImgixFixed_noBase64 = graphql`
+  fragment GatsbySourceImgixFixed_noBase64 on SourceImgixFixed {
+    width
+    height
+    src
+    srcSet
+    srcWebp
+    srcSetWebp
+  }
+`;
