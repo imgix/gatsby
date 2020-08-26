@@ -21,4 +21,13 @@ describe("gatsby-source-url", () => {
         expect($img[0].naturalWidth).to.be.greaterThan(0)
       })
   })
+
+  it("fixed image loads", () => {
+    cy.findByAltText("Fixed Image")
+      .should("be.visible")
+      .and($img => {
+        // "naturalWidth" and "naturalHeight" are set when the image loads
+        expect($img[0].naturalWidth).to.be.greaterThan(0)
+      })
+  })
 })
