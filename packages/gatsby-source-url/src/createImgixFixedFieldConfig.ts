@@ -106,43 +106,6 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
         ),
       TE.getOrElseW(() => T.of(undefined)),
     )(),
-
-  // pipe(
-  //   rootValue,
-  //   resolveUrlFromSourceData(resolveUrl),
-  //   TE.chain((url) =>
-  //     pipe(
-  //       url,
-  //       url => resolveDimensions({
-  //         url,
-  //         resolveWidth,
-  //         resolveHeight,
-  //         cache,
-  //         secureUrlToken,
-  //       }),
-  //       TE.map(([width, height]) =>
-  //         buildImgixFixed({
-  //           url,
-  //           sourceWidth: width,
-  //           sourceHeight: height,
-  //           secureUrlToken,
-  //           args: {
-  //             ...args,
-  //             imgixParams: {
-  //               ...defaultImgixParams,
-  //               ...args.imgixParams,
-  //             },
-  //             placeholderImgixParams: {
-  //               ...defaultPlaceholderImgixParams,
-  //               ...args.placeholderImgixParams,
-  //             },
-  //           },
-  //         }),
-  //       ),
-  //     ),
-  //   ),
-  //   TE.getOrElseW(() => T.of(undefined)),
-  // )(),
 });
 
 export const createImgixFixedSchemaFieldConfig = <TSource, TContext>(

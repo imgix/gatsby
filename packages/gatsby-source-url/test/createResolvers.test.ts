@@ -249,7 +249,7 @@ describe('createResolvers', () => {
     });
   });
 
-  describe.only('fixed field', () => {
+  describe('fixed field', () => {
     describe('src field', () => {
       it('should return return an imgix url in the src fields', async () => {
         const fluidFieldResult: FixedObject = await resolveField({
