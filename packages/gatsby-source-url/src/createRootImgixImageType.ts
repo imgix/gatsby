@@ -2,6 +2,7 @@ import { GatsbyCache } from 'gatsby';
 import { GraphQLFieldConfig, GraphQLObjectType, GraphQLString } from 'graphql';
 import type ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
+import { createImgixFixedFieldConfig } from './createImgixFixedFieldConfig';
 import { createImgixFluidFieldConfig } from './createImgixFluidFieldConfig';
 import { createImgixUrlFieldConfig } from './createImgixUrlFieldConfig';
 import { IGatsbySourceUrlRootArgs } from './publicTypes';
@@ -12,7 +13,7 @@ type IRootSource = {
 export const createRootImgixImageType = (
   imgixClient: ImgixClient,
   cache: GatsbyCache,
-  // fix any
+  // TODO: fix any
 ): GraphQLFieldConfig<any, any, IGatsbySourceUrlRootArgs> => ({
   args: {
     url: {
@@ -27,6 +28,11 @@ export const createRootImgixImageType = (
         resolveUrl: R.prop('rawUrl'),
       }),
       fluid: createImgixFluidFieldConfig<IRootSource, unknown>({
+        imgixClient,
+        resolveUrl: R.prop('rawUrl'),
+        cache,
+      }),
+      fixed: createImgixFixedFieldConfig<IRootSource, unknown>({
         imgixClient,
         resolveUrl: R.prop('rawUrl'),
         cache,

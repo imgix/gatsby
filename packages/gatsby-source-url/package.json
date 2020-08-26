@@ -37,6 +37,7 @@
     "camel-case": "^4.1.1",
     "debug": "^4.1.1",
     "fp-ts": "^2.8.1",
+    "fp-ts-contrib": "^0.1.18",
     "imgix-core-js": "^2.3.1",
     "imgix-url-params": "^11.7.0",
     "io-ts": "^2.2.9",
