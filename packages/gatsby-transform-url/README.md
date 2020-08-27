@@ -170,9 +170,9 @@ export function buildFluidImageData(
   imgixParams: {
     /**
      * The aspect ratio to set for the rendered image and the placeholder.
-     * Format: float. Can be calculated with ar = width/height.
+     * Format: float or string. For float, it can be calculated with ar = width/height. For a string, it should be in the format w:h.
      */
-    ar: number;
+    ar: number | string;
   } & IImgixParams,
   /**
    * Options that are not imgix parameters.
