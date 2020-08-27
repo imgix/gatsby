@@ -1,0 +1,30 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "build": "lerna exec --parallel --ignore dev* -- tsc --build",
+    "build:watch": "lerna exec --parallel --ignore dev* -- tsc --build --watch",
+    "lint": "prettier --write .",
+    "lint:ci": "prettier --check .",
+    "test": "run-s test:unit test:e2e:ci",
+    "test:unit": "yarn jest",
+    "test:e2e": "yarn workspace dev-and-e2e-test-environment run test:e2e",
+    "test:e2e:ci": "yarn workspace dev-and-e2e-test-environment run test:e2e:ci",
+    "tdd": "run-p tdd:unit tdd:e2e",
+    "tdd:unit": "yarn jest --watch",
+    "tdd:e2e": "yarn test:e2e",
+    "run-publish": "yarn build ; lerna publish"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.4",
+    "jest": "^26.1.0",
+    "lerna": "^3.22.1",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.1.1",
+    "typescript": "^3.9.6",
+    "yarn-run-all": "^3.1.1"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

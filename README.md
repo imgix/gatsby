@@ -1,15 +1,36 @@
 <!-- ix-docs-ignore -->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fgatsby.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fgatsby?ref=badge_shield)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![imgix logo](https://assets.imgix.net/sdk-imgix-logo.svg)
 
-This is a library to make the interaction between Gatsby and [imgix](https://www.imgix.com/) far simpler.
+imgix has a collection of plugins to make the interaction between Gatsby and [imgix](https://www.imgix.com/) far simpler.
 
 ---
 
 <!-- /ix-docs-ignore -->
+
+<!-- NB: Run `npx markdown-toc README.md --maxdepth 4 | sed -e 's/[[:space:]]\{2\}/    /g' | pbcopy` to generate TOC :) -->
+
+<!-- prettier-ignore-start -->
+
+- [What plugin should I use?](#what-plugin-should-i-use)
+- [Roadmap](#roadmap)
+- [Why use imgix with Gatsby?](#why-use-imgix-with-gatsby)
+- [Contributors](#contributors)
+- [License](#license)
+
+<!-- prettier-ignore-end -->
+
+# What plugin should I use?
+
+To find what plugin you should use, select the use case below that best matches your use case:
+
+- I load image urls on the server and client and I want to transform these into a format that is compatible with gatsby-image 👉[gatsby-transform-url](./packages/gatsby-transform-url)
 
 # Roadmap
 
@@ -27,6 +48,7 @@ Below is a list of issues that contain all the high-level use-cases that we thou
 - [I have an image stored locally that I want to upload to image-manager and render](https://github.com/imgix/gatsby/issues/7)
 
 Other features:
+
 - [I want to have my imgix parameters in my Gatsby/GraphQL query be strongly-typed](https://github.com/imgix/gatsby/issues/5)
 
 # Why use imgix with Gatsby?
@@ -38,9 +60,7 @@ Integrating imgix with Gatsby provides a few key advantages over the core image 
 3. Better responsiveness than Gatsby. Since we offload the image rendering to our cloud, rather than the developer's device, we are able to create far more derivative images at different resolutions, resulting in better responsive image performance, meaning faster load times and less bandwidth usage for your users.
 4. Faster time-to-awesome. imgix offers a set of default optimizations which allow you to achieve outstanding image quality which still keeping image size small, and allows you to focus on other aspects of your website.
 
-
-
-## Contributors
+# Contributors
 
 Contributions are a vital part of this library and imgix's commitment to open-source. We welcome all contributions which align with this project's goals. More information can be found in the [contributing documentation](CONTRIBUTING.md).
 
@@ -64,12 +84,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. 
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 
 <!-- /ix-docs-ignore -->
 
+# License
 
-## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fgatsby.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fgatsby?ref=badge_large)
