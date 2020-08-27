@@ -25,6 +25,5 @@ script:
 branches:
   only:
     - main
-    - next
     - beta
-    - alpha
+    - beta-v2
