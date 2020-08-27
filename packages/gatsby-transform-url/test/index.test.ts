@@ -163,38 +163,125 @@ describe('gatsby-transform-url', () => {
       ),
     );
 
-    test('should pass aspect ratio to src and srcset', () => {
-      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
-        ar: 2.1,
+    describe('aspect ratio', () => {
+      test('should pass aspect ratio to src and srcset', () => {
+        const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+          ar: 2.1,
+        });
+
+        expect(actual.src).toMatch(`ar=2.1%3A1`);
+        expect(actual.srcSet).toMatch(`ar=2.1%3A1`);
+      });
+      test('should have fit=crop set', () => {
+        const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+          ar: 2,
+        });
+
+        expect(actual.src).toMatch(`fit=crop`);
+        expect(actual.srcSet).toMatch(`fit=crop`);
+      });
+      test('should be able to override fit', () => {
+        const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+          ar: 2,
+          fit: 'clip',
+        });
+
+        expect(actual.src).toMatch(`fit=clip`);
+        expect(actual.srcSet).toMatch(`fit=clip`);
+      });
+      test('should return aspect ratio in resulting data object', () => {
+        const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
+          ar: 2.1,
+        });
+
+        expect(actual).toMatchObject({
+          aspectRatio: 2.1,
+        });
+      });
+      describe('valid AR', () => {
+        const testValidAR = ({
+          ar,
+          arFloat,
+        }: {
+          ar: string;
+          arFloat: number;
+        }) => {
+          it(`should set aspectRatio and ar= correctly with an ar parameter of "${ar}"`, () => {
+            const parseParam = (
+              url: string,
+              param: string,
+            ): string | undefined => {
+              const matched = url.match('[?&]' + param + '=([^&]+)');
+              if (!matched) return undefined;
+              return matched[1];
+            };
+            const removeFallbackSrcSet = <T>(srcSets: T[]) =>
+              srcSets.slice(0, -1);
+
+            const actual = buildFluidImageData(
+              'https://test.imgix.net/image.jpg',
+              {
+                ar,
+              },
+            );
+
+            const testSrcset = (srcset: string) => {
+              const srcSets = srcset.split(',').map((v) => v.trim());
+              const srcSetUrls = srcSets.map((srcset) => srcset.split(' ')[0]);
+              removeFallbackSrcSet(srcSetUrls).forEach((srcSetUrl) => {
+                const ar = parseParam(srcSetUrl, 'ar');
+                expect(ar).toBeTruthy();
+              });
+            };
+
+            testSrcset(actual.srcSet);
+            testSrcset(actual.srcSetWebp);
+            expect(actual.aspectRatio).toBe(arFloat);
+          });
+        };
+        ([
+          ['1:1', 1],
+          ['1.1:1', 1.1],
+          ['1.12:1', 1.12],
+          ['1.123:1', 1.123],
+          ['1:1.1', 0.909],
+          ['1:1.12', 0.893],
+          ['1.1:1.1', 1],
+          ['1.123:1.123', 1],
+          ['11.123:11.123', 1],
+        ] as const).forEach(([validAR, validArFloat]) =>
+          testValidAR({
+            ar: validAR,
+            arFloat: validArFloat,
+          }),
+        );
       });
 
-      expect(actual.src).toMatch(`ar=2.1%3A1`);
-      expect(actual.srcSet).toMatch(`ar=2.1%3A1`);
-    });
-    test('should have fit=crop set', () => {
-      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
-        ar: 2,
-      });
+      describe('invalid AR', () => {
+        // Using any to simulate JS
+        const testInvalidAR = (ar: any) => {
+          it(`should throw an error given an invalid string ar prop "${ar}"`, () => {
+            const actualLazy = () =>
+              buildFluidImageData('https://test.imgix.net/image.jpg', {
+                ar,
+              });
 
-      expect(actual.src).toMatch(`fit=crop`);
-      expect(actual.srcSet).toMatch(`fit=crop`);
-    });
-    test('should be able to override fit', () => {
-      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
-        ar: 2,
-        fit: 'clip',
-      });
+            expect(actualLazy).toThrowError(/invalid string ar parameter/);
+          });
+        };
 
-      expect(actual.src).toMatch(`fit=clip`);
-      expect(actual.srcSet).toMatch(`fit=clip`);
-    });
-    test('should return aspect ratio in resulting data object', () => {
-      const actual = buildFluidImageData('https://test.imgix.net/image.jpg', {
-        ar: 2.1,
-      });
-
-      expect(actual).toMatchObject({
-        aspectRatio: 2.1,
+        [
+          '4x3',
+          '4:',
+          ,
+          'blah:1:1',
+          'blah1:1',
+          '1x1',
+          '1:1blah',
+          '1:blah1',
+          true,
+          NaN,
+        ].forEach((invalidAR) => testInvalidAR(invalidAR));
       });
     });
     test('should pass sizes to resulting data object', () => {
