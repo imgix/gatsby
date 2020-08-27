@@ -70,7 +70,19 @@ Steps:
 
 PR titles should be in the format `<type>(<scope>): <description>`. For example: `chore(readme): fix typo`
 
-`type` can be one of `feat`, `fix`, `test`, or `chore`.
+
+`type` can be any of the follow:
+  - `feat`: a feature, or breaking change
+  - `fix`: a bug-fix
+  - `test`: Adding missing tests or correcting existing tests
+  - `docs`: documentation only changes (readme, changelog, contributing guide)
+  - `refactor`: a code change that neither fixes a bug nor adds a feature
+  - `chore`: reoccurring tasks for project maintainability (example scopes: release, deps)
+  - `config`: changes to tooling configurations used in the project
+  - `build`: changes that affect the build system or external dependencies (example scopes: npm, bundler, gradle)
+  - `ci`: changes to CI configuration files and scripts (example scopes: travis)
+  - `perf`: a code change that improves performance
+  - `style`: changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
 `scope` is optional, and can be anything.
 `description` should be a short description of the change, in past tense.
 -->
