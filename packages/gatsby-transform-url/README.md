@@ -33,7 +33,7 @@
 
 This library allows imgix urls to be used with gatsby-image. This library transforms imgix urls into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this library you can either display images that already exist on imgix, or proxy other images through imgix.
 
-Unfortunately, due to limitations of Gatsby, this library does not support placeholder/blur-up images yet. When Gatsby removes this limitation, we plan to implement this for this library. Our other libraries will support blur-up/placeholder images.
+Unfortunately, due to limitations of Gatsby, this library does not support the placeholder/blur-up feature yet. When Gatsby removes this limitation, we plan to implement this for this library. In the meantime, our other Gatsby plugins will support blur-up/placeholder images, so if this feature is critical to you, please consider using one of those.
 
 # Get Started
 
