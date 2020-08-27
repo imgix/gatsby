@@ -16,7 +16,7 @@
     "jsuri": "^1.3.1",
     "ramda": "^0.27.1"
   },
-  "gitHead": "67d64747c0274fc433216b1b49f2a65656cdba7c",
+  "gitHead": "dd275590c0bee8d21d4760c52b6efbdec9ce7b20",
   "publishConfig": {
     "access": "public"
   },

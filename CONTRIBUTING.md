@@ -45,8 +45,10 @@ The development of this library follows standard TDD practices. You can run the 
 
 ## Publishing
 
-1. Bump the version in packages/gatsby-transform-url/src/index.ts and commit.
-2. Run `yarn run-publish` from root.
+1. Bump the versions of relevant packages with `npx lerna version --no-push`. Do NOT push to GH yet.
+2. Update the version in packages/gatsby-transform-url/src/index.ts and commit with --amend.
+3. Move the git tags to the new commit
+4. Run `yarn build && npx lerna publish from-git` from root.
 
 Publish stable versions from main, and prerelease versions from beta.
 
