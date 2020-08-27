@@ -51,8 +51,13 @@ function buildImageData(
     ar: imgixParams.ar != null ? `${imgixParams.ar}:1` : undefined,
   };
 
-  const src = client.buildURL(path, transformedImgixParams);
-  const srcset = client.buildSrcSet(path, transformedImgixParams);
+  // We have to spread parameters because imgix-core-js builders mutate params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
+  const src = client.buildURL(path, {
+    ...transformedImgixParams,
+  });
+  const srcset = client.buildSrcSet(path, {
+    ...transformedImgixParams,
+  });
   const srcWebp = client.buildURL(path, {
     ...transformedImgixParams,
     fm: 'webp',
