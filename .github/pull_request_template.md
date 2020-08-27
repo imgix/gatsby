@@ -1,8 +1,4 @@
-<!-- prettier-ignore-start -->
-<!--
-Hello, and thanks for contributing to imgix/gatsby! 🎉🙌
-Please take a second to fill out PRs with the following template!
--->
+<!-- Hey there! Thanks for contributing to imgix/gatsby! 🎉🙌 Please take a second to fill out PRs with the following template! -->
 
 ## Description
 <!-- What is accomplished by this PR? If there is something potentially controversial in your PR, please take a moment to tell us about your choices. -->
@@ -38,7 +34,6 @@ Please use the checklist that is most closely related to your PR, and delete the
 - [ ] Add some [steps](#steps-to-test) so we can test your cool new feature!
 
 ## Steps to Test
-
 <!-- Delete this selction if you are just submitting a doc change/small fix -->
 
 <!-- A code example or a set of steps is preferred -->
@@ -86,4 +81,3 @@ PR titles should be in the format `<type>(<scope>): <description>`. For example:
 `scope` is optional, and can be anything.
 `description` should be a short description of the change, in the imperative mood.
 -->
-<!-- prettier-ignore-end -->
