@@ -175,7 +175,7 @@ export function buildFluidImageData(
 
   return buildImageData(
     url,
-    { imgixParams, ar: aspectRatioFloat },
+    { ...imgixParams, ar: aspectRatioFloat },
     { ...options, type: 'fluid' },
   );
 }
