@@ -7,7 +7,7 @@
 [![npm version](https://img.shields.io/npm/v/@imgix/gatsby-transform-url.svg)](https://www.npmjs.com/package/@imgix/gatsby-transform-url)
 [![Build Status](https://travis-ci.org/imgix/gatsby.svg?branch=main)](https://travis-ci.org/imgix/gatsby)
 [![Downloads](https://img.shields.io/npm/dm/@imgix/gatsby-transform-url.svg)](https://www.npmjs.com/package/@imgix/gatsby-transform-url)
-[![License](https://img.shields.io/npm/l/@imgix/gatsby-transform-url)](https://github.com/imgix/@imgix/gatsby-transform-url/blob/master/LICENSE)
+[![License](https://img.shields.io/npm/l/@imgix/gatsby-transform-url)](https://github.com/imgix/gatsby/blob/main/packages/gatsby-transform-url/LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fgatsby.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fgatsby?ref=badge_shield)
 [![Dependencies Status](https://david-dm.org/imgix/@imgix/gatsby-transform-url.svg)](https://david-dm.org/imgix/@imgix/gatsby-transform-url)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
