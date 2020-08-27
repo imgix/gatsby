@@ -24,7 +24,7 @@ script:
 
 branches:
   only:
-    - master
+    - main
     - next
     - beta
     - alpha
