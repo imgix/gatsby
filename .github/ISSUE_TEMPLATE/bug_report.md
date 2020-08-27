@@ -14,7 +14,7 @@ A clear and concise description of what the bug is. Please strive to reach the *
 **To Reproduce**
 A bug is a _demonstrable problem_ that is caused by the code in the repository. Thus, the contributors need a way to reproduce your issue - if we can't reproduce your issue, we can't help you! Also, please be as detailed as possible.
 
-[a link to a codesandox or repl.it; here is a link to a codesandbox with imgix/gatsby installed which can be forked: https://codesandbox.io/s/imgix/gatsby-base-codesandbox-bhz8n]
+[a link to a codesandox or repl.it; here is a link to a codesandbox with imgix/gatsby installed which can be forked: https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324]
 
 [alternatively, please provide a code example]
 
