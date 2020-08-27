@@ -84,7 +84,7 @@ Although `sizes` is optional, it is highly recommended. It has a default of `100
 
 A full example of a fluid image in a working Gatsby repo can be found on CodeSandbox.
 
-[![Edit @imgix/gatsby-transform-url Fluid Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fluid-example-i49fo?fontsize=14&hidenavigation=1&theme=dark)
+[![Edit @imgix/gatsby-transform-url Fluid Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fluid-example-jxj0b?fontsize=14&hidenavigation=1&theme=dark)
 
 ### Basic Fixed Image
 
