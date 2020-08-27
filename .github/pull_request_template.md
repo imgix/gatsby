@@ -31,7 +31,7 @@ Please use the checklist that is most closely related to your PR, and delete the
 - [ ] The target branch is `beta`. This is important for our CI/CD config.
 - [ ] Each commit follows the conventional commit spec format: e.g. `chore(readme): fixed typo`. See the end of this file for more information.
 - [ ] Any breaking changes are specified on the commit on which they are introduced with `BREAKING CHANGE` in the body of the commit.
-- [ ] If this is a big feature with breaking changes, consider [opening an issue][issues] to discuss first. This is completely up to you, but please keep in mind that your PR might not be accepted.
+- [ ] If this is a big feature with breaking changes, consider [opening an issue](https://github.com/imgix/gatsby/issues?utf8=%E2%9C%93&q=is%3Aissue) to discuss first. This is completely up to you, but please keep in mind that your PR might not be accepted.
 - [ ] Run unit tests to ensure all existing tests are still passing
 - [ ] Add new passing unit tests to cover the code introduced by your PR
 - [ ] Update the readme
