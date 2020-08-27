@@ -84,6 +84,6 @@ PR titles should be in the format `<type>(<scope>): <description>`. For example:
   - `perf`: a code change that improves performance
   - `style`: changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
 `scope` is optional, and can be anything.
-`description` should be a short description of the change, in past tense.
+`description` should be a short description of the change, in the imperative mood.
 -->
 <!-- prettier-ignore-end -->
