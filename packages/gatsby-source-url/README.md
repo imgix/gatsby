@@ -25,12 +25,12 @@
     * [Configuration](#configuration)
 - [Usage](#usage)
     * [Fluid Images](#fluid-images)
-        + [Fixed Images](#fixed-images)
+    * [Fixed Images](#fixed-images)
 - [API](#api)
     * [GraphQL](#graphql)
         + [GraphQL Fragments](#graphql-fragments)
     * [Gatsby/Plugin Configuration](#gatsbyplugin-configuration)
-    * [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
+- [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
 - [Contributors](#contributors)
 
 <!-- prettier-ignore-end -->
@@ -110,7 +110,7 @@ Although `sizes` is optional, it is highly recommended. It has a default of `(ma
 
 [![Edit @imgix/gatsby-transform-url Fluid Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fluid-example-i49fo?fontsize=14&hidenavigation=1&theme=dark) -->
 
-### Fixed Images
+## Fixed Images
 
 The following code will render a fixed image with gatsby-image. This code should already be familiar to you if you've used gatsby-image in the past.
 
@@ -162,7 +162,7 @@ The plugin options that can be specified in `gatsby-config.js` are:
 | `defaultImgixParams`  | `Object`  |          | Imgix parameters to use by default for every image. Recommended to set to `{ auto: ['compress', 'format'] }`.                                      |
 | `disableLibraryParam` | `Boolean` |          | Set to `false` to remove the `ixlib` param from every request. See [this section](#what-is-the-ixlib-param-on-every-request) for more information. |
 
-## What is the `ixlib` Param on Every Request?
+# What is the `ixlib` Param on Every Request?
 
 For security and diagnostic purposes, we tag all requests with the language and version of library used to generate the URL.
 
