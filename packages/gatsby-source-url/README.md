@@ -92,7 +92,7 @@ export const query = gql`
       fluid(imgixParams: {
         // pass any imgix parameters you want to here
       }) {
-        ...GatsySourceImgixFluid
+        ...GatsbySourceImgixFluid
       }
     }
   }
