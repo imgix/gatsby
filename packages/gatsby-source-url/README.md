@@ -22,8 +22,16 @@
 
 - [About This Library](#about-this-library)
 - [Get Started](#get-started)
+    * [Configuration](#configuration)
+- [Usage](#usage)
+    * [Fluid Images](#fluid-images)
+        + [Fixed Images](#fixed-images)
+- [API](#api)
+    * [GraphQL](#graphql)
+        + [GraphQL Fragments](#graphql-fragments)
+    * [Gatsby/Plugin Configuration](#gatsbyplugin-configuration)
+    * [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
 - [Contributors](#contributors)
-
 
 <!-- prettier-ignore-end -->
 
