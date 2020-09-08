@@ -1,5 +1,10 @@
 import { GatsbyCache } from 'gatsby';
-import { GraphQLFieldConfig, GraphQLObjectType, GraphQLString } from 'graphql';
+import {
+  GraphQLFieldConfig,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 import type ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
 import { createImgixFixedFieldConfig } from './createImgixFixedFieldConfig';
@@ -17,7 +22,7 @@ export const createRootImgixImageType = (
 ): GraphQLFieldConfig<any, any, IGatsbySourceUrlRootArgs> => ({
   args: {
     url: {
-      type: GraphQLString,
+      type: GraphQLNonNull(GraphQLString),
     },
   },
   type: new GraphQLObjectType<any, any, any>({
