@@ -129,7 +129,7 @@ export const query = gql`
         width: 960 # Width (in px) is required
         imgixParams: {}
       ) {
-        ...GatsySourceImgixFixed
+        ...GatsbySourceImgixFixed
       }
     }
   }
