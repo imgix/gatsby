@@ -271,6 +271,21 @@ describe('createResolvers', () => {
       });
     });
   });
+
+  describe('default parameters', () => {
+    it('should set parameters on url field', async () => {
+      const urlFieldResult = await resolveField({
+        field: 'url',
+        appConfig: {
+          defaultParams: {
+            txt: 'Default',
+          },
+        },
+      });
+
+      expect(urlFieldResult).toMatch('txt=Default');
+    });
+  });
 });
 
 const mockGatsbyCache = {
@@ -292,7 +307,7 @@ const resolveField = async ({
   fieldParams = {},
   url,
 }: {
-  appConfig?: PluginOptions<IGatsbySourceUrlOptions>;
+  appConfig?: Parameters<typeof resolveFieldInternal>[0]['appConfig'];
   field: 'url' | 'fluid' | 'fixed';
   fieldParams?: Object;
   url?: string;
@@ -327,12 +342,12 @@ async function resolveFieldInternal({
   fieldParams = {},
   url = 'amsterdam.jpg',
 }: {
-  appConfig?: PluginOptions<{ domain: string }>;
+  appConfig?: Parameters<typeof createRootResolversMap>[0];
   field: 'url' | 'fluid' | 'fixed';
   fieldParams?: Object;
   url?: string;
 }) {
-  const resolverMap = createRootResolversMap(appConfig);
+  const resolverMap = await createRootResolversMap(appConfig);
 
   const fieldParamsWithDefaults = createFieldParamsWithDefaults(
     resolverMap,
@@ -369,21 +384,27 @@ function createFieldParamsWithDefaults(
   };
 }
 
-function createRootResolversMap(
-  appConfig: PluginOptions<{ domain: string }> = {
-    domain: 'assets.imgix.net',
-    plugins: [],
-  },
+const defaultAppConfig = {
+  domain: 'assets.imgix.net',
+  plugins: [],
+} as const;
+async function createRootResolversMap(
+  _appConfig?: Partial<PluginOptions<IGatsbySourceUrlOptions>>,
 ) {
+  const appConfig = R.mergeDeepRight(defaultAppConfig, _appConfig ?? {});
   const mockCreateResolversFunction = jest.fn();
-  createResolvers &&
-    createResolvers(
-      ({
-        createResolvers: mockCreateResolversFunction,
-        cache: mockGatsbyCache,
-      } as any) as CreateResolversArgsPatched,
-      appConfig,
-    );
+  try {
+    createResolvers &&
+      (await createResolvers(
+        ({
+          createResolvers: mockCreateResolversFunction,
+          cache: mockGatsbyCache,
+        } as any) as CreateResolversArgsPatched,
+        appConfig,
+      ));
+  } catch (err) {
+    throw fail(err);
+  }
   const resolverMap = mockCreateResolversFunction.mock.calls[0][0];
   return resolverMap;
 }
