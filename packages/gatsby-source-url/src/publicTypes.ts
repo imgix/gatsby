@@ -1,9 +1,42 @@
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
 import * as t from 'io-ts';
+import R from 'ramda';
+
+type IImgixParamsKey =
+  | keyof ImgixUrlParametersSpec['parameters']
+  | keyof ImgixUrlParametersSpec['aliases'];
+
+const ImgixParamValueIOTS = t.union([
+  t.string,
+  t.number,
+  t.boolean,
+  t.undefined,
+  t.null,
+  t.array(t.string),
+  t.array(t.number),
+  t.array(t.boolean),
+]);
+
+const mapToImgixParamValue = <TKey extends string>(
+  obj: Record<TKey, unknown>,
+): Record<TKey, typeof ImgixParamValueIOTS> =>
+  R.mapObjIndexed(() => ImgixParamValueIOTS, obj);
+
+const ImgixParamsIOTS = t.partial({
+  ...mapToImgixParamValue(imgixUrlParameters.aliases),
+  ...mapToImgixParamValue(imgixUrlParameters.parameters),
+});
+type IImgixParams = t.TypeOf<typeof ImgixParamsIOTS>;
+
 export const GatsbySourceUrlOptions = t.type({
   domain: t.string,
+  defaultParams: t.union([ImgixParamsIOTS, t.undefined]),
 });
 export type IGatsbySourceUrlOptions = t.TypeOf<typeof GatsbySourceUrlOptions>;
+
+const imgixParamsTest2: IImgixParams = {
+  auto: ['format'],
+};
 
 export type IImgixFixedImageData = {};
 
@@ -11,15 +44,11 @@ export type IGatsbySourceUrlRootArgs = {
   url: string;
 };
 
-export type ImgixUrlParametersSpec = typeof imgixUrlParameters;
+type ImgixUrlParametersSpec = typeof imgixUrlParameters;
 
 // Can be improved
 export type ImgixUrlParams = Partial<
-  Record<
-    | keyof ImgixUrlParametersSpec['parameters']
-    | keyof ImgixUrlParametersSpec['aliases'],
-    string | number | boolean | undefined
-  >
+  Record<IImgixParamsKey, string | number | boolean | undefined>
 > & {
   ar?: string;
 };
