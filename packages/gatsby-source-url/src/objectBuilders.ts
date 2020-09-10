@@ -116,6 +116,8 @@ export type BuildImgixFixedArgs = {
   sourceWidth: number;
   sourceHeight: number;
   args: ImgixFixedArgsResolved;
+  defaultParams: Partial<IImgixParams>;
+  defaultPlaceholderParams: Partial<IImgixParams>;
 };
 export function buildImgixFixed({
   client,
@@ -123,6 +125,8 @@ export function buildImgixFixed({
   sourceWidth,
   sourceHeight,
   args,
+  defaultParams,
+  defaultPlaceholderParams,
 }: BuildImgixFixedArgs): FixedObject {
   const aspectRatio = (() => {
     if (args.imgixParams.ar != null) {
@@ -163,6 +167,7 @@ export function buildImgixFixed({
 
   const imgixParams = {
     fit: 'crop',
+    ...defaultParams,
     ...args.imgixParams,
     w: width,
     h: height,
@@ -170,6 +175,7 @@ export function buildImgixFixed({
 
   const base64 = client.buildURL(url, {
     ...DEFAULT_LQIP_PARAMS,
+    ...defaultPlaceholderParams,
     ...args.imgixParams,
     ...args.placeholderImgixParams,
   });

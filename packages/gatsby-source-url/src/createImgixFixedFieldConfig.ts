@@ -13,7 +13,11 @@ import {
   ImgixUrlParamsInputType,
 } from './graphqlTypes';
 import { buildImgixFixed } from './objectBuilders';
-import { ImgixFixedArgs, ImgixFixedArgsResolved } from './publicTypes';
+import {
+  IImgixParams,
+  ImgixFixedArgs,
+  ImgixFixedArgsResolved,
+} from './publicTypes';
 import { resolveDimensions } from './resolveDimensions';
 import {
   ImgixSourceDataResolver,
@@ -29,6 +33,7 @@ interface CreateImgixFixedFieldConfigArgs<TSource> {
   resolveWidth?: ImgixSourceDataResolver<TSource, number>;
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
   cache: GatsbyCache;
+  defaultParams: Partial<IImgixParams>;
 }
 
 export const createImgixFixedFieldConfig = <TSource, TContext>({
@@ -37,6 +42,7 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
   resolveWidth = () => undefined,
   resolveHeight = () => undefined,
   cache,
+  defaultParams,
 }: CreateImgixFixedFieldConfigArgs<TSource>): GraphQLFieldConfig<
   TSource,
   TContext,
@@ -102,6 +108,8 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
             sourceWidth: width,
             sourceHeight: height,
             args,
+            defaultParams,
+            defaultPlaceholderParams: {}, // TODO: implement
           }),
         ),
       TE.getOrElseW(() => T.of(undefined)),
