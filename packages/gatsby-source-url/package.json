@@ -41,6 +41,7 @@
     "imgix-core-js": "^2.3.1",
     "imgix-url-params": "^11.7.0",
     "io-ts": "^2.2.9",
+    "io-ts-reporters": "^1.2.2",
     "node-fetch": "^2.6.0",
     "ramda": "^0.27.1",
     "read-pkg-up": "^7.0.1"
