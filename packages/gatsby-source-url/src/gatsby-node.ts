@@ -12,6 +12,7 @@
  * See: https://www.gatsbyjs.org/docs/creating-a-local-plugin/#developing-a-local-plugin-that-is-outside-your-project
  */
 
+import { Do } from 'fp-ts-contrib/lib/Do';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import fs from 'fs';
@@ -31,30 +32,50 @@ export const onPreInit: GatsbyNode['onPreInit'] = (_: unknown) => {
 
 export const createResolvers: GatsbyNode['createResolvers'] = async (
   { createResolvers: createResolversCb, cache }: CreateResolversArgsPatched,
-  options: PluginOptions<IGatsbySourceUrlOptions>,
+  _options: PluginOptions<IGatsbySourceUrlOptions>,
 ) =>
   pipe(
-    options,
-    GatsbySourceUrlOptions.decode,
-    E.chainW(createImgixClient),
-    E.chain((imgixClient) => {
-      const version = readPkgUp.sync({ cwd: __dirname })?.packageJson.version;
+    Do(E.either)
+      .bind(
+        'options',
+        pipe(
+          GatsbySourceUrlOptions.decode(_options),
+          E.mapLeft(
+            (validationErrors) =>
+              new Error(
+                `[@imgix/gatsby-source-url] The plugin config is not in the correct format.`,
+              ),
+          ),
+        ),
+      )
+      .bindL('imgixClient', ({ options }) => createImgixClient(options))
+      .doL(({ imgixClient }) => {
+        const version = readPkgUp.sync({ cwd: __dirname })?.packageJson.version;
 
-      if (version == null || version.trim() === '') {
-        log('Unable to read package version.');
-        return E.left(new Error('Unable to read package version'));
-      }
+        if (version == null || version.trim() === '') {
+          log('Unable to read package version.');
+          return E.left(new Error('Unable to read package version'));
+        }
 
-      imgixClient.includeLibraryParam = false;
-      (imgixClient as any).settings.libraryParam = `gatsby-source-url-${version}`;
-      return E.right(imgixClient);
+        imgixClient.includeLibraryParam = false;
+        (imgixClient as any).settings.libraryParam = `gatsby-source-url-${version}`;
+        return E.right(imgixClient);
+      })
+      .letL('rootQueryTypeMap', ({ imgixClient }) => ({
+        Query: {
+          imgixImage: createRootImgixImageType(imgixClient, cache),
+        },
+      }))
+      .doL(({ rootQueryTypeMap }) =>
+        E.tryCatch(
+          () => createResolversCb(rootQueryTypeMap),
+          (e) => (e instanceof Error ? e : new Error('unknown error')),
+        ),
+      )
+      .return(() => undefined),
+    E.getOrElseW((err) => {
+      throw err;
     }),
-    E.map((imgixClient) => ({
-      Query: {
-        imgixImage: createRootImgixImageType(imgixClient, cache),
-      },
-    })),
-    E.map(createResolversCb),
   );
 
 export const onPreExtractQueries: GatsbyNode['onPreExtractQueries'] = ({
