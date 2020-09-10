@@ -300,6 +300,21 @@ describe('createResolvers', () => {
       expect(fieldResult.srcWebp).toMatch('txt=Default');
       expect(fieldResult.srcSetWebp).toMatch('txt=Default');
     });
+    it('should set parameters on fluid field', async () => {
+      const fieldResult = await resolveField({
+        field: 'fixed',
+        appConfig: {
+          defaultParams: {
+            txt: 'Default',
+          },
+        },
+      });
+
+      expect(fieldResult.src).toMatch('txt=Default');
+      expect(fieldResult.srcSet).toMatch('txt=Default');
+      expect(fieldResult.srcWebp).toMatch('txt=Default');
+      expect(fieldResult.srcSetWebp).toMatch('txt=Default');
+    });
   });
 });
 
