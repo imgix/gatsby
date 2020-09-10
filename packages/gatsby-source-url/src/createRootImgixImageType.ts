@@ -44,6 +44,7 @@ export const createRootImgixImageType = (
         imgixClient,
         resolveUrl: R.prop('rawUrl'),
         cache,
+        defaultParams,
       }),
     },
   }),

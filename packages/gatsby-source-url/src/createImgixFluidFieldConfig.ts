@@ -1,9 +1,7 @@
 import { Do } from 'fp-ts-contrib/lib/Do';
-import { sequenceS } from 'fp-ts/lib/Apply';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { taskEither } from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
 import { GraphQLFieldConfig, GraphQLInt, GraphQLList } from 'graphql';
@@ -26,9 +24,6 @@ import {
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from './utils';
-
-const sequenceSTE = sequenceS(taskEither);
-const sequenceST = sequenceS(T.task);
 
 const DEFAULT_FLUID_MAX_WIDTH = 8192;
 
