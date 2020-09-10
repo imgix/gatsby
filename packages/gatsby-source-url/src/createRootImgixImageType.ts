@@ -38,6 +38,7 @@ export const createRootImgixImageType = (
         imgixClient,
         resolveUrl: R.prop('rawUrl'),
         cache,
+        defaultParams,
       }),
       fixed: createImgixFixedFieldConfig<IRootSource, unknown>({
         imgixClient,

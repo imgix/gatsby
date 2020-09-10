@@ -1,5 +1,6 @@
+import { Do } from 'fp-ts-contrib/lib/Do';
 import { sequenceS } from 'fp-ts/lib/Apply';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { taskEither } from 'fp-ts/lib/TaskEither';
@@ -8,19 +9,22 @@ import { FluidObject } from 'gatsby-image';
 import { GraphQLFieldConfig, GraphQLInt, GraphQLList } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
-import { trace } from './common/log';
+import { TaskOptionFromTE } from './common/fpTsUtils';
 import {
   createGatsbySourceImgixFluidFieldType,
   ImgixUrlParamsInputType,
 } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
-import { ImgixFluidArgs, ImgixFluidArgsResolved } from './publicTypes';
+import {
+  IImgixParams,
+  ImgixFluidArgs,
+  ImgixFluidArgsResolved,
+} from './publicTypes';
 import { resolveDimensions } from './resolveDimensions';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
-  TaskOptionFromTE,
 } from './utils';
 
 const sequenceSTE = sequenceS(taskEither);
@@ -34,6 +38,7 @@ interface CreateImgixFluidFieldConfigArgs<TSource> {
   resolveWidth?: ImgixSourceDataResolver<TSource, number>;
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
   cache: GatsbyCache;
+  defaultParams: Partial<IImgixParams>;
 }
 
 export const createImgixFluidFieldConfig = <TSource, TContext>({
@@ -42,6 +47,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   resolveWidth = () => undefined,
   resolveHeight = () => undefined,
   cache,
+  defaultParams,
 }: CreateImgixFluidFieldConfigArgs<TSource>): GraphQLFieldConfig<
   TSource,
   TContext,
@@ -71,37 +77,24 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   resolve: (
     rootValue: TSource,
     args: ImgixFluidArgsResolved,
-  ): Promise<FluidObject | undefined> => {
-    const urlTE = resolveUrlFromSourceData(resolveUrl)(rootValue);
-
-    const manualImageDimensionsTaskOption = pipe(
-      sequenceST({
-        manualWidth: pipe(
-          taskEitherFromSourceDataResolver(resolveWidth)(rootValue),
-          TaskOptionFromTE,
-        ),
-        manualHeight: pipe(
-          taskEitherFromSourceDataResolver(resolveHeight)(rootValue),
-          TaskOptionFromTE,
-        ),
-      }),
-    );
-
-    // Find image dimensions
-    const imageDimensionsTE = pipe(
-      sequenceSTE({
-        manualImageDimensions: TE.fromTask(manualImageDimensionsTaskOption),
-        url: urlTE,
-      }),
-      TE.chain(
-        /* <
-      Error,
-      string,
-      IResolveDimensionsRight
-    > */ ({
-          url,
-          manualImageDimensions: { manualWidth, manualHeight },
-        }) =>
+  ): Promise<FluidObject | undefined> =>
+    pipe(
+      Do(TE.taskEither)
+        .let('rootValue', rootValue)
+        .sequenceSL(({ rootValue }) => ({
+          url: resolveUrlFromSourceData(resolveUrl)(rootValue),
+          manualWidth: pipe(
+            taskEitherFromSourceDataResolver(resolveWidth)(rootValue),
+            TaskOptionFromTE,
+            TE.fromTask,
+          ),
+          manualHeight: pipe(
+            taskEitherFromSourceDataResolver(resolveHeight)(rootValue),
+            TaskOptionFromTE,
+            TE.fromTask,
+          ),
+        }))
+        .bindL('dimensions', ({ url, manualWidth, manualHeight }) =>
           resolveDimensions({
             url,
             manualHeight,
@@ -109,28 +102,21 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
             cache,
             client: imgixClient,
           }),
-      ),
-      TE.map(trace('resolveDimensions result')),
-    );
+        )
+        .return(({ url, dimensions: { width, height } }) =>
+          buildFluidObject({
+            client: imgixClient,
+            args,
+            sourceHeight: height,
+            sourceWidth: width,
+            url,
+            defaultParams,
+            defaultPlaceholderParams: {}, // TODO: implement
+          }),
+        ),
 
-    // Build fluid object
-    const promiseFactory = pipe(
-      sequenceSTE({ imageDimensions: imageDimensionsTE, url: urlTE }),
-      TE.map(({ imageDimensions: { width, height }, url }) =>
-        buildFluidObject({
-          client: imgixClient,
-          args,
-          sourceHeight: height,
-          sourceWidth: width,
-          url,
-        }),
-      ),
-      // TODO: throw error
       TE.getOrElseW(() => T.of(undefined)),
-    );
-
-    return promiseFactory();
-  },
+    )(),
 });
 
 export const createImgixFluidSchemaFieldConfig = <TSource, TContext>(

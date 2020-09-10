@@ -7,6 +7,7 @@ import { FixedObject } from 'gatsby-image';
 import { GraphQLFieldConfig, GraphQLInt } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
+import { TaskOptionFromTE } from './common/fpTsUtils';
 import {
   createGatsbySourceImgixFixedFieldType,
   ImgixUrlParamsInputType,
@@ -18,7 +19,6 @@ import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
-  TaskOptionFromTE,
 } from './utils';
 
 export const DEFAULT_FIXED_WIDTH = 8192;
