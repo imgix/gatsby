@@ -33,7 +33,7 @@ export const onPreInit: GatsbyNode['onPreInit'] = (_: unknown) => {
 export const createResolvers: GatsbyNode['createResolvers'] = async (
   { createResolvers: createResolversCb, cache }: CreateResolversArgsPatched,
   _options: PluginOptions<IGatsbySourceUrlOptions>,
-) =>
+): Promise<void> =>
   pipe(
     Do(E.either)
       .bind(
@@ -41,7 +41,7 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
         pipe(
           GatsbySourceUrlOptions.decode(_options),
           E.mapLeft(
-            (validationErrors) =>
+            () =>
               new Error(
                 `[@imgix/gatsby-source-url] The plugin config is not in the correct format.`,
               ),
@@ -61,9 +61,13 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
         (imgixClient as any).settings.libraryParam = `gatsby-source-url-${packageVersion}`;
         return E.right(imgixClient);
       })
-      .letL('rootQueryTypeMap', ({ imgixClient }) => ({
+      .letL('rootQueryTypeMap', ({ imgixClient, options }) => ({
         Query: {
-          imgixImage: createRootImgixImageType(imgixClient, cache),
+          imgixImage: createRootImgixImageType(
+            imgixClient,
+            cache,
+            options.defaultParams ?? {},
+          ),
         },
       }))
       .doL(({ rootQueryTypeMap }) =>

@@ -4,21 +4,24 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import { GraphQLFieldConfig } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
+import R from 'ramda';
 import {
   gatsbySourceImgixUrlFieldType,
   ImgixUrlParamsInputType,
 } from './graphqlTypes';
-import { ImgixUrlArgs } from './publicTypes';
+import { IImgixParams, ImgixUrlArgs } from './publicTypes';
 import { ImgixSourceDataResolver, resolveUrlFromSourceData } from './utils';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
   imgixClient: ImgixClient;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
+  defaultParams: IImgixParams;
 }
 
 export const createImgixUrlFieldConfig = <TSource, TContext>({
   imgixClient,
   resolveUrl,
+  defaultParams,
 }: CreateImgixUrlFieldConfigArgs<TSource>): GraphQLFieldConfig<
   TSource,
   TContext,
@@ -38,8 +41,13 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
     pipe(
       rootValue,
       resolveUrlFromSourceData(resolveUrl),
-      TE.map((url) => imgixClient.buildURL(url, args.imgixParams)),
-      TE.getOrElse<Error, string | undefined>((_) => T.of(undefined)),
+      TE.map((url) =>
+        imgixClient.buildURL(
+          url,
+          R.mergeRight(defaultParams, args.imgixParams ?? {}),
+        ),
+      ),
+      TE.getOrElse<Error, string | undefined>(() => T.of(undefined)),
     )(),
 });
 

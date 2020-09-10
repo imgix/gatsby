@@ -26,7 +26,7 @@ const ImgixParamsIOTS = t.partial({
   ...mapToImgixParamValue(imgixUrlParameters.aliases),
   ...mapToImgixParamValue(imgixUrlParameters.parameters),
 });
-type IImgixParams = t.TypeOf<typeof ImgixParamsIOTS>;
+export type IImgixParams = t.TypeOf<typeof ImgixParamsIOTS>;
 
 export const GatsbySourceUrlOptions = t.type({
   domain: t.string,
