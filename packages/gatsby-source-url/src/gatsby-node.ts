@@ -49,16 +49,16 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
         ),
       )
       .bindL('imgixClient', ({ options }) => createImgixClient(options))
-      .doL(({ imgixClient }) => {
-        const version = readPkgUp.sync({ cwd: __dirname })?.packageJson.version;
-
-        if (version == null || version.trim() === '') {
-          log('Unable to read package version.');
-          return E.left(new Error('Unable to read package version'));
-        }
-
+      .bind(
+        'packageVersion',
+        pipe(
+          readPkgUp.sync({ cwd: __dirname })?.packageJson.version,
+          E.fromNullable(new Error('Could not read package version.')),
+        ),
+      )
+      .doL(({ imgixClient, packageVersion }) => {
         imgixClient.includeLibraryParam = false;
-        (imgixClient as any).settings.libraryParam = `gatsby-source-url-${version}`;
+        (imgixClient as any).settings.libraryParam = `gatsby-source-url-${packageVersion}`;
         return E.right(imgixClient);
       })
       .letL('rootQueryTypeMap', ({ imgixClient }) => ({
