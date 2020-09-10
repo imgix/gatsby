@@ -55,10 +55,3 @@ export const fetchJSON = <A>(url: string): TaskEither<Error, A> =>
     TE.chain((res) => TE.rightTask(() => res.json())),
   );
 
-export const TaskOptionFromTE = <T>(
-  taskEither: TE.TaskEither<any, T>,
-): T.Task<O.Option<T>> =>
-  TE.fold<any, T, O.Option<T>>(
-    () => T.of(O.none),
-    flow(O.some, T.of),
-  )(taskEither);

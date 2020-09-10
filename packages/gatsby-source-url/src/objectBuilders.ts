@@ -4,6 +4,7 @@ import * as R from 'ramda';
 import { log, trace } from './common/log';
 import { DEFAULT_FIXED_WIDTH } from './createImgixFixedFieldConfig';
 import {
+  IImgixParams,
   ImgixFixedArgsResolved,
   ImgixFluidArgsResolved,
   ImgixUrlParams,
@@ -14,6 +15,8 @@ export type BuildImgixFluidArgs = {
   sourceWidth: number;
   sourceHeight: number;
   args: ImgixFluidArgsResolved;
+  defaultParams: Partial<IImgixParams>;
+  defaultPlaceholderParams: Partial<IImgixParams>;
 };
 
 const parseAspectRatioFloatFromString = R.pipe<
@@ -31,6 +34,8 @@ export const buildFluidObject = ({
   sourceWidth,
   sourceHeight,
   args,
+  defaultParams,
+  defaultPlaceholderParams,
 }: BuildImgixFluidArgs): FluidObject => {
   const maxWidthAndHeightSet = args.maxHeight != null && args.maxWidth != null;
   const aspectRatio = (() => {
@@ -46,6 +51,7 @@ export const buildFluidObject = ({
 
   const imgixParams = {
     fit: 'crop',
+    ...defaultParams,
     ...args.imgixParams,
     ...(maxWidthAndHeightSet && {
       ar: `${aspectRatio}:1`,
@@ -55,6 +61,7 @@ export const buildFluidObject = ({
   // This base64 url will be resolved by this resolver, and then be resolved again by the base64 resolver which is set on the field. See createImgixBase64FieldConfig
   const base64 = client.buildURL(url, {
     ...DEFAULT_LQIP_PARAMS,
+    ...defaultPlaceholderParams,
     ...args.imgixParams,
     ...args.placeholderImgixParams,
   });
@@ -167,7 +174,7 @@ export function buildImgixFixed({
     ...args.placeholderImgixParams,
   });
 
-  // We have to spread parameters because .buildURL and .buildSrscSet mutates params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
+  // We have to spread parameters because .buildURL and .buildSrcSet mutates params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
   const src = client.buildURL(url, { ...imgixParams });
   const srcWebp = client.buildURL(url, {
     ...imgixParams,
