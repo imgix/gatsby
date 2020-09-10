@@ -277,7 +277,7 @@ describe('createResolvers', () => {
       const urlFieldResult = await resolveField({
         field: 'url',
         appConfig: {
-          defaultParams: {
+          defaultImgixParams: {
             txt: 'Default',
           },
         },
@@ -289,7 +289,7 @@ describe('createResolvers', () => {
       const urlFieldResult = await resolveField({
         field: 'url',
         appConfig: {
-          defaultParams: {
+          defaultImgixParams: {
             txt: 'Default',
           },
         },
@@ -306,7 +306,7 @@ describe('createResolvers', () => {
       const fieldResult = await resolveField({
         field: 'fluid',
         appConfig: {
-          defaultParams: {
+          defaultImgixParams: {
             txt: 'Default',
           },
         },
@@ -321,7 +321,7 @@ describe('createResolvers', () => {
       const fieldResult = await resolveField({
         field: 'fluid',
         appConfig: {
-          defaultParams: {
+          defaultImgixParams: {
             txt: 'Default',
           },
         },
@@ -341,7 +341,7 @@ describe('createResolvers', () => {
       const fieldResult = await resolveField({
         field: 'fixed',
         appConfig: {
-          defaultParams: {
+          defaultImgixParams: {
             txt: 'Default',
           },
         },
@@ -356,7 +356,7 @@ describe('createResolvers', () => {
       const fieldResult = await resolveField({
         field: 'fixed',
         appConfig: {
-          defaultParams: {
+          defaultImgixParams: {
             txt: 'Default',
           },
         },
