@@ -30,7 +30,7 @@ export type IImgixParams = t.TypeOf<typeof ImgixParamsIOTS>;
 
 export const GatsbySourceUrlOptions = t.type({
   domain: t.string,
-  defaultParams: t.union([ImgixParamsIOTS, t.undefined]),
+  defaultImgixParams: t.union([ImgixParamsIOTS, t.undefined]),
 });
 export type IGatsbySourceUrlOptions = t.TypeOf<typeof GatsbySourceUrlOptions>;
 

@@ -66,7 +66,7 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
           imgixImage: createRootImgixImageType(
             imgixClient,
             cache,
-            options.defaultParams ?? {},
+            options.defaultImgixParams ?? {},
           ),
         },
       }))
