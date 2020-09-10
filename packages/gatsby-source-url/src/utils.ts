@@ -1,8 +1,5 @@
-import { flow } from 'fp-ts/lib/function';
-import * as O from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { getObjectSemigroup } from 'fp-ts/lib/Semigroup';
-import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { TaskEither } from 'fp-ts/lib/TaskEither';
 import _fetch, { Response } from 'node-fetch';
@@ -54,4 +51,3 @@ export const fetchJSON = <A>(url: string): TaskEither<Error, A> =>
     fetch,
     TE.chain((res) => TE.rightTask(() => res.json())),
   );
-
