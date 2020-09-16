@@ -156,11 +156,12 @@ This library also provides some GraphQL fragments, such as `GatsbySourceImgixFlu
 
 The plugin options that can be specified in `gatsby-config.js` are:
 
-| Name                  | Type      | Required | Description                                                                                                                                        |
-| :-------------------- | :-------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `domain`              | `String`  | ✔️       | The imgix domain to use for the image URLs. Usually in the format `.imgix.net`                                                                     |
-| `defaultImgixParams`  | `Object`  |          | Imgix parameters to use by default for every image. Recommended to set to `{ auto: ['compress', 'format'] }`.                                      |
-| `disableLibraryParam` | `Boolean` |          | Set to `false` to remove the `ixlib` param from every request. See [this section](#what-is-the-ixlib-param-on-every-request) for more information. |
+| Name                 | Type      | Required | Description                                                                                                                                                     |
+| :------------------- | :-------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain`             | `String`  | ✔️       | The imgix domain to use for the image URLs. Usually in the format `.imgix.net`                                                                                  |
+| `defaultImgixParams` | `Object`  |          | Imgix parameters to use by default for every image. Recommended to set to `{ auto: ['compress', 'format'] }`.                                                   |
+| `disableIxlibParam`  | `Boolean` |          | Set to `true` to remove the `ixlib` param from every request. See [this section](#what-is-the-ixlib-param-on-every-request) for more information.               |
+| `secureURLToken`     | `String`  |          | When specified, this token will be used to sign images. Read more about securing images [on the imgix Docs site](https://docs.imgix.com/setup/securing-images). |
 
 # What is the `ixlib` Param on Every Request?
 
