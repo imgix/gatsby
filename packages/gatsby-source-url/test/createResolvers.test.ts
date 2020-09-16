@@ -314,21 +314,20 @@ describe('createResolvers', () => {
   });
 
   describe('default parameters', () => {
-    it('should set parameters on url field', async () => {
-      const urlFieldResult = await resolveField({
-        field: 'url',
+    testForEveryFieldSrcAndSrcSet({
+      name: 'should set default parameters',
+      resolveFieldOpts: {
         appConfig: {
           defaultImgixParams: {
             txt: 'Default',
           },
         },
-      });
-
-      expect(urlFieldResult).toMatch('txt=Default');
+      },
+      assertion: (url) => expect(url).toMatch('txt=Default'),
     });
-    it('should allow default parameters to be overridden for url field', async () => {
-      const urlFieldResult = await resolveField({
-        field: 'url',
+    testForEveryFieldSrcAndSrcSet({
+      name: 'should allow default parameters to be overridden',
+      resolveFieldOpts: {
         appConfig: {
           defaultImgixParams: {
             txt: 'Default',
@@ -339,79 +338,8 @@ describe('createResolvers', () => {
             txt: 'Overridden',
           },
         },
-      });
-
-      expect(urlFieldResult).toMatch('txt=Overridden');
-    });
-    it('should set parameters on fluid field', async () => {
-      const fieldResult = await resolveField({
-        field: 'fluid',
-        appConfig: {
-          defaultImgixParams: {
-            txt: 'Default',
-          },
-        },
-      });
-
-      expect(fieldResult.src).toMatch('txt=Default');
-      expect(fieldResult.srcSet).toMatch('txt=Default');
-      expect(fieldResult.srcWebp).toMatch('txt=Default');
-      expect(fieldResult.srcSetWebp).toMatch('txt=Default');
-    });
-    it('should allow default parameters to be overridden for fluid field', async () => {
-      const fieldResult = await resolveField({
-        field: 'fluid',
-        appConfig: {
-          defaultImgixParams: {
-            txt: 'Default',
-          },
-        },
-        fieldParams: {
-          imgixParams: {
-            txt: 'Overridden',
-          },
-        },
-      });
-
-      expect(fieldResult.src).toMatch('txt=Overridden');
-      expect(fieldResult.srcSet).toMatch('txt=Overridden');
-      expect(fieldResult.srcWebp).toMatch('txt=Overridden');
-      expect(fieldResult.srcSetWebp).toMatch('txt=Overridden');
-    });
-    it('should set parameters on fluid field', async () => {
-      const fieldResult = await resolveField({
-        field: 'fixed',
-        appConfig: {
-          defaultImgixParams: {
-            txt: 'Default',
-          },
-        },
-      });
-
-      expect(fieldResult.src).toMatch('txt=Default');
-      expect(fieldResult.srcSet).toMatch('txt=Default');
-      expect(fieldResult.srcWebp).toMatch('txt=Default');
-      expect(fieldResult.srcSetWebp).toMatch('txt=Default');
-    });
-    it('should allow default parameters to be overridden for fixed field', async () => {
-      const fieldResult = await resolveField({
-        field: 'fixed',
-        appConfig: {
-          defaultImgixParams: {
-            txt: 'Default',
-          },
-        },
-        fieldParams: {
-          imgixParams: {
-            txt: 'Overridden',
-          },
-        },
-      });
-
-      expect(fieldResult.src).toMatch('txt=Overridden');
-      expect(fieldResult.srcSet).toMatch('txt=Overridden');
-      expect(fieldResult.srcWebp).toMatch('txt=Overridden');
-      expect(fieldResult.srcSetWebp).toMatch('txt=Overridden');
+      },
+      assertion: (url) => expect(url).toMatch('txt=Overridden'),
     });
   });
 
