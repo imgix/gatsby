@@ -166,7 +166,7 @@ The plugin options that can be specified in `gatsby-config.js` are:
 
 For security and diagnostic purposes, we tag all requests with the language and version of library used to generate the URL.
 
-To disable this, set `disableLibraryParam` to `false` in the plugin configuration options.
+To disable this, set `disableIxlibParam` to `true` in the plugin configuration options.
 
 ```js
 // gatsby-config.js
@@ -178,7 +178,7 @@ module.exports = {
       resolve: `@imgix/gatsby-source-url`,
       options: {
         domain: '<your imgix domain, e.g. acme.imgix.net>',
-        disableLibraryParam: false, // <-- set this to false
+        disableIxlibParam: true, // <-- set this to true
       },
     },
   ],
