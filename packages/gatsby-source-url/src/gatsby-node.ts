@@ -48,8 +48,8 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
           ),
         ),
       )
-      .bindL('imgixClient', ({ options: { domain } }) =>
-        createImgixClient({ domain }),
+      .bindL('imgixClient', ({ options: { domain, secureURLToken } }) =>
+        createImgixClient({ domain, secureURLToken }),
       )
       .bind(
         'packageVersion',

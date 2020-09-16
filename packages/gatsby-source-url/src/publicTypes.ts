@@ -32,6 +32,7 @@ export const GatsbySourceUrlOptions = t.typeOptional({
   domain: t.string,
   defaultImgixParams: t.optional(ImgixParamsIOTS),
   disableIxlibParam: t.optional(t.boolean),
+  secureURLToken: t.optional(t.string),
 });
 export type IGatsbySourceUrlOptions = t.TypeOf<typeof GatsbySourceUrlOptions>;
 
