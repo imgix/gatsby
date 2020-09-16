@@ -362,6 +362,18 @@ describe('createResolvers', () => {
       assertion: (url) => expect(url).toMatch(/s=\w+/),
     });
   });
+
+  describe('web proxy sources', () => {
+    it(`should throw an error if app is configured with sourceType: 'webProxy' but no secureURLToken`, async () => {
+      const createResolversLazy = () =>
+        createRootResolversMap({
+          sourceType: 'webProxy',
+          domain: 'assets.imgix.net',
+        });
+
+      expect(createResolversLazy).toThrow('secureURLToken');
+    });
+  });
 });
 
 const mockGatsbyCache = {
