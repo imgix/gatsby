@@ -30,10 +30,10 @@ export const onPreInit: GatsbyNode['onPreInit'] = (_: unknown) => {
   log('Loaded @imgix/gatsby-source-url (onPreInit)');
 };
 
-export const createResolvers: GatsbyNode['createResolvers'] = async (
+export const createResolvers: GatsbyNode['createResolvers'] = (
   { createResolvers: createResolversCb, cache }: CreateResolversArgsPatched,
   _options: PluginOptions<IGatsbySourceUrlOptions>,
-): Promise<void> =>
+): any =>
   pipe(
     Do(E.either)
       .bind(

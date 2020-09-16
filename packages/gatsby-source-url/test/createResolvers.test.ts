@@ -476,23 +476,19 @@ const defaultAppConfig = {
   domain: 'assets.imgix.net',
   plugins: [],
 } as const;
-async function createRootResolversMap(
+function createRootResolversMap(
   _appConfig?: Partial<PluginOptions<IGatsbySourceUrlOptions>>,
 ) {
   const appConfig = R.mergeDeepRight(defaultAppConfig, _appConfig ?? {});
   const mockCreateResolversFunction = jest.fn();
-  try {
-    createResolvers &&
-      (await createResolvers(
-        ({
-          createResolvers: mockCreateResolversFunction,
-          cache: mockGatsbyCache,
-        } as any) as CreateResolversArgsPatched,
-        appConfig,
-      ));
-  } catch (err) {
-    throw fail(err);
-  }
+  createResolvers &&
+    createResolvers(
+      ({
+        createResolvers: mockCreateResolversFunction,
+        cache: mockGatsbyCache,
+      } as any) as CreateResolversArgsPatched,
+      appConfig,
+    );
   const resolverMap = mockCreateResolversFunction.mock.calls[0][0];
   return resolverMap;
 }
