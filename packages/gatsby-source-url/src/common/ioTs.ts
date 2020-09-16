@@ -2,8 +2,8 @@ import { pipe } from 'fp-ts/lib/function';
 import * as t from 'io-ts';
 import { Optional } from './tsUtils';
 
-const typeOptional = <P extends t.Props>(obj: P) =>
-  pipe(obj, (v) => t.type<P>(v), fixOptionals);
+const typeOptional = <P extends t.Props>(obj: P, name?: string) =>
+  pipe(t.type<P>(obj, name), fixOptionals);
 
 /**
  * Type lambda returning a union of key names from input type P having type A
@@ -39,6 +39,22 @@ const optional = <C extends t.Mixed>(
   c: C,
 ): t.Type<t.TypeOf<C> | undefined, t.OutputOf<C>, t.InputOf<C>> =>
   t.union([t.undefined, c]);
+
+export function fromEnum<EnumType extends string>(
+  enumName: string,
+  theEnum: Record<string, EnumType>,
+): t.Type<EnumType, EnumType, unknown> {
+  const isEnumValue = (input: unknown): input is EnumType =>
+    Object.values<unknown>(theEnum).includes(input);
+
+  return new t.Type<EnumType>(
+    enumName,
+    isEnumValue,
+    (input, context) =>
+      isEnumValue(input) ? t.success(input) : t.failure(input, context),
+    t.identity,
+  );
+}
 
 export * from 'io-ts';
 export { typeOptional, optional };

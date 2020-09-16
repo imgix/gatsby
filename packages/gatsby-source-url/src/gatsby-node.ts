@@ -46,6 +46,20 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
                 `[@imgix/gatsby-source-url] The plugin config is not in the correct format.`,
               ),
           ),
+          E.chain((options) => {
+            if (
+              options.sourceType === 'webProxy' &&
+              (options.secureURLToken == null ||
+                options.secureURLToken.trim() === '')
+            ) {
+              return E.left(
+                new Error(
+                  `[@imgix/gatsby-source-url] the plugin option 'secureURLToken' is required when sourceType is 'webProxy'.`,
+                ),
+              );
+            }
+            return E.right(options);
+          }),
         ),
       )
       .bindL('imgixClient', ({ options: { domain, secureURLToken } }) =>
