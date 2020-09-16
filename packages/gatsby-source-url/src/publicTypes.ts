@@ -1,6 +1,6 @@
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
-import * as t from 'io-ts';
 import R from 'ramda';
+import * as t from './common/ioTs';
 
 type IImgixParamsKey =
   | keyof ImgixUrlParametersSpec['parameters']
@@ -28,17 +28,12 @@ const ImgixParamsIOTS = t.partial({
 });
 export type IImgixParams = t.TypeOf<typeof ImgixParamsIOTS>;
 
-export const GatsbySourceUrlOptions = t.type({
+export const GatsbySourceUrlOptions = t.typeOptional({
   domain: t.string,
-  defaultImgixParams: t.union([ImgixParamsIOTS, t.undefined]),
+  defaultImgixParams: t.optional(ImgixParamsIOTS),
+  disableIxlibParam: t.optional(t.boolean),
 });
 export type IGatsbySourceUrlOptions = t.TypeOf<typeof GatsbySourceUrlOptions>;
-
-const imgixParamsTest2: IImgixParams = {
-  auto: ['format'],
-};
-
-export type IImgixFixedImageData = {};
 
 export type IGatsbySourceUrlRootArgs = {
   url: string;

@@ -48,7 +48,9 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
           ),
         ),
       )
-      .bindL('imgixClient', ({ options }) => createImgixClient(options))
+      .bindL('imgixClient', ({ options: { domain } }) =>
+        createImgixClient({ domain }),
+      )
       .bind(
         'packageVersion',
         pipe(
@@ -56,9 +58,11 @@ export const createResolvers: GatsbyNode['createResolvers'] = async (
           E.fromNullable(new Error('Could not read package version.')),
         ),
       )
-      .doL(({ imgixClient, packageVersion }) => {
+      .doL(({ options, imgixClient, packageVersion }) => {
         imgixClient.includeLibraryParam = false;
-        (imgixClient as any).settings.libraryParam = `gatsby-source-url-${packageVersion}`;
+        if (options.disableIxlibParam !== true) {
+          (imgixClient as any).settings.libraryParam = `gatsby-source-url-${packageVersion}`;
+        }
         return E.right(imgixClient);
       })
       .letL('rootQueryTypeMap', ({ imgixClient, options }) => ({
