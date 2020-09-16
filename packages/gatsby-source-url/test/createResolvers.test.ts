@@ -12,6 +12,47 @@ import { getSrcsetWidths } from './utils/getSrcsetWidths';
 
 const log = createLogger('test:createResolvers');
 
+const testForEveryFieldSrcAndSrcSet = ({
+  name,
+  resolveFieldOpts,
+  assertion,
+}: {
+  name: string;
+  resolveFieldOpts?: Partial<Parameters<typeof resolveField>[0]>;
+  assertion: (url: string) => void;
+}) => {
+  it(`${name} for url field`, async () => {
+    const urlFieldResult = await resolveField({
+      field: 'url',
+      ...resolveFieldOpts,
+    });
+
+    assertion(urlFieldResult);
+  });
+  it(`${name} for fluid field`, async () => {
+    const fieldResult = await resolveField({
+      field: 'fluid',
+      ...resolveFieldOpts,
+    });
+
+    assertion(fieldResult.src);
+    assertion(fieldResult.srcSet);
+    assertion(fieldResult.srcWebp);
+    assertion(fieldResult.srcSetWebp);
+  });
+  it(`${name} for fixed field`, async () => {
+    const fieldResult = await resolveField({
+      field: 'fixed',
+      ...resolveFieldOpts,
+    });
+
+    assertion(fieldResult.src);
+    assertion(fieldResult.srcSet);
+    assertion(fieldResult.srcWebp);
+    assertion(fieldResult.srcSetWebp);
+  });
+};
+
 describe('createResolvers', () => {
   describe('url field', () => {
     it('resolves with a src', async () => {
@@ -371,6 +412,22 @@ describe('createResolvers', () => {
       expect(fieldResult.srcSet).toMatch('txt=Overridden');
       expect(fieldResult.srcWebp).toMatch('txt=Overridden');
       expect(fieldResult.srcSetWebp).toMatch('txt=Overridden');
+    });
+  });
+
+  describe('ixlib param', () => {
+    testForEveryFieldSrcAndSrcSet({
+      name: 'should be included in src by default',
+      assertion: (url) => expect(url).toMatch('ixlib=gatsby-source-url'),
+    });
+    testForEveryFieldSrcAndSrcSet({
+      name: 'should not exist in src when disableIxlibParam is set',
+      resolveFieldOpts: {
+        appConfig: {
+          disableIxlibParam: true,
+        },
+      },
+      assertion: (url) => expect(url).not.toMatch('ixlib=gatsby-source-url'),
     });
   });
 });
