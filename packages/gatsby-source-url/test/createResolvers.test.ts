@@ -54,14 +54,29 @@ const testForEveryFieldSrcAndSrcSet = ({
 };
 
 describe('createResolvers', () => {
-  describe('url field', () => {
-    it('resolves with a src', async () => {
-      const urlFieldResult = await resolveField({
-        field: 'url',
-      });
-
-      expect(urlFieldResult).toMatch('assets.imgix.net/amsterdam.jpg');
+  describe('valid src', () => {
+    testForEveryFieldSrcAndSrcSet({
+      name: 'should return a valid src',
+      resolveFieldOpts: {
+        url: 'amsterdam.jpg',
+        appConfig: {
+          domain: 'assets.imgix.net',
+        },
+      },
+      assertion: (url) =>
+        expect(url).toMatch(/^https:\/\/assets.imgix.net\/amsterdam.jpg/),
     });
+    testForEveryFieldSrcAndSrcSet({
+      name: 'should apply an imgixParam',
+      resolveFieldOpts: {
+        fieldParams: {
+          imgixParams: { txt: 'txt' },
+        },
+      },
+      assertion: (url) => expect(url).toMatch(/txt=txt/),
+    });
+  });
+  describe('url field', () => {
     it('applies imgixParams correctly', async () => {
       const urlFieldResult = await resolveField({
         field: 'url',
@@ -74,17 +89,6 @@ describe('createResolvers', () => {
 
   describe('fluid field', () => {
     describe('src field', () => {
-      it('should return return an imgix url in the src fields', async () => {
-        const fluidFieldResult: FluidObject = await resolveField({
-          field: 'fluid',
-        });
-
-        // Don't need to do too much work here since imgix-core-js handles everything under the hood
-        expect(fluidFieldResult.src).toMatch('ixlib=gatsby');
-        expect(fluidFieldResult.srcWebp).toMatch('ixlib=gatsby');
-        expect(fluidFieldResult.srcSet).toMatch('ixlib=gatsby');
-        expect(fluidFieldResult.srcSetWebp).toMatch('ixlib=gatsby');
-      });
       it('should generate a fluid width srcset', async () => {
         const fluidFieldResult: FluidObject = await resolveField({
           field: 'fluid',
@@ -292,16 +296,6 @@ describe('createResolvers', () => {
 
   describe('fixed field', () => {
     describe('src field', () => {
-      it('should return return an imgix url in the src fields', async () => {
-        const fluidFieldResult: FixedObject = await resolveField({
-          field: 'fixed',
-        });
-
-        expect(fluidFieldResult.src).toMatch('ixlib=gatsby');
-        expect(fluidFieldResult.srcWebp).toMatch('ixlib=gatsby');
-        expect(fluidFieldResult.srcSet).toMatch('ixlib=gatsby');
-        expect(fluidFieldResult.srcSetWebp).toMatch('ixlib=gatsby');
-      });
       it('should generate a fixed width srcset', async () => {
         const fluidFieldResult: FixedObject = await resolveField({
           field: 'fixed',
