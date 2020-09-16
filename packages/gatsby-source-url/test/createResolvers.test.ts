@@ -352,6 +352,16 @@ describe('createResolvers', () => {
       assertion: (url) => expect(url).not.toMatch('ixlib=gatsby-source-url'),
     });
   });
+
+  describe('secure urls', () => {
+    testForEveryFieldSrcAndSrcSet({
+      name: 'should apply a secure token if global param secureURLToken set',
+      resolveFieldOpts: {
+        appConfig: { secureURLToken: 'a-secure-token' },
+      },
+      assertion: (url) => expect(url).toMatch(/s=\w+/),
+    });
+  });
 });
 
 const mockGatsbyCache = {
