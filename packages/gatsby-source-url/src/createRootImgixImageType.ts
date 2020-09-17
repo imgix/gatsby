@@ -24,6 +24,8 @@ export const createRootImgixImageType = (
   args: {
     url: {
       type: GraphQLNonNull(GraphQLString),
+      description:
+        'The path of the image to render. If using a Web Proxy Source, this can also be a fully-qualified URL.',
     },
   },
   type: new GraphQLObjectType<any, any, any>({
