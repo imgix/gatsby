@@ -373,6 +373,24 @@ describe('createResolvers', () => {
 
       expect(createResolversLazy).toThrow('secureURLToken');
     });
+
+    const proxyUrl = 'https://assets.imgix.net/amsterdam.jpg';
+    testForEveryFieldSrcAndSrcSet({
+      name: `should encrypt path when sourceType set to 'webProxy'`,
+      resolveFieldOpts: {
+        appConfig: {
+          domain: 'proxy-demo.imgix.net',
+          sourceType: 'webProxy',
+          secureURLToken: process.env.PROXY_DEMO_TOKEN,
+        },
+        url: proxyUrl,
+      },
+      assertion: (url) => {
+        return expect(url).toMatch(
+          `https://proxy-demo.imgix.net/${encodeURIComponent(proxyUrl)}?`,
+        );
+      },
+    });
   });
 });
 
