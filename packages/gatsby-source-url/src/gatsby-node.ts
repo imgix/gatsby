@@ -21,7 +21,7 @@ import path from 'path';
 import readPkgUp from 'read-pkg-up';
 import { createLogger } from './common/log';
 import { createRootImgixImageType } from './createRootImgixImageType';
-import { createImgixClient } from './imgix-core-js-wrapper';
+import { createImgixClient } from './common/imgix-core-js-wrapper';
 import { GatsbySourceUrlOptions, IGatsbySourceUrlOptions } from './publicTypes';
 
 const log = createLogger('gatsby-node');
