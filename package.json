@@ -11,7 +11,7 @@
     "test:e2e": "yarn workspace dev-and-e2e-test-environment run test:e2e",
     "test:e2e:ci": "yarn workspace dev-and-e2e-test-environment run test:e2e:ci",
     "tdd": "run-p tdd:unit tdd:e2e",
-    "tdd:unit": "yarn jest --watch",
+    "tdd:unit": "yarn jest --watch --setupFiles dotenv/config",
     "tdd:e2e": "yarn test:e2e",
     "run-publish": "yarn build ; lerna publish"
   },
