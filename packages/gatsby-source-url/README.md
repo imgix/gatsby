@@ -26,6 +26,7 @@
 - [Usage](#usage)
     * [Fluid Images](#fluid-images)
     * [Fixed Images](#fixed-images)
+    * [Using a Web Proxy Source](#using-a-web-proxy-source)
 - [API](#api)
     * [GraphQL](#graphql)
         + [GraphQL Fragments](#graphql-fragments)
@@ -141,6 +142,53 @@ A full list of imgix parameters can be found [here](https://docs.imgix.com/apis/
 <!-- An example of this mode in a full working Gatsby repo can be found on CodeSandbox.
 
 [![Edit @imgix/gatsby-transform-url Fixed Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324?fontsize=14&hidenavigation=1&theme=dark) -->
+
+## Using a Web Proxy Source
+
+If you would like to proxy images from another domain, you should set up a [Web Proxy Source](https://docs.imgix.com/setup/creating-sources/web-proxy). After doing this, you can use this source with this plugin as follows:
+
+1. Set the plugin config in `gatsby-config.js` to the following:
+
+```js
+module.exports = {
+  //...
+  plugins: [
+    // your other plugins here
+    {
+      resolve: `@imgix/gatsby-source-url`,
+      options: {
+        domain: '<your proxy source domain, e.g. my-proxy-source.imgix.net>',
+        secureURLToken: '...', // <-- now required, your "Token" from your source page
+        defaultImgixParams: ['auto', 'format'],
+      },
+    },
+  ],
+};
+```
+
+2. Pass a **fully-qualified URL** to the `url` parameter in the GraphQL API. For example, to render a fixed image, a page would look like this:
+
+```jsx
+import gql from 'graphql-tag';
+import Img from 'gatsby-image';
+
+export default ({ data }) => {
+  return <Img fixed={data.imgixImage.fixed} />;
+};
+
+export const query = gql`
+  {
+    imgixImage(url: "https://acme.com/my-image-to-proxy.jpg") {
+      # Now this is a full URL
+      fixed(
+        width: 960 # Width (in px) is required
+      ) {
+        ...GatsbySourceImgixFixed
+      }
+    }
+  }
+`;
+```
 
 # API
 
