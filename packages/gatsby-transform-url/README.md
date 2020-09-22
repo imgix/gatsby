@@ -21,10 +21,14 @@
 <!-- prettier-ignore-start -->
 
 - [About This Library](#about-this-library)
+- [Why use imgix instead of gatsby-transform-sharp?](#why-use-imgix-instead-of-gatsby-transform-sharp)
 - [Get Started](#get-started)
     * [Usage](#usage)
         + [Basic Fluid Image](#basic-fluid-image)
         + [Basic Fixed Image](#basic-fixed-image)
+- [API](#api)
+        + [`buildFixedImageData`](#buildfixedimagedata)
+        + [`buildFluidImageData`](#buildfluidimagedata)
     * [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
 
 <!-- prettier-ignore-end -->
@@ -34,6 +38,16 @@
 This library allows imgix urls to be used with gatsby-image. This library transforms imgix urls into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this library you can either display images that already exist on imgix, or proxy other images through imgix.
 
 Unfortunately, due to limitations of Gatsby, this library does not support the placeholder/blur-up feature yet. When Gatsby removes this limitation, we plan to implement this for this library. In the meantime, our other Gatsby plugins will support blur-up/placeholder images, so if this feature is critical to you, please consider using one of those.
+
+# Why use imgix instead of gatsby-transform-sharp?
+
+Integrating imgix with Gatsby provides a few key advantages over the core image experience in Gatsby:
+
+1. Far-reduced build time and better developer experience. Since we offload the image rendering to our cloud, we free up your machine from doing complex image transformations, meaning your builds are as snappy as they can be.
+2. Access to imgix's suite of transformations and optimizations. imgix has a larger variety of image transformations than are possible with the built in Gatsby system. Furthermore, we are continuously improving our image optimization to push the boundaries of image performance.
+3. Better image responsiveness on the page. As we are able to create far more derivative images at different resolutions due to our cloud rendering stack, we can offer an image closer to the source resolution of your users' browsers, meaning faster load times and less bandwidth usage for your users (and you!).
+4. Access to imgix's best-in-class CDN. imgix has invested significant time and effort into a world-leading CDN, which ensures images are delivered your website's customers as quick as possible.
+5. Faster time-to-awesome. imgix offers a set of default optimizations which allow you to achieve outstanding image quality which still keeping image size small, and allows you to focus on other aspects of your website.
 
 # Get Started
 
