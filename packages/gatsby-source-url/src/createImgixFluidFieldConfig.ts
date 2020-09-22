@@ -49,23 +49,29 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   ImgixFluidArgsResolved
 > => ({
   type: createGatsbySourceImgixFluidFieldType(cache),
+  description: `Should be used to generate fluid-width images (i.e. images that change when the size of the browser changes). Returns data compatible with gatsby-image. Instead of accessing this data directly, the GatsbySourceImgixFluid fragment should be used. See the project's README for more information.`,
   args: {
     imgixParams: {
       type: ImgixUrlParamsInputType,
+      description: `The imgix parameters (transformations) to apply to the image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
     maxWidth: {
       type: GraphQLInt,
+      description: `The maximum px width of the *image* to be *requested*. This does NOT affect the width of the image displayed.`, // TODO: add info about how to constrain width
       defaultValue: DEFAULT_FLUID_MAX_WIDTH,
     },
     maxHeight: {
+      description: `The maximum px height of the *image* to be *requested*. This does NOT affect the height of the image displayed.`,
       type: GraphQLInt,
     },
     srcSetBreakpoints: {
       type: new GraphQLList(GraphQLInt),
+      description: `A custom set of widths (in px) to use for the srcset widths. This feature is not recommended as the default widths are optimized for imgix's caching infrastructure.`,
     },
     placeholderImgixParams: {
       type: ImgixUrlParamsInputType,
+      description: `Any imgix parameters to use only for the blur-up/placeholder image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
   },
