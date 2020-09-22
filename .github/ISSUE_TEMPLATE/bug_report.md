@@ -5,7 +5,7 @@ about: Create a report to help us improve
 
 **Before you submit:**
 
-- [ ] Please search through the existing issues (both open AND closed) to see if your issue has been discussed before. Github issue search can be used for this: https://github.com/imgix/imgix/gatsby/issues?utf8=%E2%9C%93&q=is%3Aissue
+- [ ] Please search through the existing issues (both open AND closed) to see if your issue has been discussed before. Github issue search can be used for this: https://github.com/imgix/gatsby/issues?utf8=%E2%9C%93&q=is%3Aissue
 - [ ] Please ensure the problem has been isolated and reduced. This link explains more: http://css-tricks.com/6263-reduced-test-cases/
 
 **Describe the bug**
@@ -14,7 +14,7 @@ A clear and concise description of what the bug is. Please strive to reach the *
 **To Reproduce**
 A bug is a _demonstrable problem_ that is caused by the code in the repository. Thus, the contributors need a way to reproduce your issue - if we can't reproduce your issue, we can't help you! Also, please be as detailed as possible.
 
-[a link to a codesandox or repl.it; here is a link to a codesandbox with imgix/gatsby installed which can be forked: https://codesandbox.io/s/imgix/gatsby-base-codesandbox-bhz8n]
+[a link to a codesandox or repl.it; here is a link to a codesandbox with imgix/gatsby installed which can be forked: https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324]
 
 [alternatively, please provide a code example]
 

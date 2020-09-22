@@ -1,8 +1,4 @@
-<!-- prettier-ignore-start -->
-<!--
-Hello, and thanks for contributing to imgix/gatsby! 🎉🙌
-Please take a second to fill out PRs with the following template!
--->
+<!-- Hey there! Thanks for contributing to imgix/gatsby! 🎉🙌 Please take a second to fill out PRs with the following template! -->
 
 ## Description
 <!-- What is accomplished by this PR? If there is something potentially controversial in your PR, please take a moment to tell us about your choices. -->
@@ -31,14 +27,13 @@ Please use the checklist that is most closely related to your PR, and delete the
 - [ ] The target branch is `beta`. This is important for our CI/CD config.
 - [ ] Each commit follows the conventional commit spec format: e.g. `chore(readme): fixed typo`. See the end of this file for more information.
 - [ ] Any breaking changes are specified on the commit on which they are introduced with `BREAKING CHANGE` in the body of the commit.
-- [ ] If this is a big feature with breaking changes, consider [opening an issue][issues] to discuss first. This is completely up to you, but please keep in mind that your PR might not be accepted.
+- [ ] If this is a big feature with breaking changes, consider [opening an issue](https://github.com/imgix/gatsby/issues?utf8=%E2%9C%93&q=is%3Aissue) to discuss first. This is completely up to you, but please keep in mind that your PR might not be accepted.
 - [ ] Run unit tests to ensure all existing tests are still passing
 - [ ] Add new passing unit tests to cover the code introduced by your PR
 - [ ] Update the readme
 - [ ] Add some [steps](#steps-to-test) so we can test your cool new feature!
 
 ## Steps to Test
-
 <!-- Delete this selction if you are just submitting a doc change/small fix -->
 
 <!-- A code example or a set of steps is preferred -->
@@ -70,8 +65,19 @@ Steps:
 
 PR titles should be in the format `<type>(<scope>): <description>`. For example: `chore(readme): fix typo`
 
-`type` can be one of `feat`, `fix`, `test`, or `chore`.
+
+`type` can be any of the follow:
+  - `feat`: a feature, or breaking change
+  - `fix`: a bug-fix
+  - `test`: Adding missing tests or correcting existing tests
+  - `docs`: documentation only changes (readme, changelog, contributing guide)
+  - `refactor`: a code change that neither fixes a bug nor adds a feature
+  - `chore`: reoccurring tasks for project maintainability (example scopes: release, deps)
+  - `config`: changes to tooling configurations used in the project
+  - `build`: changes that affect the build system or external dependencies (example scopes: npm, bundler, gradle)
+  - `ci`: changes to CI configuration files and scripts (example scopes: travis)
+  - `perf`: a code change that improves performance
+  - `style`: changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
 `scope` is optional, and can be anything.
-`description` should be a short description of the change, in past tense.
+`description` should be a short description of the change, in the imperative mood.
 -->
-<!-- prettier-ignore-end -->

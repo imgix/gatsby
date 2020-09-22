@@ -1,4 +1,8 @@
+import * as E from 'fp-ts/lib/Either';
+import { pipe } from 'fp-ts/lib/function';
 import ImgixClient from 'imgix-core-js';
+import { Errors } from 'io-ts';
+import { parseStringARParam, StringAspectRatio } from './common/ar';
 import { parseHost, parsePath } from './common/uri';
 import {
   IGatsbyImageFixedData,
@@ -6,7 +10,7 @@ import {
   IImgixParams,
 } from './types';
 
-const VERSION = '1.0.0-beta.2';
+const VERSION = '1.0.1';
 
 function buildImageData(
   url: string,
@@ -15,7 +19,7 @@ function buildImageData(
 ): IGatsbyImageFixedData;
 function buildImageData(
   url: string,
-  imgixParams: IImgixParams,
+  imgixParams: IImgixParams & { ar: number },
   options: { type: 'fluid' },
 ): IGatsbyImageFluidData;
 function buildImageData(
@@ -47,8 +51,13 @@ function buildImageData(
     ar: imgixParams.ar != null ? `${imgixParams.ar}:1` : undefined,
   };
 
-  const src = client.buildURL(path, transformedImgixParams);
-  const srcset = client.buildSrcSet(path, transformedImgixParams);
+  // We have to spread parameters because imgix-core-js builders mutate params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
+  const src = client.buildURL(path, {
+    ...transformedImgixParams,
+  });
+  const srcset = client.buildSrcSet(path, {
+    ...transformedImgixParams,
+  });
   const srcWebp = client.buildURL(path, {
     ...transformedImgixParams,
     fm: 'webp',
@@ -125,9 +134,9 @@ export function buildFluidImageData(
   imgixParams: {
     /**
      * The aspect ratio to set for the rendered image and the placeholder.
-     * Format: float. Can be calculated with ar = width/height.
+     * Format: float or string. For float, it can be calculated with ar = width/height. For a string, it should be in the format w:h.
      */
-    ar: number;
+    ar: number | string;
   } & IImgixParams,
   /**
    * Options that are not imgix parameters.
@@ -144,5 +153,29 @@ export function buildFluidImageData(
     sizes?: string;
   } = {},
 ): IGatsbyImageFluidData {
-  return buildImageData(url, imgixParams, { ...options, type: 'fluid' });
+  const aspectRatioFloat = (() => {
+    const throwError = () => {
+      throw new Error(
+        'An invalid string ar parameter was provided. Either provide an aspect ratio as a number, or as a string in the format w:h, e.g. 1.61:1.',
+      );
+    };
+    if (typeof imgixParams.ar === 'number' && isNaN(imgixParams.ar)) {
+      throwError();
+    }
+    if (typeof imgixParams.ar === 'number') {
+      return imgixParams.ar;
+    }
+
+    return pipe(
+      StringAspectRatio.decode(imgixParams.ar),
+      E.map(parseStringARParam),
+      E.getOrElse<Errors, number>(throwError),
+    );
+  })();
+
+  return buildImageData(
+    url,
+    { ...imgixParams, ar: aspectRatioFloat },
+    { ...options, type: 'fluid' },
+  );
 }

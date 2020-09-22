@@ -7748,6 +7748,11 @@ fp-ts@^2.8.1:
   resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.8.1.tgz#b1812171469a7c0fcbc0b770ac2568f8356d1993"
   integrity sha512-HuA/6roEliHoBgEOLCKmGRcM90e2trW/ITZZ9d9P/ra7PreqQagC3Jg6OzqWkai13KUbG90b8QO9rHPBGK/ckw==
 
+fp-ts@^2.8.2:
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.8.2.tgz#7948dea1ceef32e487d7f7f47bd2d3c4fcccfc0d"
+  integrity sha512-YKLBW75Rp+L9DuY1jr7QO6mZLTmJjy7tOqSAMcB2q2kBomqLjBMyV7dotpcnZmUYY6khMsfgYWtPbUDOFcNmkA==
+
 fragment-cache@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/fragment-cache/-/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
@@ -9654,6 +9659,11 @@ io-ts-reporters@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/io-ts-reporters/-/io-ts-reporters-1.2.2.tgz#4d3219777ea5219c7d8f6ffac01fd68e72426dd1"
   integrity sha512-igASwWWkDY757OutNcM6zTtdJf/eTZYkoe2ymsX2qpm5bKZLo74FJYjsCtMQOEdY7dRHLLEulCyFQwdN69GBCg==
+
+io-ts@^2.2.10:
+  version "2.2.10"
+  resolved "https://registry.yarnpkg.com/io-ts/-/io-ts-2.2.10.tgz#447d02df51717464a90712b146ec8dbc21b4a74b"
+  integrity sha512-WHx5jJe7hPpc6JoSIVbD+Xn6tYqe3cRvNpX24d8Wi15/kxhRWa8apo0Gzag6Xg99sCNY9OHKylw/Vhv0JAbNPQ==
 
 io-ts@^2.2.9:
   version "2.2.9"
@@ -16514,9 +16524,9 @@ ts-pnp@^1.1.6:
   integrity sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==
 
 ts-toolbelt@^6.3.3:
-  version "6.13.39"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.13.39.tgz#80541ce39b595a42be5ddd04e3e6df65597774f8"
-  integrity sha512-VD/rJ6+NGFA7AK2KWmGzLifrqA060M9o7+R2BxJtLBlwmfEaGdqGeyUPRDKhMZPMgpT/JMQ6+X+/ppaZNzuhvw==
+  version "6.15.5"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.15.5.tgz#cb3b43ed725cb63644782c64fbcad7d8f28c0a83"
+  integrity sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==
 
 tsconfig-paths@^3.9.0:
   version "3.9.0"
@@ -16625,9 +16635,9 @@ typedarray@^0.0.6:
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
 typescript@^3.9.6:
-  version "3.9.6"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.6.tgz#8f3e0198a34c3ae17091b35571d3afd31999365a"
-  integrity sha512-Pspx3oKAPJtjNwE92YS05HQoY7z2SFyOpHo9MqJor3BXAGNaPUs83CuVp9VISFkSjyRfiTpmKuAYGJB7S7hOxw==
+  version "3.9.7"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
+  integrity sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
 
 uglify-js@^3.1.4:
   version "3.10.0"

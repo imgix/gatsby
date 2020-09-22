@@ -7,7 +7,7 @@
 [![npm version](https://img.shields.io/npm/v/@imgix/gatsby-transform-url.svg)](https://www.npmjs.com/package/@imgix/gatsby-transform-url)
 [![Build Status](https://travis-ci.org/imgix/gatsby.svg?branch=main)](https://travis-ci.org/imgix/gatsby)
 [![Downloads](https://img.shields.io/npm/dm/@imgix/gatsby-transform-url.svg)](https://www.npmjs.com/package/@imgix/gatsby-transform-url)
-[![License](https://img.shields.io/npm/l/@imgix/gatsby-transform-url)](https://github.com/imgix/@imgix/gatsby-transform-url/blob/master/LICENSE)
+[![License](https://img.shields.io/npm/l/@imgix/gatsby-transform-url)](https://github.com/imgix/gatsby/blob/main/packages/gatsby-transform-url/LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fgatsby.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fgatsby?ref=badge_shield)
 [![Dependencies Status](https://david-dm.org/imgix/@imgix/gatsby-transform-url.svg)](https://david-dm.org/imgix/@imgix/gatsby-transform-url)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
@@ -33,7 +33,7 @@
 
 This library allows imgix urls to be used with gatsby-image. This library transforms imgix urls into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this library you can either display images that already exist on imgix, or proxy other images through imgix.
 
-Unfortunately, due to limitations of Gatsby, this library does not support placeholder/blur-up images yet. When Gatsby removes this limitation, we plan to implement this for this library. Our other libraries will support blur-up/placeholder images.
+Unfortunately, due to limitations of Gatsby, this library does not support the placeholder/blur-up feature yet. When Gatsby removes this limitation, we plan to implement this for this library. In the meantime, our other Gatsby plugins will support blur-up/placeholder images, so if this feature is critical to you, please consider using one of those.
 
 # Get Started
 
@@ -84,7 +84,7 @@ Although `sizes` is optional, it is highly recommended. It has a default of `100
 
 A full example of a fluid image in a working Gatsby repo can be found on CodeSandbox.
 
-[![Edit @imgix/gatsby-transform-url Fluid Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fluid-example-i49fo?fontsize=14&hidenavigation=1&theme=dark)
+[![Edit @imgix/gatsby-transform-url Fluid Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fluid-example-jxj0b?fontsize=14&hidenavigation=1&theme=dark)
 
 ### Basic Fixed Image
 
@@ -170,9 +170,9 @@ export function buildFluidImageData(
   imgixParams: {
     /**
      * The aspect ratio to set for the rendered image and the placeholder.
-     * Format: float. Can be calculated with ar = width/height.
+     * Format: float or string. For float, it can be calculated with ar = width/height. For a string, it should be in the format w:h.
      */
-    ar: number;
+    ar: number | string;
   } & IImgixParams,
   /**
    * Options that are not imgix parameters.
