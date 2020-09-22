@@ -30,7 +30,8 @@ imgix has a collection of plugins to make the interaction between Gatsby and [im
 
 To find what plugin you should use, select the use case below that best matches your use case:
 
-- I load image urls on the server and client and I want to transform these into a format that is compatible with gatsby-image 👉[gatsby-transform-url](./packages/gatsby-transform-url)
+- I load images on the server from an imgix source, and I want to use these images with gatsby-image or an `<img>` element, with blur-up support 👉 [gatsby-source-url](./packages/gatsby-source-url)
+- I load image urls on the server **and client** and I want to transform these into a format that is compatible with gatsby-image, without blur-up support 👉[gatsby-transform-url](./packages/gatsby-transform-url)
 
 # Roadmap
 
