@@ -154,6 +154,37 @@ A full list of imgix parameters can be found [here](https://docs.imgix.com/apis/
 
 [![Edit @imgix/gatsby-transform-url Fixed Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324?fontsize=14&hidenavigation=1&theme=dark) -->
 
+## Generating imgix urls
+
+If you would rather not use gatsby-image and would instead prefer just a plain imgix url, you can use the `url` field to generate one. For instance, you could generate a url and use it for the background image of an element:
+
+```jsx
+import gql from 'graphql-tag';
+
+export default ({ data }) => {
+  return (
+    <div
+      style={{
+        backgroundImage: `url(${data.imgixImage.url})`,
+        backgroundSize: 'contain',
+        width: '100vw',
+        height: 'calc(100vh - 64px)',
+      }}
+    >
+      <h1>Blog Title</h1>
+    </div>
+  );
+};
+
+export const query = gql`
+  {
+    imgixImage(url: "/image.jpg") {
+      url(imgixParams: { w: 1200, h: 800 })
+    }
+  }
+`;
+```
+
 ## Using a Web Proxy Source
 
 If you would like to proxy images from another domain, you should set up a [Web Proxy Source](https://docs.imgix.com/setup/creating-sources/web-proxy). After doing this, you can use this source with this plugin as follows:
