@@ -1,7 +1,7 @@
 {
   "name": "@imgix/gatsby-source-url",
   "version": "0.0.2",
-  "description": "A Gatsby source to transform imgix urls into a format compatible with gatsby-image",
+  "description": "A Gatsby source to transform imgix URLs into a format compatible with gatsby-image",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/imgix/gatsby.git",
