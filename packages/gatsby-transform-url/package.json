@@ -1,7 +1,7 @@
 {
   "name": "@imgix/gatsby-transform-url",
   "version": "1.0.2",
-  "description": "A function to transform imgix urls into data for gatsby-image",
+  "description": "A function to transform imgix URLs into data for gatsby-image",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/imgix/gatsby.git",
