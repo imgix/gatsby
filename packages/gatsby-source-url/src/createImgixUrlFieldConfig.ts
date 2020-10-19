@@ -28,7 +28,7 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
   ImgixUrlArgs
 > => ({
   type: gatsbySourceImgixUrlFieldType,
-  description: 'A plain imgix url with the url and params applied.',
+  description: 'A plain imgix URL with the URL and params applied.',
   args: {
     imgixParams: {
       type: ImgixUrlParamsInputType,
