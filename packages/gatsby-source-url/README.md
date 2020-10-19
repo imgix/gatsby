@@ -2,7 +2,7 @@
 
 ![imgix logo](https://assets.imgix.net/sdk-imgix-logo.svg)
 
-`@imgix/gatsby-source-url` is a library to transform [imgix](https://www.imgix.com/) urls to a format compatible with gatsby-image.
+`@imgix/gatsby-source-url` is a library to transform [imgix](https://www.imgix.com/) URLs to a format compatible with gatsby-image.
 
 [![npm version](https://img.shields.io/npm/v/@imgix/gatsby-source-url.svg)](https://www.npmjs.com/package/@imgix/gatsby-source-url)
 [![Build Status](https://travis-ci.org/imgix/gatsby.svg?branch=main)](https://travis-ci.org/imgix/gatsby)
