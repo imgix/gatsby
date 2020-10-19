@@ -39,7 +39,7 @@
 
 # About This Library
 
-This library can be best thought about as a part-replacement for gatsby-image-sharp, and allows imgix urls to be used with gatsby-image through the Gatsby GraphQL API. This library transforms imgix urls into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this library you can either display images that already exist on imgix, or proxy other images through imgix.
+This library can be best thought about as a part-replacement for gatsby-image-sharp, and allows imgix URLs to be used with gatsby-image through the Gatsby GraphQL API. This library transforms imgix URLs into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this library you can either display images that already exist on imgix, or proxy other images through imgix.
 
 This library supports many of the existing gatsby-image GraphQL that you know and love, and also supports most of the features of gatsby-image, such as blur-up and lazy loading. It also brings all of the great features of imgix, including the extensive image transformations and optimisations, as well as the excellent imgix CDN.
 
