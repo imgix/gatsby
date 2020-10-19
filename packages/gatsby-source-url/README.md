@@ -156,7 +156,7 @@ A full list of imgix parameters can be found [here](https://docs.imgix.com/apis/
 
 ## Generating imgix URLs
 
-If you would rather not use gatsby-image and would instead prefer just a plain imgix url, you can use the `url` field to generate one. For instance, you could generate a url and use it for the background image of an element:
+If you would rather not use gatsby-image and would instead prefer just a plain imgix URL, you can use the `url` field to generate one. For instance, you could generate a URL and use it for the background image of an element:
 
 ```jsx
 import gql from 'graphql-tag';
