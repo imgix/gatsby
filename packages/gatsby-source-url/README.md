@@ -154,7 +154,7 @@ A full list of imgix parameters can be found [here](https://docs.imgix.com/apis/
 
 [![Edit @imgix/gatsby-transform-url Fixed Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324?fontsize=14&hidenavigation=1&theme=dark) -->
 
-## Generating imgix urls
+## Generating imgix URLs
 
 If you would rather not use gatsby-image and would instead prefer just a plain imgix url, you can use the `url` field to generate one. For instance, you could generate a url and use it for the background image of an element:
 
