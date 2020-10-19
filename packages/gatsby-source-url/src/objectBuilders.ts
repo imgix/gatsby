@@ -58,7 +58,7 @@ export const buildFluidObject = ({
     }),
   };
 
-  // This base64 url will be resolved by this resolver, and then be resolved again by the base64 resolver which is set on the field. See createImgixBase64FieldConfig
+  // This base64 URL will be resolved by this resolver, and then be resolved again by the base64 resolver which is set on the field. See createImgixBase64FieldConfig
   const base64 = client.buildURL(url, {
     ...DEFAULT_LQIP_PARAMS,
     ...defaultPlaceholderParams,
