@@ -54,6 +54,7 @@
         + [`buildFluidImageData`](#buildfluidimagedata)
 - [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
 - [Roadmap](#roadmap)
+- [Upgrading from `@imgix/gatsby-transform-url`](#upgrading-from-imgixgatsby-transform-url)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -689,6 +690,21 @@ Below is a list of issues that contain all the high-level use-cases that we thou
 Other features:
 
 - [I want to have my imgix parameters in my Gatsby/GraphQL query be strongly-typed](https://github.com/imgix/gatsby/issues/5)
+# Upgrading from `@imgix/gatsby-transform-url`
+
+`@imgix/gatsby-transform-url` was deprecated in favor of combining these sub-projects into one single project, for simplicity.
+
+The functionality of that library can be found, unchanged, under this new package. Specifically, all that needs to changed is the import statements, e.g. from 
+
+```js
+import { buildFluidImageData } from '@imgix/gatsby-transform-url';
+```
+
+to
+
+```js
+import { buildFluidImageData } from '@imgix/gatsby';
+```
 
 # Contributors
 
