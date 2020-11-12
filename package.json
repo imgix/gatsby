@@ -37,10 +37,6 @@
       {
         "name": "alpha",
         "prerelease": true
-      },
-      {
-        "name": "f/semantic-release",
-        "prerelease": true
       }
     ],
     "plugins": [
