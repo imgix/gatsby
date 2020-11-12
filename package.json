@@ -1,22 +1,22 @@
 {
-  "name": "root",
-  "private": true,
+  "version": "0.0.0",
+  "name": "@imgix/gatsby",
   "scripts": {
-    "build": "lerna exec --parallel --ignore dev* -- tsc --build",
+    "build": "tsc",
     "build:watch": "lerna exec --parallel --ignore dev* -- tsc --build --watch",
     "lint": "prettier --write .",
     "lint:ci": "prettier --check .",
-    "test": "run-s test:unit test:e2e:ci",
+    "test": "run-s test:unit",
     "test:unit": "yarn jest",
     "test:e2e": "yarn workspace dev-and-e2e-test-environment run test:e2e",
     "test:e2e:ci": "yarn workspace dev-and-e2e-test-environment run test:e2e:ci",
     "tdd": "run-p tdd:unit tdd:e2e",
-    "tdd:unit": "yarn jest --watch",
-    "tdd:e2e": "yarn test:e2e",
-    "run-publish": "yarn build ; lerna publish"
+    "tdd:unit": "yarn jest --watch --setupFiles dotenv/config",
+    "tdd:e2e": "yarn test:e2e"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.4",
+    "@types/jest": "^26.0.15",
+    "cross-env": "^7.0.2",
     "jest": "^26.1.0",
     "lerna": "^3.22.1",
     "prettier": "^2.0.5",
@@ -24,7 +24,82 @@
     "typescript": "^3.9.6",
     "yarn-run-all": "^3.1.1"
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "next",
+        "prerelease": "rc"
+      },
+      {
+        "name": "beta",
+        "prerelease": true
+      },
+      {
+        "name": "alpha",
+        "prerelease": true
+      },
+      {
+        "name": "f/semantic-release",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "releaseRules": [
+            {
+              "type": "docs",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
+      "@semantic-release/release-notes-generator",
+      [
+        "@google/semantic-release-replace-plugin",
+        {
+          "replacements": [
+            {
+              "files": [
+                "projects/imgix-angular/src/common/constants.ts"
+              ],
+              "from": "IMGIX_NG_VERSION: string = '.*'",
+              "to": "IMGIX_NG_VERSION: string = '${nextRelease.version}'",
+              "results": [
+                {
+                  "file": "projects/imgix-angular/src/common/constants.ts",
+                  "hasChanged": true,
+                  "numMatches": 0,
+                  "numReplacements": 0
+                }
+              ],
+              "countMatches": true
+            }
+          ]
+        }
+      ],
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "src/**",
+            "dist/**",
+            "package.json",
+            "CHANGELOG.md"
+          ],
+          "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes} [skip ci]"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": []
+        }
+      ]
+    ]
+  }
 }
