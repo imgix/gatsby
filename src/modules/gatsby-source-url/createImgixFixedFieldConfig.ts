@@ -1,10 +1,10 @@
 import { Do } from 'fp-ts-contrib/lib/Do';
-import { pipe } from 'src/api/node_modules/fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';
-import * as TE from 'src/api/node_modules/fp-ts/lib/TaskEither';
-import { GatsbyCache } from '../../../types/node_modules/gatsby';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { GatsbyCache } from 'gatsby';
 import { FixedObject } from 'gatsby-image';
-import { GraphQLFieldConfig, GraphQLInt } from '../../../types/node_modules/graphql';
+import { GraphQLFieldConfig, GraphQLInt } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';

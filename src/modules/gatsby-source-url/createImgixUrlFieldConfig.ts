@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
-import * as TE from 'src/api/node_modules/fp-ts/lib/TaskEither';
-import { GraphQLFieldConfig } from '../../../types/node_modules/graphql';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { GraphQLFieldConfig } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import R from 'ramda';

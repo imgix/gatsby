@@ -1,7 +1,7 @@
 import { FixedObject, FluidObject } from 'gatsby-image';
 import ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
-import { log, trace } from './common/log';
+import { log, trace } from '../../common/log';
 import { DEFAULT_FIXED_WIDTH } from './createImgixFixedFieldConfig';
 import {
   IImgixParams,

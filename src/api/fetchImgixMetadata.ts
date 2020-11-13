@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/lib/Either';
 import { flow, pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { GatsbyCache } from '../../../types/node_modules/gatsby';
+import { GatsbyCache } from 'gatsby';
 import ImgixClient from 'imgix-core-js';
 import * as t from 'io-ts';
-import { withCache } from '../modules/gatsby-source-url/cache';
 import { createLogger, trace } from '../common/log';
+import { withCache } from '../modules/gatsby-source-url/cache';
 import { fetchJSON } from '../modules/gatsby-source-url/utils';
 
 const log = createLogger('fetchImgixMetadata');

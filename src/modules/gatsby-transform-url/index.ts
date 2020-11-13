@@ -2,8 +2,8 @@ import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
 import ImgixClient from 'imgix-core-js';
 import { Errors } from 'io-ts';
-import { parseStringARParam, StringAspectRatio } from './common/ar';
-import { parseHost, parsePath } from './common/uri';
+import { parseStringARParam, StringAspectRatio } from '../../common/ar';
+import { parseHost, parsePath } from '../../common/uri';
 import {
   IGatsbyImageFixedData,
   IGatsbyImageFluidData,
