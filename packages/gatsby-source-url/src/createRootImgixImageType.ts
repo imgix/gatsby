@@ -3,7 +3,7 @@ import {
   GraphQLFieldConfig,
   GraphQLNonNull,
   GraphQLObjectType,
-  GraphQLString,
+  GraphQLString
 } from 'graphql';
 import type ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
@@ -25,7 +25,7 @@ export const createRootImgixImageType = (
     url: {
       type: GraphQLNonNull(GraphQLString),
       description:
-        'The path of the image to render. If using a Web Proxy Source, this can also be a fully-qualified URL.',
+        'The path of the image to render. If using a Web Proxy Source, this must be a fully-qualified URL.',
     },
   },
   type: new GraphQLObjectType<any, any, any>({
