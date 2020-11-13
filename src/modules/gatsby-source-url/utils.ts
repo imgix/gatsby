@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/pipeable';
 import { getObjectSemigroup } from 'fp-ts/lib/Semigroup';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { TaskEither } from 'fp-ts/lib/TaskEither';
+import * as TE from 'src/api/node_modules/fp-ts/lib/TaskEither';
+import { TaskEither } from 'src/api/node_modules/fp-ts/lib/TaskEither';
 import _fetch, { Response } from 'node-fetch';
 import { ImgixUrlParams } from './publicTypes';
 export const taskEitherFromSourceDataResolver = <TSource, TData>(

@@ -1,6 +1,6 @@
-import { graphql } from "gatsby"
-import Img, { FixedObject, FluidObject } from "gatsby-image"
-import React from "react"
+import { graphql } from "./gatsby"
+import Img, { FixedObject, FluidObject } from "./gatsby-image"
+import React from "./react"
 
 const GatsbySourceUrl = ({ data }: { data: IPageData }) => {
   return (

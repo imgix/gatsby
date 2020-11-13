@@ -1,6 +1,6 @@
 import readPkg from 'read-pkg';
-import { buildFixedImageData, buildFluidImageData } from '../src';
-import { IGatsbyImageFixedData, IGatsbyImageFluidData } from '../src/types';
+import { buildFixedImageData, buildFluidImageData } from '../../../src/modules/gatsby-transform-url';
+import { IGatsbyImageFixedData, IGatsbyImageFluidData } from '../../../src/modules/gatsby-transform-url/types';
 
 const shouldHaveIxLib = async (
   fut: () => IGatsbyImageFluidData | IGatsbyImageFixedData,

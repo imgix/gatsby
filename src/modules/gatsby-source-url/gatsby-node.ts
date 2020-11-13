@@ -13,10 +13,10 @@
  */
 
 import { Do } from 'fp-ts-contrib/lib/Do';
-import * as E from 'fp-ts/lib/Either';
+import * as E from 'src/api/node_modules/fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import fs from 'fs';
-import { CreateResolversArgsPatched, GatsbyNode, PluginOptions } from 'gatsby';
+import { CreateResolversArgsPatched, GatsbyNode, PluginOptions } from '../../../types/node_modules/gatsby';
 import path from 'path';
 import readPkgUp from 'read-pkg-up';
 import { createLogger } from './common/log';
