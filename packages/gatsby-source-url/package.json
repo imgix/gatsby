@@ -1,0 +1,53 @@
+{
+  "name": "@imgix/gatsby-source-url",
+  "version": "0.0.2",
+  "description": "A Gatsby source to transform imgix URLs into a format compatible with gatsby-image",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://github.com/imgix/gatsby.git",
+  "author": "Frederick Fogerty <frederick@imgix.com>",
+  "contributors": [
+    "Angelo Ashmore <angelo.ashmore@walltowall.com>"
+  ],
+  "license": "BSD-2-Clause",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "imgix",
+    "image",
+    "transform",
+    "optimise",
+    "optimize",
+    "webp",
+    "fluid",
+    "fixed",
+    "responsive",
+    "cdn",
+    "blur-up",
+    "placeholder",
+    "gatsby-image"
+  ],
+  "dependencies": {
+    "@types/node-fetch": "^2.5.7",
+    "@types/ramda": "^0.27.14",
+    "camel-case": "^4.1.1",
+    "debug": "^4.1.1",
+    "fp-ts": "^2.8.1",
+    "fp-ts-contrib": "^0.1.18",
+    "imgix-core-js": "^2.3.1",
+    "imgix-url-params": "^11.7.0",
+    "io-ts": "^2.2.9",
+    "io-ts-reporters": "^1.2.2",
+    "node-fetch": "^2.6.0",
+    "ramda": "^0.27.1",
+    "read-pkg-up": "^7.0.1"
+  },
+  "devDependencies": {
+    "graphql-anywhere": "^4.2.7",
+    "graphql-tag": "^2.11.0"
+  }
+}

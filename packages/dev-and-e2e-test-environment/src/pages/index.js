@@ -5,7 +5,6 @@ import {
 import { Link } from "gatsby"
 import Img from "gatsby-image"
 import React from "react"
-import Image from "../components/image"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
@@ -31,9 +30,6 @@ const IndexPage = () => {
           { sizes: "50vw" }
         )}
       />
-      <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-        <Image />
-      </div>
       <Link to="/page-2/">Go to page 2</Link> <br />
       <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
     </Layout>

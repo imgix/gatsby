@@ -10,7 +10,7 @@ import {
   IImgixParams,
 } from './types';
 
-const VERSION = '1.0.1';
+const VERSION = '1.0.2';
 
 function buildImageData(
   url: string,
@@ -46,7 +46,7 @@ function buildImageData(
   }
 
   const transformedImgixParams = {
-    fit: 'crop', // needed for fluid (ar) and fixed (w&h) cropping, can be overriden
+    fit: 'crop', // needed for fluid (ar) and fixed (w&h) cropping, can be overridden
     ...imgixParams,
     ar: imgixParams.ar != null ? `${imgixParams.ar}:1` : undefined,
   };
