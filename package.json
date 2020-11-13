@@ -16,6 +16,8 @@
   },
   "devDependencies": {
     "@google/semantic-release-replace-plugin": "^1.0.2",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
     "@types/jest": "^26.0.15",
     "cross-env": "^7.0.2",
     "jest": "^26.1.0",
