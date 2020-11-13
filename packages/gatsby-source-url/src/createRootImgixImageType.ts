@@ -3,7 +3,7 @@ import {
   GraphQLFieldConfig,
   GraphQLNonNull,
   GraphQLObjectType,
-  GraphQLString
+  GraphQLString,
 } from 'graphql';
 import type ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
