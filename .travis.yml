@@ -21,9 +21,17 @@ script:
   - yarn build
   - yarn lint:ci
   - cross-env-shell DEBUG=imgix:* yarn test
-# branches:
-# only:
-#   - master
-#   - next
-#   - beta
-#   - alpha
+
+branches:
+  only:
+    - main
+    - next
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - npx semantic-release
+  on:
+    all_branches: true # Or just branch: next if you only want to enable it for one branch for now
+
