@@ -55,29 +55,6 @@
         }
       ],
       "@semantic-release/release-notes-generator",
-      [
-        "@google/semantic-release-replace-plugin",
-        {
-          "replacements": [
-            {
-              "files": [
-                "projects/imgix-angular/src/common/constants.ts"
-              ],
-              "from": "IMGIX_NG_VERSION: string = '.*'",
-              "to": "IMGIX_NG_VERSION: string = '${nextRelease.version}'",
-              "results": [
-                {
-                  "file": "projects/imgix-angular/src/common/constants.ts",
-                  "hasChanged": true,
-                  "numMatches": 0,
-                  "numReplacements": 0
-                }
-              ],
-              "countMatches": true
-            }
-          ]
-        }
-      ],
       "@semantic-release/changelog",
       "@semantic-release/npm",
       [
