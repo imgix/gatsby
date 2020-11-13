@@ -1,9 +1,9 @@
 import {
   buildFixedImageData,
   buildFluidImageData,
-} from "@imgix/gatsby-transform-url"
-import Img from "gatsby-image"
-import React from "react"
+} from "./@imgix/gatsby-transform-url"
+import Img from "./gatsby-image"
+import React from "./react"
 
 const GatsbyTransformUrl = () => {
   return (

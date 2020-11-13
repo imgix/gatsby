@@ -4,7 +4,7 @@ module.exports = {
   coveragePathIgnorePatterns: ['<rootDir>/packages/(?:.+?)/lib/'],
   testPathIgnorePatterns: [
     '<rootDir>/packages/(?:.+?)/lib/',
-    '<rootDir>/packages/dev-and-e2e-test-environment',
+    '<rootDir>/test/dev-and-e2e-test-environment',
     '<rootDir>/packages/',
   ],
 };

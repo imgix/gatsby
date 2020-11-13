@@ -1,5 +1,5 @@
 import { camelCase } from 'camel-case';
-import { GatsbyCache } from 'gatsby';
+import { GatsbyCache } from '../../../types/node_modules/gatsby';
 /**
  * The GraphQL type of the fluid field.
  * Corresponding TS type is FluidObject from gatsby-image.
@@ -14,7 +14,7 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
-} from 'graphql';
+} from '../../../types/node_modules/graphql';
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
 import { createImgixBase64FieldConfig } from './createImgixBase64FieldConfig';
 
