@@ -1,6 +1,6 @@
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
 import R from 'ramda';
-import * as t from './common/ioTs';
+import * as t from '../../common/ioTs';
 
 export enum GatsbySourceUrlSourceType {
   AmazonS3 = 's3',

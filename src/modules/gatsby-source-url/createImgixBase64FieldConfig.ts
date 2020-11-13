@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
-import * as TE from 'src/api/node_modules/fp-ts/lib/TaskEither';
-import { GatsbyCache } from '../../../types/node_modules/gatsby';
-import { GraphQLFieldConfig, GraphQLNonNull, GraphQLString } from '../../../types/node_modules/graphql';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { GatsbyCache } from 'gatsby';
+import { GraphQLFieldConfig, GraphQLNonNull, GraphQLString } from 'graphql';
 import { fetchImgixBase64Image } from '../../api/fetchBase64Image';
 import {
   ImgixSourceDataResolver,

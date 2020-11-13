@@ -2,11 +2,11 @@ import { sequenceS, sequenceT } from 'fp-ts/lib/Apply';
 import * as O from 'fp-ts/lib/Option';
 import { Option } from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
-import * as TE from 'src/api/node_modules/fp-ts/lib/TaskEither';
-import { GatsbyCache } from '../../../types/node_modules/gatsby';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { GatsbyCache } from 'gatsby';
 import ImgixClient from 'imgix-core-js';
 import { fetchImgixMetadata } from '../../api/fetchImgixMetadata';
-import { createLogger, trace } from './common/log';
+import { createLogger, trace } from '../../common/log';
 
 const sequenceTTE = sequenceT(TE.taskEither);
 const sequenceSO = sequenceS(O.option);

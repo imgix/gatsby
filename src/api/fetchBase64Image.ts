@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { GatsbyCache } from '../../../types/node_modules/gatsby';
+import { GatsbyCache } from 'gatsby';
 import { withCache } from '../modules/gatsby-source-url/cache';
 import { fetch } from '../modules/gatsby-source-url/utils';
 
