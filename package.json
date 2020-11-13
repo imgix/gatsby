@@ -15,6 +15,7 @@
     "tdd:e2e": "yarn test:e2e"
   },
   "devDependencies": {
+    "@google/semantic-release-replace-plugin": "^1.0.2",
     "@types/jest": "^26.0.15",
     "cross-env": "^7.0.2",
     "jest": "^26.1.0",
