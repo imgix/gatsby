@@ -3,14 +3,13 @@ import { pipe } from 'fp-ts/lib/function';
 import ImgixClient from 'imgix-core-js';
 import { Errors } from 'io-ts';
 import { parseStringARParam, StringAspectRatio } from '../../common/ar';
+import { VERSION } from '../../common/constants';
 import { parseHost, parsePath } from '../../common/uri';
 import {
   IGatsbyImageFixedData,
   IGatsbyImageFluidData,
   IImgixParams,
 } from './types';
-
-const VERSION = '1.0.0-rc.2';
 
 function buildImageData(
   url: string,
