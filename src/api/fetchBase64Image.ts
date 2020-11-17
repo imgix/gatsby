@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { withCache } from '../common/cache';
-import { fetch } from '../modules/gatsby-source-url/utils';
+import { fetch } from '../common/utils';
 
 export const buildBase64URL = (contentType: string, base64: string): string =>
   `data:${contentType};base64,${base64}`;

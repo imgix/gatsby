@@ -7,7 +7,7 @@ import { fetchImgixBase64Image } from '../../api/fetchBase64Image';
 import {
   ImgixSourceDataResolver,
   taskEitherFromSourceDataResolver,
-} from './utils';
+} from '../../common/utils';
 
 interface CreateImgixBase64UrlFieldConfigArgsWithResolver<TSource> {
   resolveUrl: ImgixSourceDataResolver<TSource, string>;

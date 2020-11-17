@@ -3,7 +3,7 @@ import { getObjectSemigroup } from 'fp-ts/lib/Semigroup';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { TaskEither } from 'fp-ts/lib/TaskEither';
 import _fetch, { Response } from 'node-fetch';
-import { ImgixUrlParams } from './publicTypes';
+import { ImgixUrlParams } from '../modules/gatsby-source-url/publicTypes';
 export const taskEitherFromSourceDataResolver = <TSource, TData>(
   resolver: ImgixSourceDataResolver<TSource, TData>,
   predicate?: (data: TData) => boolean,

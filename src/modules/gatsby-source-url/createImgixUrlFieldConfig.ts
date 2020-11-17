@@ -10,7 +10,7 @@ import {
   ImgixUrlParamsInputType,
 } from './graphqlTypes';
 import { IImgixParams, ImgixUrlArgs } from './publicTypes';
-import { ImgixSourceDataResolver, resolveUrlFromSourceData } from './utils';
+import { ImgixSourceDataResolver, resolveUrlFromSourceData } from '../../common/utils';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
   imgixClient: ImgixClient;

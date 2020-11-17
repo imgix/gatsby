@@ -23,7 +23,7 @@ import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
-} from './utils';
+} from '../../common/utils';
 
 const DEFAULT_FLUID_MAX_WIDTH = 8192;
 

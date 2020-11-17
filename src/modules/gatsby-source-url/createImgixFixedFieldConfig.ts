@@ -23,7 +23,7 @@ import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
-} from './utils';
+} from '../../common/utils';
 
 export const DEFAULT_FIXED_WIDTH = 8192;
 
