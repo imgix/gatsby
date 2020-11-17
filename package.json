@@ -92,6 +92,29 @@
           ]
         }
       ],
+      [
+        "@google/semantic-release-replace-plugin",
+        {
+          "replacements": [
+            {
+              "files": [
+                "src/common/constants.ts"
+              ],
+              "from": "const VERSION = '.*'",
+              "to": "const VERSION = '${nextRelease.version}'",
+              "results": [
+                {
+                  "file": "src/common/constants.ts",
+                  "hasChanged": true,
+                  "numMatches": 1,
+                  "numReplacements": 1
+                }
+              ],
+              "countMatches": true
+            }
+          ]
+        }
+      ],
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
       "@semantic-release/npm",
@@ -107,12 +130,7 @@
           "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes} [skip ci]"
         }
       ],
-      [
-        "@semantic-release/github",
-        {
-          "assets": []
-        }
-      ]
+      "@semantic-release/github"
     ]
   },
   "keywords": [
