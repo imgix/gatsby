@@ -6,6 +6,8 @@
   "license": "BSD-2-Clause",
   "repository": "https://github.com/imgix/gatsby.git",
   "private": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
