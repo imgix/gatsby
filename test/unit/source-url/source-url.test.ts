@@ -1,4 +1,4 @@
-/// <reference types="../types/gatsby" />
+/// <reference types="../../../types/gatsby" />
 /// <reference types="jest" />
 
 import { pipe } from 'fp-ts/lib/function';
@@ -6,7 +6,7 @@ import { CreateResolversArgsPatched, PluginOptions } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
 import * as R from 'ramda';
 import { createLogger, trace } from '../../../src/common/log';
-import { createResolvers } from '../../../src/modules/gatsby-source-url/gatsby-node';
+import { createResolvers } from '../../../src/gatsby-node';
 import { IGatsbySourceUrlOptions } from '../../../src/modules/gatsby-source-url/publicTypes';
 import { getSrcsetWidths } from '../../common/getSrcsetWidths';
 
