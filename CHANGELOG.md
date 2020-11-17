@@ -1,3 +1,11 @@
+# [1.0.0-rc.3](https://github.com/imgix/gatsby/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2020-11-17)
+
+
+### Bug Fixes
+
+* add main js file to package.json ([473af7a](https://github.com/imgix/gatsby/commit/473af7a8e4093046e7547e88bc563e729c3dc341))
+* package version ([e55a064](https://github.com/imgix/gatsby/commit/e55a064d9a7050239c53718abaee9dba1e2bd7eb))
+
 # [1.0.0-rc.2](https://github.com/imgix/gatsby/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2020-11-13)
 
 

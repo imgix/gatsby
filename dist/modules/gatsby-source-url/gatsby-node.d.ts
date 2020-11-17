@@ -4,6 +4,6 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 import { GatsbyNode } from 'gatsby';
-export declare const onPreInit: GatsbyNode['onPreInit'];
-export * from './modules/gatsby-source-url/gatsby-node';
+export declare const createResolvers: GatsbyNode['createResolvers'];
+export declare const onPreExtractQueries: GatsbyNode['onPreExtractQueries'];
 //# sourceMappingURL=gatsby-node.d.ts.map
