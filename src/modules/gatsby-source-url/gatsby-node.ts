@@ -5,13 +5,6 @@
  */
 // You can delete this file if you're not using it
 
-/**
- * You can uncomment the following line to verify that
- * your plugin is being loaded in your site.
- *
- * See: https://www.gatsbyjs.org/docs/creating-a-local-plugin/#developing-a-local-plugin-that-is-outside-your-project
- */
-
 import { Do } from 'fp-ts-contrib/lib/Do';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
@@ -20,15 +13,8 @@ import { CreateResolversArgsPatched, GatsbyNode, PluginOptions } from 'gatsby';
 import path from 'path';
 import readPkgUp from 'read-pkg-up';
 import { createImgixClient } from '../../common/imgix-core-js-wrapper';
-import { createLogger } from '../../common/log';
 import { createRootImgixImageType } from './createRootImgixImageType';
 import { GatsbySourceUrlOptions, IGatsbySourceUrlOptions } from './publicTypes';
-
-const log = createLogger('gatsby-node');
-
-export const onPreInit: GatsbyNode['onPreInit'] = (_: unknown) => {
-  log('Loaded @imgix/gatsby-source-url (onPreInit)');
-};
 
 export const createResolvers: GatsbyNode['createResolvers'] = (
   { createResolvers: createResolversCb, cache }: CreateResolversArgsPatched,
