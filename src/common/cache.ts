@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { TaskEither } from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
-import { createLogger, trace } from '../../common/log';
+import { createLogger, trace } from './log';
 
 const log = createLogger('cache');
 
