@@ -5,7 +5,7 @@ import { GatsbyCache } from 'gatsby';
 import ImgixClient from 'imgix-core-js';
 import * as t from 'io-ts';
 import { createLogger, trace } from '../common/log';
-import { withCache } from '../modules/gatsby-source-url/cache';
+import { withCache } from '../common/cache';
 import { fetchJSON } from '../modules/gatsby-source-url/utils';
 
 const log = createLogger('fetchImgixMetadata');
