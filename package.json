@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "build:watch": "lerna exec --parallel --ignore dev* -- tsc --build --watch",
+    "build:watch": "tsc --build --watch",
     "lint": "prettier --write .",
     "lint:ci": "prettier --check .",
     "test": "run-s test:unit",
