@@ -38,6 +38,14 @@
     * [URL Transform Function](#url-transform-function)
         + [Basic Fluid Image](#basic-fluid-image)
         + [Basic Fixed Image](#basic-fixed-image)
+- [API](#api)
+    * [GraphQL](#graphql)
+        + [GraphQL Fragments](#graphql-fragments)
+    * [Gatsby/Plugin Configuration](#gatsbyplugin-configuration)
+    * [URL Transform Function](#url-transform-function-1)
+        + [`buildFixedImageData`](#buildfixedimagedata)
+        + [`buildFluidImageData`](#buildfluidimagedata)
+- [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
 - [Roadmap](#roadmap)
 - [Contributors](#contributors)
 - [License](#license)
@@ -82,6 +90,11 @@ To find what part of this usage guide you should read, select the use case below
 - I load image URLs on the server **and client** and I want to transform these into a format that is compatible with gatsby-image, **without** blur-up support 👉[url tranform function](#url-transform-function)
 
 ## GraphQL `imgixImage` API
+
+This feature can be best thought about as a part-replacement for gatsby-image-sharp, and allows imgix URLs to be used with gatsby-image through the Gatsby GraphQL API. This feature transforms imgix URLs into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this feature you can either display images that already exist on imgix, or proxy other images through imgix.
+
+This feature supports many of the existing gatsby-image GraphQL that you know and love, and also supports most of the features of gatsby-image, such as blur-up and lazy loading. It also brings all of the great features of imgix, including the extensive image transformations and optimisations, as well as the excellent imgix CDN.
+
 ### Configuration
 
 This source must be configured in your `gatsby-config` file as follows:
@@ -327,6 +340,25 @@ An example of this mode in a full working Gatsby repo can be found on CodeSandbo
 [![Edit @imgix/gatsby Fixed Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324?fontsize=14&hidenavigation=1&theme=dark)
 
 # API
+
+## GraphQL
+
+The majority of the API for this library can be found by using the GraphiQL inspector (usually at `https://localhost:8000/__graphql`).
+
+### GraphQL Fragments
+
+This library also provides some GraphQL fragments, such as `GatsbySourceImgixFluid`, and `GatsbySourceImgixFluid_noBase64`. The values of these fragments can be found at [fragments.js](./fragments.js)
+
+## Gatsby/Plugin Configuration
+
+The plugin options that can be specified in `gatsby-config.js` are:
+
+| Name                 | Type      | Required | Description                                                                                                                                                     |
+| :------------------- | :-------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain`             | `String`  | ✔️       | The imgix domain to use for the image URLs. Usually in the format `.imgix.net`                                                                                  |
+| `defaultImgixParams` | `Object`  |          | Imgix parameters to use by default for every image. Recommended to set to `{ auto: ['compress', 'format'] }`.                                                   |
+| `disableIxlibParam`  | `Boolean` |          | Set to `true` to remove the `ixlib` param from every request. See [this section](#what-is-the-ixlib-param-on-every-request) for more information.               |
+| `secureURLToken`     | `String`  |          | When specified, this token will be used to sign images. Read more about securing images [on the imgix Docs site](https://docs.imgix.com/setup/securing-images). |
 
 ## URL Transform Function
 
