@@ -77,6 +77,8 @@ Then, install this library with the following commands, depending on your packag
 - **NPM**: `npm install @imgix/gatsby`
 - **Yarn**: `yarn add @imgix/gatsby`
 
+Finally, check out the section in the usage guide below that most suits your needs.
+
 # Usage
 
 ## What section should I read?
