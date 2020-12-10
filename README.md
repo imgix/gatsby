@@ -58,7 +58,6 @@
 
 Below are some other articles that help explain responsive imagery, and how it can work alongside imgix:
 
-
 # Why use imgix instead of gatsby-transform-sharp?
 
 Integrating imgix with Gatsby provides a few key advantages over the core image experience in Gatsby:
@@ -71,14 +70,12 @@ Integrating imgix with Gatsby provides a few key advantages over the core image 
 
 # Get started
 
-
 Firstly, this library requires an imgix account, so please follow this [quick start guide](https://docs.imgix.com/setup/quick-start) if you don't have an account.
 
 Then, install this library with the following commands, depending on your package manager.
 
 - **NPM**: `npm install @imgix/gatsby`
 - **Yarn**: `yarn add @imgix/gatsby`
-
 
 # Usage
 
