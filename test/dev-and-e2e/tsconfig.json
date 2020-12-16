@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["../dev-and-e2e-test-environment/src/**/*"],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "incremental": false,
     "target": "esnext",
