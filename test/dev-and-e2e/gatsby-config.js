@@ -28,7 +28,7 @@ module.exports = {
       },
     },
     {
-      resolve: `@imgix/gatsby-source-url`,
+      resolve: `@imgix/gatsby`,
       options: {
         domain: "assets.imgix.net",
       },

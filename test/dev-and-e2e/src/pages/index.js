@@ -1,7 +1,4 @@
-import {
-  buildFixedImageData,
-  buildFluidImageData,
-} from "@imgix/gatsby-transform-url"
+import { buildFixedImageData, buildFluidImageData } from "@imgix/gatsby"
 import { Link } from "gatsby"
 import Img from "gatsby-image"
 import React from "react"
