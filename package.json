@@ -19,7 +19,7 @@
     "build:watch": "tsc --build --watch",
     "lint": "prettier --write .",
     "lint:ci": "prettier --check .",
-    "test": "run-s test:unit",
+    "test": "run-s test:unit test:e2e:ci",
     "test:unit": "yarn jest",
     "sync:e2e": "msync s && rm -rf test/dev-and-e2e/node_modules/@imgix/gatsby/test/",
     "sync:e2e:watch": "nodemon -w dist -x \"msync s && rm -rf test/dev-and-e2e/node_modules/@imgix/gatsby/test/\"",
