@@ -20,7 +20,9 @@ install:
 script:
   - yarn build
   - yarn lint:ci
-  - cross-env-shell DEBUG=imgix:* yarn test
+  - cross-env-shell DEBUG=imgix:* yarn test:unit
+  - yarn run sync:e2e
+  - cd test/dev-and-e2e && yarn run test:e2e:ci
 
 branches:
   only:
