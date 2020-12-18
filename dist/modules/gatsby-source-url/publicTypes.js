@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GatsbySourceUrlOptions = exports.GatsbySourceUrlSourceType = void 0;
 var parameters_json_1 = __importDefault(require("imgix-url-params/dist/parameters.json"));
-var ramda_1 = __importDefault(require("ramda"));
+var R = __importStar(require("ramda"));
 var t = __importStar(require("../../common/ioTs"));
 var GatsbySourceUrlSourceType;
 (function (GatsbySourceUrlSourceType) {
@@ -56,7 +56,7 @@ var ImgixParamValueIOTS = t.union([
     t.array(t.boolean),
 ], 'ImgixParamValue');
 var mapToImgixParamValue = function (obj) {
-    return ramda_1.default.mapObjIndexed(function () { return ImgixParamValueIOTS; }, obj);
+    return R.mapObjIndexed(function () { return ImgixParamValueIOTS; }, obj);
 };
 var ImgixParamsIOTS = t.partial(__assign(__assign({}, mapToImgixParamValue(parameters_json_1.default.aliases)), mapToImgixParamValue(parameters_json_1.default.parameters)), 'ImgixParams');
 exports.GatsbySourceUrlOptions = t.typeOptional({
