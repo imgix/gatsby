@@ -5,7 +5,7 @@
 `@imgix/gatsby-transform-url` is a library to transform [imgix](https://www.imgix.com/) urls to a format compatible with gatsby-image.
 
 [![npm version](https://img.shields.io/npm/v/@imgix/gatsby-transform-url.svg)](https://www.npmjs.com/package/@imgix/gatsby-transform-url)
-[![Build Status](https://travis-ci.org/imgix/gatsby.svg?branch=main)](https://travis-ci.org/imgix/gatsby)
+[![Build Status](https://travis-ci.com/imgix/gatsby.svg?branch=main)](https://travis-ci.com/imgix/gatsby)
 [![Downloads](https://img.shields.io/npm/dm/@imgix/gatsby-transform-url.svg)](https://www.npmjs.com/package/@imgix/gatsby-transform-url)
 [![License](https://img.shields.io/npm/l/@imgix/gatsby-transform-url)](https://github.com/imgix/gatsby/blob/main/packages/gatsby-transform-url/LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fgatsby.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fgatsby?ref=badge_shield)
