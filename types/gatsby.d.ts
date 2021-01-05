@@ -1,4 +1,4 @@
-import * as gatsby from 'gatsby';
+import 'gatsby';
 import * as GraphQL from 'graphql';
 declare module 'gatsby' {
   type IGraphQLTypeMap = {
@@ -11,20 +11,37 @@ declare module 'gatsby' {
 
   export type ICreateResolversFn = (typeMap: IRootGraphQLTypeMap) => void;
 
-  export interface PluginOptions<TCustomPluginOpts>
-    extends gatsby.PluginOptions {
-    [T in TCustomPluginOpts]: TCustomPluginOpts[T];
-  }
+  export type PatchedPluginOptions<TCustomPluginOpts> = Pick<
+    PluginOptions,
+    'plugins'
+  > &
+    TCustomPluginOpts;
 
   export interface CreateResolversArgsPatched extends ParentSpanPluginArgs {
     intermediateSchema: object;
     createResolvers: ICreateResolversFn;
     traceId: 'initial-createResolvers';
   }
-  export interface GatsbyNode {
-    createResolvers?<TCustomPluginOpts = {}>(
-      args: CreateResolversArgsPatched,
-      options: PluginOptions<TCustomPluginOpts>,
-    ): void;
+
+
+  export type IOnCreateNodeHook<TOpts = {}> = (
+    args: CreateNodeArgs,
+    options: PatchedPluginOptions<TOpts>,
+  ) => void;
+
+  export type ICreateSchemaCustomizationHook<TOpts = {}> = (
+    args: CreateSchemaCustomizationArgs,
+    options: PatchedPluginOptions<TOpts>,
+  ) => any;
+
+  export type ICreateResolversHook<TOpts = {}> = (
+    args: CreateResolversArgsPatched,
+    options: PatchedPluginOptions<TOpts>,
+  ) => void;
+
+  export interface GatsbyNode<TOpts = {}> {
+    createResolvers?: ICreateResolversFn<TOpts>;
+    onCreateNode?: IOnCreateNodeHook<TOpts>;
+    createSchemaCustomization?: ICreateSchemaCustomizationHook<TOpts>;
   }
 }
