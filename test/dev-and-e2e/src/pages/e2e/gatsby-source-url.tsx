@@ -29,10 +29,10 @@ export const query = graphql`
     testImage: imgixImage(url: "/blog/unsplash-kiss.jpg") {
       url(imgixParams: { w: 10, h: 10 })
       fluid {
-        ...GatsbySourceImgixFluid
+        ...GatsbyImgixFluid
       }
       fixed(width: 100) {
-        ...GatsbySourceImgixFixed
+        ...GatsbyImgixFixed
       }
     }
   }

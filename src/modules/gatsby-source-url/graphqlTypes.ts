@@ -19,7 +19,7 @@ import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
 import { createImgixBase64FieldConfig } from './createImgixBase64FieldConfig';
 
 export const ImgixUrlParamsInputType = new GraphQLInputObjectType({
-  name: 'GatsbySourceImgixParamsInput',
+  name: 'ImgixParamsInput',
   fields: Object.keys(imgixUrlParameters.parameters).reduce((fields, param) => {
     const spec =
       imgixUrlParameters.parameters[
@@ -92,7 +92,7 @@ const createBase64ConfigWithResolver = <T extends FluidObject | FixedObject>(
 
 export const createGatsbySourceImgixFluidFieldType = (cache: GatsbyCache) =>
   new GraphQLObjectType({
-    name: 'SourceImgixFluid',
+    name: 'ImgixFluid',
     fields: {
       base64: createBase64ConfigWithResolver<FluidObject>(cache),
       src: { type: new GraphQLNonNull(GraphQLString) },
@@ -104,11 +104,11 @@ export const createGatsbySourceImgixFluidFieldType = (cache: GatsbyCache) =>
     },
   });
 
-export const createGatsbySourceImgixFixedFieldType = (
+export const createImgixFixedType = (
   cache: GatsbyCache,
 ): GraphQLObjectType<FixedObject> =>
   new GraphQLObjectType({
-    name: 'SourceImgixFixed',
+    name: 'ImgixFixed',
     fields: {
       base64: createBase64ConfigWithResolver<FixedObject>(cache),
       src: { type: new GraphQLNonNull(GraphQLString) },

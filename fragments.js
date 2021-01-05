@@ -1,7 +1,7 @@
 import { graphql } from 'gatsby';
 
-export const GatsbySourceImgixFluid = graphql`
-  fragment GatsbySourceImgixFluid on SourceImgixFluid {
+export const GatsbyImgixFluid = graphql`
+  fragment GatsbyImgixFluid on ImgixFluid {
     aspectRatio
     src
     srcWebp
@@ -12,8 +12,8 @@ export const GatsbySourceImgixFluid = graphql`
   }
 `;
 
-export const GatsbySourceImgixFluid_noBase64 = graphql`
-  fragment GatsbySourceImgixFluid_noBase64 on SourceImgixFluid {
+export const GatsbyImgixFluid_noBase64 = graphql`
+  fragment GatsbyImgixFluid_noBase64 on ImgixFluid {
     aspectRatio
     src
     srcWebp
@@ -23,8 +23,8 @@ export const GatsbySourceImgixFluid_noBase64 = graphql`
   }
 `;
 
-export const GatsbySourceImgixFixed = graphql`
-  fragment GatsbySourceImgixFixed on SourceImgixFixed {
+export const GatsbyImgixFixed = graphql`
+  fragment GatsbyImgixFixed on ImgixFixed {
     base64
     width
     height
@@ -35,8 +35,8 @@ export const GatsbySourceImgixFixed = graphql`
   }
 `;
 
-export const GatsbySourceImgixFixed_noBase64 = graphql`
-  fragment GatsbySourceImgixFixed_noBase64 on SourceImgixFixed {
+export const GatsbyImgixFixed_noBase64 = graphql`
+  fragment GatsbyImgixFixed_noBase64 on ImgixFixed {
     width
     height
     src
