@@ -10,7 +10,7 @@ import * as R from 'ramda';
 import { createImgixFixedFieldConfig } from './createImgixFixedFieldConfig';
 import { createImgixFluidFieldConfig } from './createImgixFluidFieldConfig';
 import { createImgixUrlFieldConfig } from './createImgixUrlFieldConfig';
-import { IGatsbySourceUrlRootArgs, IImgixParams } from './publicTypes';
+import { IImgixGatsbyRootArgs, IImgixParams } from '../../publicTypes';
 
 type IRootSource = {
   rawUrl: string;
@@ -20,7 +20,7 @@ export const createRootImgixImageType = (
   cache: GatsbyCache,
   defaultParams: Partial<IImgixParams>,
   // TODO: fix any
-): GraphQLFieldConfig<any, any, IGatsbySourceUrlRootArgs> => ({
+): GraphQLFieldConfig<any, any, IImgixGatsbyRootArgs> => ({
   args: {
     url: {
       type: GraphQLNonNull(GraphQLString),
@@ -50,7 +50,7 @@ export const createRootImgixImageType = (
       }),
     },
   }),
-  resolve(_: any, args: IGatsbySourceUrlRootArgs): IRootSource {
+  resolve(_: any, args: IImgixGatsbyRootArgs): IRootSource {
     return { rawUrl: args.url };
   },
 });

@@ -17,7 +17,7 @@ import {
   IImgixParams,
   ImgixFluidArgs,
   ImgixFluidArgsResolved,
-} from './publicTypes';
+} from '../../publicTypes';
 import { resolveDimensions } from './resolveDimensions';
 import {
   ImgixSourceDataResolver,
@@ -33,7 +33,7 @@ interface CreateImgixFluidFieldConfigArgs<TSource> {
   resolveWidth?: ImgixSourceDataResolver<TSource, number>;
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
   cache: GatsbyCache;
-  defaultParams: Partial<IImgixParams>;
+  defaultParams?: Partial<IImgixParams>;
 }
 
 export const createImgixFluidFieldConfig = <TSource, TContext>({

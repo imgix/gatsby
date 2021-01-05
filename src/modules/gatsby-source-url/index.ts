@@ -1,2 +1,2 @@
 // noop
-export * from './publicTypes';
+export * from '../../publicTypes';

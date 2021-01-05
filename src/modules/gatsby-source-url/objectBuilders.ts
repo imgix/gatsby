@@ -2,21 +2,21 @@ import { FixedObject, FluidObject } from 'gatsby-image';
 import ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
 import { log, trace } from '../../common/log';
-import { DEFAULT_FIXED_WIDTH } from './createImgixFixedFieldConfig';
 import {
   IImgixParams,
   ImgixFixedArgsResolved,
   ImgixFluidArgsResolved,
   ImgixUrlParams,
-} from './publicTypes';
+} from '../../publicTypes';
+import { DEFAULT_FIXED_WIDTH } from './createImgixFixedFieldConfig';
 export type BuildImgixFluidArgs = {
   client: ImgixClient;
   url: string;
   sourceWidth: number;
   sourceHeight: number;
   args: ImgixFluidArgsResolved;
-  defaultParams: Partial<IImgixParams>;
-  defaultPlaceholderParams: Partial<IImgixParams>;
+  defaultParams?: Partial<IImgixParams>;
+  defaultPlaceholderParams?: Partial<IImgixParams>;
 };
 
 const parseAspectRatioFloatFromString = R.pipe<
@@ -116,8 +116,8 @@ export type BuildImgixFixedArgs = {
   sourceWidth: number;
   sourceHeight: number;
   args: ImgixFixedArgsResolved;
-  defaultParams: Partial<IImgixParams>;
-  defaultPlaceholderParams: Partial<IImgixParams>;
+  defaultParams?: Partial<IImgixParams>;
+  defaultPlaceholderParams?: Partial<IImgixParams>;
 };
 export function buildImgixFixed({
   client,
