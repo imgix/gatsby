@@ -23,7 +23,6 @@ declare module 'gatsby' {
     traceId: 'initial-createResolvers';
   }
 
-
   export type IOnCreateNodeHook<TOpts = {}> = (
     args: CreateNodeArgs,
     options: PatchedPluginOptions<TOpts>,
