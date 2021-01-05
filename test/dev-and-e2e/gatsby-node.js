@@ -6,14 +6,18 @@
 
 // You can delete this file if you're not using it
 
-const TEST_NODE_TYPE = 'Post'
+const TEST_NODE_TYPE = "Post"
 
-exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
+exports.sourceNodes = async ({
+  actions,
+  createNodeId,
+  createContentDigest,
+}) => {
   const { createNode } = actions
   // Data can come from anywhere, but for now create it manually
   const testData = {
     key: 123,
-    imageUrl: 'https://assets.imgix.net/amsterdam.jpg',
+    imageUrl: "https://assets.imgix.net/amsterdam.jpg",
   }
   const nodeContent = JSON.stringify(testData)
   const node = {
