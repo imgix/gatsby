@@ -26,7 +26,9 @@ type IPageData = {
 }
 export const query = graphql`
   {
-    testImage: imgixImage(url: "/blog/unsplash-kiss.jpg") {
+    testImage: imgixImage(
+      url: "https://assets.imgix.net/blog/unsplash-kiss.jpg"
+    ) {
       url(imgixParams: { w: 10, h: 10 })
       fluid {
         ...GatsbyImgixFluid
