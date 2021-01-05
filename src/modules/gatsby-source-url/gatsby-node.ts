@@ -10,6 +10,7 @@ import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import fs from 'fs';
 import { GatsbyNode, ICreateResolversHook } from 'gatsby';
+import { PathReporter } from 'io-ts/PathReporter';
 import path from 'path';
 import readPkgUp from 'read-pkg-up';
 import { createImgixClient } from '../../common/imgix-core-js-wrapper';
@@ -27,9 +28,11 @@ export const createResolvers: ICreateResolversHook<IImgixGatsbyOptions> = (
         pipe(
           ImgixGatsbyOptionsIOTS.decode(_options),
           E.mapLeft(
-            () =>
+            (errs) =>
               new Error(
-                `[@imgix/gatsby] The plugin config is not in the correct format.`,
+                `[@imgix/gatsby] The plugin config is not in the correct format. Errors: ${PathReporter.report(
+                  E.left(errs),
+                )}`,
               ),
           ),
           E.chain((options) => {
@@ -40,7 +43,7 @@ export const createResolvers: ICreateResolversHook<IImgixGatsbyOptions> = (
             ) {
               return E.left(
                 new Error(
-                  `[@imgix/gatsby] the plugin option 'secureURLToken' is required when sourceType is 'webProxy'.`,
+                  `[@imgix/gatsby/source-url] the plugin option 'secureURLToken' is required when sourceType is 'webProxy'.`,
                 ),
               );
             }
@@ -82,7 +85,11 @@ export const createResolvers: ICreateResolversHook<IImgixGatsbyOptions> = (
       )
       .return(() => undefined),
     E.getOrElseW((err) => {
-      reporter.panic(err);
+      reporter.panic(
+        `[@imgix/gatsby/source-url] Fatal error in createResolvers: ${String(
+          err,
+        )}`,
+      );
       throw err;
     }),
   );

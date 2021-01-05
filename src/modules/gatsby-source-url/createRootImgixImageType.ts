@@ -7,10 +7,10 @@ import {
 } from 'graphql';
 import type ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
+import { IImgixGatsbyRootArgs, IImgixParams } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from './createImgixFixedFieldConfig';
 import { createImgixFluidFieldConfig } from './createImgixFluidFieldConfig';
 import { createImgixUrlFieldConfig } from './createImgixUrlFieldConfig';
-import { IImgixGatsbyRootArgs, IImgixParams } from '../../publicTypes';
 
 type IRootSource = {
   rawUrl: string;
@@ -29,7 +29,7 @@ export const createRootImgixImageType = (
     },
   },
   type: new GraphQLObjectType<any, any, any>({
-    name: 'ImgixSourceImage',
+    name: 'ImgixImage',
     fields: {
       url: createImgixUrlFieldConfig<IRootSource, unknown>({
         imgixClient,
