@@ -6,7 +6,7 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
 [![npm version](https://img.shields.io/npm/v/@imgix/gatsby.svg)](https://www.npmjs.com/package/@imgix/gatsby)
-[![Build Status](https://travis-ci.org/imgix/gatsby.svg?branch=main)](https://travis-ci.org/imgix/gatsby)
+[![Build Status](https://travis-ci.com/imgix/gatsby.svg?branch=main)](https://travis-ci.com/imgix/gatsby)
 [![Downloads](https://img.shields.io/npm/dm/@imgix/gatsby.svg)](https://www.npmjs.com/package/@imgix/gatsby)
 [![License](https://img.shields.io/npm/l/@imgix/gatsby)](https://github.com/imgix/gatsby/blob/main/packages/gatsby/LICENSE)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
