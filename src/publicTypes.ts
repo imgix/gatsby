@@ -1,10 +1,10 @@
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
 import * as R from 'ramda';
-import * as t from '../../common/ioTs';
+import * as t from './common/ioTs';
 
-export enum GatsbySourceUrlSourceType {
+export enum ImgixSourceType {
   AmazonS3 = 's3',
-  GoogleCloudStorange = 'gcs',
+  GoogleCloudStorage = 'gcs',
   MicrosoftAzure = 'azure',
   WebFolder = 'webFolder',
   WebProxy = 'webProxy',
@@ -42,21 +42,56 @@ const ImgixParamsIOTS = t.partial(
 );
 export type IImgixParams = t.TypeOf<typeof ImgixParamsIOTS>;
 
-export const GatsbySourceUrlOptions = t.typeOptional(
+export interface IBaseFieldOptions {
+  nodeType: string;
+  fieldName: string;
+}
+
+export interface IFieldOptionsSingleUrl extends IBaseFieldOptions {
+  getUrl: (node: Node) => string;
+}
+
+export interface IFieldOptionsMultipleUrls extends IBaseFieldOptions {
+  getUrls: (node: Node) => string;
+}
+
+const ImgixGatsbyFieldBaseIOTS = t.type({
+  nodeType: t.string,
+  fieldName: t.string,
+});
+export const ImgixGatsbyFieldMultipleUrlsIOTS = t.intersection([
+  ImgixGatsbyFieldBaseIOTS,
+  t.type({
+    getURLs: t.Function,
+  }),
+]);
+export const ImgixGatsbyFieldSingleUrlIOTS = t.intersection([
+  ImgixGatsbyFieldBaseIOTS,
+  t.type({
+    getURL: t.Function,
+  }),
+]);
+export const ImgixGatsbyFieldsIOTS = t.array(
+  t.union([ImgixGatsbyFieldSingleUrlIOTS, ImgixGatsbyFieldMultipleUrlsIOTS]),
+);
+export type IFieldsOption = t.TypeOf<typeof ImgixGatsbyFieldsIOTS>;
+
+export const ImgixGatsbyOptionsIOTS = t.typeOptional(
   {
     domain: t.string,
     defaultImgixParams: t.optional(ImgixParamsIOTS),
     disableIxlibParam: t.optional(t.boolean),
     secureURLToken: t.optional(t.string),
     sourceType: t.optional(
-      t.fromEnum('GatsbySourceUrlSourceType', GatsbySourceUrlSourceType),
+      t.fromEnum('GatsbySourceUrlSourceType', ImgixSourceType),
     ),
+    fields: t.optional(ImgixGatsbyFieldsIOTS),
   },
   'GatsbySourceUrlOptions',
 );
-export type IGatsbySourceUrlOptions = t.TypeOf<typeof GatsbySourceUrlOptions>;
+export type IImgixGatsbyOptions = t.TypeOf<typeof ImgixGatsbyOptionsIOTS>;
 
-export type IGatsbySourceUrlRootArgs = {
+export type IImgixGatsbyRootArgs = {
   url: string;
 };
 
@@ -107,3 +142,5 @@ export interface ImgixFixedArgsResolved {
   imgixParams: ImgixUrlParams;
   placeholderImgixParams: ImgixUrlParams;
 }
+
+export type IFieldOption = IFieldOptionsSingleUrl | IFieldOptionsMultipleUrls;

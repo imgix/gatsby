@@ -9,21 +9,18 @@ import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import {
-  createGatsbySourceImgixFixedFieldType,
-  ImgixUrlParamsInputType,
-} from './graphqlTypes';
-import { buildImgixFixed } from './objectBuilders';
-import {
-  IImgixParams,
-  ImgixFixedArgs,
-  ImgixFixedArgsResolved,
-} from './publicTypes';
-import { resolveDimensions } from './resolveDimensions';
-import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
+import {
+  IImgixParams,
+  ImgixFixedArgs,
+  ImgixFixedArgsResolved,
+} from '../../publicTypes';
+import { createImgixFixedType, ImgixUrlParamsInputType } from './graphqlTypes';
+import { buildImgixFixed } from './objectBuilders';
+import { resolveDimensions } from './resolveDimensions';
 
 export const DEFAULT_FIXED_WIDTH = 8192;
 
@@ -33,7 +30,7 @@ interface CreateImgixFixedFieldConfigArgs<TSource> {
   resolveWidth?: ImgixSourceDataResolver<TSource, number>;
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
   cache: GatsbyCache;
-  defaultParams: Partial<IImgixParams>;
+  defaultParams?: Partial<IImgixParams>;
 }
 
 export const createImgixFixedFieldConfig = <TSource, TContext>({
@@ -48,7 +45,7 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
   TContext,
   ImgixFixedArgsResolved
 > => ({
-  type: createGatsbySourceImgixFixedFieldType(cache),
+  type: createImgixFixedType(cache),
   description: `Should be used to generate fixed-width images (i.e. the size of the image doesn't change when the size of the browser changes, and are "fixed"). Returns data compatible with gatsby-image. Instead of accessing this data directly, the GatsbySourceImgixFixed fragment should be used. See the project's README for more information.`,
   args: {
     width: {

@@ -4,21 +4,21 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import { GraphQLFieldConfig } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
-import R from 'ramda';
-import {
-  gatsbySourceImgixUrlFieldType,
-  ImgixUrlParamsInputType,
-} from './graphqlTypes';
-import { IImgixParams, ImgixUrlArgs } from './publicTypes';
+import * as R from 'ramda';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
 } from '../../common/utils';
+import { IImgixParams, ImgixUrlArgs } from '../../publicTypes';
+import {
+  gatsbySourceImgixUrlFieldType,
+  ImgixUrlParamsInputType,
+} from './graphqlTypes';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
   imgixClient: ImgixClient;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
-  defaultParams: IImgixParams;
+  defaultParams?: IImgixParams;
 }
 
 export const createImgixUrlFieldConfig = <TSource, TContext>({
@@ -48,7 +48,7 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
       TE.map((url) =>
         imgixClient.buildURL(
           url,
-          R.mergeRight(defaultParams, args.imgixParams ?? {}),
+          R.mergeRight(defaultParams ?? {}, args.imgixParams ?? {}),
         ),
       ),
       TE.getOrElse<Error, string | undefined>(() => T.of(undefined)),

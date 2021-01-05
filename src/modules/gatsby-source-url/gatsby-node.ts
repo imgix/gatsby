@@ -9,23 +9,23 @@ import { Do } from 'fp-ts-contrib/lib/Do';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import fs from 'fs';
-import { CreateResolversArgsPatched, GatsbyNode, PluginOptions } from 'gatsby';
+import { GatsbyNode, ICreateResolversHook } from 'gatsby';
 import path from 'path';
 import readPkgUp from 'read-pkg-up';
 import { createImgixClient } from '../../common/imgix-core-js-wrapper';
+import { IImgixGatsbyOptions, ImgixGatsbyOptionsIOTS } from '../../publicTypes';
 import { createRootImgixImageType } from './createRootImgixImageType';
-import { GatsbySourceUrlOptions, IGatsbySourceUrlOptions } from './publicTypes';
 
-export const createResolvers: GatsbyNode['createResolvers'] = (
-  { createResolvers: createResolversCb, cache }: CreateResolversArgsPatched,
-  _options: PluginOptions<IGatsbySourceUrlOptions>,
+export const createResolvers: ICreateResolversHook<IImgixGatsbyOptions> = (
+  { createResolvers: createResolversCb, cache, reporter },
+  _options,
 ): any =>
   pipe(
     Do(E.either)
       .bind(
         'options',
         pipe(
-          GatsbySourceUrlOptions.decode(_options),
+          ImgixGatsbyOptionsIOTS.decode(_options),
           E.mapLeft(
             () =>
               new Error(
@@ -54,7 +54,7 @@ export const createResolvers: GatsbyNode['createResolvers'] = (
       .bind(
         'packageVersion',
         pipe(
-          readPkgUp.sync({ cwd: __dirname })?.packageJson.version,
+          readPkgUp.sync({ cwd: __dirname })?.packageJson?.version,
           E.fromNullable(new Error('Could not read package version.')),
         ),
       )
@@ -82,6 +82,7 @@ export const createResolvers: GatsbyNode['createResolvers'] = (
       )
       .return(() => undefined),
     E.getOrElseW((err) => {
+      reporter.panic(err);
       throw err;
     }),
   );
