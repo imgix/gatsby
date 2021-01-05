@@ -1,3 +1,5 @@
+const { ImgixSourceType } = require("@imgix/gatsby")
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -30,7 +32,9 @@ module.exports = {
     {
       resolve: `@imgix/gatsby`,
       options: {
-        domain: "assets.imgix.net",
+        domain: "sdk-proxy.imgix.net",
+        secureURLToken: "eeHwbMQjYHJrBJqq",
+        sourceType: ImgixSourceType.WebProxy,
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
