@@ -1,3 +1,4 @@
+const { GraphQLInt, GraphQLString } = require("gatsby/graphql")
 /**
  * Implement Gatsby's Node APIs in this file.
  *
@@ -12,12 +13,13 @@ exports.sourceNodes = async ({
   actions,
   createNodeId,
   createContentDigest,
+  schema,
 }) => {
-  const { createNode } = actions
+  const { createNode, createTypes } = actions
   // Data can come from anywhere, but for now create it manually
   const testData = {
     key: 123,
-    imageUrl: "https://assets.imgix.net/amsterdam.jpg",
+    imageURL: "https://assets.imgix.net/amsterdam.jpg",
   }
   const nodeContent = JSON.stringify(testData)
   const node = {
@@ -31,5 +33,24 @@ exports.sourceNodes = async ({
       contentDigest: createContentDigest(testData),
     },
   }
+
+  createTypes(
+    schema.buildObjectType({
+      name: TEST_NODE_TYPE,
+      interfaces: ["Node"],
+      fields: {
+        key: {
+          type: GraphQLInt,
+        },
+        imageURL: {
+          type: GraphQLString,
+        },
+      },
+      extensions: {
+        infer: true,
+      },
+    })
+  )
+
   createNode(node)
 }

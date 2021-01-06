@@ -35,8 +35,25 @@ module.exports = {
         domain: "sdk-proxy.imgix.net",
         secureURLToken: "eeHwbMQjYHJrBJqq",
         sourceType: ImgixSourceType.WebProxy,
+        fields: [
+          {
+            nodeType: "Post",
+            fieldName: "imgixImage",
+            getURL: node => node.imageUrl,
+          },
+        ],
       },
     },
+    // TODO: add noproxy tests when  namespace is implemented
+    /* {
+      resolve: `@imgix/gatsby`,
+      options: {
+        namespace: "NoProxy",
+        domain: "assets.imgix.net",
+        secureURLToken: "eeHwbMQjYHJrBJqq",
+        sourceType: ImgixSourceType.WebProxy,
+      },
+    }, */
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
