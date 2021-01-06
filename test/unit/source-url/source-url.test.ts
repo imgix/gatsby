@@ -2,13 +2,14 @@
 /// <reference types="jest" />
 
 import { pipe } from 'fp-ts/lib/function';
-import { CreateResolversArgsPatched, PluginOptions } from 'gatsby';
+import { CreateResolversArgsPatched, PatchedPluginOptions } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
 import * as R from 'ramda';
 import { createLogger, trace } from '../../../src/common/log';
 import { createResolvers } from '../../../src/gatsby-node';
-import { IGatsbySourceUrlOptions } from '../../../src/modules/gatsby-source-url/publicTypes';
+import { IImgixGatsbyOptions, ImgixSourceType } from '../../../src/publicTypes';
 import { getSrcsetWidths } from '../../common/getSrcsetWidths';
+import { createMockReporter } from '../../common/mocks';
 
 const log = createLogger('test:createResolvers');
 
@@ -367,7 +368,7 @@ describe('createResolvers', () => {
     it(`should throw an error if app is configured with sourceType: 'webProxy' but no secureURLToken`, async () => {
       const createResolversLazy = () =>
         createRootResolversMap({
-          sourceType: 'webProxy',
+          sourceType: ImgixSourceType.WebProxy,
           domain: 'assets.imgix.net',
         });
 
@@ -380,7 +381,7 @@ describe('createResolvers', () => {
       resolveFieldOpts: {
         appConfig: {
           domain: 'proxy-demo.imgix.net',
-          sourceType: 'webProxy',
+          sourceType: ImgixSourceType.WebProxy,
           secureURLToken: process.env.PROXY_DEMO_TOKEN,
         },
         url: proxyUrl,
@@ -495,15 +496,20 @@ const defaultAppConfig = {
   plugins: [],
 } as const;
 function createRootResolversMap(
-  _appConfig?: Partial<PluginOptions<IGatsbySourceUrlOptions>>,
+  _appConfig?: Partial<PatchedPluginOptions<IImgixGatsbyOptions>>,
 ) {
-  const appConfig = R.mergeDeepRight(defaultAppConfig, _appConfig ?? {});
+  const appConfig = R.mergeDeepRight(
+    defaultAppConfig,
+    _appConfig ?? {},
+  ) as PatchedPluginOptions<IImgixGatsbyOptions>;
+
   const mockCreateResolversFunction = jest.fn();
   createResolvers &&
     createResolvers(
       ({
         createResolvers: mockCreateResolversFunction,
         cache: mockGatsbyCache,
+        reporter: createMockReporter(),
       } as any) as CreateResolversArgsPatched,
       appConfig,
     );
