@@ -380,7 +380,7 @@ describe('createResolvers', () => {
       name: `should encrypt path when sourceType set to 'webProxy'`,
       resolveFieldOpts: {
         appConfig: {
-          domain: 'proxy-demo.imgix.net',
+          domain: 'sdk-proxy-test.imgix.net',
           sourceType: ImgixSourceType.WebProxy,
           secureURLToken: process.env.PROXY_DEMO_TOKEN,
         },
@@ -388,7 +388,7 @@ describe('createResolvers', () => {
       },
       assertion: (url) => {
         return expect(url).toMatch(
-          `https://proxy-demo.imgix.net/${encodeURIComponent(proxyUrl)}?`,
+          `https://sdk-proxy-test.imgix.net/${encodeURIComponent(proxyUrl)}?`,
         );
       },
     });
