@@ -5,8 +5,8 @@ const GatsbySourceUrl = ({ data }: { data: IPageData }) => {
   console.log("data", data)
   return (
     <div>
-      {/* <img src={data.allPost.nodes[0].imgixImage.url} alt="URL Image" /> */}
-      {/* <div style={{ width: 100 }}>
+      <img src={data.allPost.nodes[0].imgixImage.url} alt="URL Image" />
+      {/*       <div style={{ width: 100 }}>
         <Img
           fluid={{ ...data.testImage.fluid, sizes: "100px" }}
           alt="Fluid Image"
@@ -31,6 +31,9 @@ export const query = graphql`
     allPost {
       nodes {
         imageURL
+        imgixImage {
+          url
+        }
       }
     }
   }
