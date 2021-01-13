@@ -8,10 +8,7 @@ import { GraphQLFieldConfig, GraphQLInt, GraphQLList } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
-import {
-  createImgixFluidType,
-  ImgixUrlParamsInputType,
-} from './graphqlTypes';
+import { createImgixFluidType, ImgixUrlParamsInputType } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
 import {
   IImgixParams,
