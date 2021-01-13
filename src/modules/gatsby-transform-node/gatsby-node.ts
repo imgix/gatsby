@@ -2,7 +2,13 @@ import { ICreateSchemaCustomizationHook, IOnCreateNodeHook } from 'gatsby';
 import ImgixClient from 'imgix-core-js';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
 import { invariant } from '../../common/utils';
+import { createImgixFixedSchemaFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';
+import { createImgixFluidSchemaFieldConfig } from '../gatsby-source-url/createImgixFluidFieldConfig';
 import { createImgixUrlSchemaFieldConfig } from '../gatsby-source-url/createImgixUrlFieldConfig';
+import {
+  createImgixFixedType,
+  createImgixFluidType,
+} from '../gatsby-source-url/graphqlTypes';
 
 export const onCreateNode: IOnCreateNodeHook<IImgixGatsbyOptions> = async (
   gatsbyContext,
@@ -103,38 +109,45 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
     reporter,
   );
 
+  // TODO: change to real client creation
   const imgixClient: ImgixClient = new ImgixClient({
     domain: domain,
     secureURLToken,
   });
 
-  // const ImgixFixedType = createImgixFixedType(
-  //   // name: ns(namespace, 'ImgixFixed'),
-  //   cache,
-  // );
 
-  // const ImgixFluidType = createImgixFluidType(
-  //   // name: ns(namespace, 'ImgixFluid'),
-  //   cache,
-  // );
+  const ImgixFixedType = createImgixFixedType({
+    name: 'ImgixNodeFixed',
+    cache,
+  });
+
+  const ImgixFluidType = createImgixFluidType({
+    name: 'ImgixNodeFluid',
+    cache,
+  });
 
   console.log('pluginOptions.fields', fields);
 
   const ImgixImageCustomType = schema.buildObjectType({
-    // name: ns(namespace, 'ImgixImage'),
-    name: 'ImgixImageCustom',
-    // fields: {},
+    name: 'ImgixNodeRoot',
     fields: {
       url: createImgixUrlSchemaFieldConfig({
-        resolveUrl: (url: string) => {
-          console.log('url', url);
-          return url;
-        },
+        resolveUrl: (url: string) => url,
         imgixClient,
         defaultParams: defaultImgixParams,
       }),
-      // fixed: 'ImgixFixed',
-      // fluid: 'ImgixFluid',
+      fluid: createImgixFluidSchemaFieldConfig({
+        type: ImgixFluidType,
+        cache,
+        imgixClient,
+        resolveUrl: (url: string) => url,
+      }),
+      fixed: createImgixFixedSchemaFieldConfig({
+        type: ImgixFixedType,
+        cache,
+        imgixClient,
+        resolveUrl: (url: string) => url,
+      }),
     },
   });
 
@@ -144,24 +157,22 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
       fields: {
         [fieldOptions.fieldName]: {
           type:
-            'getUrls' in fieldOptions
+            'getURLs' in fieldOptions
               ? `[${ImgixImageCustomType.config.name}]`
               : ImgixImageCustomType.config.name,
-          resolve: (node: any) => {
-            console.log('node', node);
-            return getFieldValue({
+          resolve: (node: any) =>
+            getFieldValue({
               fieldOptions,
               node,
               domain,
               reporter,
-            });
-          },
+            }),
         },
       },
     }),
   );
 
-  // createTypes([ImgixFixedType, ImgixFluidType]);
+  createTypes([ImgixFixedType, ImgixFluidType]);
   createTypes([ImgixImageCustomType, ...fieldTypes]);
   // createTypes(fieldTypes);
 };
