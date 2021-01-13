@@ -1,0 +1,1 @@
+{"version":3,"file":"gatsby-node.d.ts","sourceRoot":"","sources":["../../../src/modules/gatsby-source-url/gatsby-node.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAOH,OAAO,EAAE,UAAU,EAAE,oBAAoB,EAAE,MAAM,QAAQ,CAAC;AAK1D,OAAO,EAAE,mBAAmB,EAA0B,MAAM,mBAAmB,CAAC;AAGhF,eAAO,MAAM,eAAe,EAAE,oBAAoB,CAAC,mBAAmB,CA2EnE,CAAC;AAEJ,eAAO,MAAM,mBAAmB,EAAE,UAAU,CAAC,qBAAqB,CAUjE,CAAC"}

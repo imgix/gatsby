@@ -1,3 +1,11 @@
+# [1.0.0-rc.6](https://github.com/imgix/gatsby/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2021-01-13)
+
+
+### Features
+
+* fixed and fluid mode for v3 ([82be766](https://github.com/imgix/gatsby/commit/82be7660e24704a590bc7709dc5aac5cc52f8050))
+* transform node working for simple URL ([a62a4b0](https://github.com/imgix/gatsby/commit/a62a4b0ccc3fc4ffbff4a205bea66b6b7e288350))
+
 # [1.0.0-rc.5](https://github.com/imgix/gatsby/compare/v1.0.0-rc.4...v1.0.0-rc.5) (2020-12-18)
 
 
