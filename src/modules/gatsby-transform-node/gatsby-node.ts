@@ -42,7 +42,7 @@ export const onCreateNode: IOnCreateNodeHook<IImgixGatsbyOptions> = async (
         reporter,
       );
 
-      console.log('node, field.fieldName, fieldValue', node, field.fieldName);
+      // TODO: remove
       createNodeField({ node, name: field.fieldName, value: 'test' });
     }
   }
@@ -56,7 +56,6 @@ const getFieldValue = ({
 }: any): string | string[] => {
   let fieldValue = undefined as string | string[] | undefined;
 
-  console.log('field', fieldOptions);
   if (fieldOptions.hasOwnProperty('getURL')) {
     fieldValue = fieldOptions.getURL(node);
     invariant(
@@ -72,7 +71,6 @@ const getFieldValue = ({
       reporter,
     );
   }
-  console.log(fieldValue);
   if (!fieldValue) throw new Error('No field value');
   return fieldValue;
   // if (Array.isArray(fieldValue))
@@ -115,7 +113,6 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
     secureURLToken,
   });
 
-
   const ImgixFixedType = createImgixFixedType({
     name: 'ImgixNodeFixed',
     cache,
@@ -125,8 +122,6 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
     name: 'ImgixNodeFluid',
     cache,
   });
-
-  console.log('pluginOptions.fields', fields);
 
   const ImgixImageCustomType = schema.buildObjectType({
     name: 'ImgixNodeRoot',

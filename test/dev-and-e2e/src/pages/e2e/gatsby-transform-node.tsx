@@ -3,7 +3,6 @@ import Img, { FixedObject, FluidObject } from "gatsby-image"
 import React from "react"
 
 const GatsbySourceUrl = ({ data }: { data: IPageData }) => {
-  console.log("data", data)
   return (
     <div>
       <img src={data.allPost.nodes[0].imgixImage.url} alt="URL Image" />
