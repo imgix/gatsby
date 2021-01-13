@@ -3,7 +3,7 @@ describe("gatsby-transform-node", () => {
     cy.visit("/e2e/gatsby-transform-node")
   })
 
-  it.skip("url image loads", () => {
+  it("url image loads", () => {
     cy.findByAltText("URL Image")
       .should("be.visible")
       .and($img => {

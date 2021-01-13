@@ -39,7 +39,7 @@ module.exports = {
           {
             nodeType: "Post",
             fieldName: "imgixImage",
-            getURL: node => node.imageUrl,
+            getURL: node => node.imageURL,
           },
         ],
       },
