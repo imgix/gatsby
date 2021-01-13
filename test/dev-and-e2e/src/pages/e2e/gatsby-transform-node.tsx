@@ -34,7 +34,7 @@ export const query = graphql`
       nodes {
         imageURL
         imgixImage {
-          url
+          url(imgixParams: { w: 10, h: 10 })
           # TODO: use fragments
           fluid {
             aspectRatio
@@ -45,7 +45,7 @@ export const query = graphql`
             sizes
             base64
           }
-          fixed {
+          fixed(width: 100) {
             base64
             width
             height
