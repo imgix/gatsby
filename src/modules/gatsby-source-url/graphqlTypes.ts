@@ -90,9 +90,15 @@ const createBase64ConfigWithResolver = <T extends FluidObject | FixedObject>(
     cache,
   });
 
-export const createImgixFluidType = (cache: GatsbyCache) =>
+export const createImgixFluidType = ({
+  cache,
+  name,
+}: {
+  name?: string;
+  cache: GatsbyCache;
+}) =>
   new GraphQLObjectType({
-    name: 'ImgixFluid',
+    name: name ?? 'ImgixFluid',
     fields: {
       base64: createBase64ConfigWithResolver<FluidObject>(cache),
       src: { type: new GraphQLNonNull(GraphQLString) },
@@ -104,11 +110,26 @@ export const createImgixFluidType = (cache: GatsbyCache) =>
     },
   });
 
-export const createImgixFixedType = (
-  cache: GatsbyCache,
-): GraphQLObjectType<FixedObject> =>
+let fluidType: ReturnType<typeof createImgixFluidType>;
+
+export const getImgixFluidType = (
+  args: Parameters<typeof createImgixFluidType>,
+) => {
+  if (!fluidType) {
+    fluidType = createImgixFluidType(...args);
+  }
+  return fluidType;
+};
+
+export const createImgixFixedType = ({
+  name,
+  cache,
+}: {
+  name?: string;
+  cache: GatsbyCache;
+}): GraphQLObjectType<FixedObject> =>
   new GraphQLObjectType({
-    name: 'ImgixFixed',
+    name: name ?? 'ImgixFixed',
     fields: {
       base64: createBase64ConfigWithResolver<FixedObject>(cache),
       src: { type: new GraphQLNonNull(GraphQLString) },

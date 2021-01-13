@@ -4,23 +4,28 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
-import { GraphQLFieldConfig, GraphQLInt, GraphQLList } from 'graphql';
+import {
+  GraphQLFieldConfig,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLObjectType,
+} from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
-import { createImgixFluidType, ImgixUrlParamsInputType } from './graphqlTypes';
-import { buildFluidObject } from './objectBuilders';
-import {
-  IImgixParams,
-  ImgixFluidArgs,
-  ImgixFluidArgsResolved,
-} from '../../publicTypes';
-import { resolveDimensions } from './resolveDimensions';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
+import {
+  IImgixParams,
+  ImgixFluidArgs,
+  ImgixFluidArgsResolved,
+} from '../../publicTypes';
+import { createImgixFluidType, ImgixUrlParamsInputType } from './graphqlTypes';
+import { buildFluidObject } from './objectBuilders';
+import { resolveDimensions } from './resolveDimensions';
 
 const DEFAULT_FLUID_MAX_WIDTH = 8192;
 
@@ -31,6 +36,7 @@ interface CreateImgixFluidFieldConfigArgs<TSource> {
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
+  type?: GraphQLObjectType<FluidObject>;
 }
 
 export const createImgixFluidFieldConfig = <TSource, TContext>({
@@ -40,12 +46,17 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   resolveHeight = () => undefined,
   cache,
   defaultParams,
+  type,
 }: CreateImgixFluidFieldConfigArgs<TSource>): GraphQLFieldConfig<
   TSource,
   TContext,
   ImgixFluidArgsResolved
 > => ({
-  type: createImgixFluidType(cache),
+  type:
+    type ??
+    createImgixFluidType({
+      cache,
+    }),
   description: `Should be used to generate fluid-width images (i.e. images that change when the size of the browser changes). Returns data compatible with gatsby-image. Instead of accessing this data directly, the GatsbySourceImgixFluid fragment should be used. See the project's README for more information.`,
   args: {
     imgixParams: {

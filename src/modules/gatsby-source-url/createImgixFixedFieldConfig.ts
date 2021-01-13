@@ -4,7 +4,7 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FixedObject } from 'gatsby-image';
-import { GraphQLFieldConfig, GraphQLInt } from 'graphql';
+import { GraphQLFieldConfig, GraphQLInt, GraphQLObjectType } from 'graphql';
 import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
@@ -31,6 +31,7 @@ interface CreateImgixFixedFieldConfigArgs<TSource> {
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
+  type?: GraphQLObjectType<FixedObject>;
 }
 
 export const createImgixFixedFieldConfig = <TSource, TContext>({
@@ -40,12 +41,13 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
   resolveHeight = () => undefined,
   cache,
   defaultParams,
+  type,
 }: CreateImgixFixedFieldConfigArgs<TSource>): GraphQLFieldConfig<
   TSource,
   TContext,
   ImgixFixedArgsResolved
 > => ({
-  type: createImgixFixedType(cache),
+  type: type ?? createImgixFixedType({ cache }),
   description: `Should be used to generate fixed-width images (i.e. the size of the image doesn't change when the size of the browser changes, and are "fixed"). Returns data compatible with gatsby-image. Instead of accessing this data directly, the GatsbySourceImgixFixed fragment should be used. See the project's README for more information.`,
   args: {
     width: {
