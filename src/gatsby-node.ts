@@ -19,8 +19,7 @@ export {
   createResolvers,
   onPreExtractQueries,
 } from './modules/gatsby-source-url/gatsby-node';
-/* export {
+export {
   createSchemaCustomization,
   onCreateNode,
 } from './modules/gatsby-transform-node/gatsby-node';
- */

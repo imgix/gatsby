@@ -90,7 +90,7 @@ const createBase64ConfigWithResolver = <T extends FluidObject | FixedObject>(
     cache,
   });
 
-export const createGatsbySourceImgixFluidFieldType = (cache: GatsbyCache) =>
+export const createImgixFluidType = (cache: GatsbyCache) =>
   new GraphQLObjectType({
     name: 'ImgixFluid',
     fields: {
