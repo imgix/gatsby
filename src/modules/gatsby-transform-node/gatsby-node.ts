@@ -1,11 +1,8 @@
 import { ICreateSchemaCustomizationHook, IOnCreateNodeHook } from 'gatsby';
 import ImgixClient from 'imgix-core-js';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
-import { invariant, transformUrlForWebProxy } from '../../common/utils';
-import { createImgixFixedSchemaFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';
-import { createImgixFluidSchemaFieldConfig } from '../gatsby-source-url/createImgixFluidFieldConfig';
+import { invariant } from '../../common/utils';
 import { createImgixUrlSchemaFieldConfig } from '../gatsby-source-url/createImgixUrlFieldConfig';
-import { createImgixFixedType } from '../gatsby-source-url/graphqlTypes';
 
 export const onCreateNode: IOnCreateNodeHook<IImgixGatsbyOptions> = async (
   gatsbyContext,
@@ -27,28 +24,6 @@ export const onCreateNode: IOnCreateNodeHook<IImgixGatsbyOptions> = async (
   if (fieldOptions.length < 1) return;
 
   for (const field of fieldOptions) {
-    let fieldValue = undefined as string | string[] | undefined;
-
-    if ('getURL' in field) {
-      fieldValue = field.getURL(node);
-      invariant(
-        fieldValue === undefined ||
-          fieldValue === null ||
-          typeof fieldValue === 'string',
-        'getUrl must return a URL string',
-        reporter,
-      );
-    } else if ('getURLs' in field) {
-      fieldValue = field.getURLs(node);
-      invariant(
-        Array.isArray(fieldValue),
-        'getUrls must return an array of URLs',
-        reporter,
-      );
-    }
-
-    if (!fieldValue) continue;
-
     if (sourceType === ImgixSourceType.WebProxy) {
       invariant(
         domain !== undefined,
@@ -61,17 +36,44 @@ export const onCreateNode: IOnCreateNodeHook<IImgixGatsbyOptions> = async (
         reporter,
       );
 
-      if (Array.isArray(fieldValue))
-        fieldValue = fieldValue.map((url) =>
-          transformUrlForWebProxy(url, domain),
-        );
-      else {
-        fieldValue = transformUrlForWebProxy(fieldValue, domain);
-      }
+      console.log('node, field.fieldName, fieldValue', node, field.fieldName);
+      createNodeField({ node, name: field.fieldName, value: 'test' });
     }
-
-    createNodeField({ node, name: field.fieldName, value: fieldValue });
   }
+};
+
+const getFieldValue = ({
+  fieldOptions,
+  node,
+  domain,
+  reporter,
+}: any): string | string[] => {
+  let fieldValue = undefined as string | string[] | undefined;
+
+  console.log('field', fieldOptions);
+  if (fieldOptions.hasOwnProperty('getURL')) {
+    fieldValue = fieldOptions.getURL(node);
+    invariant(
+      fieldValue == null || typeof fieldValue === 'string',
+      'getURL must return a URL string',
+      reporter,
+    );
+  } else if (fieldOptions.hasOwnProperty('getURLs')) {
+    fieldValue = fieldOptions.getURLs(node);
+    invariant(
+      Array.isArray(fieldValue),
+      'getURLs must return an array of URLs',
+      reporter,
+    );
+  }
+  console.log(fieldValue);
+  if (!fieldValue) throw new Error('No field value');
+  return fieldValue;
+  // if (Array.isArray(fieldValue))
+  //   return fieldValue.map((url) => transformUrlForWebProxy(url, domain));
+  // else {
+  //   return transformUrlForWebProxy(fieldValue, domain);
+  // }
 };
 
 export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGatsbyOptions> = async (
@@ -82,6 +84,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
   const { createTypes } = actions;
 
   const {
+    domain,
     secureURLToken,
     sourceType,
     // namespace,
@@ -100,61 +103,65 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
     reporter,
   );
 
-  const imgixClient: ImgixClient = null as any;
+  const imgixClient: ImgixClient = new ImgixClient({
+    domain: domain,
+    secureURLToken,
+  });
 
-  const ImgixFixedType = createImgixFixedType(
-    // name: ns(namespace, 'ImgixFixed'),
-    cache,
-  );
+  // const ImgixFixedType = createImgixFixedType(
+  //   // name: ns(namespace, 'ImgixFixed'),
+  //   cache,
+  // );
 
-  const ImgixFluidType = createImgixFixedType(
-    // name: ns(namespace, 'ImgixFluid'),
-    cache,
-  );
+  // const ImgixFluidType = createImgixFluidType(
+  //   // name: ns(namespace, 'ImgixFluid'),
+  //   cache,
+  // );
 
-  const ImgixImageType = schema.buildObjectType({
+  console.log('pluginOptions.fields', fields);
+
+  const ImgixImageCustomType = schema.buildObjectType({
     // name: ns(namespace, 'ImgixImage'),
-    name: 'ImgixImage',
+    name: 'ImgixImageCustom',
+    // fields: {},
     fields: {
       url: createImgixUrlSchemaFieldConfig({
-        resolveUrl: (url: string) => url,
+        resolveUrl: (url: string) => {
+          console.log('url', url);
+          return url;
+        },
         imgixClient,
         defaultParams: defaultImgixParams,
       }),
-      fixed: createImgixFixedSchemaFieldConfig({
-        // type: ImgixFixedType,
-        resolveUrl: (url: string) => url,
-        imgixClient,
-        defaultParams: defaultImgixParams,
-        // defaultPlaceholderImgixParams,
-        cache,
-      }),
-      fluid: createImgixFluidSchemaFieldConfig({
-        // type: ImgixFluidType,
-        resolveUrl: (url: string) => url,
-        imgixClient,
-        defaultParams: defaultImgixParams,
-        // defaultPlaceholderImgixParams,
-        cache,
-      }),
+      // fixed: 'ImgixFixed',
+      // fluid: 'ImgixFluid',
     },
   });
 
   const fieldTypes = fields.map((fieldOptions) =>
     schema.buildObjectType({
-      name: `${fieldOptions.nodeType}Fields`,
+      name: `${fieldOptions.nodeType}`,
       fields: {
         [fieldOptions.fieldName]: {
           type:
             'getUrls' in fieldOptions
-              ? `[${ImgixImageType.config.name}]`
-              : ImgixImageType.config.name,
+              ? `[${ImgixImageCustomType.config.name}]`
+              : ImgixImageCustomType.config.name,
+          resolve: (node: any) => {
+            console.log('node', node);
+            return getFieldValue({
+              fieldOptions,
+              node,
+              domain,
+              reporter,
+            });
+          },
         },
       },
     }),
   );
 
   // createTypes([ImgixFixedType, ImgixFluidType]);
-  // createTypes(ImgixImageType);
-  createTypes(fieldTypes);
+  createTypes([ImgixImageCustomType, ...fieldTypes]);
+  // createTypes(fieldTypes);
 };

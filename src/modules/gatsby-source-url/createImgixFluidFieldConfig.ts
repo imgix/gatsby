@@ -9,7 +9,7 @@ import { ComposeFieldConfigAsObject } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import {
-  createGatsbySourceImgixFluidFieldType,
+  createImgixFluidType,
   ImgixUrlParamsInputType,
 } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
@@ -48,7 +48,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   TContext,
   ImgixFluidArgsResolved
 > => ({
-  type: createGatsbySourceImgixFluidFieldType(cache),
+  type: createImgixFluidType(cache),
   description: `Should be used to generate fluid-width images (i.e. images that change when the size of the browser changes). Returns data compatible with gatsby-image. Instead of accessing this data directly, the GatsbySourceImgixFluid fragment should be used. See the project's README for more information.`,
   args: {
     imgixParams: {
