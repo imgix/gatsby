@@ -4,7 +4,9 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
+import fs from 'fs';
 import { GatsbyNode } from 'gatsby';
+import path from 'path';
 import { createLogger } from './common/log';
 
 const log = createLogger('gatsby-node');
@@ -16,10 +18,18 @@ export const onPreInit: GatsbyNode['onPreInit'] = ({ reporter }) => {
 
 // export const createResolvers = () => {};
 export {
-  createResolvers,
-  onPreExtractQueries,
-} from './modules/gatsby-source-url/gatsby-node';
-export {
   createSchemaCustomization,
   onCreateNode,
 } from './modules/gatsby-transform-node/gatsby-node';
+
+export const onPreExtractQueries: GatsbyNode['onPreExtractQueries'] = ({
+  store,
+}) => {
+  const program = store.getState().program;
+
+  // Let's add our fragments to .cache/fragments.
+  fs.copyFileSync(
+    path.resolve(__dirname, '../../../fragments.js'),
+    `${program.directory}/.cache/fragments/imgix-fragments.js`,
+  );
+};
