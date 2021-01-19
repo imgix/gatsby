@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -33,10 +33,11 @@ function aspectRatioIsValid(aspectRatio) {
     }
     return /^\d+(\.\d+)?:\d+(\.\d+)?$/.test(aspectRatio);
 }
-exports.parseStringARParam = function (ar) {
+var parseStringARParam = function (ar) {
     return R.pipe(function (v) { return v.split(':'); }, R.map(function (part) { return parseFloat(part); }), function (_a) {
         var width = _a[0], height = _a[1];
         return width / height;
     }, function (v) { return number_1.roundToDP(3, v); })(ar);
 };
+exports.parseStringARParam = parseStringARParam;
 //# sourceMappingURL=ar.js.map

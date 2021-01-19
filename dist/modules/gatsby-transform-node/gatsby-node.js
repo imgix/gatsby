@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,137 +54,198 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSchemaCustomization = exports.onCreateNode = void 0;
-var imgix_core_js_1 = __importDefault(require("imgix-core-js"));
+exports.createSchemaCustomization = void 0;
+var Do_1 = require("fp-ts-contrib/lib/Do");
+var E = __importStar(require("fp-ts/lib/Either"));
+var pipeable_1 = require("fp-ts/lib/pipeable");
+var graphql_1 = require("graphql");
+var PathReporter_1 = require("io-ts/PathReporter");
+var R = __importStar(require("ramda"));
+var read_pkg_up_1 = __importDefault(require("read-pkg-up"));
 var __1 = require("../..");
-var utils_1 = require("../../common/utils");
+var imgix_core_js_wrapper_1 = require("../../common/imgix-core-js-wrapper");
+var publicTypes_1 = require("../../publicTypes");
 var createImgixFixedFieldConfig_1 = require("../gatsby-source-url/createImgixFixedFieldConfig");
 var createImgixFluidFieldConfig_1 = require("../gatsby-source-url/createImgixFluidFieldConfig");
 var createImgixUrlFieldConfig_1 = require("../gatsby-source-url/createImgixUrlFieldConfig");
 var graphqlTypes_1 = require("../gatsby-source-url/graphqlTypes");
-exports.onCreateNode = function (gatsbyContext, pluginOptions) { return __awaiter(void 0, void 0, void 0, function () {
-    var node, actions, reporter, createNodeField, domain, secureURLToken, sourceType, _a, fields, fieldOptions, _i, fieldOptions_1, field;
-    return __generator(this, function (_b) {
-        node = gatsbyContext.node, actions = gatsbyContext.actions, reporter = gatsbyContext.reporter;
-        createNodeField = actions.createNodeField;
-        domain = pluginOptions.domain, secureURLToken = pluginOptions.secureURLToken, sourceType = pluginOptions.sourceType, _a = pluginOptions.fields, fields = _a === void 0 ? [] : _a;
-        utils_1.invariant(Array.isArray(fields), 'fields must be an array of field options', reporter);
-        fieldOptions = fields.filter(function (fieldOptions) { return fieldOptions.nodeType === node.internal.type; });
-        if (fieldOptions.length < 1)
-            return [2 /*return*/];
-        for (_i = 0, fieldOptions_1 = fieldOptions; _i < fieldOptions_1.length; _i++) {
-            field = fieldOptions_1[_i];
-            if (sourceType === __1.ImgixSourceType.WebProxy) {
-                utils_1.invariant(domain !== undefined, 'an Imgix domain must be provided if sourceType is webProxy', reporter);
-                utils_1.invariant(secureURLToken !== undefined, 'a secure URL token must be provided if sourceType is webProxy', reporter);
-                // TODO: remove
-                createNodeField({ node: node, name: field.fieldName, value: 'test' });
-            }
-        }
-        return [2 /*return*/];
-    });
-}); };
+function isStringArray(value) {
+    return (Array.isArray(value) &&
+        value.every(function (element) { return typeof element === 'string'; }));
+}
 var getFieldValue = function (_a) {
-    var fieldOptions = _a.fieldOptions, node = _a.node, domain = _a.domain, reporter = _a.reporter;
-    var fieldValue = undefined;
-    if (fieldOptions.hasOwnProperty('getURL')) {
-        fieldValue = fieldOptions.getURL(node);
-        utils_1.invariant(fieldValue == null || typeof fieldValue === 'string', 'getURL must return a URL string', reporter);
-    }
-    else if (fieldOptions.hasOwnProperty('getURLs')) {
-        fieldValue = fieldOptions.getURLs(node);
-        utils_1.invariant(Array.isArray(fieldValue), 'getURLs must return an array of URLs', reporter);
-    }
-    if (!fieldValue)
-        throw new Error('No field value');
-    return fieldValue;
-    // if (Array.isArray(fieldValue))
-    //   return fieldValue.map((url) => transformUrlForWebProxy(url, domain));
-    // else {
-    //   return transformUrlForWebProxy(fieldValue, domain);
-    // }
+    var fieldOptions = _a.fieldOptions, node = _a.node;
+    return (function () {
+        if ('getURL' in fieldOptions) {
+            return pipeable_1.pipe(fieldOptions.getURL(node), function (value) {
+                return value == null || typeof value !== 'string'
+                    ? E.left(new Error('getURL must return a URL string'))
+                    : E.right(value);
+            });
+        }
+        else if ('getURLs' in fieldOptions) {
+            return pipeable_1.pipe(fieldOptions.getURLs(node), function (value) {
+                return !isStringArray(value)
+                    ? E.left(new Error('getURL must return a URL string'))
+                    : E.right(value);
+            });
+        }
+        var _neverReturn = fieldOptions; // Fixes typescript error 'not all code paths return a value'
+        return _neverReturn;
+    })();
 };
-exports.createSchemaCustomization = function (gatsbyContext, pluginOptions) { return __awaiter(void 0, void 0, void 0, function () {
-    var actions, cache, schema, reporter, createTypes, domain, secureURLToken, sourceType, 
-    // namespace,
-    defaultImgixParams, _a, 
-    // defaultPlaceholderImgixParams,
-    fields, imgixClient, ImgixFixedType, ImgixFluidType, ImgixImageCustomType, fieldTypes;
-    return __generator(this, function (_b) {
-        actions = gatsbyContext.actions, cache = gatsbyContext.cache, schema = gatsbyContext.schema, reporter = gatsbyContext.reporter;
-        createTypes = actions.createTypes;
-        domain = pluginOptions.domain, secureURLToken = pluginOptions.secureURLToken, sourceType = pluginOptions.sourceType, defaultImgixParams = pluginOptions.defaultImgixParams, _a = pluginOptions.fields, fields = _a === void 0 ? [] : _a;
-        utils_1.invariant(Array.isArray(fields), 'fields must be an array of field options', reporter);
-        utils_1.invariant(sourceType !== __1.ImgixSourceType.WebProxy || Boolean(secureURLToken), 'a secure URL token must be provided if sourceType is webProxy', reporter);
-        imgixClient = new imgix_core_js_1.default({
-            domain: domain,
-            secureURLToken: secureURLToken,
-        });
-        ImgixFixedType = graphqlTypes_1.createImgixFixedType({
-            name: 'ImgixNodeFixed',
-            cache: cache,
-        });
-        ImgixFluidType = graphqlTypes_1.createImgixFluidType({
-            name: 'ImgixNodeFluid',
-            cache: cache,
-        });
-        ImgixImageCustomType = schema.buildObjectType({
-            name: 'ImgixNodeRoot',
-            fields: {
-                url: createImgixUrlFieldConfig_1.createImgixUrlSchemaFieldConfig({
-                    resolveUrl: function (url) { return url; },
-                    imgixClient: imgixClient,
-                    defaultParams: defaultImgixParams,
-                }),
-                fluid: createImgixFluidFieldConfig_1.createImgixFluidSchemaFieldConfig({
-                    type: ImgixFluidType,
-                    cache: cache,
-                    imgixClient: imgixClient,
-                    resolveUrl: function (url) { return url; },
-                }),
-                fixed: createImgixFixedFieldConfig_1.createImgixFixedSchemaFieldConfig({
-                    type: ImgixFixedType,
-                    cache: cache,
-                    imgixClient: imgixClient,
-                    resolveUrl: function (url) { return url; },
-                }),
-            },
-        });
-        fieldTypes = fields.map(function (fieldOptions) {
-            var _a;
-            return schema.buildObjectType({
-                name: "" + fieldOptions.nodeType,
-                fields: (_a = {},
-                    _a[fieldOptions.fieldName] = {
-                        type: 'getURLs' in fieldOptions
-                            ? "[" + ImgixImageCustomType.config.name + "]"
-                            : ImgixImageCustomType.config.name,
-                        resolve: function (node) {
-                            return getFieldValue({
-                                fieldOptions: fieldOptions,
-                                node: node,
-                                domain: domain,
-                                reporter: reporter,
-                            });
+var decodeOptionsE = function (options) {
+    return pipeable_1.pipe(options, publicTypes_1.ImgixGatsbyOptionsIOTS.decode, E.mapLeft(function (errs) {
+        return new Error("The plugin config is not in the correct format. Errors: " + PathReporter_1.PathReporter.report(E.left(errs)));
+    }), E.chain(function (options) {
+        if (options.sourceType === 'webProxy' &&
+            (options.secureURLToken == null || options.secureURLToken.trim() === '')) {
+            return E.left(new Error("The plugin option 'secureURLToken' is required when sourceType is 'webProxy'."));
+        }
+        if (options.fields != null && !Array.isArray(options.fields)) {
+            return E.left(new Error('Fields must be an array of field options'));
+        }
+        if (options.sourceType === __1.ImgixSourceType.WebProxy &&
+            (options.secureURLToken == null || options.secureURLToken.trim() === '')) {
+            return E.left(new Error('A secure URL token must be provided if sourceType is webProxy'));
+        }
+        return E.right(options);
+    }));
+};
+var getPackageVersionE = function () {
+    var _a, _b;
+    return pipeable_1.pipe((_b = (_a = read_pkg_up_1.default.sync({ cwd: __dirname })) === null || _a === void 0 ? void 0 : _a.packageJson) === null || _b === void 0 ? void 0 : _b.version, E.fromNullable(new Error('Could not read package version.')));
+};
+var setupImgixClientE = function (_a) {
+    var options = _a.options, packageVersion = _a.packageVersion;
+    return Do_1.Do(E.either)
+        .bind('imgixClient', imgix_core_js_wrapper_1.createImgixClient({
+        domain: options.domain,
+        secureURLToken: options.secureURLToken,
+    }))
+        .doL(function (_a) {
+        var imgixClient = _a.imgixClient;
+        imgixClient.includeLibraryParam = false;
+        if (options.disableIxlibParam !== true) {
+            imgixClient.settings.libraryParam = "gatsby-source-url-" + packageVersion;
+        }
+        return E.right(imgixClient);
+    })
+        .return(R.prop('imgixClient'));
+};
+var createSchemaCustomization = function (gatsbyContext, _options) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/, pipeable_1.pipe(Do_1.Do(E.either)
+                .bind('options', decodeOptionsE(_options))
+                .bind('packageVersion', getPackageVersionE())
+                .bindL('imgixClient', function (_a) {
+                var options = _a.options, packageVersion = _a.packageVersion;
+                return setupImgixClientE({ options: options, packageVersion: packageVersion });
+            })
+                .let('imgixFixedType', graphqlTypes_1.createImgixFixedType({
+                name: 'ImgixFixed',
+                cache: gatsbyContext.cache,
+            }))
+                .let('imgixFluidType', graphqlTypes_1.createImgixFluidType({
+                name: 'ImgixFluid',
+                cache: gatsbyContext.cache,
+            }))
+                .letL('imgixImageType', function (_a) {
+                var imgixFluidType = _a.imgixFluidType, imgixFixedType = _a.imgixFixedType, imgixClient = _a.imgixClient, defaultImgixParams = _a.options.defaultImgixParams;
+                return new graphql_1.GraphQLObjectType({
+                    name: 'ImgixImage',
+                    fields: {
+                        url: createImgixUrlFieldConfig_1.createImgixUrlFieldConfig({
+                            resolveUrl: R.prop('rawURL'),
+                            imgixClient: imgixClient,
+                            defaultParams: defaultImgixParams,
+                        }),
+                        fluid: createImgixFluidFieldConfig_1.createImgixFluidFieldConfig({
+                            type: imgixFluidType,
+                            cache: gatsbyContext.cache,
+                            imgixClient: imgixClient,
+                            resolveUrl: R.prop('rawURL'),
+                            defaultParams: defaultImgixParams,
+                        }),
+                        fixed: createImgixFixedFieldConfig_1.createImgixFixedFieldConfig({
+                            type: imgixFixedType,
+                            cache: gatsbyContext.cache,
+                            imgixClient: imgixClient,
+                            resolveUrl: R.prop('rawURL'),
+                            defaultParams: defaultImgixParams,
+                        }),
+                    },
+                });
+            })
+                .letL('fieldTypes', function (_a) {
+                var imgixImageType = _a.imgixImageType, _b = _a.options, domain = _b.domain, _c = _b.fields, fields = _c === void 0 ? [] : _c;
+                return fields.map(function (fieldOptions) {
+                    var _a;
+                    return gatsbyContext.schema.buildObjectType({
+                        name: "" + fieldOptions.nodeType,
+                        fields: (_a = {},
+                            _a[fieldOptions.fieldName] = {
+                                type: 'getURLs' in fieldOptions
+                                    ? "[" + imgixImageType.name + "]"
+                                    : imgixImageType.name,
+                                resolve: function (node) {
+                                    var rawURLE = getFieldValue({
+                                        fieldOptions: fieldOptions,
+                                        node: node,
+                                    });
+                                    return {
+                                        rawURL: E.getOrElseW(function () {
+                                            return gatsbyContext.reporter.panic("Error when resolving URL value for node type " + fieldOptions.nodeType);
+                                        })(rawURLE),
+                                    };
+                                },
+                            },
+                            _a),
+                    });
+                });
+            })
+                .letL('rootType', function (_a) {
+                var imgixImageType = _a.imgixImageType;
+                return gatsbyContext.schema.buildObjectType({
+                    name: 'Query',
+                    fields: {
+                        imgixImage: {
+                            type: imgixImageType,
+                            resolve: function (_, args) {
+                                if ((args === null || args === void 0 ? void 0 : args.url) == null || typeof (args === null || args === void 0 ? void 0 : args.url) !== 'string') {
+                                    return null;
+                                }
+                                return { rawURL: args === null || args === void 0 ? void 0 : args.url };
+                            },
+                            args: {
+                                url: {
+                                    type: graphql_1.GraphQLNonNull(graphql_1.GraphQLString),
+                                    description: 'The path of the image to render. If using a Web Proxy Source, this must be a fully-qualified URL.',
+                                },
+                            },
                         },
                     },
-                    _a),
-            });
-        });
-        createTypes([ImgixFixedType, ImgixFluidType]);
-        createTypes(__spreadArrays([ImgixImageCustomType], fieldTypes));
-        return [2 /*return*/];
+                });
+            })
+                .doL(function (_a) {
+                var imgixFixedType = _a.imgixFixedType, imgixFluidType = _a.imgixFluidType, imgixImageType = _a.imgixImageType, rootType = _a.rootType, fieldTypes = _a.fieldTypes, _b = _a.options;
+                return E.tryCatch(function () {
+                    var createTypes = gatsbyContext.actions.createTypes;
+                    createTypes([imgixFixedType, imgixFluidType]);
+                    createTypes(fieldTypes);
+                    createTypes(imgixImageType);
+                    createTypes(rootType);
+                }, function (e) { return (e instanceof Error ? e : new Error('unknown error')); });
+            })
+                .return(function () { return undefined; }), E.getOrElseW(function (err) {
+                gatsbyContext.reporter.panic("[@imgix/gatsby] Fatal error during setup: " + String(err));
+                throw err;
+            }))];
     });
 }); };
+exports.createSchemaCustomization = createSchemaCustomization;
 //# sourceMappingURL=gatsby-node.js.map

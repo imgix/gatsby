@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -29,7 +29,7 @@ var log_1 = require("../../common/log");
 var sequenceTTE = Apply_1.sequenceT(TE.taskEither);
 var sequenceSO = Apply_1.sequenceS(O.option);
 var log = log_1.createLogger('resolveDimensions');
-exports.resolveDimensions = function (_a) {
+var resolveDimensions = function (_a) {
     var url = _a.url, manualHeight = _a.manualHeight, manualWidth = _a.manualWidth, cache = _a.cache, client = _a.client;
     var WidthHeightTE = pipeable_1.pipe(sequenceSO({ width: manualHeight, height: manualHeight }), O.fold(function () { return TE.left(new Error("Couldn't find manual width on obj")); }, TE.right));
     return pipeable_1.pipe(WidthHeightTE, TE.map(log_1.trace('manual width and height', log)), TE.orElse(function () {
@@ -42,4 +42,5 @@ exports.resolveDimensions = function (_a) {
         }));
     }));
 };
+exports.resolveDimensions = resolveDimensions;
 //# sourceMappingURL=resolveDimensions.js.map

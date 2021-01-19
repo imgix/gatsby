@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -25,7 +25,7 @@ var R = __importStar(require("ramda"));
 var createImgixFixedFieldConfig_1 = require("./createImgixFixedFieldConfig");
 var createImgixFluidFieldConfig_1 = require("./createImgixFluidFieldConfig");
 var createImgixUrlFieldConfig_1 = require("./createImgixUrlFieldConfig");
-exports.createRootImgixImageType = function (imgixClient, cache, defaultParams) { return ({
+var createRootImgixImageType = function (imgixClient, cache, defaultParams) { return ({
     args: {
         url: {
             type: graphql_1.GraphQLNonNull(graphql_1.GraphQLString),
@@ -58,4 +58,5 @@ exports.createRootImgixImageType = function (imgixClient, cache, defaultParams) 
         return { rawUrl: args.url };
     },
 }); };
+exports.createRootImgixImageType = createRootImgixImageType;
 //# sourceMappingURL=createRootImgixImageType.js.map

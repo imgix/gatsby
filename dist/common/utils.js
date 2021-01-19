@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -27,7 +27,7 @@ var pipeable_1 = require("fp-ts/lib/pipeable");
 var Semigroup_1 = require("fp-ts/lib/Semigroup");
 var TE = __importStar(require("fp-ts/lib/TaskEither"));
 var node_fetch_1 = __importDefault(require("node-fetch"));
-exports.taskEitherFromSourceDataResolver = function (resolver, predicate) { return function (source) {
+var taskEitherFromSourceDataResolver = function (resolver, predicate) { return function (source) {
     return TE.tryCatch(function () {
         return Promise.resolve(resolver(source)).then(function (data) {
             if (data == null)
@@ -40,27 +40,33 @@ exports.taskEitherFromSourceDataResolver = function (resolver, predicate) { retu
         });
     }, function (reason) { return new Error(String(reason)); });
 }; };
+exports.taskEitherFromSourceDataResolver = taskEitherFromSourceDataResolver;
 // TODO: maybe better url type here?
-exports.resolveUrlFromSourceData = function (resolver) { return exports.taskEitherFromSourceDataResolver(resolver, function (data) { return data != null; }); };
+var resolveUrlFromSourceData = function (resolver) { return exports.taskEitherFromSourceDataResolver(resolver, function (data) { return data != null; }); };
+exports.resolveUrlFromSourceData = resolveUrlFromSourceData;
 exports.semigroupImgixUrlParams = Semigroup_1.getObjectSemigroup();
-exports.noop = function () {
+var noop = function () {
     // noop
 };
-exports.fetch = function (url) {
+exports.noop = noop;
+var fetch = function (url) {
     return TE.tryCatch(function () { return node_fetch_1.default(url); }, function (reason) { return new Error(String(reason)); });
 };
+exports.fetch = fetch;
 // export const taskOptionFromPromise = <T>(p: Promise<T>): Task<Option<T>> =>
-exports.fetchJSON = function (url) {
+var fetchJSON = function (url) {
     return pipeable_1.pipe(url, exports.fetch, TE.chain(function (res) { return TE.rightTask(function () { return res.json(); }); }));
 };
+exports.fetchJSON = fetchJSON;
 function invariant(condition, msg, reporter) {
     if (!condition)
         reporter.panic("Invariant failed: " + msg);
 }
 exports.invariant = invariant;
-exports.transformUrlForWebProxy = function (url, domain) {
+var transformUrlForWebProxy = function (url, domain) {
     var instance = new URL("https://" + domain);
     instance.pathname = encodeURIComponent(url);
     return instance.toString();
 };
+exports.transformUrlForWebProxy = transformUrlForWebProxy;
 //# sourceMappingURL=utils.js.map

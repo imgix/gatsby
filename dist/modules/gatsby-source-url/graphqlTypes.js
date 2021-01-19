@@ -70,7 +70,7 @@ var createBase64ConfigWithResolver = function (cache) {
         cache: cache,
     });
 };
-exports.createImgixFluidType = function (_a) {
+var createImgixFluidType = function (_a) {
     var cache = _a.cache, name = _a.name;
     return new graphql_1.GraphQLObjectType({
         name: name !== null && name !== void 0 ? name : 'ImgixFluid',
@@ -85,14 +85,16 @@ exports.createImgixFluidType = function (_a) {
         },
     });
 };
+exports.createImgixFluidType = createImgixFluidType;
 var fluidType;
-exports.getImgixFluidType = function (args) {
+var getImgixFluidType = function (args) {
     if (!fluidType) {
         fluidType = exports.createImgixFluidType.apply(void 0, args);
     }
     return fluidType;
 };
-exports.createImgixFixedType = function (_a) {
+exports.getImgixFluidType = getImgixFluidType;
+var createImgixFixedType = function (_a) {
     var name = _a.name, cache = _a.cache;
     return new graphql_1.GraphQLObjectType({
         name: name !== null && name !== void 0 ? name : 'ImgixFixed',
@@ -108,5 +110,6 @@ exports.createImgixFixedType = function (_a) {
         },
     });
 };
+exports.createImgixFixedType = createImgixFixedType;
 exports.gatsbySourceImgixUrlFieldType = graphql_1.GraphQLString;
 //# sourceMappingURL=graphqlTypes.js.map

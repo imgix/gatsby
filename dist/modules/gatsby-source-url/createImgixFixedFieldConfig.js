@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -31,7 +31,7 @@ var graphqlTypes_1 = require("./graphqlTypes");
 var objectBuilders_1 = require("./objectBuilders");
 var resolveDimensions_1 = require("./resolveDimensions");
 exports.DEFAULT_FIXED_WIDTH = 8192;
-exports.createImgixFixedFieldConfig = function (_a) {
+var createImgixFixedFieldConfig = function (_a) {
     var imgixClient = _a.imgixClient, resolveUrl = _a.resolveUrl, _b = _a.resolveWidth, resolveWidth = _b === void 0 ? function () { return undefined; } : _b, _c = _a.resolveHeight, resolveHeight = _c === void 0 ? function () { return undefined; } : _c, cache = _a.cache, defaultParams = _a.defaultParams, type = _a.type;
     return ({
         type: type !== null && type !== void 0 ? type : graphqlTypes_1.createImgixFixedType({ cache: cache }),
@@ -99,7 +99,9 @@ exports.createImgixFixedFieldConfig = function (_a) {
         },
     });
 };
-exports.createImgixFixedSchemaFieldConfig = function (args) {
+exports.createImgixFixedFieldConfig = createImgixFixedFieldConfig;
+var createImgixFixedSchemaFieldConfig = function (args) {
     return exports.createImgixFixedFieldConfig(args);
 };
+exports.createImgixFixedSchemaFieldConfig = createImgixFixedSchemaFieldConfig;
 //# sourceMappingURL=createImgixFixedFieldConfig.js.map

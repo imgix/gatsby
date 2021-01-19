@@ -1,3 +1,15 @@
+# [1.0.0-rc.7](https://github.com/imgix/gatsby/compare/v1.0.0-rc.6...v1.0.0-rc.7) (2021-01-19)
+
+
+### Bug Fixes
+
+* allow options.fields to be null ([0745ca6](https://github.com/imgix/gatsby/commit/0745ca69aa1641b1ad2c32bab3e2f99ec768dfcd))
+
+
+### Features
+
+* add default params to fixed and fluid fields ([dfc5a99](https://github.com/imgix/gatsby/commit/dfc5a99533e9f0205259f4cdba4298689b1e4d98))
+
 # [1.0.0-rc.6](https://github.com/imgix/gatsby/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2021-01-13)
 
 

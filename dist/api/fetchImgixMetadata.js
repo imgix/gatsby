@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -33,11 +33,12 @@ exports.ImgixMetadata = t.type({
     PixelWidth: t.number,
     PixelHeight: t.number,
 });
-exports.fetchImgixMetadata = function (cache, client) { return function (url) {
+var fetchImgixMetadata = function (cache, client) { return function (url) {
     return cache_1.withCache("gatsby-plugin-imgix-metadata-" + url, cache, function () {
         return function_1.pipe(client.buildURL(url, { fm: 'json' }), log_1.trace('imgix metadata url', log), utils_1.fetchJSON, TE.map(log_1.trace('imgix metadata result', log)), TE.chain(function_1.flow(exports.ImgixMetadata.decode, E.orElse(function () {
             return E.left(new Error('Problem when decoding imgix metadata.'));
         }), TE.fromEither)), TE.map(log_1.trace('decoded data', log)), TE.mapLeft(log_1.trace('imgix metadata error', log)));
     });
 }; };
+exports.fetchImgixMetadata = fetchImgixMetadata;
 //# sourceMappingURL=fetchImgixMetadata.js.map

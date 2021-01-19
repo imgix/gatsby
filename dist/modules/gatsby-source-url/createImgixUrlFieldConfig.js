@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -26,7 +26,7 @@ var TE = __importStar(require("fp-ts/lib/TaskEither"));
 var R = __importStar(require("ramda"));
 var utils_1 = require("../../common/utils");
 var graphqlTypes_1 = require("./graphqlTypes");
-exports.createImgixUrlFieldConfig = function (_a) {
+var createImgixUrlFieldConfig = function (_a) {
     var imgixClient = _a.imgixClient, resolveUrl = _a.resolveUrl, defaultParams = _a.defaultParams;
     return ({
         type: graphqlTypes_1.gatsbySourceImgixUrlFieldType,
@@ -45,7 +45,9 @@ exports.createImgixUrlFieldConfig = function (_a) {
         },
     });
 };
-exports.createImgixUrlSchemaFieldConfig = function (args) {
+exports.createImgixUrlFieldConfig = createImgixUrlFieldConfig;
+var createImgixUrlSchemaFieldConfig = function (args) {
     return exports.createImgixUrlFieldConfig(args);
 };
+exports.createImgixUrlSchemaFieldConfig = createImgixUrlSchemaFieldConfig;
 //# sourceMappingURL=createImgixUrlFieldConfig.js.map

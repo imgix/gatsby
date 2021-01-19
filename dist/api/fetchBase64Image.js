@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -24,10 +24,11 @@ var function_1 = require("fp-ts/lib/function");
 var TE = __importStar(require("fp-ts/lib/TaskEither"));
 var cache_1 = require("../common/cache");
 var utils_1 = require("../common/utils");
-exports.buildBase64URL = function (contentType, base64) {
+var buildBase64URL = function (contentType, base64) {
     return "data:" + contentType + ";base64," + base64;
 };
-exports.fetchImgixBase64Image = function (cache) { return function (url) {
+exports.buildBase64URL = buildBase64URL;
+var fetchImgixBase64Image = function (cache) { return function (url) {
     return cache_1.withCache("gatsby-plugin-imgix-base64-url-" + url, cache, function () {
         return function_1.pipe(url, utils_1.fetch, TE.chain(function (res) {
             return function_1.pipe(TE.rightTask(function () { return res.buffer(); }), TE.chain(function (buffer) { return TE.right(buffer.toString('base64')); }), TE.chain(function (base64) {
@@ -36,4 +37,5 @@ exports.fetchImgixBase64Image = function (cache) { return function (url) {
         }));
     });
 }; };
+exports.fetchImgixBase64Image = fetchImgixBase64Image;
 //# sourceMappingURL=fetchBase64Image.js.map

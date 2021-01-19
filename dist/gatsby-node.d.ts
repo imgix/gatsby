@@ -5,6 +5,6 @@
  */
 import { GatsbyNode } from 'gatsby';
 export declare const onPreInit: GatsbyNode['onPreInit'];
-export { createResolvers, onPreExtractQueries, } from './modules/gatsby-source-url/gatsby-node';
-export { createSchemaCustomization, onCreateNode, } from './modules/gatsby-transform-node/gatsby-node';
+export { createSchemaCustomization } from './modules/gatsby-transform-node/gatsby-node';
+export declare const onPreExtractQueries: GatsbyNode['onPreExtractQueries'];
 //# sourceMappingURL=gatsby-node.d.ts.map

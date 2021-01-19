@@ -25,7 +25,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -36,7 +36,7 @@ var log_1 = require("../../common/log");
 var createImgixFixedFieldConfig_1 = require("./createImgixFixedFieldConfig");
 var parseAspectRatioFloatFromString = R.pipe(R.split(':'), R.head, function (v) { return parseInt(v); });
 var DEFAULT_LQIP_PARAMS = { w: 20, blur: 15, q: 20 };
-exports.buildFluidObject = function (_a) {
+var buildFluidObject = function (_a) {
     var client = _a.client, url = _a.url, sourceWidth = _a.sourceWidth, sourceHeight = _a.sourceHeight, args = _a.args, defaultParams = _a.defaultParams, defaultPlaceholderParams = _a.defaultPlaceholderParams;
     var maxWidthAndHeightSet = args.maxHeight != null && args.maxWidth != null;
     var aspectRatio = (function () {
@@ -76,6 +76,7 @@ exports.buildFluidObject = function (_a) {
         sizes: '(min-width: 8192px) 8192px, 100vw',
     };
 };
+exports.buildFluidObject = buildFluidObject;
 function buildImgixFixed(_a) {
     var client = _a.client, url = _a.url, sourceWidth = _a.sourceWidth, sourceHeight = _a.sourceHeight, args = _a.args, defaultParams = _a.defaultParams, defaultPlaceholderParams = _a.defaultPlaceholderParams;
     var aspectRatio = (function () {
