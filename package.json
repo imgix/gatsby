@@ -126,7 +126,6 @@
         {
           "assets": [
             "src/**",
-            "dist/**",
             "package.json",
             "CHANGELOG.md"
           ],
