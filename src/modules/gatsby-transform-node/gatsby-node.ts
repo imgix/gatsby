@@ -1,18 +1,13 @@
 import { Do } from 'fp-ts-contrib/lib/Do';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
-import {
-  ICreateSchemaCustomizationHook,
-  IOnCreateNodeHook,
-  PatchedPluginOptions,
-} from 'gatsby';
+import { ICreateSchemaCustomizationHook, PatchedPluginOptions } from 'gatsby';
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { PathReporter } from 'io-ts/PathReporter';
 import * as R from 'ramda';
 import readPkgUp from 'read-pkg-up';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
 import { createImgixClient } from '../../common/imgix-core-js-wrapper';
-import { invariant } from '../../common/utils';
 import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';
 import { createImgixFluidFieldConfig } from '../gatsby-source-url/createImgixFluidFieldConfig';
@@ -21,42 +16,6 @@ import {
   createImgixFixedType,
   createImgixFluidType,
 } from '../gatsby-source-url/graphqlTypes';
-
-// TODO: remove
-export const onCreateNode: IOnCreateNodeHook<IImgixGatsbyOptions> = async (
-  gatsbyContext,
-  pluginOptions,
-) => {
-  const { node, actions, reporter } = gatsbyContext;
-  const { createNodeField } = actions;
-
-  const { domain, secureURLToken, sourceType, fields = [] } = pluginOptions;
-  invariant(
-    Array.isArray(fields),
-    'fields must be an array of field options',
-    reporter,
-  );
-
-  const fieldOptions = fields.filter(
-    (fieldOptions) => fieldOptions.nodeType === node.internal.type,
-  );
-  if (fieldOptions.length < 1) return;
-
-  for (const field of fieldOptions) {
-    if (sourceType === ImgixSourceType.WebProxy) {
-      invariant(
-        domain !== undefined,
-        'an Imgix domain must be provided if sourceType is webProxy',
-        reporter,
-      );
-      invariant(
-        secureURLToken !== undefined,
-        'a secure URL token must be provided if sourceType is webProxy',
-        reporter,
-      );
-    }
-  }
-};
 
 function isStringArray(value: unknown): value is string[] {
   return (
