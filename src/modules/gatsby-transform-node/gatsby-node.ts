@@ -112,7 +112,7 @@ const decodeOptionsE = (options: PatchedPluginOptions<IImgixGatsbyOptions>) =>
           ),
         );
       }
-      if (!Array.isArray(options.fields)) {
+      if (options.fields != null && !Array.isArray(options.fields)) {
         return E.left(new Error('Fields must be an array of field options'));
       }
       if (
