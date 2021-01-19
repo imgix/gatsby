@@ -16,11 +16,7 @@ export const onPreInit: GatsbyNode['onPreInit'] = ({ reporter }) => {
   log('Loaded @imgix/gatsby (onPreInit)');
 };
 
-// export const createResolvers = () => {};
-export {
-  createSchemaCustomization,
-  onCreateNode,
-} from './modules/gatsby-transform-node/gatsby-node';
+export { createSchemaCustomization } from './modules/gatsby-transform-node/gatsby-node';
 
 export const onPreExtractQueries: GatsbyNode['onPreExtractQueries'] = ({
   store,
