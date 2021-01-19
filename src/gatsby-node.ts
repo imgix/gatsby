@@ -29,7 +29,7 @@ export const onPreExtractQueries: GatsbyNode['onPreExtractQueries'] = ({
 
   // Let's add our fragments to .cache/fragments.
   fs.copyFileSync(
-    path.resolve(__dirname, '../../../fragments.js'),
+    path.resolve(__dirname, '../fragments.js'),
     `${program.directory}/.cache/fragments/imgix-fragments.js`,
   );
 };
