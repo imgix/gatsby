@@ -259,7 +259,6 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                 _: any,
                 args: Record<string, unknown>,
               ): IRootSource | null {
-                console.log('args?.url', args?.url);
                 if (args?.url == null || typeof args?.url !== 'string') {
                   return null;
                 }
