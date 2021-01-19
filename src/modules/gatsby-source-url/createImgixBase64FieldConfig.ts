@@ -20,9 +20,10 @@ interface CreateImgixBase64UrlFieldConfigArgs<TSource> {
 export function createImgixBase64FieldConfig<TSource, TContext = unknown>({
   resolveUrl,
   cache,
-}: CreateImgixBase64UrlFieldConfigArgsWithResolver<
-  TSource
->): GraphQLFieldConfig<TSource, TContext> {
+}: CreateImgixBase64UrlFieldConfigArgsWithResolver<TSource>): GraphQLFieldConfig<
+  TSource,
+  TContext
+> {
   return {
     type: new GraphQLNonNull(GraphQLString),
     resolve: (obj: TSource): Promise<string> =>
