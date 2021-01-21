@@ -151,11 +151,11 @@ The easiest way to find a node's type is to hover over the `node` in the GraphiQ
 
 In the screenshot below, we have hovered over the `node` field, and we can see the type is `ContentfulAsset`. This is the value we can set in the plugin's config.
 
-![hovering over node type to see node type is ContentfulAsset](./assets/transform-hover-node.png)
+<img alt="hovering over node type to see node type is ContentfulAsset" src="assets/transform-hover-node.png" width="324"/>
 
 It's also possible to add `__typeName` to the GraphQL query to find the node type. This is useful if you are unable to use the GraphiQL explorer. Here we can see again that the node type is `ContentfulAsset`
 
-![node type is again ContentfulAsset](./assets/typename-query.png)
+<img alt="node type is again ContentfulAsset" src="assets/typename-query.png" width="892" />
 
 #### Default imgix parameters
 
