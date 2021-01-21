@@ -115,30 +115,39 @@ module.exports = {
     {
       resolve: `@imgix/gatsby`,
       options: {
-        // This is the domain of your imgix source, which can be created at https://dashboard.imgix.com/.
+        // This is the domain of your imgix source, which can be created at
+        // https://dashboard.imgix.com/.
         // Only "Web Proxy" imgix sources can be used for this configuration.
         domain: 'example.imgix.net',
 
-        // This is the source's secure token. Can be found under the "Security" heading in your source's configuration page, and revealed by tapping "Show Token"
+        // This is the source's secure token. Can be found under the "Security"
+        // heading in your source's configuration page, and revealed by tapping
+        // "Show Token".
         secureURLToken: 'abcABC123',
 
-        // This configures the plugin to work in proxy mode
+        // This configures the plugin to work in proxy mode.
         sourceType: ImgixSourceType.WebProxy,
 
-        // These are some default imgix parameters to set for each image. It is recommended to have at least this minimal configuration.
+        // These are some default imgix parameters to set for each image. It is
+        // recommended to have at least this minimal configuration.
         defaultImgixParams: { auto: 'format,compress' },
 
-        // This configures which nodes to modify
+        // This configures which nodes to modify.
         fields: [
           // Add an object to this array for each node type you want to modify
           {
-            // This is an example for Contentful
+            // This is an example for Contentful.
 
-            // This is the GraphQL node type that you want to modify. There's more info on how to find this below.
+            // This is the GraphQL node type that you want to modify. There's
+            // more info on how to find this below.
             nodeType: 'ContentfulAsset',
 
-            // This is used to pull the raw image URL from the node you want to transform. It is passed the node to transform as an argument, and expects a URL to be returned.
-            // This needs to return a fully-qualified URL, which is why we are prepending `https:`, since contentful provides protocol-less URLs.
+            // This is used to pull the raw image URL from the node you want to
+            // transform. It is passed the node to transform as an argument, and
+            // expects a URL to be returned.
+            // This needs to return a fully-qualified URL, which is why we are
+            // prepending `https:`, since contentful provides protocol-less
+            // URLs.
             getURL: (node) => `https:${node.file.url}`,
 
             // This is the name of imgix field that will be added to the type.
