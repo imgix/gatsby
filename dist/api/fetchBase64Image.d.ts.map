@@ -1,1 +1,0 @@
-{"version":3,"file":"fetchBase64Image.d.ts","sourceRoot":"","sources":["../../src/api/fetchBase64Image.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,MAAM,sBAAsB,CAAC;AAC3C,OAAO,EAAE,WAAW,EAAE,MAAM,QAAQ,CAAC;AAIrC,eAAO,MAAM,cAAc,gBAAiB,MAAM,UAAU,MAAM,KAAG,MAC7B,CAAC;AAEzC,eAAO,MAAM,qBAAqB,UAAW,WAAW,WACjD,MAAM,KACV,GAAG,UAAU,CAAC,KAAK,EAAE,MAAM,CAiB3B,CAAC"}
