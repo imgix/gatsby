@@ -85,12 +85,202 @@ Finally, check out the section in the usage guide below that most suits your nee
 
 To find what part of this usage guide you should read, select the use case below that best matches your use case:
 
-- I load images on the server from an imgix source, and I want to use these images with gatsby-image or an `<img>` element, with blur-up support 👉 [graphql `imgixImage` api](#graphql-imgiximage-api)
-- I load image URLs on the server **and client** and I want to transform these into a format that is compatible with gatsby-image, **without** blur-up support 👉[url tranform function](#url-transform-function)
+- I have images provided by a **Gatsby source** (e.g. Contentful, Prismic) 👉 [graphql transform node API](#graphql-transform-API)
+- My images are statically defined at build time 👉 [graphql `imgixImage` API](#graphql-imgiximage-api)
+- My images are set dynamically (e.g. loaded from REST API on client) 👉 [url tranform function](#url-transform-function)
+
+## GraphQL transform API
+
+This feature can be best thought of as a replacement for gatsby-image-sharp, for images that are provided by Gatsby Source plugins, such as Contentful or Prismic. These plugins provide data that is accessed with the Gatsby GraphQL API, with images that are stored on the internet. This plugin can transform those images using imgix, and serve them to your customers.
+
+### Configuration
+
+This source must be configured in your `gatsby-config` file as follows:
+
+```js
+// Add to start of file
+const { ImgixSourceType } = require("@imgix/gatsby")
+
+module.exports = {
+  //...
+  plugins: [
+    // your other plugins here
+    {
+      resolve: `@imgix/gatsby`,
+      options: {
+        // This is the domain of your imgix source, which can be created at https://dashboard.imgix.com/. 
+        // Only "Web Proxy" imgix sources can be used for this configuration.
+        domain: 'example.imgix.net',
+
+        // This is the source's secure token. Can be found under the "Security" heading in your source's configuration page, and revealed by tapping "Show Token"
+        secureURLToken: "abcABC123",
+
+        // This configures the plugin to work in proxy mode
+        sourceType: ImgixSourceType.WebProxy,
+
+        // These are some default imgix parameters to set for each image. It is recommended to have at least this minimal configuration.
+        defaultImgixParams: { auto: 'format,compress' },
+
+        // This configures which nodes to modify
+        fields: [
+          // Add an object to this array for each node type you want to modify
+          {
+            // This is an example for Contentful
+
+            // This is the GraphQL node type that you want to modify. There's more info on how to find this below. 
+            nodeType: "ContentfulAsset",
+
+            // This is used to pull the raw image URL from the node you want to transform. It is passed the node to transform as an argument, and expects a URL to be returned. 
+            // This needs to return a fully-qualified URL, which is why we are prepending `https:`, since contentful provides protocol-less URLs.
+            getURL: node => `https:${node.file.url}`,
+
+            // This is the name of imgix field that will be added to the type.
+            fieldName: "imgixImage",
+          },
+          // Add other elements for each node type to transform.
+        ]
+      },
+    },
+  ],
+};
+```
+
+#### Finding a node's type
+
+The easiest way to find a node's type is to hover over the `node` in the GraphiQL query explorer. This can usually be found at http://localhost:8000/__graphql. 
+
+In the screenshot below, we have hovered over the `node` field, and we can see the type is `ContentfulAsset`. This is the value we can set in the plugin's config.
+
+![hovering over node type to see node type is ContentfulAsset](./assets/transform-hover-node.png)
+
+It's also possible to add `__typeName` to the GraphQL query to find the node type. This is useful if you are unable to use the GraphiQL explorer. Here we can see again that the node type is `ContentfulAsset`
+
+![node type is again ContentfulAsset](./assets/typename-query.png)
+
+#### Default imgix parameters
+
+Setting `auto: ['format', 'compress']` is highly recommended. This will re-format the image to the format that is best optimized for your browser, such as WebP. It will also reduce unnecessary wasted file size, such as transparency on a non-transparent image. More information about the auto parameter can be found [here](https://docs.imgix.com/apis/url/auto/auto).
+
+### Fluid Images
+
+The following code will render a fluid image with gatsby-image. This code should already be familiar to you if you've used gatsby-image in the past.
+
+```jsx
+import gql from 'graphql-tag';
+import Img from 'gatsby-image';
+
+export default ({ data }) => {
+  return <Img fluid={{ ...data.allContentfulAsset.edges[0].node.imgixImage.fluid, sizes: '100vw' }} />;
+};
+
+export const query = gql`
+  {
+    allContentfulAsset {
+      edges {
+        node {
+          imgixImage {
+            fluid(imgixParams: {
+              // pass any imgix parameters you want to here
+            }) {
+              ...GatsbyImgixFluid
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+```
+
+A full list of imgix parameters can be found [here](https://docs.imgix.com/apis/url).
+
+Although `sizes` is optional, it is highly recommended. It has a default of `(max-width: 8192px) 100vw, 8192px`, which means that it is most likely loading an image too large for your users. Some examples of what you can set sizes as are:
+
+- `500px` - the image is a fixed width. In this case, you should use fixed mode, described in the next section.
+- `(min-width: 1140px) 1140px, 100vw` - under 1140px, the image is as wide as the viewport. Above 1140px, it is fixed to 1140px.
+
+<!-- A full example of a fluid image in a working Gatsby repo can be found on CodeSandbox.
+
+[![Edit @imgix/gatsby-transform-url Fluid Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fluid-example-i49fo?fontsize=14&hidenavigation=1&theme=dark) -->
+
+### Fixed Images
+
+The following code will render a fixed image with gatsby-image. This code should already be familiar to you if you've used gatsby-image in the past.
+
+```jsx
+import gql from 'graphql-tag';
+import Img from 'gatsby-image';
+
+export default ({ data }) => {
+  return <Img fixed={data.allContentfulAsset.edges[0].node.imgixImage.fixed} />;
+};
+
+export const query = gql`
+  {
+    allContentfulAsset {
+      edges {
+        node {
+          imgixImage {
+            fixed(
+              width: 960 # Width (in px) is required
+              imgixParams: {}
+            ) {
+              ...GatsbyImgixFixed
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+```
+
+A full list of imgix parameters can be found [here](https://docs.imgix.com/apis/url).
+
+<!-- An example of this mode in a full working Gatsby repo can be found on CodeSandbox.
+
+[![Edit @imgix/gatsby-transform-url Fixed Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/imgixgatsby-transform-url-fixed-example-ce324?fontsize=14&hidenavigation=1&theme=dark) -->
+
+### Generating imgix URLs
+
+If you would rather not use gatsby-image and would instead prefer just a plain imgix URL, you can use the `url` field to generate one. For instance, you could generate a URL and use it for the background image of an element:
+
+```jsx
+import gql from 'graphql-tag';
+
+export default ({ data }) => {
+  return (
+    <div
+      style={{
+        backgroundImage: `url(${data.allContentfulAsset.edges[0].node.imgixImage.url})`,
+        backgroundSize: 'contain',
+        width: '100vw',
+        height: 'calc(100vh - 64px)',
+      }}
+    >
+      <h1>Blog Title</h1>
+    </div>
+  );
+};
+
+export const query = gql`
+  {
+    allContentfulAsset {
+      edges {
+        node {
+          imgixImage {
+            url(imgixParams: { w: 1200, h: 800 })
+          }
+        }
+      }
+    }
+  }
+`;
+```
 
 ## GraphQL `imgixImage` API
 
-This feature can be best thought about as a part-replacement for gatsby-image-sharp, and allows imgix URLs to be used with gatsby-image through the Gatsby GraphQL API. This feature transforms imgix URLs into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this feature you can either display images that already exist on imgix, or proxy other images through imgix.
+This feature can be best thought about as a replacement for gatsby-image-sharp for images that are statically defined at build time. This allows imgix URLs to be used with gatsby-image through the Gatsby GraphQL API. This feature transforms imgix URLs into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this feature you can either display images that already exist on imgix, or proxy other images through imgix.
 
 This feature supports many of the existing gatsby-image GraphQL that you know and love, and also supports most of the features of gatsby-image, such as blur-up and lazy loading. It also brings all of the great features of imgix, including the extensive image transformations and optimisations, as well as the excellent imgix CDN.
 
@@ -134,7 +324,7 @@ export const query = gql`
       fluid(imgixParams: {
         // pass any imgix parameters you want to here
       }) {
-        ...GatsbySourceImgixFluid
+        ...GatsbyImgixFluid
       }
     }
   }
@@ -171,7 +361,7 @@ export const query = gql`
         width: 960 # Width (in px) is required
         imgixParams: {}
       ) {
-        ...GatsbySourceImgixFixed
+        ...GatsbyImgixFixed
       }
     }
   }
@@ -255,7 +445,7 @@ export const query = gql`
       fixed(
         width: 960 # Width (in px) is required
       ) {
-        ...GatsbySourceImgixFixed
+        ...GatsbyImgixFixed
       }
     }
   }
@@ -346,7 +536,7 @@ The majority of the API for this library can be found by using the GraphiQL insp
 
 ### GraphQL Fragments
 
-This library also provides some GraphQL fragments, such as `GatsbySourceImgixFluid`, and `GatsbySourceImgixFluid_noBase64`. The values of these fragments can be found at [fragments.js](./fragments.js)
+This library also provides some GraphQL fragments, such as `GatsbyImgixFluid`, and `GatsbyImgixFluid_noBase64`. The values of these fragments can be found at [fragments.js](./fragments.js)
 
 ## Gatsby/Plugin Configuration
 
