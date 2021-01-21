@@ -106,7 +106,7 @@ This source must be configured in your `gatsby-config` file as follows:
 
 ```js
 // Add to start of file
-const { ImgixSourceType } = require("@imgix/gatsby")
+const { ImgixSourceType } = require('@imgix/gatsby');
 
 module.exports = {
   //...
@@ -115,12 +115,12 @@ module.exports = {
     {
       resolve: `@imgix/gatsby`,
       options: {
-        // This is the domain of your imgix source, which can be created at https://dashboard.imgix.com/. 
+        // This is the domain of your imgix source, which can be created at https://dashboard.imgix.com/.
         // Only "Web Proxy" imgix sources can be used for this configuration.
         domain: 'example.imgix.net',
 
         // This is the source's secure token. Can be found under the "Security" heading in your source's configuration page, and revealed by tapping "Show Token"
-        secureURLToken: "abcABC123",
+        secureURLToken: 'abcABC123',
 
         // This configures the plugin to work in proxy mode
         sourceType: ImgixSourceType.WebProxy,
@@ -134,18 +134,18 @@ module.exports = {
           {
             // This is an example for Contentful
 
-            // This is the GraphQL node type that you want to modify. There's more info on how to find this below. 
-            nodeType: "ContentfulAsset",
+            // This is the GraphQL node type that you want to modify. There's more info on how to find this below.
+            nodeType: 'ContentfulAsset',
 
-            // This is used to pull the raw image URL from the node you want to transform. It is passed the node to transform as an argument, and expects a URL to be returned. 
+            // This is used to pull the raw image URL from the node you want to transform. It is passed the node to transform as an argument, and expects a URL to be returned.
             // This needs to return a fully-qualified URL, which is why we are prepending `https:`, since contentful provides protocol-less URLs.
-            getURL: node => `https:${node.file.url}`,
+            getURL: (node) => `https:${node.file.url}`,
 
             // This is the name of imgix field that will be added to the type.
-            fieldName: "imgixImage",
+            fieldName: 'imgixImage',
           },
           // Add other elements for each node type to transform.
-        ]
+        ],
       },
     },
   ],
@@ -154,7 +154,7 @@ module.exports = {
 
 #### Finding a node's type
 
-The easiest way to find a node's type is to hover over the `node` in the GraphiQL query explorer. This can usually be found at http://localhost:8000/__graphql. 
+The easiest way to find a node's type is to hover over the `node` in the GraphiQL query explorer. This can usually be found at http://localhost:8000/\_\_graphql.
 
 In the screenshot below, we have hovered over the `node` field, and we can see the type is `ContentfulAsset`. This is the value we can set in the plugin's config.
 
@@ -177,7 +177,14 @@ import gql from 'graphql-tag';
 import Img from 'gatsby-image';
 
 export default ({ data }) => {
-  return <Img fluid={{ ...data.allContentfulAsset.edges[0].node.imgixImage.fluid, sizes: '100vw' }} />;
+  return (
+    <Img
+      fluid={{
+        ...data.allContentfulAsset.edges[0].node.imgixImage.fluid,
+        sizes: '100vw',
+      }}
+    />
+  );
 };
 
 export const query = gql`
