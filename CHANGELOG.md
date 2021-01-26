@@ -1,3 +1,10 @@
+# [1.0.0-rc.9](https://github.com/imgix/gatsby/compare/v1.0.0-rc.8...v1.0.0-rc.9) (2021-01-26)
+
+
+### Bug Fixes
+
+* specify what files to publish ([fdd2b6d](https://github.com/imgix/gatsby/commit/fdd2b6d7181b2e117dd226f1d0f4940b18070673))
+
 # [1.0.0-rc.6](https://github.com/imgix/gatsby/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2021-01-21)
 
 
