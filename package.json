@@ -135,6 +135,17 @@
       "@semantic-release/github"
     ]
   },
+  "files": [
+    "dist",
+    "src",
+    "types",
+    "CHANGELOG.md",
+    "fragments.js",
+    "gatsby*.js",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "keywords": [
     "blur-up",
     "cdn",
