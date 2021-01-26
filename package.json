@@ -72,14 +72,17 @@
       "main",
       {
         "name": "next",
+        "channel": "next",
         "prerelease": "rc"
       },
       {
         "name": "beta",
+        "channel": "beta",
         "prerelease": true
       },
       {
         "name": "alpha",
+        "channel": "alpha",
         "prerelease": true
       }
     ],
