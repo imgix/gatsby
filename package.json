@@ -1,30 +1,169 @@
 {
-  "name": "root",
-  "private": true,
+  "version": "1.0.0-rc.9",
+  "name": "@imgix/gatsby",
+  "description": "A Gatsby plugin to integrate with imgix's APIs",
+  "author": "Frederick Fogerty <frederick@imgix.com>",
+  "license": "BSD-2-Clause",
+  "repository": "https://github.com/imgix/gatsby.git",
+  "private": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "contributors": [
+    "Angelo Ashmore <angelo.ashmore@walltowall.com>"
+  ],
   "scripts": {
-    "build": "lerna exec --parallel --ignore dev* -- tsc --build",
-    "build:watch": "lerna exec --parallel --ignore dev* -- tsc --build --watch",
+    "build": "tsc",
+    "build:watch": "tsc --build --watch",
     "lint": "prettier --write .",
     "lint:ci": "prettier --check .",
     "test": "run-s test:unit test:e2e:ci",
     "test:unit": "yarn jest",
-    "test:e2e": "yarn workspace dev-and-e2e-test-environment run test:e2e",
-    "test:e2e:ci": "yarn workspace dev-and-e2e-test-environment run test:e2e:ci",
+    "sync:e2e": "msync s && rm -rf test/dev-and-e2e/node_modules/@imgix/gatsby/test/",
+    "sync:e2e:watch": "nodemon -w dist -x \"msync s && rm -rf test/dev-and-e2e/node_modules/@imgix/gatsby/test/\"",
+    "test:e2e": "cd test/dev-and-e2e && yarn run test:e2e",
+    "test:e2e:ci": "yarn run sync:e2e && cd test/dev-and-e2e && yarn run test:e2e:ci",
     "tdd": "run-p tdd:unit tdd:e2e",
-    "tdd:unit": "yarn jest --watch",
-    "tdd:e2e": "yarn test:e2e",
-    "run-publish": "yarn build ; lerna publish"
+    "tdd:unit": "yarn jest --watch --setupFiles dotenv/config",
+    "tdd:e2e": "echo 'Run \"npm run sync:e2e:watch\" in a separate terminal window' && yarn test:e2e"
+  },
+  "peerDependencies": {
+    "gatsby-image": "^2.4.12"
+  },
+  "dependencies": {
+    "@types/jsuri": "^1.3.30",
+    "@types/node-fetch": "^2.5.8",
+    "@types/ramda": "^0.27.34",
+    "camel-case": "^4.1.2",
+    "debug": "^4.3.1",
+    "fp-ts": "^2.9.3",
+    "fp-ts-contrib": "^0.1.18",
+    "imgix-core-js": "^2.3.1",
+    "imgix-url-params": "^11.11.2",
+    "io-ts": "^2.2.13",
+    "io-ts-reporters": "^1.2.2",
+    "jsuri": "^1.3.1",
+    "node-fetch": "^2.6.0",
+    "ramda": "^0.27.1",
+    "read-pkg-up": "^7.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.4",
+    "@google/semantic-release-replace-plugin": "^1.0.2",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@types/jest": "^26.0.20",
+    "cross-env": "^7.0.3",
+    "gatsby": "^2.30.2",
+    "gatsby-image": "^2.9.0",
+    "graphql-anywhere": "^4.2.7",
+    "graphql-tag": "^2.11.0",
     "jest": "^26.1.0",
-    "lerna": "^3.22.1",
-    "prettier": "^2.0.5",
+    "msync": "^2.5.7",
+    "prettier": "^2.2.1",
+    "read-pkg": "^5.2.0",
     "ts-jest": "^26.1.1",
-    "typescript": "^3.9.6",
+    "typescript": "^4.1.3",
     "yarn-run-all": "^3.1.1"
   },
-  "workspaces": [
-    "packages/*"
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "next",
+        "channel": "next",
+        "prerelease": "rc"
+      },
+      {
+        "name": "beta",
+        "channel": "beta",
+        "prerelease": true
+      },
+      {
+        "name": "alpha",
+        "channel": "alpha",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "releaseRules": [
+            {
+              "type": "docs",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
+      [
+        "@google/semantic-release-replace-plugin",
+        {
+          "replacements": [
+            {
+              "files": [
+                "src/common/constants.ts"
+              ],
+              "from": "const VERSION = '.*'",
+              "to": "const VERSION = '${nextRelease.version}'",
+              "results": [
+                {
+                  "file": "src/common/constants.ts",
+                  "hasChanged": true,
+                  "numMatches": 1,
+                  "numReplacements": 1
+                }
+              ],
+              "countMatches": true
+            }
+          ]
+        }
+      ],
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "src/**",
+            "package.json",
+            "CHANGELOG.md"
+          ],
+          "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes} [skip ci]"
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  },
+  "files": [
+    "dist",
+    "src",
+    "types",
+    "CHANGELOG.md",
+    "fragments.js",
+    "gatsby*.js",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "keywords": [
+    "blur-up",
+    "cdn",
+    "fixed",
+    "fluid",
+    "gatsby-image",
+    "gatsby-plugin",
+    "gatsby",
+    "image",
+    "imgix",
+    "optimise",
+    "optimize",
+    "placeholder",
+    "responsive",
+    "transform",
+    "webp"
   ]
 }

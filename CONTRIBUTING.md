@@ -60,9 +60,8 @@ Publish stable versions from main, and prerelease versions from beta.
 
 ## Project setup
 
-```
-yarn install
-```
+1. Run `yarn` to install dependencies
+2. Add a .env file to the root of the project with the contents from "Gatsby .env file" in 1Password.
 
 ## Build the entire project
 

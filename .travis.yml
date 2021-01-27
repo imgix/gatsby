@@ -17,13 +17,22 @@ cache:
 
 install:
   - yarn install --frozen-lockfile
+  - cd test/dev-and-e2e && yarn install && cd ../../
 script:
   - yarn build
   - yarn lint:ci
-  - yarn test
+  - cross-env-shell DEBUG=imgix:* yarn test
 
 branches:
   only:
     - main
-    - beta
-    - beta-v2
+    - next
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - npx semantic-release
+  on:
+    all_branches: true # Or just branch: next if you only want to enable it for one branch for now
+
