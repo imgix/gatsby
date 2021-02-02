@@ -7,13 +7,13 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
 [![npm version](https://img.shields.io/npm/v/@imgix/gatsby.svg)](https://www.npmjs.com/package/@imgix/gatsby)
+[![Downloads](https://img.shields.io/npm/dm/@imgix/gatsby.svg?color=informational)](https://www.npmjs.com/package/@imgix/gatsby)
 [![Build Status](https://travis-ci.com/imgix/gatsby.svg?branch=main)](https://travis-ci.com/imgix/gatsby)
-[![Downloads](https://img.shields.io/npm/dm/@imgix/gatsby.svg)](https://www.npmjs.com/package/@imgix/gatsby)
-[![License](https://img.shields.io/npm/l/@imgix/gatsby)](https://github.com/imgix/gatsby/blob/main/packages/gatsby/LICENSE)
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 [![Dependencies Status](https://david-dm.org/imgix/gatsby.svg)](https://david-dm.org/imgix/gatsby)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-informational.svg)](#contributors)
+[![License](https://img.shields.io/npm/l/@imgix/gatsby?color=informational)](https://github.com/imgix/gatsby/blob/main/packages/gatsby/LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fgatsby.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fgatsby?ref=badge_shield)
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg?color=informational)](https://github.com/prettier/prettier)
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
