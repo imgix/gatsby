@@ -1,8 +1,9 @@
+<!-- ix-docs-ignore -->
+
 ![imgix logo](https://assets.imgix.net/sdk-imgix-logo.svg)
 
 `@imgix/gatsby` is a multi-faceted plugin to help the developer use [imgix](https://www.imgix.com) with Gatsby.
 
-<!-- ix-docs-ignore -->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
 [![npm version](https://img.shields.io/npm/v/@imgix/gatsby.svg)](https://www.npmjs.com/package/@imgix/gatsby)
