@@ -145,9 +145,8 @@ module.exports = {
             // This is used to pull the raw image URL from the node you want to
             // transform. It is passed the node to transform as an argument, and
             // expects a URL to be returned.
-            // This needs to return a fully-qualified URL, which is why we are
-            // prepending `https:`, since contentful provides protocol-less
-            // URLs.
+            // See more information below on how to set this.
+            
             getURL: (node) => `https:${node.file.url}`,
 
             // This is the name of imgix field that will be added to the type.
@@ -172,6 +171,40 @@ In the screenshot below, we have hovered over the `node` field, and we can see t
 It's also possible to add `__typeName` to the GraphQL query to find the node type. This is useful if you are unable to use the GraphiQL explorer. Here we can see again that the node type is `ContentfulAsset`
 
 <img alt="node type is again ContentfulAsset" src="assets/typename-query.png" width="892" />
+
+##### Setting the right value for `getURL`
+
+This function needs to return a **fully-qualified URL**. 
+
+The steps to setting this value correctly is:
+
+1. Set the function to this:
+```js
+getURL: node => {
+  console.log(node);
+  return '';
+}
+```
+2. Inspect the logged output to find a suitable image URL that corresponds to the image you want to transform. For example, if we're searching ContentfulAsset's data, we see the following output in the console:
+```js
+{
+  // ...
+  file: {
+    url: '//images.ctfassets.net/../.jpg',
+    details: { size: 7316629, image: [Object] },
+    fileName: 'image.jpg',
+    contentType: 'image/jpeg'
+  },
+  // ...
+}
+```
+
+Therefore, we need to return `file.url`.
+3. Set the function to the correct value, **making sure that the URL includes an http or https.** For this example:
+```js
+getURL: node => `https:${node.file.url}`
+```
+
 
 ##### Default imgix parameters
 
