@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/imgix/gatsby/compare/v1.0.2...v1.1.0) (2021-02-09)
+
+
+### Features
+
+* help the user find the correct getURL configuration ([8e35b18](https://github.com/imgix/gatsby/commit/8e35b183b85d3ef359c4101d9b88f97cff7abb69))
+
 ## [1.0.2](https://github.com/imgix/gatsby/compare/v1.0.1...v1.0.2) (2021-02-04)
 
 ## [1.0.1](https://github.com/imgix/gatsby/compare/v1.0.0...v1.0.1) (2021-01-27)
