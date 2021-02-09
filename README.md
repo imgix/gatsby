@@ -144,13 +144,13 @@ module.exports = {
 
 ##### Adding a `fields` item correctly
 
-It's necessary to add a configuration for each GraphQL node type you would like to modify. For example, if you have a page which queries both for blog posts, and also blog post categories, you will need to add items for each type separately. 
+It's necessary to add a configuration for each GraphQL node type you would like to modify. For example, if you have a page which queries both for blog posts, and also blog post categories, you will need to add items for each type separately.
 
 The first step is to find the node type you would like to modify. To do this, look at the GraphQL query for the image you would like to modify. You need to find the node type for the node that image belongs to. For example, for the following query, the node type is `ContentfulAsset`, since that is the type of `heroImage`. This can be confirmed by copying the query into the GraphiQL editor and hovering over the node type. More detailed instructions on how to find the node types can be found in [this section](#finding-a-nodes-type)
 
 ```graphql
 query HomeQuery {
-  allContentfulBlogPost { 
+  allContentfulBlogPost {
     nodes {
       heroImage { # this is the node to modify
         fluid {...}
@@ -209,57 +209,59 @@ The steps to setting this value correctly is:
 
 1. Set the function to this:
 
-    ```js
-    getURL: (node) => {
-      console.log(node);
-    };
-    ```
+   ```js
+   getURL: (node) => {
+     console.log(node);
+   };
+   ```
 
-2. Inspect the logged output. The plugin will try to find a suitable image url in the node's data for you, and if it successfully finds one, it will output the code to replace the function with in the corresponding error message. 
+2. Inspect the logged output. The plugin will try to find a suitable image url in the node's data for you, and if it successfully finds one, it will output the code to replace the function with in the corresponding error message.
 
-    For example, for `ContentfulAsset`, it will display the following error message:
+   For example, for `ContentfulAsset`, it will display the following error message:
 
-    ```
-    Error when resolving URL value for node type ContentfulAsset. This
-    probably means that the getURL function in gatsby-config.js is
-    incorrectly set. Please read this project's README for detailed
-    instructions on how to set this correctly.
+   ```
+   Error when resolving URL value for node type ContentfulAsset. This
+   probably means that the getURL function in gatsby-config.js is
+   incorrectly set. Please read this project's README for detailed
+   instructions on how to set this correctly.
 
-    Potential images were found at these paths:
-     - file.url
-       Usage: getURL: (node) => `https:${node.file.url}`
-    ```
+   Potential images were found at these paths:
+    - file.url
+      Usage: getURL: (node) => `https:${node.file.url}`
+   ```
 
-    As we can see, the correct value for the function is 
-    ```js
-    getURL: (node) => `https:${node.file.url}
-    ```
+   As we can see, the correct value for the function is
 
-    If no value was suggested, you will need to inspect the logged output to find a suitable image URL that corresponds to the image you want to transform. For example, if we're searching ContentfulAsset's data, we see the following output in the console:
+   ```js
+   getURL: (node) => `https:${node.file.url}
+   ```
 
-    ```js
-    {
-      // ...
-      file: {
-        url: '//images.ctfassets.net/../.jpg',
-        details: { size: 7316629, image: [Object] },
-        fileName: 'image.jpg',
-        contentType: 'image/jpeg'
-      },
-      // ...
-    }
-    ```
+   If no value was suggested, you will need to inspect the logged output to find a suitable image URL that corresponds to the image you want to transform. For example, if we're searching ContentfulAsset's data, we see the following output in the console:
 
-    Therefore, we need to return `file.url`. 
+   ```js
+   {
+     // ...
+     file: {
+       url: '//images.ctfassets.net/../.jpg',
+       details: { size: 7316629, image: [Object] },
+       fileName: 'image.jpg',
+       contentType: 'image/jpeg'
+     },
+     // ...
+   }
+   ```
+
+   Therefore, we need to return `file.url`.
 
 3. Set the function to the correct value, **making sure that the URL includes an http or https.** For this example, since the image URL didn't have a `https`, we have to add one:
 
-    ```js
-    getURL: (node) => `https:${node.file.url}`;
-    ```
+   ```js
+   getURL: (node) => `https:${node.file.url}`;
+   ```
+
 ##### Finding a node's type
 
-The easiest way to find a node's type is to copy the query to the GraphiQL explorer (can be found at [localhost:8000/__graphql](http://localhost:8000/__graphql)). Then, while holding Cmd or Ctrl, hover over the node that you are trying to find the type for.
+The easiest way to find a node's type is to copy the query to the GraphiQL explorer (can be found at [localhost:8000/\_\_graphql](http://localhost:8000/__graphql)). Then, while holding Cmd or Ctrl, hover over the node that you are trying to find the type for.
 
 In the screenshot below, we have hovered over the `heroImage` field, and we can see the type is `ContentfulAsset`. This is the value we can set in the plugin's config.
 
@@ -268,8 +270,6 @@ In the screenshot below, we have hovered over the `heroImage` field, and we can 
 It's also possible to add `__typeName` to the GraphQL query to find the node type. This is useful if you are unable to use the GraphiQL explorer. Here we can see again that the node type is `ContentfulAsset`
 
 <img alt="node type is again ContentfulAsset" src="assets/typename-query.png" width="892" />
-
-
 
 ##### Default imgix parameters
 
