@@ -146,7 +146,7 @@ module.exports = {
             // transform. It is passed the node to transform as an argument, and
             // expects a URL to be returned.
             // See more information below on how to set this.
-            
+
             getURL: (node) => `https:${node.file.url}`,
 
             // This is the name of imgix field that will be added to the type.
@@ -174,18 +174,21 @@ It's also possible to add `__typeName` to the GraphQL query to find the node typ
 
 ##### Setting the right value for `getURL`
 
-This function needs to return a **fully-qualified URL**. 
+This function needs to return a **fully-qualified URL**.
 
 The steps to setting this value correctly is:
 
 1. Set the function to this:
+
 ```js
-getURL: node => {
+getURL: (node) => {
   console.log(node);
   return '';
-}
+};
 ```
+
 2. Inspect the logged output to find a suitable image URL that corresponds to the image you want to transform. For example, if we're searching ContentfulAsset's data, we see the following output in the console:
+
 ```js
 {
   // ...
@@ -199,12 +202,11 @@ getURL: node => {
 }
 ```
 
-Therefore, we need to return `file.url`.
-3. Set the function to the correct value, **making sure that the URL includes an http or https.** For this example:
-```js
-getURL: node => `https:${node.file.url}`
-```
+Therefore, we need to return `file.url`. 3. Set the function to the correct value, **making sure that the URL includes an http or https.** For this example:
 
+```js
+getURL: (node) => `https:${node.file.url}`;
+```
 
 ##### Default imgix parameters
 
