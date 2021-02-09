@@ -8,6 +8,7 @@ import * as R from 'ramda';
 import readPkgUp from 'read-pkg-up';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
 import { createImgixClient } from '../../common/imgix-core-js-wrapper';
+import { findPossibleURLsInNode } from '../../common/utils';
 import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';
 import { createImgixFluidFieldConfig } from '../gatsby-source-url/createImgixFluidFieldConfig';
@@ -189,18 +190,42 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                     'getURLs' in fieldOptions
                       ? `[${imgixImageType.name}]`
                       : imgixImageType.name,
-                  resolve: (node: any) => {
+                  resolve: (node: unknown) => {
                     const rawURLE = getFieldValue({
                       fieldOptions,
                       node,
                     });
 
                     return {
-                      rawURL: E.getOrElseW(() =>
-                        gatsbyContext.reporter.panic(
-                          `Error when resolving URL value for node type ${fieldOptions.nodeType}`,
-                        ),
-                      )(rawURLE),
+                      rawURL: E.getOrElseW(() => {
+                        const urlPathsFound =
+                          typeof node === 'object' && node != null
+                            ? findPossibleURLsInNode(node)
+                            : [];
+
+                        return gatsbyContext.reporter.panic(
+                          `Error when resolving URL value for node type ${
+                            fieldOptions.nodeType
+                          }. This probably means that the getURL function in gatsby-config.js is incorrectly set. Please read this project's README for detailed instructions on how to set this correctly.
+                          
+${
+  urlPathsFound.length > 0
+    ? `Potential images were found at these paths: 
+${urlPathsFound
+  .map(
+    ({ path, value }) =>
+      ` - ${path}
+   Usage: getURL: (node) => ${
+     value.startsWith('http') ? `node.${path}` : `\`https:\${node.${path}}\``
+   }`,
+  )
+  .join('\n')}
+`
+    : ''
+}
+                          `,
+                        );
+                      })(rawURLE),
                     };
                   },
                 },
