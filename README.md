@@ -184,6 +184,17 @@ Then, you need to configure a field for this node type. The quickest way to conf
 },
 ```
 
+###### gatsby-source-drupal
+
+```js
+// Drupal
+{
+  nodeType: 'File',
+  getURL: (node) => node.url,
+  fieldName: 'imgixImage',
+},
+```
+
 ###### Manual config (if your node type doesn't exist above)
 
 ```js
