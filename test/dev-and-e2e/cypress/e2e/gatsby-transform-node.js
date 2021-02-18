@@ -27,4 +27,12 @@ describe("gatsby-transform-node", () => {
         expect($img[0].naturalWidth).to.be.greaterThan(0)
       })
   })
+  it("gatsby-plugin-image image loads", () => {
+    cy.findByAltText("gatsby-plugin-image image")
+      .should("be.visible")
+      .and($img => {
+        // "naturalWidth" and "naturalHeight" are set when the image loads
+        expect($img[0].naturalWidth).to.be.greaterThan(0)
+      })
+  })
 })
