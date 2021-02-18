@@ -24,6 +24,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "luqven",
+      "name": "Luis H. Ball Jr.",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16711614?v=4",
+      "profile": "http://www.luisball.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
