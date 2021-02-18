@@ -1,5 +1,6 @@
 import { graphql } from "gatsby"
 import Img, { FixedObject, FluidObject } from "gatsby-image"
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image"
 import React from "react"
 
 const GatsbySourceUrl = ({ data }: { data: IPageData }) => {
@@ -13,6 +14,10 @@ const GatsbySourceUrl = ({ data }: { data: IPageData }) => {
         />
       </div>
       <Img fixed={data.allPost.nodes[0].imgixImage.fixed} alt="Fixed Image" />
+      <GatsbyImage
+        image={data.allPost.nodes[0].imgixImage.gatsbyImageData}
+        alt="gatsby-plugin-image image"
+      />
     </div>
   )
 }
@@ -24,6 +29,7 @@ type IPageData = {
         url: string
         fluid: FluidObject
         fixed: FixedObject
+        gatsbyImageData: IGatsbyImageData
       }
     }[]
   }
@@ -54,6 +60,7 @@ export const query = graphql`
             srcWebp
             srcSetWebp
           }
+          gatsbyImageData(width: 100)
         }
       }
     }
