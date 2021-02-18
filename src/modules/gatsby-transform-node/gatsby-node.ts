@@ -12,10 +12,11 @@ import { findPossibleURLsInNode } from '../../common/utils';
 import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';
 import { createImgixFluidFieldConfig } from '../gatsby-source-url/createImgixFluidFieldConfig';
+import { createImgixGatsbyImageFieldConfig } from '../gatsby-source-url/createImgixGatsbyImageDataFieldConfig';
 import { createImgixUrlFieldConfig } from '../gatsby-source-url/createImgixUrlFieldConfig';
 import {
   createImgixFixedType,
-  createImgixFluidType,
+  createImgixFluidType
 } from '../gatsby-source-url/graphqlTypes';
 
 function isStringArray(value: unknown): value is string[] {
@@ -91,6 +92,7 @@ const decodeOptionsE = (options: PatchedPluginOptions<IImgixGatsbyOptions>) =>
 
 const getPackageVersionE = () =>
   pipe(
+    // TODO: remove and use constant
     readPkgUp.sync({ cwd: __dirname })?.packageJson?.version,
     E.fromNullable(new Error('Could not read package version.')),
   );
@@ -175,6 +177,12 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                 resolveUrl: R.prop('rawURL'),
                 defaultParams: defaultImgixParams,
               }),
+              gatsbyImageData: createImgixGatsbyImageFieldConfig({
+                cache: gatsbyContext.cache,
+                imgixClient,
+                resolveUrl: R.prop('rawURL'),
+                defaultParams: defaultImgixParams
+              })
             },
           }),
       )
