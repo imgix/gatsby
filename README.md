@@ -32,11 +32,13 @@
     * [What section should I read?](#what-section-should-i-read)
     * [GraphQL transform API](#graphql-transform-api)
         + [Configuration](#configuration)
+        + [✨ New ✨ GatsbyImage support](#%E2%9C%A8-new-%E2%9C%A8-gatsbyimage-support)
         + [Fluid Images](#fluid-images)
         + [Fixed Images](#fixed-images)
         + [Generating imgix URLs](#generating-imgix-urls)
     * [GraphQL `imgixImage` API](#graphql-imgiximage-api)
         + [Configuration](#configuration-1)
+        + [✨ New ✨ GatsbyImage support](#%E2%9C%A8-new-%E2%9C%A8-gatsbyimage-support-1)
         + [Fluid Images](#fluid-images-1)
         + [Fixed Images](#fixed-images-1)
         + [Generating imgix URLs](#generating-imgix-urls-1)
@@ -275,6 +277,42 @@ It's also possible to add `__typeName` to the GraphQL query to find the node typ
 
 Setting `auto: ['format', 'compress']` is highly recommended. This will re-format the image to the format that is best optimized for your browser, such as WebP. It will also reduce unnecessary wasted file size, such as transparency on a non-transparent image. More information about the auto parameter can be found [here](https://docs.imgix.com/apis/url/auto/auto).
 
+#### ✨ New ✨ GatsbyImage support
+
+This plugin now supports the latest `GatsbyImage` component, which delivers better performance and Lighthouse scores, while improving the developer experience.
+
+To use this plugin with `GatsbyImage`, the usage is quite similar to the normal usage with `gatsby-plugin-image`. This plugin exposes a `gatsbyImageData` GraphQL field which is very similar to the native field.
+
+Example:
+
+```jsx
+import gql from 'graphql-tag';
+import Img from 'gatsby-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
+
+export default ({ data }) => {
+  return (
+    <GatsbyImage
+      image={data.allContentfulAsset.edges[0].node.imgixImage.gatsbyImageData}
+    />
+  );
+};
+
+export const query = gql`
+  {
+    allContentfulAsset {
+      edges {
+        node {
+          imgixImage {
+            gatsbyImageData(width: 400, imgixParams: {})
+          }
+        }
+      }
+    }
+  }
+`;
+```
+
 #### Fluid Images
 
 The following code will render a fluid image with gatsby-image. This code should already be familiar to you if you've used gatsby-image in the past.
@@ -426,6 +464,32 @@ module.exports = {
 ```
 
 Setting `auto: ['format', 'compress']` is highly recommended. This will re-format the image to the format that is best optimized for your browser, such as WebP. It will also reduce unnecessary wasted file size, such as transparency on a non-transparent image. More information about the auto parameter can be found [here](https://docs.imgix.com/apis/url/auto/auto).
+
+#### ✨ New ✨ GatsbyImage support
+
+This plugin now supports the latest `GatsbyImage` component, which delivers better performance and Lighthouse scores, while improving the developer experience.
+
+To use this plugin with `GatsbyImage`, the usage is quite similar to the normal usage with `gatsby-plugin-image`. This plugin exposes a `gatsbyImageData` GraphQL field which is very similar to the native field.
+
+Example:
+
+```jsx
+import gql from 'graphql-tag';
+import Img from 'gatsby-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
+
+export default ({ data }) => {
+  return <GatsbyImage image={data.imgixImage.gatsbyImageData} />;
+};
+
+export const query = gql`
+  {
+    imgixImage(url: "https://assets.imgix.net/amsterdam.jpg") {
+      gatsbyImageData(width: 400, imgixParams: {})
+    }
+  }
+`;
+```
 
 #### Fluid Images
 
