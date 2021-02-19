@@ -157,7 +157,7 @@ type IImgixGatsbyImageDataArgs = {
   width: IGatsbyImageHelperArgs['width'];
   height: IGatsbyImageHelperArgs['height'];
   aspectRatio: IGatsbyImageHelperArgs['aspectRatio'];
-  outputPixelDensities: IGatsbyImageHelperArgs['outputPixelDensities'];
+  // outputPixelDensities: IGatsbyImageHelperArgs['outputPixelDensities'];
   breakpoints: IGatsbyImageHelperArgs['breakpoints'];
   sizes: IGatsbyImageHelperArgs['sizes'];
   backgroundColor: IGatsbyImageHelperArgs['backgroundColor'];
