@@ -57,7 +57,7 @@
     "cross-env": "^7.0.3",
     "gatsby": "^2.30.2",
     "gatsby-image": "^2.9.0",
-    "gatsby-plugin-image": "^1.0.0-next.3",
+    "gatsby-plugin-image": "^1.0.0-next.5",
     "graphql-anywhere": "^4.2.7",
     "graphql-tag": "^2.11.0",
     "jest": "^26.1.0",
