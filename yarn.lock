@@ -3053,10 +3053,10 @@ babel-plugin-remove-graphql-queries@^2.14.0:
   resolved "https://registry.yarnpkg.com/babel-plugin-remove-graphql-queries/-/babel-plugin-remove-graphql-queries-2.14.0.tgz#d34dbc8aaa4eb2b6f11165c63bf3c226b283194b"
   integrity sha512-7uc3CzyMZRuGVU69RZ/vJ4+jYeuyIbT9dTMjX2wu3QJ+TcRAaW3MJVxG5cN7YhCBv0S0/KIqXdh6BpSYswzUkw==
 
-babel-plugin-remove-graphql-queries@^3.0.0-next.0:
-  version "3.0.0-next.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-remove-graphql-queries/-/babel-plugin-remove-graphql-queries-3.0.0-next.0.tgz#a008368f9df9d3a0d191ec74dbcd7bf34acfaf8c"
-  integrity sha512-N8ldONgeFH+zEXi5r+galHmM6visOvtkwrTlRDfD+wPC/jBkjNaYAMmMpkT8uIvvQQ0n+8hii6Uy56HGJfj/Yg==
+babel-plugin-remove-graphql-queries@^3.0.0-next.1:
+  version "3.0.0-next.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-remove-graphql-queries/-/babel-plugin-remove-graphql-queries-3.0.0-next.1.tgz#65e8f80a1283809817cd37dcb877575d0b6794b5"
+  integrity sha512-ZvorwskYhRApgZ4p27Bc5g8rMbrwxDH34jvwhzpbxOM1TdJut94gyJVg4wRkU1I2U167RvubYHrI03hzUTNFpQ==
 
 babel-plugin-transform-react-remove-prop-types@^0.4.24:
   version "0.4.24"
@@ -6548,15 +6548,15 @@ gatsby-page-utils@^0.7.0:
     lodash "^4.17.20"
     micromatch "^4.0.2"
 
-gatsby-plugin-image@^1.0.0-next.3:
-  version "1.0.0-next.3"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-image/-/gatsby-plugin-image-1.0.0-next.3.tgz#1f7e005d306f5a7abca02f20b2f205e5df1fdba2"
-  integrity sha512-1swpNxvMiVeuePlm0pnj0L9Onz0bnaqYXc69Z/NHKl6kHg+Q9uMZqnOMbnMnTHejteCshtlfJiLMvnTqBJaegA==
+gatsby-plugin-image@^1.0.0-next.5:
+  version "1.0.0-next.5"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-image/-/gatsby-plugin-image-1.0.0-next.5.tgz#8c6ecc1422cd2e443470c4d6e2671e6e9096b03f"
+  integrity sha512-BrX7e0x3Pl7GQEQUZmMTK3MU7CfVH1Nv9ekX9H/4ruuOtE+WpqfDGaVSFpTcMxn2XWsWlunGM2TJvPrtv1SHFg==
   dependencies:
     "@babel/parser" "^7.12.5"
     "@babel/traverse" "^7.12.5"
     babel-jsx-utils "^1.0.1"
-    babel-plugin-remove-graphql-queries "^3.0.0-next.0"
+    babel-plugin-remove-graphql-queries "^3.0.0-next.1"
     camelcase "^5.3.1"
     chokidar "^3.5.1"
     common-tags "^1.8.0"
