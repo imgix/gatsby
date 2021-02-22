@@ -16,7 +16,7 @@ import { createImgixGatsbyImageFieldConfig } from '../gatsby-source-url/createIm
 import { createImgixUrlFieldConfig } from '../gatsby-source-url/createImgixUrlFieldConfig';
 import {
   createImgixFixedType,
-  createImgixFluidType
+  createImgixFluidType,
 } from '../gatsby-source-url/graphqlTypes';
 
 function isStringArray(value: unknown): value is string[] {
@@ -181,8 +181,8 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                 cache: gatsbyContext.cache,
                 imgixClient,
                 resolveUrl: R.prop('rawURL'),
-                defaultParams: defaultImgixParams
-              })
+                defaultParams: defaultImgixParams,
+              }),
             },
           }),
       )
