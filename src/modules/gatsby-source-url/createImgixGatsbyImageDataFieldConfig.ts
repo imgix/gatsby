@@ -101,6 +101,7 @@ const resolveGatsbyImageData = <TSource>({
           // placeholderURL: await getBase64Image({ baseUrl }),
           // TODO: implement breakpoints
           // breakpoints
+          formats: ['auto'],
           generateImageSource: generateImageSource(imgixClient),
           options: args,
         }),
