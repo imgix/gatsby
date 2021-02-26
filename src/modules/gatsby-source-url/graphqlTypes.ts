@@ -38,7 +38,7 @@ export const ImgixUrlParamsInputType = new GraphQLInputObjectType({
 
     // TODO: Clean up this mess.
     const type = expectsTypes.every(
-      (type) => type === 'integer' || type === 'unit_scalar',
+      (type) => type === 'integer',
     )
       ? GraphQLInt
       : expectsTypes.every(
