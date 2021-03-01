@@ -23,7 +23,11 @@ import {
   ImgixFluidArgs,
   ImgixFluidArgsResolved,
 } from '../../publicTypes';
-import { createImgixFluidType, ImgixUrlParamsInputType } from './graphqlTypes';
+import {
+  createImgixFluidType,
+  ImgixUrlParamsInputType,
+  unTransformParams,
+} from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
 import { resolveDimensions } from './resolveDimensions';
 
@@ -90,6 +94,10 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
     pipe(
       Do(TE.taskEither)
         .let('rootValue', rootValue)
+        .let('modifiedArgs', {
+          ...args,
+          imgixParams: unTransformParams(args.imgixParams),
+        })
         .sequenceSL(({ rootValue }) => ({
           url: resolveUrlFromSourceData(resolveUrl)(rootValue),
           manualWidth: pipe(
@@ -112,10 +120,10 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
             client: imgixClient,
           }),
         )
-        .return(({ url, dimensions: { width, height } }) =>
+        .return(({ url, modifiedArgs, dimensions: { width, height } }) =>
           buildFluidObject({
             client: imgixClient,
-            args,
+            args: modifiedArgs,
             sourceHeight: height,
             sourceWidth: width,
             url,
