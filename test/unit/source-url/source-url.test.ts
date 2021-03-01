@@ -77,15 +77,18 @@ describe('createResolvers', () => {
       assertion: (url) => expect(url).toMatch(/txt=txt/),
     });
 
-    it('integer and float parameters are set correctly', async () => {
-      const urlFieldResult = await resolveField({
-        field: 'url',
-        fieldParams: { imgixParams: { w: 10.1, txtSize: 1, fpY: 0.5 } },
-      });
-
-      expect(urlFieldResult).toMatch('w=10.1');
-      expect(urlFieldResult).toMatch('txtSize=1');
-      expect(urlFieldResult).toMatch('fpY=0.5');
+    testForEveryFieldSrcAndSrcSet({
+      name: 'integer and float parameters are set correctly',
+      resolveFieldOpts: {
+        fieldParams: {
+          imgixParams: { imgixParams: { w: 10.1, txtSize: 1, fpY: 0.5 } },
+        },
+      },
+      assertion: (url) => {
+        expect(url).toMatch('w=10.1');
+        expect(url).toMatch('txt-size=1');
+        expect(url).toMatch('fp-y=0.5');
+      },
     });
   });
   describe('url field', () => {
