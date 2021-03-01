@@ -13,6 +13,7 @@ import { IImgixParams, ImgixUrlArgs } from '../../publicTypes';
 import {
   gatsbySourceImgixUrlFieldType,
   ImgixUrlParamsInputType,
+  unTransformParams,
 } from './graphqlTypes';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
@@ -48,7 +49,10 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
       TE.map((url) =>
         imgixClient.buildURL(
           url,
-          R.mergeRight(defaultParams ?? {}, args.imgixParams ?? {}),
+          R.mergeRight(
+            defaultParams ?? {},
+            unTransformParams(args.imgixParams ?? {}),
+          ),
         ),
       ),
       TE.getOrElse<Error, string | undefined>(() => T.of(undefined)),
