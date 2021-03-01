@@ -45,7 +45,6 @@ export const fetch = (url: string): TaskEither<Error, Response> =>
     (reason) => new Error(String(reason)),
   );
 
-// export const taskOptionFromPromise = <T>(p: Promise<T>): Task<Option<T>> =>
 export const fetchJSON = <A>(url: string): TaskEither<Error, A> =>
   pipe(
     url,
@@ -71,7 +70,7 @@ export const transformUrlForWebProxy = (
 
 function isURL(str: string) {
   var pattern = new RegExp(
-    '\\/\\/' + // the first two slashes after the protocl
+    '\\/\\/' + // the first two slashes after the protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
       '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
       '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
