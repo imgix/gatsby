@@ -81,11 +81,17 @@ describe('createResolvers', () => {
       name: 'integer and float parameters are set correctly',
       resolveFieldOpts: {
         fieldParams: {
-          imgixParams: { imgixParams: { w: 10.1, txtSize: 1, fpY: 0.5 } },
+          imgixParams: {
+            blendH: 0.5, // type has both unit_scalar and integer
+            blendW: 10, // type has both unit_scalar and integer
+            txtSize: 1, // type is integer only
+            fpY: 0.5, // type is unit_scalar only
+          },
         },
       },
       assertion: (url) => {
-        expect(url).toMatch('w=10.1');
+        expect(url).toMatch('blend-h=0.5');
+        expect(url).toMatch('blend-w=10');
         expect(url).toMatch('txt-size=1');
         expect(url).toMatch('fp-y=0.5');
       },
