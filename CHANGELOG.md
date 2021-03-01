@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/imgix/gatsby/compare/v1.1.1...v1.1.2) (2021-03-01)
+
+
+### Bug Fixes
+
+* correct types for float params ([ccb97f4](https://github.com/imgix/gatsby/commit/ccb97f4e6aa12484f4eb8e11b11f2cab02919070))
+* fix imgix params with dash not working correctly ([f8a8fd0](https://github.com/imgix/gatsby/commit/f8a8fd044fe26337416518a7944899bad2679aa5))
+* slight issue in tests ([3368ed7](https://github.com/imgix/gatsby/commit/3368ed76fecb08f0844f43603b80ce7072a83e70))
+
 ## [1.1.1](https://github.com/imgix/gatsby/compare/v1.1.0...v1.1.1) (2021-02-18)
 
 # [1.1.0](https://github.com/imgix/gatsby/compare/v1.0.2...v1.1.0) (2021-02-09)
