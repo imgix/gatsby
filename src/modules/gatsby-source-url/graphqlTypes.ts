@@ -14,7 +14,7 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
-} from 'graphql';
+} from 'gatsby/graphql';
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
 import { createImgixBase64FieldConfig } from './createImgixBase64FieldConfig';
 
