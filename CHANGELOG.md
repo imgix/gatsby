@@ -1,3 +1,10 @@
+# [1.2.0-rc.1](https://github.com/imgix/gatsby/compare/v1.1.1...v1.2.0-rc.1) (2021-03-02)
+
+
+### Features
+
+* initial work on gatsby-plugin-image support ([b547a38](https://github.com/imgix/gatsby/commit/b547a38180016300a668d29d7bd388f792c57d56))
+
 ## [1.1.1](https://github.com/imgix/gatsby/compare/v1.1.0...v1.1.1) (2021-02-18)
 
 # [1.1.0](https://github.com/imgix/gatsby/compare/v1.0.2...v1.1.0) (2021-02-09)
