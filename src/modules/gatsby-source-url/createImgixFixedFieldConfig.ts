@@ -4,8 +4,12 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FixedObject } from 'gatsby-image';
-import { GraphQLFieldConfig, GraphQLInt, GraphQLObjectType } from 'graphql';
-import { ComposeFieldConfigAsObject } from 'graphql-compose';
+import {
+  GraphQLFieldConfig,
+  GraphQLInt,
+  GraphQLObjectType,
+} from 'gatsby/graphql';
+import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import {
@@ -124,9 +128,8 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
 
 export const createImgixFixedSchemaFieldConfig = <TSource, TContext>(
   args: CreateImgixFixedFieldConfigArgs<TSource>,
-): ComposeFieldConfigAsObject<TSource, TContext, ImgixFixedArgs> =>
-  createImgixFixedFieldConfig(args) as ComposeFieldConfigAsObject<
-    TSource,
-    TContext,
-    ImgixFixedArgs
-  >;
+): ObjectTypeComposerAsObjectDefinition<TSource, TContext> =>
+  ({
+    ...createImgixFixedFieldConfig(args),
+    name: 'ImgixGatsbyFixed',
+  } as ObjectTypeComposerAsObjectDefinition<TSource, TContext>);

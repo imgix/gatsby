@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
-import { GraphQLFieldConfig, GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLFieldConfig, GraphQLNonNull, GraphQLString } from 'gatsby/graphql';
 import { fetchImgixBase64Image } from '../../api/fetchBase64Image';
 import {
   ImgixSourceDataResolver,

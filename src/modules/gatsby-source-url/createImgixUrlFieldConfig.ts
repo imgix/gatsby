@@ -1,8 +1,8 @@
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { GraphQLFieldConfig } from 'graphql';
-import { ComposeFieldConfigAsObject } from 'graphql-compose';
+import { GraphQLFieldConfig } from 'gatsby/graphql';
+import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
 import {
@@ -57,9 +57,8 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
 
 export const createImgixUrlSchemaFieldConfig = <TSource, TContext>(
   args: CreateImgixUrlFieldConfigArgs<TSource>,
-): ComposeFieldConfigAsObject<TSource, TContext, ImgixUrlArgs> =>
-  createImgixUrlFieldConfig(args) as ComposeFieldConfigAsObject<
-    TSource,
-    TContext,
-    ImgixUrlArgs
-  >;
+): ObjectTypeComposerAsObjectDefinition<TSource, TContext> =>
+  ({
+    ...createImgixUrlFieldConfig(args),
+    name: 'ImgixGatsbyUrl',
+  } as ObjectTypeComposerAsObjectDefinition<TSource, TContext>);

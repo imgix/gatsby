@@ -1,5 +1,5 @@
 import 'gatsby';
-import * as GraphQL from 'graphql';
+import * as GraphQL from 'gatsby/graphql';
 declare module 'gatsby' {
   type IGraphQLTypeMap = {
     [k: string]: GraphQL.GraphQLFieldConfig<any, any, any> | IGraphQLTypeMap;

@@ -4,7 +4,7 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
-} from 'graphql';
+} from 'gatsby/graphql';
 import type ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
 import { IImgixGatsbyRootArgs, IImgixParams } from '../../publicTypes';

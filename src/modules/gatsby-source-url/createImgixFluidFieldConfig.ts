@@ -9,8 +9,8 @@ import {
   GraphQLInt,
   GraphQLList,
   GraphQLObjectType,
-} from 'graphql';
-import { ComposeFieldConfigAsObject } from 'graphql-compose';
+} from 'gatsby/graphql';
+import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import {
@@ -18,11 +18,7 @@ import {
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
-import {
-  IImgixParams,
-  ImgixFluidArgs,
-  ImgixFluidArgsResolved,
-} from '../../publicTypes';
+import { IImgixParams, ImgixFluidArgsResolved } from '../../publicTypes';
 import { createImgixFluidType, ImgixUrlParamsInputType } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
 import { resolveDimensions } from './resolveDimensions';
@@ -130,9 +126,8 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
 
 export const createImgixFluidSchemaFieldConfig = <TSource, TContext>(
   args: CreateImgixFluidFieldConfigArgs<TSource>,
-): ComposeFieldConfigAsObject<TSource, TContext, ImgixFluidArgs> =>
-  createImgixFluidFieldConfig(args) as ComposeFieldConfigAsObject<
-    TSource,
-    TContext,
-    ImgixFluidArgs
-  >;
+): ObjectTypeComposerAsObjectDefinition<TSource, TContext> =>
+  ({
+    ...createImgixFluidFieldConfig(args),
+    name: 'ImgixGatsbyFluid',
+  } as ObjectTypeComposerAsObjectDefinition<TSource, TContext>);

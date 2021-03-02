@@ -12,6 +12,7 @@ import {
 } from 'gatsby-plugin-image';
 import { getGatsbyImageFieldConfig } from 'gatsby-plugin-image/graphql-utils';
 import {
+  GraphQLFieldConfig,
   GraphQLFieldResolver,
   GraphQLFloat,
   GraphQLInt,
@@ -122,7 +123,7 @@ const resolveGatsbyImageData = <TSource>({
   )();
 };
 
-export const createImgixGatsbyImageFieldConfig = <TSource>({
+export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   cache,
   imgixClient,
   resolveUrl,
@@ -135,7 +136,7 @@ export const createImgixGatsbyImageFieldConfig = <TSource>({
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
   type?: GraphQLObjectType<FluidObject>;
-}) => {
+}): GraphQLFieldConfig<TSource, TContext> => {
   const defaultConfig = getGatsbyImageFieldConfig(
     resolveGatsbyImageData({ cache, imgixClient, resolveUrl, defaultParams }),
     {},
