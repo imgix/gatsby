@@ -4,6 +4,11 @@
   "description": "A simple starter to get up and developing quickly with Gatsby",
   "version": "0.1.6",
   "author": "",
+  "resolutions": {
+    "graphql": "^15.4.0",
+    "graphql-compose": "^7.25.0",
+    "webpack": "^5.24.2"
+  },
   "dependencies": {
     "@imgix/gatsby": "^1.0.0-rc.6",
     "gatsby": "3.0.0",

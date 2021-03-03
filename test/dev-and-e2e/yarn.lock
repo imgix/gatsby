@@ -8131,7 +8131,7 @@ graceful-fs@^4.1.15, graceful-fs@^4.2.4:
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
   integrity sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=
 
-graphql-compose@~7.25.0:
+graphql-compose@^7.25.0, graphql-compose@~7.25.0:
   version "7.25.0"
   resolved "https://registry.yarnpkg.com/graphql-compose/-/graphql-compose-7.25.0.tgz#cd893172616ce56b0566e62fd249fb7782332d38"
   integrity sha512-Zd2G62Sq0ZQW+qXds/LgSi3YSulmk2t2YS3WJfHvNslkEbyAcE1mFiy7c1wU0tl3woB0vPRwI0jAYtSSG6llNA==
@@ -15475,7 +15475,7 @@ webpack@^4.0.0:
     watchpack "^1.7.4"
     webpack-sources "^1.4.1"
 
-webpack@^5.16.0:
+webpack@^5.16.0, webpack@^5.24.2:
   version "5.24.2"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.24.2.tgz#33790dad631e8b639f4246d762e257720875fe54"
   integrity sha512-uxxKYEY4kMNjP+D2Y+8aw5Vd7ar4pMuKCNemxV26ysr1nk0YDiQTylg9U3VZIdkmI0YHa0uC8ABxL+uGxGWWJg==
