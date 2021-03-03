@@ -17,12 +17,12 @@ import {
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
+import { IImgixParams, ImgixFixedArgsResolved } from '../../publicTypes';
 import {
-  IImgixParams,
-  ImgixFixedArgs,
-  ImgixFixedArgsResolved,
-} from '../../publicTypes';
-import { createImgixFixedType, ImgixParamsInputType } from './graphqlTypes';
+  createImgixFixedType,
+  ImgixParamsInputType,
+  unTransformParams,
+} from './graphqlTypes';
 import { buildImgixFixed } from './objectBuilders';
 import { resolveDimensions } from './resolveDimensions';
 
@@ -87,6 +87,10 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
     pipe(
       Do(TE.taskEither)
         .let('rootValue', rootValue)
+        .let('modifiedArgs', {
+          ...args,
+          imgixParams: unTransformParams(args.imgixParams),
+        })
         .sequenceSL(({ rootValue }) => ({
           url: resolveUrlFromSourceData(resolveUrl)(rootValue),
           manualWidth: pipe(
@@ -111,13 +115,13 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
             client: imgixClient,
           }),
         )
-        .return(({ url, dimensions: { width, height } }) =>
+        .return(({ url, modifiedArgs, dimensions: { width, height } }) =>
           buildImgixFixed({
             client: imgixClient,
             url,
             sourceWidth: width,
             sourceHeight: height,
-            args,
+            args: modifiedArgs,
             defaultParams,
             defaultPlaceholderParams: {}, // TODO: implement
           }),

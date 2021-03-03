@@ -38,9 +38,7 @@ export const ImgixParamsInputType = new GraphQLInputObjectType({
     );
 
     // TODO: Clean up this mess.
-    const type = expectsTypes.every(
-      (type) => type === 'integer' || type === 'unit_scalar',
-    )
+    const type = expectsTypes.every((type) => type === 'integer')
       ? GraphQLInt
       : expectsTypes.every(
           (type) =>
@@ -142,6 +140,16 @@ export const createImgixFixedType = ({
       height: { type: new GraphQLNonNull(GraphQLInt) },
     },
   });
+
+export const unTransformParams = <T>(
+  params: Record<string, T>,
+): Record<string, T> => {
+  // look for uppercase chars, replace with lowercase + `-`
+  return Object.entries(params).reduce((p, [k, v]) => {
+    const transformedKey = k.replace(/[A-Z]/, (c) => `-${c.toLowerCase()}`);
+    return { ...p, [transformedKey]: v };
+  }, {});
+};
 
 export type IGatsbySourceImgixUrlField = string;
 export const gatsbySourceImgixUrlFieldType = GraphQLString;
