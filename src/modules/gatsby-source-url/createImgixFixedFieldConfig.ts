@@ -22,7 +22,7 @@ import {
   ImgixFixedArgs,
   ImgixFixedArgsResolved,
 } from '../../publicTypes';
-import { createImgixFixedType, ImgixUrlParamsInputType } from './graphqlTypes';
+import { createImgixFixedType, ImgixParamsInputType } from './graphqlTypes';
 import { buildImgixFixed } from './objectBuilders';
 import { resolveDimensions } from './resolveDimensions';
 
@@ -70,12 +70,12 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
       description: `The image quality to use for compression. Range: 0-100, with 100 being highest quality. This setting is not recommended as the quality is already optimized by decreasing quality as the dpr increases to reduce image size while retaining visual quality.`,
     },
     imgixParams: {
-      type: ImgixUrlParamsInputType,
+      type: ImgixParamsInputType,
       description: `The imgix parameters (transformations) to apply to the image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
     placeholderImgixParams: {
-      type: ImgixUrlParamsInputType,
+      type: ImgixParamsInputType,
       description: `Any imgix parameters to use only for the blur-up/placeholder image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },

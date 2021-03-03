@@ -12,7 +12,7 @@ import {
 import { IImgixParams, ImgixUrlArgs } from '../../publicTypes';
 import {
   gatsbySourceImgixUrlFieldType,
-  ImgixUrlParamsInputType,
+  ImgixParamsInputType,
 } from './graphqlTypes';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
@@ -34,7 +34,7 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
   description: 'A plain imgix URL with the URL and params applied.',
   args: {
     imgixParams: {
-      type: ImgixUrlParamsInputType,
+      type: ImgixParamsInputType,
       defaultValue: {},
     },
   },
