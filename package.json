@@ -34,6 +34,11 @@
     "gatsby-image": "^2 || ^3",
     "gatsby-plugin-image": "^1"
   },
+  "resolutions": {
+    "graphql": "^15.4.0",
+    "graphql-compose": "^7.25.0",
+    "webpack": "^5.24.2"
+  },
   "dependencies": {
     "camel-case": "^4.1.2",
     "common-tags": "^1.8.0",
