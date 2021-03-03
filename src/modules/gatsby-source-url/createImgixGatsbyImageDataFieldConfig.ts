@@ -27,6 +27,7 @@ import {
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
 import { IImgixParams } from '../../publicTypes';
+import { ImgixParamsInputType } from './graphqlTypes';
 import { resolveDimensions } from './resolveDimensions';
 
 /* const fitMap = {
@@ -159,6 +160,13 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
         ],
         defaultConfig.args,
       ),
+      imgixParams: {
+        type: ImgixParamsInputType,
+        description: stripIndent`This argument is used to set parameters to instruct imgix to transform the image. 
+        
+        All of imgix's parameters can be found here: https://docs.imgix.com/apis/rendering
+        `,
+      },
       widthTolerance: {
         type: GraphQLFloat,
         description: stripIndent`

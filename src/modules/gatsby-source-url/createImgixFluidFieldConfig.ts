@@ -19,7 +19,7 @@ import {
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
 import { IImgixParams, ImgixFluidArgsResolved } from '../../publicTypes';
-import { createImgixFluidType, ImgixUrlParamsInputType } from './graphqlTypes';
+import { createImgixFluidType, ImgixParamsInputType } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
 import { resolveDimensions } from './resolveDimensions';
 
@@ -56,7 +56,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   description: `Should be used to generate fluid-width images (i.e. images that change when the size of the browser changes). Returns data compatible with gatsby-image. Instead of accessing this data directly, the GatsbySourceImgixFluid fragment should be used. See the project's README for more information.`,
   args: {
     imgixParams: {
-      type: ImgixUrlParamsInputType,
+      type: ImgixParamsInputType,
       description: `The imgix parameters (transformations) to apply to the image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
@@ -74,7 +74,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
       description: `A custom set of widths (in px) to use for the srcset widths. This feature is not recommended as the default widths are optimized for imgix's caching infrastructure.`,
     },
     placeholderImgixParams: {
-      type: ImgixUrlParamsInputType,
+      type: ImgixParamsInputType,
       description: `Any imgix parameters to use only for the blur-up/placeholder image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
