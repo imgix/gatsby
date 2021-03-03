@@ -7,6 +7,7 @@ import { GatsbyCache } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
 import {
   GraphQLBoolean,
+  GraphQLEnumType,
   GraphQLFloat,
   GraphQLInputFieldConfigMap,
   GraphQLInputObjectType,
@@ -14,11 +15,11 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
-} from 'graphql';
+} from 'gatsby/graphql';
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
 import { createImgixBase64FieldConfig } from './createImgixBase64FieldConfig';
 
-export const ImgixUrlParamsInputType = new GraphQLInputObjectType({
+export const ImgixParamsInputType = new GraphQLInputObjectType({
   name: 'ImgixParamsInput',
   fields: Object.keys(imgixUrlParameters.parameters).reduce((fields, param) => {
     const spec =

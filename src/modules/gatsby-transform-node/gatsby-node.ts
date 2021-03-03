@@ -2,7 +2,12 @@ import { Do } from 'fp-ts-contrib/lib/Do';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { ICreateSchemaCustomizationHook, PatchedPluginOptions } from 'gatsby';
-import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import {
+  GraphQLFieldConfig,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'gatsby/graphql';
 import { PathReporter } from 'io-ts/PathReporter';
 import * as R from 'ramda';
 import readPkgUp from 'read-pkg-up';
@@ -12,6 +17,7 @@ import { findPossibleURLsInNode } from '../../common/utils';
 import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';
 import { createImgixFluidFieldConfig } from '../gatsby-source-url/createImgixFluidFieldConfig';
+import { createImgixGatsbyImageFieldConfig } from '../gatsby-source-url/createImgixGatsbyImageDataFieldConfig';
 import { createImgixUrlFieldConfig } from '../gatsby-source-url/createImgixUrlFieldConfig';
 import {
   createImgixFixedType,
@@ -91,6 +97,7 @@ const decodeOptionsE = (options: PatchedPluginOptions<IImgixGatsbyOptions>) =>
 
 const getPackageVersionE = () =>
   pipe(
+    // TODO: remove and use constant
     readPkgUp.sync({ cwd: __dirname })?.packageJson?.version,
     E.fromNullable(new Error('Could not read package version.')),
   );
@@ -153,10 +160,10 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
           imgixClient,
           options: { defaultImgixParams },
         }) =>
-          new GraphQLObjectType<any, any, any>({
+          new GraphQLObjectType<IRootSource, {}>({
             name: 'ImgixImage',
             fields: {
-              url: createImgixUrlFieldConfig<any, any>({
+              url: createImgixUrlFieldConfig({
                 resolveUrl: R.prop('rawURL'),
                 imgixClient,
                 defaultParams: defaultImgixParams,
@@ -167,9 +174,15 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                 imgixClient,
                 resolveUrl: R.prop('rawURL'),
                 defaultParams: defaultImgixParams,
-              }),
+              }) as GraphQLFieldConfig<IRootSource, {}, Record<string, any>>,
               fixed: createImgixFixedFieldConfig<any, unknown>({
                 type: imgixFixedType,
+                cache: gatsbyContext.cache,
+                imgixClient,
+                resolveUrl: R.prop('rawURL'),
+                defaultParams: defaultImgixParams,
+              }) as GraphQLFieldConfig<IRootSource, {}, Record<string, any>>,
+              gatsbyImageData: createImgixGatsbyImageFieldConfig({
                 cache: gatsbyContext.cache,
                 imgixClient,
                 resolveUrl: R.prop('rawURL'),

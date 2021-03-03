@@ -9,8 +9,8 @@ import {
   GraphQLInt,
   GraphQLList,
   GraphQLObjectType,
-} from 'graphql';
-import { ComposeFieldConfigAsObject } from 'graphql-compose';
+} from 'gatsby/graphql';
+import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import {
@@ -18,14 +18,10 @@ import {
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
-import {
-  IImgixParams,
-  ImgixFluidArgs,
-  ImgixFluidArgsResolved,
-} from '../../publicTypes';
+import { IImgixParams, ImgixFluidArgsResolved } from '../../publicTypes';
 import {
   createImgixFluidType,
-  ImgixUrlParamsInputType,
+  ImgixParamsInputType,
   unTransformParams,
 } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
@@ -64,7 +60,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   description: `Should be used to generate fluid-width images (i.e. images that change when the size of the browser changes). Returns data compatible with gatsby-image. Instead of accessing this data directly, the GatsbySourceImgixFluid fragment should be used. See the project's README for more information.`,
   args: {
     imgixParams: {
-      type: ImgixUrlParamsInputType,
+      type: ImgixParamsInputType,
       description: `The imgix parameters (transformations) to apply to the image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
@@ -82,7 +78,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
       description: `A custom set of widths (in px) to use for the srcset widths. This feature is not recommended as the default widths are optimized for imgix's caching infrastructure.`,
     },
     placeholderImgixParams: {
-      type: ImgixUrlParamsInputType,
+      type: ImgixParamsInputType,
       description: `Any imgix parameters to use only for the blur-up/placeholder image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
@@ -138,9 +134,8 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
 
 export const createImgixFluidSchemaFieldConfig = <TSource, TContext>(
   args: CreateImgixFluidFieldConfigArgs<TSource>,
-): ComposeFieldConfigAsObject<TSource, TContext, ImgixFluidArgs> =>
-  createImgixFluidFieldConfig(args) as ComposeFieldConfigAsObject<
-    TSource,
-    TContext,
-    ImgixFluidArgs
-  >;
+): ObjectTypeComposerAsObjectDefinition<TSource, TContext> =>
+  ({
+    ...createImgixFluidFieldConfig(args),
+    name: 'ImgixGatsbyFluid',
+  } as ObjectTypeComposerAsObjectDefinition<TSource, TContext>);

@@ -1,3 +1,23 @@
+# [1.2.0-rc.2](https://github.com/imgix/gatsby/compare/v1.2.0-rc.1...v1.2.0-rc.2) (2021-03-03)
+
+
+### Bug Fixes
+
+* correct types for float params ([ccb97f4](https://github.com/imgix/gatsby/commit/ccb97f4e6aa12484f4eb8e11b11f2cab02919070))
+* fix imgix params with dash not working correctly ([f8a8fd0](https://github.com/imgix/gatsby/commit/f8a8fd044fe26337416518a7944899bad2679aa5))
+* slight issue in tests ([3368ed7](https://github.com/imgix/gatsby/commit/3368ed76fecb08f0844f43603b80ce7072a83e70))
+
+
+### Features
+
+* add ix-params to gatsbyImageData ([85e3518](https://github.com/imgix/gatsby/commit/85e35181e567b17475b5ec8d5a2af99b70949b25))
+
+# [1.2.0-rc.1](https://github.com/imgix/gatsby/compare/v1.1.1...v1.2.0-rc.1) (2021-03-02)
+
+
+### Features
+
+* initial work on gatsby-plugin-image support ([b547a38](https://github.com/imgix/gatsby/commit/b547a38180016300a668d29d7bd388f792c57d56))
 ## [1.1.2](https://github.com/imgix/gatsby/compare/v1.1.1...v1.1.2) (2021-03-01)
 
 

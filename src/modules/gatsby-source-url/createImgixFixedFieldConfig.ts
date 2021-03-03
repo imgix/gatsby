@@ -4,8 +4,12 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FixedObject } from 'gatsby-image';
-import { GraphQLFieldConfig, GraphQLInt, GraphQLObjectType } from 'graphql';
-import { ComposeFieldConfigAsObject } from 'graphql-compose';
+import {
+  GraphQLFieldConfig,
+  GraphQLInt,
+  GraphQLObjectType,
+} from 'gatsby/graphql';
+import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
 import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import {
@@ -13,14 +17,10 @@ import {
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
-import {
-  IImgixParams,
-  ImgixFixedArgs,
-  ImgixFixedArgsResolved,
-} from '../../publicTypes';
+import { IImgixParams, ImgixFixedArgsResolved } from '../../publicTypes';
 import {
   createImgixFixedType,
-  ImgixUrlParamsInputType,
+  ImgixParamsInputType,
   unTransformParams,
 } from './graphqlTypes';
 import { buildImgixFixed } from './objectBuilders';
@@ -70,12 +70,12 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
       description: `The image quality to use for compression. Range: 0-100, with 100 being highest quality. This setting is not recommended as the quality is already optimized by decreasing quality as the dpr increases to reduce image size while retaining visual quality.`,
     },
     imgixParams: {
-      type: ImgixUrlParamsInputType,
+      type: ImgixParamsInputType,
       description: `The imgix parameters (transformations) to apply to the image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
     placeholderImgixParams: {
-      type: ImgixUrlParamsInputType,
+      type: ImgixParamsInputType,
       description: `Any imgix parameters to use only for the blur-up/placeholder image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
@@ -132,9 +132,8 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
 
 export const createImgixFixedSchemaFieldConfig = <TSource, TContext>(
   args: CreateImgixFixedFieldConfigArgs<TSource>,
-): ComposeFieldConfigAsObject<TSource, TContext, ImgixFixedArgs> =>
-  createImgixFixedFieldConfig(args) as ComposeFieldConfigAsObject<
-    TSource,
-    TContext,
-    ImgixFixedArgs
-  >;
+): ObjectTypeComposerAsObjectDefinition<TSource, TContext> =>
+  ({
+    ...createImgixFixedFieldConfig(args),
+    name: 'ImgixGatsbyFixed',
+  } as ObjectTypeComposerAsObjectDefinition<TSource, TContext>);
