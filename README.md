@@ -230,7 +230,7 @@ The steps to setting this value correctly is:
 
    For example, for `ContentfulAsset`, it will display the following error message:
 
-   ```
+   ```txt
    Error when resolving URL value for node type ContentfulAsset. This
    probably means that the getURL function in gatsby-config.js is
    incorrectly set. Please read this project's README for detailed
@@ -702,7 +702,7 @@ import { buildFixedImageData } from '@imgix/gatsby';
 
 // Later, in a gatsby page/component.
 <Img
-  fluid={buildFixedImageData('https://assets.imgix.net/examples/pione.jpg', {
+  fixed={buildFixedImageData('https://assets.imgix.net/examples/pione.jpg', {
     // imgix parameters
     w: 960, // required
     h: 540, // required
