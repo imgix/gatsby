@@ -7,8 +7,10 @@ import { GatsbyCache } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
 import {
   generateImageData,
+  getLowResolutionImageURL,
   IGatsbyImageData,
   IGatsbyImageHelperArgs,
+  ImageFormat,
 } from 'gatsby-plugin-image';
 import { getGatsbyImageFieldConfig } from 'gatsby-plugin-image/graphql-utils';
 import {
@@ -20,6 +22,10 @@ import {
 } from 'gatsby/graphql';
 import ImgixClient from 'imgix-core-js';
 import R from 'ramda';
+import {
+  fetchImgixBase64Image,
+  fetchImgixDominantColor,
+} from '../../api/fetchBase64Image';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import {
   ImgixSourceDataResolver,
@@ -27,17 +33,8 @@ import {
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
 import { IImgixParams } from '../../publicTypes';
-import { ImgixParamsInputType } from './graphqlTypes';
+import { ImgixParamsInputType, ImgixPlaceholderType } from './graphqlTypes';
 import { resolveDimensions } from './resolveDimensions';
-
-/* const fitMap = {
-  cover: ,
-  contain: ,
-  fill: ,
-  inside: ,
-  outside: ,
-
-} */
 
 const generateImageSource = (
   client: ImgixClient,
@@ -99,27 +96,58 @@ const resolveGatsbyImageData = <TSource>({
           client: imgixClient,
         }),
       )
-      .return(({ url, dimensions: { width, height } }) =>
-        generateImageData({
-          ...args,
-          pluginName: `@imgix/gatsby`,
-          filename: url,
-          sourceMetadata: { width, height, format: 'auto' },
-          // placeholderURL: await getBase64Image({ baseUrl }),
-          // TODO: not a public API, need to replace with public API when implemented
-          breakpoints:
-            args.breakpoints ??
-            (imgixClient as any)._generateTargetWidths(
-              args.widthTolerance,
-              args.srcSetMinWidth,
-              args.srcSetMaxWidth,
+      .letL(
+        'baseImageDataArgs',
+        ({ url, dimensions: { width, height } }) =>
+          ({
+            ...args,
+            pluginName: `@imgix/gatsby`,
+            filename: url,
+            sourceMetadata: { width, height, format: 'auto' as ImageFormat },
+            // TODO: not a public API, need to replace with public API when implemented
+            breakpoints:
+              args.breakpoints ??
+              (imgixClient as any)._generateTargetWidths(
+                args.widthTolerance,
+                args.srcSetMinWidth,
+                args.srcSetMaxWidth,
+              ),
+            formats: ['auto'] as ImageFormat[],
+            generateImageSource: generateImageSource(imgixClient),
+            // TODO: check if this should be set to imgixParams
+            options: args,
+          } as const),
+      )
+      .bindL('placeholderData', ({ url, baseImageDataArgs }) => {
+        console.log('args.placeholder', args.placeholder);
+        if (args.placeholder === 'blurred') {
+          return pipe(
+            getLowResolutionImageURL(baseImageDataArgs),
+            fetchImgixBase64Image(cache),
+            TE.map((base64Data) => ({
+              placeholder: { fallback: base64Data },
+            })),
+          );
+        }
+        if (args.placeholder === 'dominantColor') {
+          return pipe(
+            // TODO: add imgix params
+            fetchImgixDominantColor(cache)((params) =>
+              imgixClient.buildURL(url, params),
             ),
-          // breakpoints
-          formats: ['auto'],
-          generateImageSource: generateImageSource(imgixClient),
-          options: args,
+            TE.map((dominantColor) => ({
+              backgroundColor: dominantColor,
+            })),
+          );
+        }
+        return TE.right({});
+      })
+      .return(({ baseImageDataArgs, placeholderData }) => ({
+        ...generateImageData({
+          ...baseImageDataArgs,
         }),
-      ),
+        ...placeholderData,
+      })),
     TE.getOrElseW(() => T.of(undefined)),
   )();
 };
@@ -167,6 +195,14 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
         All of imgix's parameters can be found here: https://docs.imgix.com/apis/rendering
         `,
       },
+      placeholder: {
+        type: ImgixPlaceholderType,
+        description: stripIndent`
+          Format of generated placeholder image, displayed while the main image loads.
+          BLURRED: a blurred, low resolution image, encoded as a base64 data URI (default)
+          DOMINANT_COLOR: a solid color, calculated from the dominant color of the image.
+          NONE: no placeholder. Set "backgroundColor" to use a fixed background color.`,
+      },
       widthTolerance: {
         type: GraphQLFloat,
         description: stripIndent`
@@ -189,7 +225,6 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
         `,
         defaultValue: 8192,
       },
-      // TODO: add placeholder
     },
   };
 

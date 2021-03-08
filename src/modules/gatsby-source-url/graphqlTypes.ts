@@ -153,3 +153,12 @@ export const unTransformParams = <T>(
 
 export type IGatsbySourceImgixUrlField = string;
 export const gatsbySourceImgixUrlFieldType = GraphQLString;
+
+export const ImgixPlaceholderType = new GraphQLEnumType({
+  name: `ImgixPlaceholder`,
+  values: {
+    DOMINANT_COLOR: { value: `dominantColor` },
+    BLURRED: { value: `blurred` },
+    NONE: { value: `none` },
+  },
+});
