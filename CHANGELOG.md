@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/imgix/gatsby/compare/v1.2.1...v1.3.0) (2021-03-08)
+
+
+### Features
+
+* implement blurred and background colour placeholders for gatsbyImageData ([d51935c](https://github.com/imgix/gatsby/commit/d51935c42980dda6f7cf1e3fe679271a368ebd41))
+
 ## [1.2.1](https://github.com/imgix/gatsby/compare/v1.2.0...v1.2.1) (2021-03-08)
 
 # [1.2.0](https://github.com/imgix/gatsby/compare/v1.1.2...v1.2.0) (2021-03-03)
