@@ -33,6 +33,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "sherwinski",
+      "name": "Sherwin Heydarbeygi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15919091?v=4",
+      "profile": "http://sherwinski.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
