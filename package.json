@@ -40,13 +40,13 @@
     "webpack": "5.27.1"
   },
   "dependencies": {
+    "@imgix/js-core": "3.0.0-beta.4",
     "camel-case": "^4.1.2",
     "common-tags": "^1.8.0",
     "debug": "^4.3.1",
     "fp-ts": "^2.9.3",
     "fp-ts-contrib": "^0.1.18",
     "graphql-compose": "^7.25.0",
-    "imgix-core-js": "^2.3.1",
     "imgix-url-params": "^11.11.2",
     "io-ts": "^2.2.13",
     "io-ts-reporters": "^1.2.2",
