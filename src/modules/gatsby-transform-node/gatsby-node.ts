@@ -12,7 +12,7 @@ import { PathReporter } from 'io-ts/PathReporter';
 import * as R from 'ramda';
 import readPkgUp from 'read-pkg-up';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
-import { createImgixClient } from '../../common/imgix-core-js-wrapper';
+import { createImgixClient } from '../../common/imgix-js-core-wrapper';
 import { findPossibleURLsInNode } from '../../common/utils';
 import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';

@@ -1,6 +1,6 @@
+import ImgixClient from '@imgix/js-core';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
-import ImgixClient from 'imgix-core-js';
 import { Errors } from 'io-ts';
 import { parseStringARParam, StringAspectRatio } from '../../common/ar';
 import { VERSION } from '../../common/constants';
@@ -34,7 +34,7 @@ function buildImageData(
   const path = parsePath(url);
   const client = new ImgixClient({
     domain: host,
-    includeLibraryParam: false, // force false so that imgix-core-js doesn't include its own library param
+    includeLibraryParam: false, // force false so that @imgix/js-core doesn't include its own library param
   });
 
   const includeLibraryParam = options.includeLibraryParam ?? true;
@@ -50,13 +50,8 @@ function buildImageData(
     ar: imgixParams.ar != null ? `${imgixParams.ar}:1` : undefined,
   };
 
-  // We have to spread parameters because imgix-core-js builders mutate params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
-  const src = client.buildURL(path, {
-    ...transformedImgixParams,
-  });
-  const srcset = client.buildSrcSet(path, {
-    ...transformedImgixParams,
-  });
+  const src = client.buildURL(path, transformedImgixParams);
+  const srcset = client.buildSrcSet(path, transformedImgixParams);
   const srcWebp = client.buildURL(path, {
     ...transformedImgixParams,
     fm: 'webp',

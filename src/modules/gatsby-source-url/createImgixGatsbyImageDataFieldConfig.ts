@@ -1,3 +1,4 @@
+import ImgixClient from '@imgix/js-core';
 import { stripIndent } from 'common-tags';
 import { Do } from 'fp-ts-contrib/lib/Do';
 import { pipe } from 'fp-ts/lib/function';
@@ -20,7 +21,6 @@ import {
   GraphQLInt,
   GraphQLObjectType,
 } from 'gatsby/graphql';
-import ImgixClient from 'imgix-core-js';
 import R from 'ramda';
 import {
   fetchImgixBase64Image,
@@ -107,7 +107,7 @@ const resolveGatsbyImageData = <TSource>({
             // TODO: not a public API, need to replace with public API when implemented
             breakpoints:
               args.breakpoints ??
-              (imgixClient as any)._generateTargetWidths(
+              ImgixClient.targetWidths(
                 args.widthTolerance,
                 args.srcSetMinWidth,
                 args.srcSetMaxWidth,
