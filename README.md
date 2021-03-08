@@ -11,8 +11,7 @@
 [![License](https://img.shields.io/npm/l/@imgix/gatsby?color=informational)](https://github.com/imgix/gatsby/blob/main/packages/gatsby/LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fgatsby.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fgatsby?ref=badge_shield)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg?color=informational)](https://github.com/prettier/prettier)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-informational.svg)](#contributors)
-
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-informational.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ---
@@ -897,6 +896,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/frederickfogerty"><img src="https://avatars0.githubusercontent.com/u/615334?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Frederick Fogerty</b></sub></a><br /><a href="https://github.com/imgix/gatsby/commits?author=frederickfogerty" title="Code">💻</a> <a href="https://github.com/imgix/gatsby/commits?author=frederickfogerty" title="Documentation">📖</a> <a href="#maintenance-frederickfogerty" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://angeloashmore.github.io"><img src="https://avatars2.githubusercontent.com/u/8601064?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Angelo Ashmore</b></sub></a><br /><a href="https://github.com/imgix/gatsby/commits?author=angeloashmore" title="Code">💻</a></td>
     <td align="center"><a href="http://www.luisball.com"><img src="https://avatars.githubusercontent.com/u/16711614?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Luis H. Ball Jr.</b></sub></a><br /><a href="https://github.com/imgix/gatsby/commits?author=luqven" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://sherwinski.com"><img src="https://avatars.githubusercontent.com/u/15919091?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sherwin Heydarbeygi</b></sub></a><br /><a href="https://github.com/imgix/gatsby/commits?author=sherwinski" title="Documentation">📖</a></td>
   </tr>
 </table>
 
