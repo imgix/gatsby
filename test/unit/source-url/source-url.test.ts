@@ -4,6 +4,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import { PatchedPluginOptions } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
+import isBase64 from 'is-base64';
 import * as R from 'ramda';
 import { createLogger, trace } from '../../../src/common/log';
 import { createSchemaCustomization } from '../../../src/gatsby-node';
@@ -416,6 +417,35 @@ describe('createResolvers', () => {
       },
     });
   });
+  describe('gatsbyImageData field', () => {
+    it('should set blurred placeholder data correctly', async () => {
+      const result = await resolveField({
+        field: 'gatsbyImageData',
+        url: 'amsterdam.jpg',
+        fieldParams: {
+          placeholder: 'blurred',
+        },
+      });
+
+      expect(isBase64(result.placeholder.fallback, { allowMime: true })).toBe(
+        true,
+      );
+      expect(result).toMatchObject({
+        placeholder: { fallback: expect.stringMatching('data:image/') },
+      });
+    });
+    it('should set background colour placeholder data correctly', async () => {
+      const result = await resolveField({
+        field: 'gatsbyImageData',
+        url: 'amsterdam.jpg',
+        fieldParams: {
+          placeholder: 'dominantColor',
+        },
+      });
+
+      expect(result.backgroundColor).toMatch(/^#([0-9A-F]{3}){1,2}$/i);
+    });
+  });
 });
 
 const mockGatsbyCache = {
@@ -431,6 +461,8 @@ const mockGatsbyCache = {
   },
 };
 
+type FieldType = 'url' | 'fluid' | 'fixed' | 'gatsbyImageData';
+
 const resolveField = async ({
   appConfig,
   field,
@@ -438,7 +470,7 @@ const resolveField = async ({
   url,
 }: {
   appConfig?: Parameters<typeof resolveFieldInternal>[0]['appConfig'];
-  field: 'url' | 'fluid' | 'fixed';
+  field: FieldType;
   fieldParams?: Object;
   url?: string;
 }) => {
@@ -475,7 +507,7 @@ async function resolveFieldInternal({
   appConfig?: Parameters<
     typeof getTypeResolverFromSchemaCustomization
   >[0]['appConfig'];
-  field: 'url' | 'fluid' | 'fixed';
+  field: FieldType;
   fieldParams?: Object;
   url?: string;
 }) {
@@ -505,7 +537,7 @@ async function resolveFieldInternal({
 
 function createFieldParamsWithDefaults(
   objectTypeConfig: ObjectTypeConfig,
-  field: 'url' | 'fluid' | 'fixed',
+  field: FieldType,
   fieldParams: FieldParams,
 ) {
   const defaultParamsForField = pipe(

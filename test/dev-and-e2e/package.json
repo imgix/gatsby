@@ -10,8 +10,8 @@
     "webpack": "^5.24.2"
   },
   "dependencies": {
-    "@imgix/gatsby": "^1.0.0-rc.6",
-    "gatsby": "3.0.0",
+    "@imgix/gatsby": "^1.2.0",
+    "gatsby": "3.0.1",
     "gatsby-image": "^3.0.0",
     "gatsby-plugin-image": "^1.1.0-next.1",
     "gatsby-plugin-manifest": "^3.0.0",
@@ -36,10 +36,10 @@
     "core-js": "^3.9.1",
     "cypress": "^6.5.0",
     "eslint": "^7.21.0",
-    "graphql": "^14.4.1",
+    "graphql": "^15.5.0",
     "prettier": "2.2.1",
     "read-pkg-up": "^7.0.1",
-    "sharp": "^0.26.0",
+    "sharp": "^0.27.2",
     "start-server-and-test": "^1.12.0",
     "typescript": "^4.2.2",
     "webpack": "^4.0.0"
