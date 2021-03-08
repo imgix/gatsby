@@ -1,9 +1,9 @@
+import ImgixClient from '@imgix/js-core';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GraphQLFieldConfig } from 'gatsby/graphql';
 import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
-import ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
 import {
   ImgixSourceDataResolver,

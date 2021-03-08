@@ -1,11 +1,11 @@
+import ImgixClient from '@imgix/js-core';
 import * as E from 'fp-ts/lib/Either';
 import { flow, pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
-import ImgixClient from 'imgix-core-js';
 import * as t from 'io-ts';
-import { createLogger, trace } from '../common/log';
 import { withCache } from '../common/cache';
+import { createLogger, trace } from '../common/log';
 import { fetchJSON } from '../common/utils';
 
 const log = createLogger('fetchImgixMetadata');

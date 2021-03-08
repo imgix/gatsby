@@ -1,5 +1,5 @@
+import ImgixClient from '@imgix/js-core';
 import { FixedObject, FluidObject } from 'gatsby-image';
-import ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
 import { log, trace } from '../../common/log';
 import {
@@ -83,12 +83,7 @@ export const buildFluidObject = ({
   };
   const srcsetImgixParams = imgixParams;
 
-  // We have to spread parameters because .buildSrcSet mutates params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
-  const srcset = client.buildSrcSet(
-    url,
-    { ...srcsetImgixParams },
-    srcsetOptions,
-  );
+  const srcset = client.buildSrcSet(url, srcsetImgixParams, srcsetOptions);
   const srcsetWebp = client.buildSrcSet(
     url,
     {
@@ -180,8 +175,7 @@ export function buildImgixFixed({
     ...args.placeholderImgixParams,
   });
 
-  // We have to spread parameters because .buildURL and .buildSrcSet mutates params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
-  const src = client.buildURL(url, { ...imgixParams });
+  const src = client.buildURL(url, imgixParams);
   const srcWebp = client.buildURL(url, {
     ...imgixParams,
     fm: 'webp',
