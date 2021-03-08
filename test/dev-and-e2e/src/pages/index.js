@@ -1,11 +1,12 @@
 import { buildFixedImageData, buildFluidImageData } from "@imgix/gatsby"
-import { Link } from "gatsby"
+import { graphql, Link } from "gatsby"
 import Img from "gatsby-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const IndexPage = () => {
+const IndexPage = props => {
   return (
     <Layout>
       <SEO title="Home" />
@@ -29,8 +30,16 @@ const IndexPage = () => {
       />
       <Link to="/page-2/">Go to page 2</Link> <br />
       <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
+      <GatsbyImage image={props.data.imgixImage.gatsbyImageData}></GatsbyImage>
     </Layout>
   )
 }
 
+export const query = graphql`
+  query IndexQuery {
+    imgixImage(url: "https://assets.imgix.net/amsterdam.jpg") {
+      gatsbyImageData(placeholder: DOMINANT_COLOR)
+    }
+  }
+`
 export default IndexPage
