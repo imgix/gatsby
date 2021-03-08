@@ -10,7 +10,7 @@ export const buildBase64URL = (contentType: string, base64: string): string =>
 export const fetchImgixBase64Image = (cache: GatsbyCache) => (
   url: string,
 ): TE.TaskEither<Error, string> =>
-  withCache(`gatsby-plugin-imgix-base64-url-${url}`, cache, () =>
+  withCache(`imgix-gatsby-base64-url-${url}`, cache, () =>
     pipe(
       url,
       fetch,
@@ -24,6 +24,41 @@ export const fetchImgixBase64Image = (cache: GatsbyCache) => (
             ),
           ),
         ),
+      ),
+    ),
+  );
+
+export type HexString = string;
+type ImgixPaletteResponse = {
+  dominant_colors: {
+    vibrant: {
+      /**
+       * In format '#xxxxxx'
+       */
+      hex: string;
+    };
+  };
+};
+
+export const fetchImgixDominantColor = (cache: GatsbyCache) => (
+  buildURL: (params: Record<string, unknown>) => string,
+): TE.TaskEither<Error, HexString> =>
+  pipe(buildURL({ palette: 'json' }), (url) =>
+    withCache(`imgix-gatsby-dominant-color-${url}`, cache, () =>
+      pipe(
+        url,
+        fetch,
+        TE.chain((res) =>
+          TE.tryCatch<Error, ImgixPaletteResponse>(
+            () => res.json(),
+            (err) =>
+              new Error(
+                'Something went wrong while decoding the dominant color for the placeholder image: ' +
+                  String(err),
+              ),
+          ),
+        ),
+        TE.map((data) => data.dominant_colors.vibrant.hex),
       ),
     ),
   );
