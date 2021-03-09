@@ -27,6 +27,7 @@ branches:
   only:
     - main
     - next
+    - /^renovate/.*$/
 
 deploy:
   provider: script
