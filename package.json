@@ -75,7 +75,7 @@
     "gatsby-plugin-image": "1.1.0-next.1",
     "gatsby-plugin-sharp": "3.0.0",
     "gatsby-source-filesystem": "3.0.0",
-    "graphql": "^15.5.0",
+    "graphql": "15.5.0",
     "graphql-anywhere": "4.2.7",
     "graphql-tag": "2.11.0",
     "is-base64": "1.1.0",
