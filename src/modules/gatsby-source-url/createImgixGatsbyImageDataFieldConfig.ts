@@ -11,7 +11,7 @@ import {
   getLowResolutionImageURL,
   IGatsbyImageData,
   IGatsbyImageHelperArgs,
-  ImageFormat,
+  ImageFormat
 } from 'gatsby-plugin-image';
 import { getGatsbyImageFieldConfig } from 'gatsby-plugin-image/graphql-utils';
 import {
@@ -19,18 +19,18 @@ import {
   GraphQLFieldResolver,
   GraphQLFloat,
   GraphQLInt,
-  GraphQLObjectType,
+  GraphQLObjectType
 } from 'gatsby/graphql';
 import R from 'ramda';
 import {
   fetchImgixBase64Image,
-  fetchImgixDominantColor,
+  fetchImgixDominantColor
 } from '../../api/fetchBase64Image';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
-  taskEitherFromSourceDataResolver,
+  taskEitherFromSourceDataResolver
 } from '../../common/utils';
 import { IImgixParams, ImgixUrlParams } from '../../publicTypes';
 import { ImgixParamsInputType, ImgixPlaceholderType } from './graphqlTypes';
@@ -170,7 +170,12 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   IImgixGatsbyImageDataArgsResolved
 > => {
   const defaultConfig = getGatsbyImageFieldConfig(
-    resolveGatsbyImageData({ cache, imgixClient, resolveUrl, defaultParams }),
+    resolveGatsbyImageData({
+      cache,
+      imgixClient,
+      resolveUrl,
+      defaultParams,
+    }) as GraphQLFieldResolver<TSource, TContext>, // TODO: remove cast when PR to Gatsby has been merged
     {},
   );
 
