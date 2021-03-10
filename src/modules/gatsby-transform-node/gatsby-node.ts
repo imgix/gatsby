@@ -6,7 +6,7 @@ import {
   GraphQLFieldConfig,
   GraphQLNonNull,
   GraphQLObjectType,
-  GraphQLString
+  GraphQLString,
 } from 'gatsby/graphql';
 import { PathReporter } from 'io-ts/PathReporter';
 import * as R from 'ramda';
@@ -21,7 +21,7 @@ import { createImgixGatsbyImageFieldConfig } from '../gatsby-source-url/createIm
 import { createImgixUrlFieldConfig } from '../gatsby-source-url/createImgixUrlFieldConfig';
 import {
   createImgixFixedType,
-  createImgixFluidType
+  createImgixFluidType,
 } from '../gatsby-source-url/graphqlTypes';
 
 function isStringArray(value: unknown): value is string[] {
