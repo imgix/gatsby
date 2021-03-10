@@ -40,7 +40,7 @@
     "webpack": "5.27.1"
   },
   "dependencies": {
-    "@imgix/js-core": "3.0.0-beta.4",
+    "@imgix/js-core": "3.1.0",
     "camel-case": "^4.1.2",
     "common-tags": "^1.8.0",
     "debug": "^4.3.1",

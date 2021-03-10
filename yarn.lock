@@ -1268,10 +1268,10 @@
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
   integrity sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==
 
-"@imgix/js-core@3.0.0-beta.4":
-  version "3.0.0-beta.4"
-  resolved "https://registry.yarnpkg.com/@imgix/js-core/-/js-core-3.0.0-beta.4.tgz#9a0e2064a8c53237465ab261e2acd4d99d3b3145"
-  integrity sha512-XPEyxbd1Lrmb+N5H4+ltlomaD5qOe/sfN2H9kV72WklR01x65mfiLlb7XA6gUsSm5TLsi0YlXtsSthL4VYqCBg==
+"@imgix/js-core@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@imgix/js-core/-/js-core-3.1.0.tgz#94076fa62b7426bdf226133861912751288cd66a"
+  integrity sha512-ubyMNPleaKMovS/s1HWzTUiDundZULHt7IFuDvqbOxYVSRdsLjhekpZyDHUa6pgz6v2SJ0XJS1HFk2fH3af0ng==
   dependencies:
     js-base64 "~2.6.0"
     md5 "^2.2.1"
