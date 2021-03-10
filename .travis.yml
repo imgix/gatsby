@@ -23,12 +23,6 @@ script:
   - yarn lint:ci
   - cross-env-shell DEBUG=imgix:* yarn test
 
-branches:
-  only:
-    - main
-    - next
-    - /^renovate/.*$/
-
 deploy:
   provider: script
   skip_cleanup: true
