@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
-import ImgixClient from 'imgix-core-js';
+import ImgixClient from '@imgix/js-core';
 import { Errors } from 'io-ts';
 import { parseStringARParam, StringAspectRatio } from '../../common/ar';
 import { VERSION } from '../../common/constants';
