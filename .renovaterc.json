@@ -1,3 +1,4 @@
 {
-  "extends": ["github>imgix/renovate-config"]
+  "extends": ["github>imgix/renovate-config"],
+  "requiredStatusChecks": ["Travis CI"]
 }
