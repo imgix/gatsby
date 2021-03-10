@@ -108,9 +108,9 @@ const resolveGatsbyImageData = <TSource>({
             breakpoints:
               args.breakpoints ??
               ImgixClient.targetWidths(
-                args.widthTolerance,
                 args.srcSetMinWidth,
                 args.srcSetMaxWidth,
+                args.widthTolerance,
               ),
             formats: ['auto'] as ImageFormat[],
             generateImageSource: generateImageSource(imgixClient),
