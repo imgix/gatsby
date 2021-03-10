@@ -12209,10 +12209,10 @@ ms@^2.0.0:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-msync@2.5.7:
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/msync/-/msync-2.5.7.tgz#f9fd03204f51d52f7a30180b6a22efbe22bf9e04"
-  integrity sha512-fdaH2J/D9CKGvIRK2gaMWNPys+tBPHd+yXGVExdh8VYncuLx9TiadBPjHm6o8oaw8j82zUWLuBVyVmXPIzkw4A==
+msync@2.5.10:
+  version "2.5.10"
+  resolved "https://registry.yarnpkg.com/msync/-/msync-2.5.10.tgz#a12e593ae9eafe0d073d72a967969e3570059fc9"
+  integrity sha512-PT8Mh3wTcBkKy2ryUBAKrluFLeq+AXclnTp8nikoAtARDtsbLYp2eL+8E1v0QV4OjxIs+61gdBEMaFNFTdLOOA==
   dependencies:
     "@platform/exec" "0.2.63"
     "@platform/fs" "0.5.24"
