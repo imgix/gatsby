@@ -1560,10 +1560,10 @@
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
   integrity sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==
 
-"@imgix/gatsby@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@imgix/gatsby/-/gatsby-1.2.0.tgz#89b8d11ab167110f48b58a3f61b5938dd2da56d5"
-  integrity sha512-WX/IOILwjiwP3S/sdjTrJJ8q6TPEe+QYzFiWLIcmEHvS+txjpmBmNmCO5cCm16rvjKBnghtegDiN+drsZ7BwRw==
+"@imgix/gatsby@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@imgix/gatsby/-/gatsby-1.3.0.tgz#2506c9c70d4408a1ff9cc05cf90c4f361fe70b54"
+  integrity sha512-IEL5qpmEVmkzFS+0b5S8HcvftIqwPH59kYiPQXnsKgJaLXncKyrZLDm5JN9aUTSzMCD5zVvHBTxw297YFX7SXg==
   dependencies:
     camel-case "^4.1.2"
     common-tags "^1.8.0"
@@ -3295,11 +3295,6 @@ babel-plugin-remove-graphql-queries@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-remove-graphql-queries/-/babel-plugin-remove-graphql-queries-3.0.0.tgz#b5c4e5e29b3bd2110b55a36d5b9076da15b5805e"
   integrity sha512-eKyztf9FDm4U+aEojPXKlYbE0VM4L2fxU+xHAn21lx13ZR7jT+N5qQNeZk+wR7I/NzwFBy1nuHFui4oXa/Kr0A==
-
-babel-plugin-remove-graphql-queries@^3.1.0-next.1:
-  version "3.1.0-next.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-remove-graphql-queries/-/babel-plugin-remove-graphql-queries-3.1.0-next.1.tgz#3893fa69475a3805b27230df0dea50bbfcdf3c6a"
-  integrity sha512-2ex/iuelATD1LNrDeKjldsToizQblKK/RVRhUBWc759o/xSgb/skIBdXUWof6O4xvUBrDK0Q9Qp6TIvjhcYjVQ==
 
 babel-plugin-syntax-object-rest-spread@^6.8.0:
   version "6.13.0"
@@ -7199,20 +7194,6 @@ gatsby-core-utils@^2.0.0:
     tmp "^0.2.1"
     xdg-basedir "^4.0.0"
 
-gatsby-core-utils@^2.1.0-next.1:
-  version "2.1.0-next.1"
-  resolved "https://registry.yarnpkg.com/gatsby-core-utils/-/gatsby-core-utils-2.1.0-next.1.tgz#d1d56f7c15e320c3c49ee4b677615caf3971d3d4"
-  integrity sha512-xGWjS+nPoRQygr1IJh2hcf+OgnLgCZ0T4AtRorh0zm0CkfGMuhtJcGe0fyZhB7nuuQVpB73bB1NAPu/aqwhVOA==
-  dependencies:
-    ci-info "2.0.0"
-    configstore "^5.0.1"
-    file-type "^16.2.0"
-    fs-extra "^8.1.0"
-    node-object-hash "^2.0.0"
-    proper-lockfile "^4.1.1"
-    tmp "^0.2.1"
-    xdg-basedir "^4.0.0"
-
 gatsby-graphiql-explorer@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/gatsby-graphiql-explorer/-/gatsby-graphiql-explorer-1.0.0.tgz#5de202dfcf266f4b5e661230e3b862b43c5d3682"
@@ -7236,10 +7217,10 @@ gatsby-legacy-polyfills@^1.0.0:
   dependencies:
     core-js-compat "^3.6.5"
 
-gatsby-link@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/gatsby-link/-/gatsby-link-3.0.0.tgz#e0448dfb7974fe0093522c9e24f8f1d8ebc5372d"
-  integrity sha512-HbwrTBRMu6FRIhVfcX5w+8ngPtvB4q/6CdgmieuAqukDWXOdlmIpgJKjTheiTcAUXswDcxkcGRNmn3tmPF+Wlg==
+gatsby-link@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/gatsby-link/-/gatsby-link-3.0.1.tgz#7fdef329da4cc9e53f9a306a68024fa4faa9b00c"
+  integrity sha512-lHzlYoBHB5tP4/3fb4crtleductDMoi5DcC140u4KKo7JyDqp24v8zDrd/iYa3sHlZagx1CxAtkghsIOJJbnBg==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@types/reach__router" "^1.3.7"
@@ -7259,10 +7240,10 @@ gatsby-page-utils@^1.0.0:
     lodash "^4.17.20"
     micromatch "^4.0.2"
 
-gatsby-plugin-image@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-image/-/gatsby-plugin-image-1.0.0.tgz#100ab670549c1b4b742034d09944c19b6a5cd4ee"
-  integrity sha512-qPfydip7atF+rlESv1HLDmbwmmQvC8aU7W6GwO62hWcuGcIFJD3lcn6B8xF55f4rxE99vxbO5gUwRUwj+fUH1A==
+gatsby-plugin-image@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-image/-/gatsby-plugin-image-1.0.1.tgz#b2b46ec7b2203c05b3511e1440100bcd3d2af68a"
+  integrity sha512-Aa8CV+bt5kboHDWPaZZ9OWDDnlZp7Ut+cx5nMfoXAq5fPgAFtausiLzyBfsYcikjZxgYIc4VBXaUJoi0I7sjTA==
   dependencies:
     "@babel/parser" "^7.12.5"
     "@babel/traverse" "^7.12.5"
@@ -7273,23 +7254,6 @@ gatsby-plugin-image@^1.0.0:
     common-tags "^1.8.0"
     fs-extra "^8.1.0"
     gatsby-core-utils "^2.0.0"
-    objectFitPolyfill "^2.3.0"
-    prop-types "^15.7.2"
-
-gatsby-plugin-image@^1.1.0-next.1:
-  version "1.1.0-next.1"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-image/-/gatsby-plugin-image-1.1.0-next.1.tgz#4d579ca8b1c341b14d852974366760d482616cbc"
-  integrity sha512-DU4g/5DGAlCJizBSZJebJyeDFsGaSc3jq6desRDvRn/uYdKyGLOz6sShP00PAquHW21dEE92jsBN8JqzqRRUeA==
-  dependencies:
-    "@babel/parser" "^7.12.5"
-    "@babel/traverse" "^7.12.5"
-    babel-jsx-utils "^1.0.1"
-    babel-plugin-remove-graphql-queries "^3.1.0-next.1"
-    camelcase "^5.3.1"
-    chokidar "^3.5.1"
-    common-tags "^1.8.0"
-    fs-extra "^8.1.0"
-    gatsby-core-utils "^2.1.0-next.1"
     objectFitPolyfill "^2.3.0"
     prop-types "^15.7.2"
 
@@ -7350,10 +7314,10 @@ gatsby-plugin-react-helmet@^4.0.0:
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-gatsby-plugin-sharp@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-sharp/-/gatsby-plugin-sharp-3.0.0.tgz#276557883ccfc9ea5503bb16b2fcd24f7a55928e"
-  integrity sha512-gmIzHjv+JaW1Gyyrz81s43yBkqtMpgvGb6qbPzH2ZX8V2YTyd9LnfUxKx/uTwluEB5oz/om4jtHSCH5DSUsTFA==
+gatsby-plugin-sharp@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-sharp/-/gatsby-plugin-sharp-3.0.1.tgz#994a2a2a0305bd7d3e4aa698e30532c0b7cfba96"
+  integrity sha512-HL519LIhTmTySUPFO2IuwIHBlgo/0N7gJng2gu2XwD/DJ3ENgw5+SXmiVTwvERx7Pr5YVPECgYuszWdlYgJmgw==
   dependencies:
     "@babel/runtime" "^7.12.5"
     async "^3.2.0"
@@ -7396,10 +7360,10 @@ gatsby-plugin-utils@^1.0.0:
   dependencies:
     joi "^17.2.1"
 
-gatsby-react-router-scroll@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/gatsby-react-router-scroll/-/gatsby-react-router-scroll-4.0.0.tgz#7a94c4836d0325b2e9c80cbd717376476ceada3d"
-  integrity sha512-TS1Ya7UD/EwAlZHGPp9uDl+Qgzz4tmUA3K+jKMViarLG9LcrwY8tNTbMBZKyKsUcj6HDp8rfIu58TaDiDi/01A==
+gatsby-react-router-scroll@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/gatsby-react-router-scroll/-/gatsby-react-router-scroll-4.0.1.tgz#ac9b7722057b7f14a28136f77e6aa984dbceff03"
+  integrity sha512-I0owccfyHioK6V8LhbRXkQde9YPbiDzMyA3SGy7p9zRWO5lqmpJU/0g+qf7UAZYYTeoaDyYOP9pek6KcIUwf8Q==
   dependencies:
     "@babel/runtime" "^7.12.5"
 
@@ -7467,10 +7431,10 @@ gatsby-recipes@^0.11.0:
     xstate "^4.9.1"
     yoga-layout-prebuilt "^1.9.6"
 
-gatsby-source-contentful@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/gatsby-source-contentful/-/gatsby-source-contentful-5.0.0.tgz#c4373f801b607d98b5ee2eac649ad0d1fe1502c8"
-  integrity sha512-VzGTsHk0zBxF4aIpKOCEaq6iiEt5S6RoOZqMGz/oXHtJCGbJD9x2FmLnYSLvz9Ks8RgXKPxLT8U8CAJxDeAG0w==
+gatsby-source-contentful@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/gatsby-source-contentful/-/gatsby-source-contentful-5.0.3.tgz#eec526d026949c61a901b620573180256a309972"
+  integrity sha512-GSuS2uXY8yygvVDEFYtiLlHZ7zK+W59VxQAyeaqYCwBTUbCg+yT+bM+i1nr0aVeQSC+3RpxfGsUi/WzqIc1MmQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@contentful/rich-text-react-renderer" "^14.1.2"
@@ -7483,7 +7447,7 @@ gatsby-source-contentful@^5.0.0:
     contentful "^8.1.7"
     fs-extra "^9.1.0"
     gatsby-core-utils "^2.0.0"
-    gatsby-plugin-image "^1.0.0"
+    gatsby-plugin-image "^1.0.1"
     gatsby-plugin-utils "^1.0.0"
     gatsby-source-filesystem "^3.0.0"
     is-online "^8.5.1"
@@ -7533,10 +7497,10 @@ gatsby-source-filesystem@^3.0.0:
     valid-url "^1.0.9"
     xstate "^4.14.0"
 
-gatsby-source-prismic@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/gatsby-source-prismic/-/gatsby-source-prismic-3.3.3.tgz#9aaed65b0db136360499df4cfad8b829b0981101"
-  integrity sha512-0tpmO+1VJz5OjMvUaV6YV2spUw03WYuEOl8qvumBde51DID96XmaAJaGbErDJNOnl3VpfvBPRcACxNxcVigcpA==
+gatsby-source-prismic@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/gatsby-source-prismic/-/gatsby-source-prismic-3.3.4.tgz#985e6f693d5d4778143b05cbf447617017162adf"
+  integrity sha512-xb/FO51Vxa1LNk5Zsv//JEHThHbJXnCLS431Qd3b6x6R3nMH08w2RpPKYBtvfEF3gBLY51sZjKlhnYobZE+H2A==
   dependencies:
     camel-case "^4.1.1"
     es-cookie "^1.3.2"
@@ -7594,10 +7558,10 @@ gatsby-transformer-sharp@^3.0.0:
     semver "^7.3.4"
     sharp "^0.27.0"
 
-gatsby@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-3.0.1.tgz#5dd4cf2bcfd07b965b8605a99d54e7a834bfb598"
-  integrity sha512-ap9gbjPrk9ft1SY+fsAKfOpHWfUS+wb5kkeRxOunsQvvizoCUqCcxlRbuNpw1EKmPoHGbHN5D1vVEh1RXAwM6g==
+gatsby@3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-3.0.4.tgz#dce3e44cb85ee6a4cdc71a5be9b3485206bea0fc"
+  integrity sha512-LIBeox/O4XlgfpPYScS5LwFreWlZuuz4OZl0cnkA3M8EfxelHwLpqMvOeSYsoMHvogBJzlLocfRQIgzqvXS7kA==
   dependencies:
     "@babel/code-frame" "^7.10.4"
     "@babel/core" "^7.12.3"
@@ -7671,11 +7635,11 @@ gatsby@3.0.1:
     gatsby-core-utils "^2.0.0"
     gatsby-graphiql-explorer "^1.0.0"
     gatsby-legacy-polyfills "^1.0.0"
-    gatsby-link "^3.0.0"
+    gatsby-link "^3.0.1"
     gatsby-plugin-page-creator "^3.0.0"
     gatsby-plugin-typescript "^3.0.0"
     gatsby-plugin-utils "^1.0.0"
-    gatsby-react-router-scroll "^4.0.0"
+    gatsby-react-router-scroll "^4.0.1"
     gatsby-telemetry "^2.0.0"
     glob "^7.1.6"
     got "8.3.2"
