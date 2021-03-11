@@ -15,19 +15,23 @@
     "Angelo Ashmore <angelo.ashmore@walltowall.com>"
   ],
   "scripts": {
-    "build": "tsc",
     "build:watch": "tsc --build --watch",
-    "lint": "prettier --write .",
+    "build": "tsc",
+    "dev:start": "cd test/dev-and-e2e && gatsby clean && gatsby develop",
     "lint:ci": "prettier --check .",
-    "test": "run-s test:unit test:e2e:ci",
-    "test:unit": "yarn jest",
-    "sync:e2e": "msync s && rm -rf test/dev-and-e2e/node_modules/@imgix/gatsby/test/",
+    "lint": "prettier --write .",
+    "load-env": "source .env",
+    "nodemon:dev": "nodemon --delay 1 -w dist -x \"yarn run sync:e2e && yarn run dev:start\"",
+    "nodemon:e2e": "nodemon --delay 1 -w dist -x \"yarn run test:e2e:ci\"",
     "sync:e2e:watch": "nodemon -w dist -x \"msync s && rm -rf test/dev-and-e2e/node_modules/@imgix/gatsby/test/\"",
-    "test:e2e": "cd test/dev-and-e2e && yarn run test:e2e",
-    "test:e2e:ci": "yarn run sync:e2e && cd test/dev-and-e2e && yarn run test:e2e:ci",
-    "tdd": "run-p tdd:unit tdd:e2e",
+    "sync:e2e": "msync s && rm -rf test/dev-and-e2e/node_modules/@imgix/gatsby/test/",
+    "tdd:e2e": "echo 'Run \"npm run sync:e2e:watch\" in a separate terminal window' && yarn test:e2e",
     "tdd:unit": "yarn jest --watch --setupFiles dotenv/config",
-    "tdd:e2e": "echo 'Run \"npm run sync:e2e:watch\" in a separate terminal window' && yarn test:e2e"
+    "tdd": "run-p tdd:unit tdd:e2e",
+    "test:e2e:ci": "yarn run sync:e2e && cd test/dev-and-e2e && yarn run test:e2e:ci",
+    "test:e2e": "cd test/dev-and-e2e && yarn run test:e2e",
+    "test:unit": "yarn jest",
+    "test": "run-s test:unit test:e2e:ci"
   },
   "peerDependencies": {
     "gatsby": "^2 || ^3",
