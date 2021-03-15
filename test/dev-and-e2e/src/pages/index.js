@@ -1,4 +1,8 @@
-import { buildFixedImageData, buildFluidImageData } from "@imgix/gatsby"
+import {
+  buildFixedImageData,
+  buildFluidImageData,
+  getGatsbyImageData,
+} from "@imgix/gatsby"
 import { graphql, Link } from "gatsby"
 import Img from "gatsby-image"
 import { GatsbyImage } from "gatsby-plugin-image"
@@ -31,6 +35,14 @@ const IndexPage = props => {
       <Link to="/page-2/">Go to page 2</Link> <br />
       <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
       <GatsbyImage image={props.data.imgixImage.gatsbyImageData}></GatsbyImage>
+      <GatsbyImage
+        image={getGatsbyImageData({
+          url: "https://assets.imgix.net/examples/pione.jpg",
+          width: 10,
+          height: 10,
+          layout: "fixed",
+        })}
+      />
     </Layout>
   )
 }

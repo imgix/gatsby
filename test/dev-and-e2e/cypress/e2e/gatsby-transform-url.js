@@ -20,4 +20,13 @@ describe("gatsby-transform-url", () => {
         expect($img[0].naturalWidth).to.be.greaterThan(0)
       })
   })
+
+  it("gatsby-plugin-image image loads successfully", () => {
+    cy.findByAltText("Gatsby-plugin-image Image")
+      .should("be.visible")
+      .and($img => {
+        // "naturalWidth" and "naturalHeight" are set when the image loads
+        expect($img[0].naturalWidth).to.be.greaterThan(0)
+      })
+  })
 })

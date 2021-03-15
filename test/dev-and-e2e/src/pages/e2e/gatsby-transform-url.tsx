@@ -1,5 +1,10 @@
-import { buildFixedImageData, buildFluidImageData } from "@imgix/gatsby"
+import {
+  buildFixedImageData,
+  buildFluidImageData,
+  getGatsbyImageData,
+} from "@imgix/gatsby"
 import Img from "gatsby-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import React from "react"
 
 const GatsbyTransformUrl = () => {
@@ -22,6 +27,15 @@ const GatsbyTransformUrl = () => {
           alt="Fluid Image"
         />
       </div>
+      <GatsbyImage
+        image={getGatsbyImageData({
+          url: "https://assets.imgix.net/examples/pione.jpg",
+          width: 10,
+          height: 10,
+          layout: "fixed",
+        })}
+        alt="Gatsby-plugin-image image"
+      />
     </div>
   )
 }
