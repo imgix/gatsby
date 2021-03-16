@@ -19,6 +19,7 @@ const urlBuilder = (client: ImgixClient) => ({
 }: IUrlBuilderParameters): string => {
   // TODO: handle default params
   return client.buildURL(baseUrl, {
+    fit: 'min',
     ...options.imgixParams,
     w: width,
     h: height,
