@@ -119,7 +119,6 @@ const resolveGatsbyImageData = <TSource>({
           } as const),
       )
       .bindL('placeholderData', ({ url, baseImageDataArgs }) => {
-        console.log('args.placeholder', args.placeholder);
         if (args.placeholder === 'blurred') {
           return pipe(
             getLowResolutionImageURL(baseImageDataArgs),
