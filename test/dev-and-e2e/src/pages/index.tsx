@@ -10,7 +10,7 @@ import React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const IndexPage = props => {
+const IndexPage = (props: any) => {
   return (
     <Layout>
       <SEO title="Home" />
@@ -34,14 +34,21 @@ const IndexPage = props => {
       />
       <Link to="/page-2/">Go to page 2</Link> <br />
       <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
-      <GatsbyImage image={props.data.imgixImage.gatsbyImageData}></GatsbyImage>
+      <GatsbyImage
+        image={props.data.imgixImage.gatsbyImageData}
+        alt="Gatsby-plugin-image GraphQL image"
+      ></GatsbyImage>
       <GatsbyImage
         image={getGatsbyImageData({
-          url: "https://assets.imgix.net/examples/pione.jpg",
-          width: 10,
-          height: 10,
+          url: "https://assets.imgix.net/amsterdam.jpg",
+          sourceWidth: 5000,
+          sourceHeight: 4000,
+          aspectRatio: 2,
+          width: 1000,
+          height: 500,
           layout: "fixed",
         })}
+        alt="Gatsby-plugin-image hook image"
       />
     </Layout>
   )
