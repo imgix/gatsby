@@ -22,7 +22,7 @@ describe("gatsby-transform-url", () => {
   })
 
   it("gatsby-plugin-image image loads successfully", () => {
-    cy.findByAltText("Gatsby-plugin-image Image")
+    cy.findByAltText("Gatsby-plugin-image image")
       .should("be.visible")
       .and($img => {
         // "naturalWidth" and "naturalHeight" are set when the image loads
