@@ -73,12 +73,6 @@ export type IGetGatsbyImageDataOpts = {
    * If the source height is known. Used to constrain srcsets
    */
   sourceHeight?: number;
-  /**
-   * Useful not only for controlling the aspect ratio of the requested image, but also for ensuring that a correctly sized placeholder is rendered.
-   */
-  aspectRatio?: IGetImageDataArgs['aspectRatio'];
-  layout: IGetImageDataArgs['layout'];
-  breakpoints: IGetImageDataArgs['breakpoints'];
 };
 export function getGatsbyImageData({
   url,
