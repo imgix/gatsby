@@ -29,10 +29,6 @@ describe("gatsby-transform-url", () => {
           // "naturalWidth" and "naturalHeight" are set when the image loads
           expect($img[0].naturalWidth).to.be.greaterThan(0)
         })
-      // Check srcsets are correct width.
-      // TODO: move to unit tests
-      // .invoke("attr", "srcset")
-      // .should("match", /^.* 1x, .* 2x, .* 3x, .* 4x, .* 5x$/i)
     })
     it("constrained image loads successfully", () => {
       cy.findByAltText("Gatsby-plugin-image Constrained Image")
