@@ -1,3 +1,10 @@
+### [1.3.2](https://github.com/imgix/gatsby/compare/v1.3.1...v1.3.2) (2021-03-16)
+
+
+### Bug Fixes
+
+* remove a console.log that slipped through ([ca51c97](https://github.com/imgix/gatsby/commit/ca51c97cbd1c50b50e981636d87fe2dedc0169f0))
+
 ### [1.3.1](https://github.com/imgix/gatsby/compare/v1.3.0...v1.3.1) (2021-03-11)
 
 # [1.3.0](https://github.com/imgix/gatsby/compare/v1.2.1...v1.3.0) (2021-03-08)
