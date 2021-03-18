@@ -174,3 +174,5 @@ export function buildFluidImageData(
   );
 }
 export { getGatsbyImageData } from './gatsbyPluginImage';
+
+export { ImgixGatsbyImage } from './gatsbyPluginImageComponent';
