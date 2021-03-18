@@ -1,5 +1,6 @@
 import {
   getImageData,
+  IGatsbyImageData,
   IGetImageDataArgs,
   IUrlBuilderArgs,
 } from 'gatsby-plugin-image';
@@ -14,7 +15,6 @@ const urlBuilder = (client: ImgixClient) => ({
   baseUrl,
   width,
   height,
-  format,
   options = {},
 }: IUrlBuilderParameters): string => {
   // TODO: handle default params
@@ -78,8 +78,9 @@ export function getGatsbyImageData({
   url,
   sourceWidth,
   sourceHeight,
+  aspectRatio,
   ...props
-}: IGetGatsbyImageDataOpts) {
+}: IGetGatsbyImageDataOpts): IGatsbyImageData {
   const client = createImgixClient({
     domain: parseHost(url),
     libraryParam: 'gatsby-plugin-image-hook',
@@ -89,8 +90,9 @@ export function getGatsbyImageData({
 
   return getImageData({
     baseUrl: parsePath(url),
-    // sourceWidth,
-    // sourceHeight,
+    sourceWidth,
+    sourceHeight,
+    aspectRatio,
     urlBuilder: urlBuilder(client),
     pluginName: '@imgix/gatsby',
     formats: ['auto'],
