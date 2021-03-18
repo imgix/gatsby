@@ -17,10 +17,6 @@ describe('gatsby-plugin-image hook', () => {
       testForEveryLayout({
         params: { url: 'https://test.imgix.net/image.jpg', aspectRatio: 2 },
         assertion: (data) => {
-          console.log(
-            'data.images?.fallback?.srcSet',
-            data.images?.fallback?.srcSet,
-          );
           expect(isValidSrcSet(data.images?.fallback?.srcSet)).toBe(true);
           expect(data.images?.fallback?.srcSet).toContain(
             'https://test.imgix.net/image.jpg?',
