@@ -2,6 +2,7 @@ import {
   buildFixedImageData,
   buildFluidImageData,
   getGatsbyImageData,
+  ImgixGatsbyImage,
 } from "@imgix/gatsby"
 import Img from "gatsby-image"
 import { GatsbyImage } from "gatsby-plugin-image"
@@ -45,6 +46,12 @@ const GatsbyTransformUrl = () => {
         })}
         alt="Gatsby-plugin-image Constrained Image"
       />
+      <ImgixGatsbyImage
+        alt="Gatsby-plugin-image Component"
+        url="https://assets.imgix.net/examples/pione.jpg"
+        width={20}
+        aspectRatio={2}
+        />
     </div>
   )
 }

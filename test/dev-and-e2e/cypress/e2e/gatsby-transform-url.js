@@ -39,4 +39,12 @@ describe("gatsby-transform-url", () => {
         })
     })
   })
+  it("gatsby-plugin-image component", () => {
+    cy.findByAltText("Gatsby-plugin-image Component")
+        .should("be.visible")
+        .and($img => {
+          // "naturalWidth" and "naturalHeight" are set when the image loads
+          expect($img[0].naturalWidth).to.be.greaterThan(0)
+        })
+  })
 })
