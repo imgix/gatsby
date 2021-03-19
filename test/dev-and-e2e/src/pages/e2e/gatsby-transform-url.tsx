@@ -39,7 +39,7 @@ const GatsbyTransformUrl = () => {
       />
       <GatsbyImage
         image={getGatsbyImageData({
-          url: "https://assets.imgix.net/examples/pione.jpg",
+          src: "https://assets.imgix.net/examples/pione.jpg",
           width: 120,
           aspectRatio: 2,
           layout: "constrained",
@@ -48,7 +48,7 @@ const GatsbyTransformUrl = () => {
       />
       <ImgixGatsbyImage
         alt="Gatsby-plugin-image Component"
-        url="https://assets.imgix.net/examples/pione.jpg"
+        src="https://assets.imgix.net/examples/pione.jpg"
         width={20}
         aspectRatio={2}
       />
