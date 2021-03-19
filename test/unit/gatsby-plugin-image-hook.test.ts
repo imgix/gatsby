@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { getGatsbyImageData } from '../../src/modules/gatsby-transform-url';
-import { isValidSrcSet } from '../common/url';
+import { isFixedSrcSet, isValidSrcSet } from '../common/url';
 
 describe('gatsby-plugin-image hook', () => {
   describe(`every layout`, () => {
@@ -24,15 +24,77 @@ describe('gatsby-plugin-image hook', () => {
         },
       });
     });
-    test.skip(`should pass through backgroundColor`, () => {});
-    test.skip(`should not have any images (only fallback)`, () => {});
-    test.skip(`should have fit=min set by default`, () => {});
-    test.skip(`should be able to override fit`, () => {});
-    test.skip(`should set sizes by default`, () => {});
-    test.skip(`should be able to override sizes`, () => {});
+    test(`should pass through backgroundColor`, () => {
+      const bg = '#123456';
+      testForEveryLayout({
+        params: {
+          url: 'https://test.imgix.net/image.jpg',
+          aspectRatio: 2,
+          backgroundColor: bg,
+        },
+        assertion: (data) => {
+          expect(data.backgroundColor).toBe(bg);
+        },
+      });
+    });
+    test(`should not have any images (only fallback)`, () => {
+      testForEveryLayout({
+        params: {
+          url: 'https://test.imgix.net/image.jpg',
+          aspectRatio: 2,
+        },
+        assertion: (data) => {
+          expect(data.images.sources).toHaveLength(0);
+        },
+      });
+    });
+    test(`should have fit=min set by default`, () => {
+      testForEveryLayout({
+        params: {
+          url: 'https://test.imgix.net/image.jpg',
+          aspectRatio: 2,
+        },
+        assertion: (data) => {
+          expect(data.images?.fallback?.src).toMatch('fit=min');
+        },
+      });
+    });
+    test(`should be able to override fit`, () => {
+      testForEveryLayout({
+        params: {
+          url: 'https://test.imgix.net/image.jpg',
+          aspectRatio: 2,
+          imgixParams: { fit: 'max' },
+        },
+        assertion: (data) => {
+          expect(data.images?.fallback?.src).toMatch('fit=max');
+        },
+      });
+    });
+    test(`should set sizes by default`, () => {
+      testForEveryLayout({
+        params: {
+          url: 'https://test.imgix.net/image.jpg',
+          aspectRatio: 2,
+        },
+        assertion: (data) => {
+          expect(data.images?.fallback?.sizes).toBeTruthy();
+        },
+      });
+    });
   });
 
   describe(`layout: 'fixed'`, () => {
+    test(`should have a fixed srcset`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        aspectRatio: 2,
+        width: 10,
+        layout: 'fixed',
+      });
+
+      expect(isFixedSrcSet(actual.images?.fallback?.srcSet));
+    });
     test.skip(`should set a fixed sizes attribute by default`, () => {});
     test.skip(`should have a fixed srcset`, () => {});
     test.skip(`should have decreasing variable quality`, () => {});
