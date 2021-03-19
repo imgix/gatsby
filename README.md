@@ -658,7 +658,7 @@ Unfortunately, due to limitations of Gatsby, this feature does not support blurr
 This plugin supports the new frontend Gatsby-plugin-image component. To use the component with this plugin, use the following code
 
 ```jsx
-import {ImgixGatsbyImage} from '@imgix/gatsby';
+import { ImgixGatsbyImage } from '@imgix/gatsby';
 
 export const MyPageComponent = () => {
   return <ImgixGatsbyImage
@@ -673,13 +673,41 @@ export const MyPageComponent = () => {
     width={768}
 
     // Set either
-    aspectRatio={16/9}
+    aspectRatio={16 / 9}
     // or
     sourceWidth={5000}
     sourceHeight={4000}
 
     // Any other props offered by the gatsby-plugin-image component are
     // supported and passed straight through to the component
+  >
+}
+```
+
+If you would like more control over the data flow, you can also use the hook that this package exports - `getGatsbyImageData` - like so:
+
+```jsx
+import { getGatsbyImageData } from '@imgix/gatsby';
+import { GatsbyImage } from 'gatsby-plugin-image';
+
+export const MyPageComponent = () => {
+  return <GatsbyImage
+    image={getGatsbyImageData({
+      // Must be an imgix URL
+      src: "https://assets.imgix.net/amsterdam.jpg"
+      // This can be used to set imgix params
+      imgixParams: { crop: 'faces' }
+
+      // These are passed through to the gatsby-plugin-image component
+      layout: "constrained"
+      width: 768
+
+      // Set either
+      aspectRatio: 16 / 9
+      // or
+      sourceWidth: 5000
+      sourceHeight: 4000
+    })}
   >
 }
 ```
