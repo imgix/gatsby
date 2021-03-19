@@ -99,6 +99,15 @@ export function getGatsbyImageData({
   aspectRatio,
   ...props
 }: IGetGatsbyImageDataOpts): IGatsbyImageData {
+  const bothWidthAndHeightSet = props.width != null && props.height != null;
+  const sourceOrAspectRatioSet =
+    (sourceWidth != null && sourceHeight != null) || aspectRatio != null;
+  if (!bothWidthAndHeightSet && !sourceOrAspectRatioSet) {
+    throw new Error(
+      `[@imgix/gatsby] 'aspectRatio' or 'sourceWidth' and 'sourceHeight' needed when one of width/height are not passed.`,
+    );
+  }
+
   const client = createImgixClient({
     domain: parseHost(url),
     libraryParam: 'gatsby-plugin-image-hook',
