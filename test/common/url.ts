@@ -27,3 +27,17 @@ export const isFixedSrcSet = (srcset: string | undefined): boolean => {
   }
   return DPR_REGEX.test(srcset);
 };
+
+export const getAspectRatioFromUrl = (url: string | undefined): number => {
+  if (url == null) {
+    throw new Error('url not set');
+  }
+  const width = url.match(/(?<=w=)\d+/);
+  const height = url.match(/(?<=h=)\d+/);
+
+  if (width == null || height == null) {
+    throw new Error('width or height not set');
+  }
+
+  return parseFloat(width[0]) / parseFloat(height[0]);
+};
