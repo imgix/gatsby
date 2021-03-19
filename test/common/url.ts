@@ -20,3 +20,10 @@ export const isValidSrcSet = (srcset: string | undefined): boolean => {
   // TODO: test widths
   return FLUID_REGEX.test(srcset);
 };
+
+export const isFixedSrcSet = (srcset: string | undefined): boolean => {
+  if (srcset == null || srcset.trim().length === 0) {
+    return false;
+  }
+  return DPR_REGEX.test(srcset);
+};
