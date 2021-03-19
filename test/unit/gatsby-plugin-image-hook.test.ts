@@ -1,7 +1,11 @@
 import { describe, expect, test } from '@jest/globals';
 import { VERSION } from '../../src/common/constants';
 import { getGatsbyImageData } from '../../src/modules/gatsby-transform-url';
-import { isFixedSrcSet, isValidSrcSet } from '../common/url';
+import {
+  getAspectRatioFromUrl,
+  isFixedSrcSet,
+  isValidSrcSet,
+} from '../common/url';
 
 describe('gatsby-plugin-image hook', () => {
   describe(`every layout`, () => {
@@ -248,17 +252,104 @@ describe('gatsby-plugin-image hook', () => {
   });
 
   describe(`layout: 'constrained' and layout: 'fullWidth`, () => {
-    test.skip(`should set width and height in url matching aspectRatio`, () => {});
-    test.skip(`should set width and height in url matching aspect ratio of source width and source height`, () => {});
+    test(`should set width and height in url matching aspectRatio`, () => {
+      testForLayouts(['constrained', 'fullWidth'], {
+        params: {
+          url: 'https://test.imgix.net/image.jpg',
+          aspectRatio: 2,
+          width: 10,
+        },
+        assertion: (data) => {
+          expect(getAspectRatioFromUrl(data.images?.fallback?.src)).toBe(2);
+          data.images?.fallback?.srcSet
+            ?.split(', ')
+            .map((srcset) => srcset.split(' ')[0])
+            .map((srcsetUrl) =>
+              expect(getAspectRatioFromUrl(srcsetUrl)).toBe(2),
+            );
+        },
+      });
+    });
+    test(`should set width and height in url matching aspect ratio of source width and source height`, () => {
+      testForLayouts(['constrained', 'fullWidth'], {
+        params: {
+          url: 'https://test.imgix.net/image.jpg',
+          sourceWidth: 100,
+          sourceHeight: 50,
+          width: 10,
+        },
+        assertion: (data) => {
+          expect(getAspectRatioFromUrl(data.images?.fallback?.src)).toBe(2);
+          data.images?.fallback?.srcSet
+            ?.split(', ')
+            .map((srcset) => srcset.split(' ')[0])
+            .map((srcsetUrl) =>
+              expect(getAspectRatioFromUrl(srcsetUrl)).toBe(2),
+            );
+        },
+      });
+    });
     describe(`layout helper`, () => {
-      test.skip(`should show warning if both aspectRatio and sourceWidth and sourceHeight not set`, () => {});
+      test(`should show warning if both aspectRatio and sourceWidth and sourceHeight not set`, () => {
+        const actual = () =>
+          getGatsbyImageData({
+            url: 'https://test.imgix.net/image.jpg',
+            width: 10,
+            layout: 'fullWidth',
+          });
+
+        expect(actual).toThrow('aspectRatio');
+
+        const actual2 = () =>
+          getGatsbyImageData({
+            url: 'https://test.imgix.net/image.jpg',
+            width: 10,
+            layout: 'constrained',
+          });
+
+        expect(actual2).toThrow('aspectRatio');
+      });
+      test(`should show warning if only sourceWidth set and not sourceHeight (and not aspectRatio)`, () => {
+        const actual = () =>
+          getGatsbyImageData({
+            url: 'https://test.imgix.net/image.jpg',
+            width: 10,
+            sourceWidth: 100,
+            layout: 'fullWidth',
+          });
+
+        expect(actual).toThrow('aspectRatio');
+
+        const actual2 = () =>
+          getGatsbyImageData({
+            url: 'https://test.imgix.net/image.jpg',
+            width: 10,
+            layout: 'constrained',
+          });
+
+        expect(actual2).toThrow('aspectRatio');
+      });
     });
   });
   describe(`layout: 'constrained'`, () => {
-    test.skip(`should have a valid sizes`, () => {});
+    test(`should have a valid sizes`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        width: 1000,
+        aspectRatio: 2,
+      });
+      expect(actual.images?.fallback?.sizes).toMatch('min-width: 1000px');
+    });
   });
   describe(`layout: 'fullWidth'`, () => {
-    test.skip(`should have a valid sizes`, () => {});
+    test(`should have a valid sizes`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        width: 1000,
+        aspectRatio: 2,
+      });
+      expect(actual.images?.fallback?.sizes).toMatch('100vw');
+    });
   });
 });
 
@@ -266,6 +357,12 @@ const testForEveryLayout = (opts: ITestForLayoutOpts) => {
   testForLayout('constrained')(opts);
   testForLayout('fullWidth')(opts);
   testForLayout('fixed')(opts);
+};
+const testForLayouts = (
+  layouts: ('constrained' | 'fullWidth' | 'fixed')[],
+  opts: ITestForLayoutOpts,
+) => {
+  layouts.map((layout) => testForLayout(layout)(opts));
 };
 
 type ITestForLayoutOpts = {
