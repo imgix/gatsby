@@ -73,6 +73,8 @@ export type IGetGatsbyImageDataOpts = {
    * If the source height is known. Used to constrain srcsets
    */
   sourceHeight?: number;
+
+  backgroundColor?: string;
 };
 
 // This is a workaround to ensure that the props that are extracted in the component are always in sync with this hook's options
@@ -89,6 +91,7 @@ export const GATSBY_IMAGE_HOOK_OPTS_KEYS = [
   'aspectRatio',
   'sourceWidth',
   'sourceHeight',
+  'backgroundColor',
 ] as const;
 // This is the actual type check. It ensures that a key of the object type can be "assigned" to a key of the list above. Therefore if a new key is added to the opts type, this will throw a type error
 const __KEY_CHECK: typeof GATSBY_IMAGE_HOOK_OPTS_KEYS[number] = '' as keyof IGetGatsbyImageDataOpts;
