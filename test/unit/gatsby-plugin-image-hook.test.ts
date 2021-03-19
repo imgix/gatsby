@@ -4,14 +4,14 @@ import { getGatsbyImageData } from '../../src/modules/gatsby-transform-url';
 import {
   getAspectRatioFromUrl,
   isFixedSrcSet,
-  isValidSrcSet,
+  isValidSrcSet
 } from '../common/url';
 
 describe('gatsby-plugin-image hook', () => {
   describe(`every layout`, () => {
     test(`should have a valid src`, () => {
       testForEveryLayout({
-        params: { url: 'https://test.imgix.net/image.jpg', aspectRatio: 2 },
+        params: { src: 'https://test.imgix.net/image.jpg', aspectRatio: 2 },
         assertion: (data) =>
           expect(data.images?.fallback?.src).toMatch(
             /^https:\/\/test.imgix.net\/image.jpg\?/,
@@ -20,7 +20,7 @@ describe('gatsby-plugin-image hook', () => {
     });
     test(`should have a valid srcset`, () => {
       testForEveryLayout({
-        params: { url: 'https://test.imgix.net/image.jpg', aspectRatio: 2 },
+        params: { src: 'https://test.imgix.net/image.jpg', aspectRatio: 2 },
         assertion: (data) => {
           expect(isValidSrcSet(data.images?.fallback?.srcSet)).toBe(true);
           expect(data.images?.fallback?.srcSet).toContain(
@@ -33,7 +33,7 @@ describe('gatsby-plugin-image hook', () => {
       const bg = '#123456';
       testForEveryLayout({
         params: {
-          url: 'https://test.imgix.net/image.jpg',
+          src: 'https://test.imgix.net/image.jpg',
           aspectRatio: 2,
           backgroundColor: bg,
         },
@@ -45,7 +45,7 @@ describe('gatsby-plugin-image hook', () => {
     test(`should not have any images (only fallback)`, () => {
       testForEveryLayout({
         params: {
-          url: 'https://test.imgix.net/image.jpg',
+          src: 'https://test.imgix.net/image.jpg',
           aspectRatio: 2,
         },
         assertion: (data) => {
@@ -56,7 +56,7 @@ describe('gatsby-plugin-image hook', () => {
     test(`should have fit=min set by default`, () => {
       testForEveryLayout({
         params: {
-          url: 'https://test.imgix.net/image.jpg',
+          src: 'https://test.imgix.net/image.jpg',
           aspectRatio: 2,
         },
         assertion: (data) => {
@@ -67,7 +67,7 @@ describe('gatsby-plugin-image hook', () => {
     test(`should be able to override fit`, () => {
       testForEveryLayout({
         params: {
-          url: 'https://test.imgix.net/image.jpg',
+          src: 'https://test.imgix.net/image.jpg',
           aspectRatio: 2,
           imgixParams: { fit: 'max' },
         },
@@ -79,7 +79,7 @@ describe('gatsby-plugin-image hook', () => {
     test(`should set sizes by default`, () => {
       testForEveryLayout({
         params: {
-          url: 'https://test.imgix.net/image.jpg',
+          src: 'https://test.imgix.net/image.jpg',
           aspectRatio: 2,
         },
         assertion: (data) => {
@@ -90,7 +90,7 @@ describe('gatsby-plugin-image hook', () => {
     test(`should set ixlib in src`, () => {
       testForEveryLayout({
         params: {
-          url: 'https://test.imgix.net/image.jpg',
+          src: 'https://test.imgix.net/image.jpg',
           aspectRatio: 2,
         },
         assertion: (data) => {
@@ -103,7 +103,7 @@ describe('gatsby-plugin-image hook', () => {
     test(`should set ixlib in srcset`, () => {
       testForEveryLayout({
         params: {
-          url: 'https://test.imgix.net/image.jpg',
+          src: 'https://test.imgix.net/image.jpg',
           aspectRatio: 2,
         },
         assertion: (data) => {
@@ -118,7 +118,7 @@ describe('gatsby-plugin-image hook', () => {
   describe(`layout: 'fixed'`, () => {
     test(`should have a fixed srcset`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         aspectRatio: 2,
         width: 10,
         layout: 'fixed',
@@ -128,7 +128,7 @@ describe('gatsby-plugin-image hook', () => {
     });
     test(`should set a fixed sizes attribute by default`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         aspectRatio: 2,
         width: 10,
         layout: 'fixed',
@@ -139,7 +139,7 @@ describe('gatsby-plugin-image hook', () => {
     test.skip(`should have decreasing variable quality`, () => {});
     test(`should set height from 'height' param`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         width: 10,
         height: 20,
         layout: 'fixed',
@@ -150,7 +150,7 @@ describe('gatsby-plugin-image hook', () => {
     });
     test(`should calculate height from aspectRatio`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         aspectRatio: 2,
         width: 10,
         layout: 'fixed',
@@ -161,7 +161,7 @@ describe('gatsby-plugin-image hook', () => {
     });
     test(`should calculate height from sourceWidth and sourceHeight`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         sourceWidth: 100,
         sourceHeight: 150,
         width: 10,
@@ -173,7 +173,7 @@ describe('gatsby-plugin-image hook', () => {
     });
     test(`should set width from 'width' param`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         width: 10,
         height: 20,
         layout: 'fixed',
@@ -184,7 +184,7 @@ describe('gatsby-plugin-image hook', () => {
     });
     test(`should calculate width from aspectRatio`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         aspectRatio: 2,
         height: 10,
         layout: 'fixed',
@@ -195,7 +195,7 @@ describe('gatsby-plugin-image hook', () => {
     });
     test(`should calculate width from sourceWidth and sourceHeight`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         sourceWidth: 100,
         sourceHeight: 150,
         height: 15,
@@ -209,7 +209,7 @@ describe('gatsby-plugin-image hook', () => {
       test(`should show warning if 'aspectRatio', 'sourceWidth', 'sourceHeight' not set and 'width' not set`, () => {
         const actual = () =>
           getGatsbyImageData({
-            url: 'https://test.imgix.net/image.jpg',
+            src: 'https://test.imgix.net/image.jpg',
             height: 15,
             layout: 'fixed',
           });
@@ -219,7 +219,7 @@ describe('gatsby-plugin-image hook', () => {
       test(`should show warning if only 'sourceWidth' set and 'width' not set`, () => {
         const actual = () =>
           getGatsbyImageData({
-            url: 'https://test.imgix.net/image.jpg',
+            src: 'https://test.imgix.net/image.jpg',
             sourceWidth: 1000,
             height: 15,
             layout: 'fixed',
@@ -230,7 +230,7 @@ describe('gatsby-plugin-image hook', () => {
       test(`should show warning if 'aspectRatio', 'sourceWidth', 'sourceHeight' not set and 'height' not set`, () => {
         const actual = () =>
           getGatsbyImageData({
-            url: 'https://test.imgix.net/image.jpg',
+            src: 'https://test.imgix.net/image.jpg',
             width: 15,
             layout: 'fixed',
           });
@@ -240,7 +240,7 @@ describe('gatsby-plugin-image hook', () => {
       test(`should show warning if only 'sourceWidth' set and 'height' not set`, () => {
         const actual = () =>
           getGatsbyImageData({
-            url: 'https://test.imgix.net/image.jpg',
+            src: 'https://test.imgix.net/image.jpg',
             sourceHeight: 1000,
             width: 15,
             layout: 'fixed',
@@ -255,7 +255,7 @@ describe('gatsby-plugin-image hook', () => {
     test(`should set width and height in url matching aspectRatio`, () => {
       testForLayouts(['constrained', 'fullWidth'], {
         params: {
-          url: 'https://test.imgix.net/image.jpg',
+          src: 'https://test.imgix.net/image.jpg',
           aspectRatio: 2,
           width: 10,
         },
@@ -273,7 +273,7 @@ describe('gatsby-plugin-image hook', () => {
     test(`should set width and height in url matching aspect ratio of source width and source height`, () => {
       testForLayouts(['constrained', 'fullWidth'], {
         params: {
-          url: 'https://test.imgix.net/image.jpg',
+          src: 'https://test.imgix.net/image.jpg',
           sourceWidth: 100,
           sourceHeight: 50,
           width: 10,
@@ -293,7 +293,7 @@ describe('gatsby-plugin-image hook', () => {
       test(`should show warning if both aspectRatio and sourceWidth and sourceHeight not set`, () => {
         const actual = () =>
           getGatsbyImageData({
-            url: 'https://test.imgix.net/image.jpg',
+            src: 'https://test.imgix.net/image.jpg',
             width: 10,
             layout: 'fullWidth',
           });
@@ -302,7 +302,7 @@ describe('gatsby-plugin-image hook', () => {
 
         const actual2 = () =>
           getGatsbyImageData({
-            url: 'https://test.imgix.net/image.jpg',
+            src: 'https://test.imgix.net/image.jpg',
             width: 10,
             layout: 'constrained',
           });
@@ -312,7 +312,7 @@ describe('gatsby-plugin-image hook', () => {
       test(`should show warning if only sourceWidth set and not sourceHeight (and not aspectRatio)`, () => {
         const actual = () =>
           getGatsbyImageData({
-            url: 'https://test.imgix.net/image.jpg',
+            src: 'https://test.imgix.net/image.jpg',
             width: 10,
             sourceWidth: 100,
             layout: 'fullWidth',
@@ -322,7 +322,7 @@ describe('gatsby-plugin-image hook', () => {
 
         const actual2 = () =>
           getGatsbyImageData({
-            url: 'https://test.imgix.net/image.jpg',
+            src: 'https://test.imgix.net/image.jpg',
             width: 10,
             layout: 'constrained',
           });
@@ -334,7 +334,7 @@ describe('gatsby-plugin-image hook', () => {
   describe(`layout: 'constrained'`, () => {
     test(`should have a valid sizes`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         width: 1000,
         aspectRatio: 2,
       });
@@ -344,7 +344,7 @@ describe('gatsby-plugin-image hook', () => {
   describe(`layout: 'fullWidth'`, () => {
     test(`should have a valid sizes`, () => {
       const actual = getGatsbyImageData({
-        url: 'https://test.imgix.net/image.jpg',
+        src: 'https://test.imgix.net/image.jpg',
         width: 1000,
         aspectRatio: 2,
       });

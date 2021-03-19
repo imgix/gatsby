@@ -31,7 +31,7 @@ export type IGetGatsbyImageDataOpts = {
   /**
    * The fully qualified image URL to be transformed. Must be an imgix URL and must start with "http" or "https"
    */
-  url: string;
+  src: string;
   imgixParams?: ImgixUrlParams;
   /**
    * For constrained and fixed images, the width/max-width of the image element
@@ -79,7 +79,7 @@ export type IGetGatsbyImageDataOpts = {
 
 // This is a workaround to ensure that the props that are extracted in the component are always in sync with this hook's options
 export const GATSBY_IMAGE_HOOK_OPTS_KEYS = [
-  'url',
+  'src',
   'imgixParams',
   'width',
   'height',
@@ -96,7 +96,7 @@ export const GATSBY_IMAGE_HOOK_OPTS_KEYS = [
 // This is the actual type check. It ensures that a key of the object type can be "assigned" to a key of the list above. Therefore if a new key is added to the opts type, this will throw a type error
 const __KEY_CHECK: typeof GATSBY_IMAGE_HOOK_OPTS_KEYS[number] = '' as keyof IGetGatsbyImageDataOpts;
 export function getGatsbyImageData({
-  url,
+  src,
   sourceWidth,
   sourceHeight,
   aspectRatio,
@@ -112,14 +112,14 @@ export function getGatsbyImageData({
   }
 
   const client = createImgixClient({
-    domain: parseHost(url),
+    domain: parseHost(src),
     libraryParam: 'gatsbyHook',
   });
 
   // TODO: use @imgix/js-core breakpoints
 
   return getImageData({
-    baseUrl: parsePath(url),
+    baseUrl: parsePath(src),
     sourceWidth,
     sourceHeight,
     aspectRatio,
