@@ -13,12 +13,34 @@ export const isValidSrcSet = (srcset: string | undefined): boolean => {
     return false;
   }
   const isFixedSrcSet = srcset.includes(' 1x,');
+
   if (isFixedSrcSet) {
-    // TODO: test dprs
-    return DPR_REGEX.test(srcset);
+    if (!DPR_REGEX.test(srcset)) return false;
+
+    const [first, ...rest] = srcset.split(', ').map((v) => v.trim());
+    const baseWidth = parseInt((first.match(/(?<=w=)\d+/) ?? [])[0]);
+    if (Number.isNaN(baseWidth)) return false;
+    return (
+      rest.reduce((errors, srcset) => {
+        const [url, dpr] = srcset.split(' ');
+        const expectedWidth = parseInt(dpr) * baseWidth;
+        if (!url.includes(`w=${expectedWidth}`)) return errors + 1;
+        return errors;
+      }, 0) === 0
+    );
   }
-  // TODO: test widths
-  return FLUID_REGEX.test(srcset);
+
+  if (!FLUID_REGEX.test(srcset)) return false;
+
+  const srcsets = srcset.split(', ').map((v) => v.trim());
+  return (
+    srcsets.reduce((errors, srcset) => {
+      const [url, srcsetW] = srcset.split(' ');
+      const expectedWidth = parseInt(srcsetW);
+      if (!url.includes(`w=${expectedWidth}`)) return errors + 1;
+      return errors;
+    }, 0) === 0
+  );
 };
 
 export const isFixedSrcSet = (srcset: string | undefined): boolean => {
