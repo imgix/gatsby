@@ -1,3 +1,10 @@
+## [1.4.0-rc.1](https://github.com/imgix/gatsby/compare/v1.3.2...v1.4.0-rc.1) (2021-03-19)
+
+
+### Features
+
+* **hook-component:** add component for gatsbyPluginImage ([4dde1c2](https://github.com/imgix/gatsby/commit/4dde1c23fb63942f7f29a7810b8f355b0422c259))
+
 ### [1.3.2](https://github.com/imgix/gatsby/compare/v1.3.1...v1.3.2) (2021-03-16)
 
 
