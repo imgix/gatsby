@@ -115,5 +115,8 @@ export function getGatsbyImageData({
     pluginName: '@imgix/gatsby',
     formats: ['auto'],
     ...props,
+    options: {
+      imgixParams: props.imgixParams,
+    },
   });
 }
