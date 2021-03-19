@@ -1,4 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
+import { VERSION } from '../../src/common/constants';
 import { getGatsbyImageData } from '../../src/modules/gatsby-transform-url';
 import { isFixedSrcSet, isValidSrcSet } from '../common/url';
 
@@ -82,6 +83,32 @@ describe('gatsby-plugin-image hook', () => {
         },
       });
     });
+    test(`should set ixlib in src`, () => {
+      testForEveryLayout({
+        params: {
+          url: 'https://test.imgix.net/image.jpg',
+          aspectRatio: 2,
+        },
+        assertion: (data) => {
+          expect(data.images?.fallback?.src).toMatch(
+            `ixlib=gatsbyHook-${VERSION}`,
+          );
+        },
+      });
+    });
+    test(`should set ixlib in srcset`, () => {
+      testForEveryLayout({
+        params: {
+          url: 'https://test.imgix.net/image.jpg',
+          aspectRatio: 2,
+        },
+        assertion: (data) => {
+          expect(data.images?.fallback?.srcSet).toMatch(
+            `ixlib=gatsbyHook-${VERSION}`,
+          );
+        },
+      });
+    });
   });
 
   describe(`layout: 'fixed'`, () => {
@@ -95,20 +122,128 @@ describe('gatsby-plugin-image hook', () => {
 
       expect(isFixedSrcSet(actual.images?.fallback?.srcSet));
     });
-    test.skip(`should set a fixed sizes attribute by default`, () => {});
-    test.skip(`should have a fixed srcset`, () => {});
+    test(`should set a fixed sizes attribute by default`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        aspectRatio: 2,
+        width: 10,
+        layout: 'fixed',
+      });
+
+      expect(actual.images?.fallback?.sizes).toMatch('10px');
+    });
     test.skip(`should have decreasing variable quality`, () => {});
-    test.skip(`should set height from 'height' param`, () => {});
-    test.skip(`should calculate height from aspectRatio`, () => {});
-    test.skip(`should calculate height from sourceWidth and sourceHeight`, () => {});
-    test.skip(`should set width from 'width' param`, () => {});
-    test.skip(`should calculate width from aspectRatio`, () => {});
-    test.skip(`should calculate width from sourceWidth and sourceHeight`, () => {});
-    test.skip(`should set ixlib in src`, () => {});
-    test.skip(`should set ixlib in srcset`, () => {});
+    test(`should set height from 'height' param`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        width: 10,
+        height: 20,
+        layout: 'fixed',
+      });
+
+      expect(actual.images?.fallback?.src).toMatch('h=20');
+      expect(actual.height).toBe(20);
+    });
+    test(`should calculate height from aspectRatio`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        aspectRatio: 2,
+        width: 10,
+        layout: 'fixed',
+      });
+
+      expect(actual.images?.fallback?.src).toMatch('h=5');
+      expect(actual.height).toBe(5);
+    });
+    test(`should calculate height from sourceWidth and sourceHeight`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        sourceWidth: 100,
+        sourceHeight: 150,
+        width: 10,
+        layout: 'fixed',
+      });
+
+      expect(actual.images?.fallback?.src).toMatch('h=15');
+      expect(actual.height).toBe(15);
+    });
+    test(`should set width from 'width' param`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        width: 10,
+        height: 20,
+        layout: 'fixed',
+      });
+
+      expect(actual.images?.fallback?.src).toMatch('w=10');
+      expect(actual.width).toBe(10);
+    });
+    test(`should calculate width from aspectRatio`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        aspectRatio: 2,
+        height: 10,
+        layout: 'fixed',
+      });
+
+      expect(actual.images?.fallback?.src).toMatch('w=20');
+      expect(actual.width).toBe(20);
+    });
+    test(`should calculate width from sourceWidth and sourceHeight`, () => {
+      const actual = getGatsbyImageData({
+        url: 'https://test.imgix.net/image.jpg',
+        sourceWidth: 100,
+        sourceHeight: 150,
+        height: 15,
+        layout: 'fixed',
+      });
+
+      expect(actual.images?.fallback?.src).toMatch('w=10');
+      expect(actual.width).toBe(10);
+    });
     describe(`layout helper`, () => {
-      test.skip(`should show warning if all of 'aspectRatio', 'sourceWidth', 'sourceHeight' not set and 'width' not set`, () => {});
-      test.skip(`should show warning if all of 'aspectRatio', 'sourceWidth', 'sourceHeight' not set and 'height' not set`, () => {});
+      test(`should show warning if 'aspectRatio', 'sourceWidth', 'sourceHeight' not set and 'width' not set`, () => {
+        const actual = () =>
+          getGatsbyImageData({
+            url: 'https://test.imgix.net/image.jpg',
+            height: 15,
+            layout: 'fixed',
+          });
+
+        expect(actual).toThrow(/aspectRatio/);
+      });
+      test(`should show warning if only 'sourceWidth' set and 'width' not set`, () => {
+        const actual = () =>
+          getGatsbyImageData({
+            url: 'https://test.imgix.net/image.jpg',
+            sourceWidth: 1000,
+            height: 15,
+            layout: 'fixed',
+          });
+
+        expect(actual).toThrow(/aspectRatio/);
+      });
+      test(`should show warning if 'aspectRatio', 'sourceWidth', 'sourceHeight' not set and 'height' not set`, () => {
+        const actual = () =>
+          getGatsbyImageData({
+            url: 'https://test.imgix.net/image.jpg',
+            width: 15,
+            layout: 'fixed',
+          });
+
+        expect(actual).toThrow(/aspectRatio/);
+      });
+      test(`should show warning if only 'sourceWidth' set and 'height' not set`, () => {
+        const actual = () =>
+          getGatsbyImageData({
+            url: 'https://test.imgix.net/image.jpg',
+            sourceHeight: 1000,
+            width: 15,
+            layout: 'fixed',
+          });
+
+        expect(actual).toThrow(/aspectRatio/);
+      });
     });
   });
 
