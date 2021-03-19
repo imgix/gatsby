@@ -110,7 +110,7 @@ export function getGatsbyImageData({
 
   const client = createImgixClient({
     domain: parseHost(url),
-    libraryParam: 'gatsby-plugin-image-hook',
+    libraryParam: 'gatsbyHook',
   });
 
   // TODO: use @imgix/js-core breakpoints
