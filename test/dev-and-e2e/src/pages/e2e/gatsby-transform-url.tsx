@@ -51,7 +51,7 @@ const GatsbyTransformUrl = () => {
         url="https://assets.imgix.net/examples/pione.jpg"
         width={20}
         aspectRatio={2}
-        />
+      />
     </div>
   )
 }
