@@ -4,7 +4,7 @@ import { getGatsbyImageData } from '../../src/modules/gatsby-transform-url';
 import {
   getAspectRatioFromUrl,
   isFixedSrcSet,
-  isValidSrcSet
+  isValidSrcSet,
 } from '../common/url';
 
 describe('gatsby-plugin-image hook', () => {
