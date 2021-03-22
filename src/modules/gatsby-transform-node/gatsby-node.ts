@@ -120,7 +120,7 @@ const setupImgixClientE = ({
     .doL(({ imgixClient }) => {
       imgixClient.includeLibraryParam = false;
       if (options.disableIxlibParam !== true) {
-        (imgixClient as any).settings.libraryParam = `gatsby-source-url-${packageVersion}`;
+        (imgixClient as any).settings.libraryParam = `gatsbySourceUrl-${packageVersion}`;
       }
       return E.right(imgixClient);
     })
