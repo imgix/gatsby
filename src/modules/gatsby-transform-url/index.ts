@@ -41,7 +41,7 @@ function buildImageData(
   // This is not a public API, so it is not included in the type definitions for ImgixClient
   if (includeLibraryParam) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (client as any).settings.libraryParam = `gatsby-transform-url-${VERSION}`;
+    (client as any).settings.libraryParam = `gatsbyTransformUrl-${VERSION}`;
   }
 
   const transformedImgixParams = {
