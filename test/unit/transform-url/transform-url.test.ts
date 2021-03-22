@@ -11,11 +11,11 @@ import {
 const shouldHaveIxLib = async (
   fut: () => IGatsbyImageFluidData | IGatsbyImageFixedData,
 ) => {
-  test('src and srcset should have ixlib set to gatsby-transform-url-VERSION', async () => {
+  test('src and srcset should have ixlib set to gatsbyTransformUrl-VERSION', async () => {
     const actual = fut();
 
     const expectedIxLibRegex = RegExp(
-      `ixlib=gatsby-transform-url-${(await readPkg()).version}`,
+      `ixlib=gatsbyTransformUrl-${(await readPkg()).version}`,
     );
 
     expect(actual.src).toMatch(expectedIxLibRegex);
