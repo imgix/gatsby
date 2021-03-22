@@ -30,7 +30,7 @@ const GatsbyTransformUrl = () => {
       </div>
       <GatsbyImage
         image={getGatsbyImageData({
-          url: "https://assets.imgix.net/examples/pione.jpg",
+          src: "https://assets.imgix.net/examples/pione.jpg",
           width: 10,
           height: 10,
           layout: "fixed",
