@@ -362,7 +362,7 @@ describe('createResolvers', () => {
   describe('ixlib param', () => {
     testForEveryFieldSrcAndSrcSet({
       name: 'should be included in src by default',
-      assertion: (url) => expect(url).toMatch('ixlib=gatsby-source-url'),
+      assertion: (url) => expect(url).toMatch('ixlib=gatsbySourceUrl'),
     });
     testForEveryFieldSrcAndSrcSet({
       name: 'should not exist in src when disableIxlibParam is set',
@@ -371,7 +371,7 @@ describe('createResolvers', () => {
           disableIxlibParam: true,
         },
       },
-      assertion: (url) => expect(url).not.toMatch('ixlib=gatsby-source-url'),
+      assertion: (url) => expect(url).not.toMatch('ixlib=gatsbySourceUrl'),
     });
   });
 
