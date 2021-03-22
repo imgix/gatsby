@@ -37,7 +37,7 @@
   "resolutions": {
     "graphql": "15.5.0",
     "graphql-compose": "^7.25.0",
-    "webpack": "5.25.1"
+    "webpack": "5.27.1"
   },
   "dependencies": {
     "camel-case": "^4.1.2",
@@ -90,7 +90,7 @@
     "semantic-release": "17.4.2",
     "ts-jest": "26.5.3",
     "typescript": "4.2.3",
-    "webpack": "5.25.1",
+    "webpack": "5.27.1",
     "yarn-run-all": "3.1.1"
   },
   "release": {
