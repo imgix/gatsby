@@ -471,6 +471,18 @@ describe('gatsby-plugin-image hook', () => {
           expect(width).toBeLessThanOrEqual(1500);
         });
       });
+      test(`should not generate widths larger than 8192px, even if source width, width, and srcSetMaxWidth are larger`, () => {
+        const actual = generateBreakpoints({
+          layout: 'fixed',
+          width: 5000,
+          sourceWidth: 15000,
+          srcsetMaxWidth: 9000,
+        });
+
+        actual.breakpoints.map((width) => {
+          expect(width).toBeLessThanOrEqual(8192);
+        });
+      });
       test.skip(`should not generate widths smaller than srcsetMinWidth`, () => {});
       test.skip(`should be able to change widthTolerance`, () => {});
     });
