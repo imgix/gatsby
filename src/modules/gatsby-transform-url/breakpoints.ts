@@ -9,6 +9,8 @@ const min = (fallback: number, ...rest: (number | undefined)[]) =>
 
 const isNotNull = <T>(v: T): v is Exclude<T, undefined | null> => v != null;
 
+export type BreakpointsWithData = { width: number; quality: number }[];
+
 /**
  * This function is a helper function which is designed to return a set of breakpoints that can be passed to `getImageData` from gatsby-plugin-image.
  *
@@ -37,7 +39,7 @@ export const generateBreakpoints = (
   },
 ): {
   breakpoints: number[];
-  breakpointsWithData?: { width: number; quality: number }[];
+  breakpointsWithData?: BreakpointsWithData;
 } => {
   if (opts.layout === 'fixed') {
     const breakpoints = Array.from({ length: MAX_DPR })
