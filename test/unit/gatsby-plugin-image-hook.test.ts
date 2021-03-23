@@ -396,7 +396,20 @@ describe('gatsby-plugin-image hook', () => {
             actual.breakpointsWithData.length === 0,
         ).toBe(true);
       });
-      test.skip(`should not generate widths larger than sourceWidth`, () => {});
+      test(`should not generate widths larger than sourceWidth`, () => {
+        const actual = generateBreakpoints({
+          layout: 'fixed',
+          width: 100,
+          sourceWidth: 250,
+        });
+
+        actual.breakpoints.map((width) => {
+          expect(width).toBeLessThan(250);
+        });
+        actual?.breakpointsWithData?.map(({ width }) => {
+          expect(width).toBeLessThan(250);
+        });
+      });
     });
     describe(`layout: 'constrained'`, () => {
       test.skip(`should generate widths up to constrained width if no sourceWidth set`, () => {});
