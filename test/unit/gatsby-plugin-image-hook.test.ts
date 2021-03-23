@@ -610,7 +610,22 @@ describe('gatsby-plugin-image hook', () => {
           expect(width).toBeGreaterThanOrEqual(200),
         );
       });
-      test.skip(`should be able to change widthTolerance`, () => {});
+      test(`should be able to change widthTolerance`, () => {
+        const actual = generateBreakpoints({
+          layout: 'fullWidth',
+          widthTolerance: 0.5,
+        });
+        expect(actual.breakpoints).toEqual([
+          100,
+          200,
+          400,
+          800,
+          1600,
+          3200,
+          6400,
+          8192,
+        ]);
+      });
     });
   });
 });
