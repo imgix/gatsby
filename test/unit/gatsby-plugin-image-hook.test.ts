@@ -384,6 +384,18 @@ describe('gatsby-plugin-image hook', () => {
           );
         });
       });
+      test(`should be able to disable variable quality`, () => {
+        const actual = generateBreakpoints({
+          layout: 'fixed',
+          width: 100,
+          disableVariableQuality: true,
+        });
+
+        expect(
+          actual.breakpointsWithData == null ||
+            actual.breakpointsWithData.length === 0,
+        ).toBe(true);
+      });
       test.skip(`should not generate widths larger than sourceWidth`, () => {});
     });
     describe(`layout: 'constrained'`, () => {
