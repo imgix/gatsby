@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import { VERSION } from '../../src/common/constants';
 import { getGatsbyImageData } from '../../src/modules/gatsby-transform-url';
+import { generateBreakpoints } from '../../src/modules/gatsby-transform-url/breakpoints';
 import {
   getAspectRatioFromUrl,
   isFixedSrcSet,
@@ -349,6 +350,27 @@ describe('gatsby-plugin-image hook', () => {
         aspectRatio: 2,
       });
       expect(actual.images?.fallback?.sizes).toMatch('100vw');
+    });
+  });
+
+  describe(`breakpoints generation`, () => {
+    describe(`layout: 'fixed'`, () => {
+      test.skip(`should not generate widths larger than sourceWidth`, () => {});
+    });
+    describe(`layout: 'constrained'`, () => {
+      test.skip(`should generate widths up to constrained width if no sourceWidth set`, () => {});
+      test.skip(`should generate widths up to constrained width if sourceWidth is larger than width`, () => {});
+      test.skip(`should generate widths up to sourceWidth if sourceWidth is small than width`, () => {});
+      test.skip(`should generate widths up to srcsetMaxWidth, even if sourceWidth and width are set`, () => {});
+      test.skip(`should not generate widths smaller than srcsetMinWidth`, () => {});
+      test.skip(`should be able to change widthTolerance`, () => {});
+    });
+    describe(`layout: 'fullWidth'`, () => {
+      test.skip(`should generate widths up to max render size with no params`, () => {});
+      test.skip(`should generate widths up to sourceWidth`, () => {});
+      test.skip(`should generate widths up to srcsetMaxWidth`, () => {});
+      test.skip(`should not generate widths smaller than srcsetMinWidth`, () => {});
+      test.skip(`should be able to change widthTolerance`, () => {});
     });
   });
 });
