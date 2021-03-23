@@ -404,10 +404,10 @@ describe('gatsby-plugin-image hook', () => {
         });
 
         actual.breakpoints.map((width) => {
-          expect(width).toBeLessThan(250);
+          expect(width).toBeLessThanOrEqual(250);
         });
         actual?.breakpointsWithData?.map(({ width }) => {
-          expect(width).toBeLessThan(250);
+          expect(width).toBeLessThanOrEqual(250);
         });
       });
       test(`should not generate widths larger than 8192px, even if source width is larger`, () => {
@@ -418,10 +418,10 @@ describe('gatsby-plugin-image hook', () => {
         });
 
         actual.breakpoints.map((width) => {
-          expect(width).toBeLessThan(8192);
+          expect(width).toBeLessThanOrEqual(8192);
         });
         actual?.breakpointsWithData?.map(({ width }) => {
-          expect(width).toBeLessThan(8192);
+          expect(width).toBeLessThanOrEqual(8192);
         });
       });
     });
@@ -433,7 +433,7 @@ describe('gatsby-plugin-image hook', () => {
         });
 
         actual.breakpoints.map((width) => {
-          expect(width).toBeLessThan(5000);
+          expect(width).toBeLessThanOrEqual(5000);
         });
       });
       test.skip(`should generate widths up to constrained width if sourceWidth is larger than width`, () => {});
