@@ -250,6 +250,45 @@ describe('gatsby-plugin-image hook', () => {
         expect(actual).toThrow(/aspectRatio/);
       });
     });
+    test(`generateBreakpoints is called correctly`, () => {
+      jest.resetModules();
+      jest.mock('../../src/modules/gatsby-transform-url/breakpoints');
+      const {
+        generateBreakpoints: mockedGenerateBreakpoints,
+      } = require('../../src/modules/gatsby-transform-url/breakpoints');
+      const {
+        getGatsbyImageData: getGatsbyImageDataMocked,
+      } = require('../../src/modules/gatsby-transform-url/index');
+
+      mockedGenerateBreakpoints.mockImplementation(() => ({
+        breakpoints: [75, 150, 225, 300],
+      }));
+
+      const generateBreakpointsArgs = {
+        layout: 'fixed',
+        width: 75,
+        srcsetMinWidth: 21,
+        srcsetMaxWidth: 32,
+        widthTolerance: 0.5,
+        sourceWidth: 5000,
+        // disableVariableQuality: true,
+      };
+      const actual = getGatsbyImageDataMocked({
+        src: 'https://test.imgix.net/image.jpg',
+        height: 100,
+        ...generateBreakpointsArgs,
+      });
+
+      expect(mockedGenerateBreakpoints.mock.calls[0][0]).toMatchObject(
+        generateBreakpointsArgs,
+      );
+      expect(actual?.images.fallback?.srcSet).toMatch('75w');
+      expect(actual?.images.fallback?.srcSet).toMatch('150w');
+      expect(actual?.images.fallback?.srcSet).toMatch('225w');
+      expect(actual?.images.fallback?.srcSet).toMatch('300w');
+
+      jest.resetModules();
+    });
   });
 
   describe(`layout: 'constrained' and layout: 'fullWidth`, () => {
@@ -331,10 +370,72 @@ describe('gatsby-plugin-image hook', () => {
         expect(actual2).toThrow('aspectRatio');
       });
     });
+    test(`generateBreakpoints is called correctly`, () => {
+      jest.resetModules();
+      jest.mock('../../src/modules/gatsby-transform-url/breakpoints');
+      const {
+        generateBreakpoints: mockedGenerateBreakpoints,
+      } = require('../../src/modules/gatsby-transform-url/breakpoints');
+      const {
+        getGatsbyImageData: getGatsbyImageDataMocked,
+      } = require('../../src/modules/gatsby-transform-url/index');
+
+      mockedGenerateBreakpoints.mockImplementation(() => ({
+        breakpoints: [75, 150, 225, 300],
+      }));
+
+      const generateBreakpointsArgsFullWidth = {
+        layout: 'fullWidth',
+        srcsetMinWidth: 21,
+        srcsetMaxWidth: 32,
+        widthTolerance: 0.5,
+        sourceWidth: 5000,
+        // disableVariableQuality: true,
+      };
+      const actualFullWidth = getGatsbyImageDataMocked({
+        src: 'https://test.imgix.net/image.jpg',
+        aspectRatio: 2,
+        ...generateBreakpointsArgsFullWidth,
+      });
+
+      expect(mockedGenerateBreakpoints.mock.calls[0][0]).toMatchObject(
+        generateBreakpointsArgsFullWidth,
+      );
+      expect(actualFullWidth?.images.fallback?.srcSet).toMatch('75w');
+      expect(actualFullWidth?.images.fallback?.srcSet).toMatch('150w');
+      expect(actualFullWidth?.images.fallback?.srcSet).toMatch('225w');
+      expect(actualFullWidth?.images.fallback?.srcSet).toMatch('300w');
+
+      const generateBreakpointsArgsConstrained = {
+        layout: 'constrained',
+        width: 75,
+        srcsetMinWidth: 21,
+        srcsetMaxWidth: 32,
+        widthTolerance: 0.5,
+        sourceWidth: 5000,
+        // disableVariableQuality: true,
+      };
+      const actualConstrained = getGatsbyImageDataMocked({
+        src: 'https://test.imgix.net/image.jpg',
+        aspectRatio: 2,
+        ...generateBreakpointsArgsConstrained,
+      });
+
+      expect(mockedGenerateBreakpoints.mock.calls[1][0]).toMatchObject(
+        generateBreakpointsArgsConstrained,
+      );
+      expect(actualConstrained?.images.fallback?.srcSet).toMatch('75w');
+      expect(actualConstrained?.images.fallback?.srcSet).toMatch('150w');
+      expect(actualConstrained?.images.fallback?.srcSet).toMatch('225w');
+      expect(actualConstrained?.images.fallback?.srcSet).toMatch('300w');
+
+      jest.resetModules();
+    });
   });
   describe(`layout: 'constrained'`, () => {
     test(`should have a valid sizes`, () => {
       const actual = getGatsbyImageData({
+        layout: 'constrained',
         src: 'https://test.imgix.net/image.jpg',
         width: 1000,
         aspectRatio: 2,
