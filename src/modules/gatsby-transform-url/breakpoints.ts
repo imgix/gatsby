@@ -2,6 +2,7 @@ import ImgixClient from 'imgix-core-js';
 
 const VARIABLE_QUALITIES = [75, 50, 35, 23, 20];
 const MAX_SIZE = 8192;
+const MAX_DPR = 4;
 
 const clamp = (clamp: number, val?: number) => Math.min(val ?? clamp, clamp);
 const min = (fallback: number, ...rest: (number | undefined)[]) =>
@@ -57,7 +58,11 @@ export const generateBreakpoints = (
   });
 
   const minWidth = opts.srcsetMinWidth;
-  const maxWidth = min(MAX_SIZE, opts.width, opts.srcsetMinWidth);
+  const maxWidth = min(
+    MAX_SIZE,
+    opts.width ? opts.width * MAX_DPR : undefined,
+    opts.srcsetMinWidth,
+  );
 
   return {
     breakpoints: (client as any)._generateTargetWidths(
