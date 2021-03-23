@@ -57,7 +57,8 @@ export const generateBreakpoints = (
     domain: 'unused.imgix.net',
   });
 
-  const minWidth = opts.srcsetMinWidth;
+  const widthTolerance = opts.widthTolerance ?? 0.08;
+  const minWidth = opts.srcsetMinWidth ?? 100;
   const maxWidth = min(
     MAX_SIZE,
     opts.width ? opts.width * MAX_DPR : undefined,
@@ -67,7 +68,7 @@ export const generateBreakpoints = (
 
   return {
     breakpoints: (client as any)._generateTargetWidths(
-      opts.widthTolerance,
+      widthTolerance,
       minWidth,
       maxWidth,
     ),
