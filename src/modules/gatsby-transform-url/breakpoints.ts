@@ -1,16 +1,21 @@
+import ImgixClient from 'imgix-core-js';
+
 const VARIABLE_QUALITIES = [75, 50, 35, 23, 20];
 const MAX_SIZE = 8192;
 
 const clamp = (clamp: number, val?: number) => Math.min(val ?? clamp, clamp);
+const min = (fallback: number, ...rest: (number | undefined)[]) =>
+  Math.min(fallback, ...rest.filter<number>(isNotNull));
 
+const isNotNull = <T>(v: T): v is Exclude<T, undefined | null> => v != null;
 export const generateBreakpoints = (
   opts: (
     | {
-        layout: 'constrained' | 'fullWidth';
+        layout: 'fullWidth';
         width?: number;
       }
     | {
-        layout: 'fixed';
+        layout: 'fixed' | 'constrained';
         width: number;
       }
   ) & {
@@ -33,7 +38,7 @@ export const generateBreakpoints = (
         return [...p, opts.width * (i + 1)];
       }, [])
       .filter((width) => {
-        return width < clamp(MAX_SIZE, opts.sourceWidth);
+        return width < min(MAX_SIZE, opts.sourceWidth);
       });
 
     const breakpointsWithData = !opts.disableVariableQuality
@@ -45,7 +50,20 @@ export const generateBreakpoints = (
 
     return { breakpoints, breakpointsWithData };
   }
+
+  // TODO: replace with static api when released
+  const client = new ImgixClient({
+    domain: 'unused.imgix.net',
+  });
+
+  const minWidth = opts.srcsetMinWidth;
+  const maxWidth = min(MAX_SIZE, opts.width, opts.srcsetMinWidth);
+
   return {
-    breakpoints: [],
+    breakpoints: (client as any)._generateTargetWidths(
+      opts.widthTolerance,
+      minWidth,
+      maxWidth,
+    ),
   };
 };
