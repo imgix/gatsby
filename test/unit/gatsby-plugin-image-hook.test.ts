@@ -541,7 +541,44 @@ describe('gatsby-plugin-image hook', () => {
       });
     });
     describe(`layout: 'fullWidth'`, () => {
-      test.skip(`should generate widths up to max render size with no params`, () => {});
+      test(`should generate widths up to max render size with no params`, () => {
+        const actual = generateBreakpoints({
+          layout: 'fullWidth',
+        });
+        expect(actual.breakpoints).toEqual([
+          100,
+          116,
+          134,
+          156,
+          182,
+          210,
+          244,
+          282,
+          328,
+          380,
+          442,
+          512,
+          594,
+          688,
+          798,
+          926,
+          1074,
+          1246,
+          1446,
+          1678,
+          1946,
+          2258,
+          2618,
+          3038,
+          3524,
+          4088,
+          4742,
+          5500,
+          6380,
+          7400,
+          8192,
+        ]);
+      });
       test.skip(`should generate widths up to sourceWidth`, () => {});
       test.skip(`should generate widths up to srcsetMaxWidth`, () => {});
       test.skip(`should not generate widths smaller than srcsetMinWidth`, () => {});
