@@ -38,7 +38,7 @@ export const generateBreakpoints = (
         return [...p, opts.width * (i + 1)];
       }, [])
       .filter((width) => {
-        return width < min(MAX_SIZE, opts.sourceWidth);
+        return width <= min(MAX_SIZE, opts.sourceWidth);
       });
 
     const breakpointsWithData = !opts.disableVariableQuality
