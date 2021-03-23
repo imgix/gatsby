@@ -56,6 +56,8 @@ export const generateBreakpoints = (
     return { breakpoints, breakpointsWithData };
   }
 
+  const width = opts.width;
+
   // TODO: replace with static api when released
   const client = new ImgixClient({
     domain: 'unused.imgix.net',
@@ -65,7 +67,7 @@ export const generateBreakpoints = (
   const minWidth = opts.srcsetMinWidth ?? 100;
   const maxWidth = min(
     MAX_SIZE,
-    opts.width ? opts.width * MAX_DPR : undefined,
+    width ? width * MAX_DPR : undefined,
     opts.sourceWidth,
     opts.srcsetMaxWidth,
   );
@@ -76,9 +78,9 @@ export const generateBreakpoints = (
     widthTolerance,
   );
 
-  const widthBreakpoints = opts.width
+  const widthBreakpoints = width
     ? Array.from({ length: MAX_DPR })
-        .map((_, i) => opts.width * (i + 1))
+        .map((_, i) => width * (i + 1))
         .filter((width) => width <= maxWidth)
         .filter((width) => fluidBreakpoints.indexOf(width) === -1)
     : [];
