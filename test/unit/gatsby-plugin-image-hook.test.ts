@@ -413,7 +413,7 @@ describe('gatsby-plugin-image hook', () => {
       test(`should not generate widths larger than 8192px, even if source width is larger`, () => {
         const actual = generateBreakpoints({
           layout: 'fixed',
-          width: 5000,
+          width: 2048,
           sourceWidth: 15000,
         });
 
