@@ -1,4 +1,7 @@
 const VARIABLE_QUALITIES = [75, 50, 35, 23, 20];
+const MAX_SIZE = 8192;
+
+const clamp = (clamp: number, val?: number) => Math.min(val ?? clamp, clamp);
 
 export const generateBreakpoints = (
   opts: (
@@ -22,15 +25,16 @@ export const generateBreakpoints = (
   breakpointsWithData?: { width: number; quality: number }[];
 } => {
   if (opts.layout === 'fixed') {
-    const breakpoints = Array.from({ length: 5 }).reduce<number[]>(
-      (p, v, i) => {
+    const breakpoints = Array.from({ length: 5 })
+      .reduce<number[]>((p, v, i) => {
         if (i === 0) {
           return [opts.width];
         }
         return [...p, opts.width * (i + 1)];
-      },
-      [],
-    );
+      }, [])
+      .filter((width) => {
+        return width < clamp(MAX_SIZE, opts.sourceWidth);
+      });
 
     const breakpointsWithData = !opts.disableVariableQuality
       ? breakpoints.map((width, i) => ({
