@@ -137,7 +137,22 @@ describe('gatsby-plugin-image hook', () => {
 
       expect(actual.images?.fallback?.sizes).toMatch('10px');
     });
-    test.skip(`should have decreasing variable quality`, () => {});
+    test(`should have decreasing variable quality`, () => {
+      const actual = getGatsbyImageData({
+        layout: 'fixed',
+        src: 'https://test.imgix.net/image.jpg',
+        aspectRatio: 2,
+        width: 100,
+      });
+
+      const qs = actual.images?.fallback?.srcSet
+        ?.split(',')
+        .map((urlPair) => urlPair.trim().split(' ')[0])
+        .map((url) => new URL(url).searchParams.get('q'))
+        .map((q) => parseInt(q ?? ''));
+
+      expect(qs).toEqual([75, 50, 35, 23]);
+    });
     test(`should set height from 'height' param`, () => {
       const actual = getGatsbyImageData({
         src: 'https://test.imgix.net/image.jpg',
