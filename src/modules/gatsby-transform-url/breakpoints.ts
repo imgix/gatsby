@@ -31,7 +31,7 @@ export const generateBreakpoints = (
   breakpointsWithData?: { width: number; quality: number }[];
 } => {
   if (opts.layout === 'fixed') {
-    const breakpoints = Array.from({ length: 5 })
+    const breakpoints = Array.from({ length: MAX_DPR })
       .reduce<number[]>((p, v, i) => {
         if (i === 0) {
           return [opts.width];
