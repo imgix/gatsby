@@ -361,7 +361,7 @@ describe('gatsby-plugin-image hook', () => {
           width: 100,
         });
 
-        expect(actual.breakpoints).toEqual([100, 200, 300, 400, 500]);
+        expect(actual.breakpoints).toEqual([100, 200, 300, 400]);
       });
       test(`should reduce quality when increasing size`, () => {
         const actual = generateBreakpoints({
