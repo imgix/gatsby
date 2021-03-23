@@ -7,6 +7,7 @@ import {
 } from 'gatsby-plugin-image';
 import { parseHost, parsePath } from '../../common/uri';
 import { ImgixUrlParams } from '../../publicTypes';
+import { generateBreakpoints } from './breakpoints';
 import { createImgixClient } from './common';
 
 type IUrlBuilderParameters = IUrlBuilderArgs<{ imgixParams?: ImgixUrlParams }>;
@@ -95,13 +96,19 @@ export const GATSBY_IMAGE_HOOK_OPTS_KEYS = [
 ] as const;
 // This is the actual type check. It ensures that a key of the object type can be "assigned" to a key of the list above. Therefore if a new key is added to the opts type, this will throw a type error
 const __KEY_CHECK: typeof GATSBY_IMAGE_HOOK_OPTS_KEYS[number] = '' as keyof IGetGatsbyImageDataOpts;
+
 export function getGatsbyImageData({
   src,
   sourceWidth,
   sourceHeight,
   aspectRatio,
+  widthTolerance,
+  srcsetMinWidth,
+  srcsetMaxWidth,
+  breakpoints: breakpointsOverride,
   ...props
 }: IGetGatsbyImageDataOpts): IGatsbyImageData {
+  const layout = props.layout;
   const bothWidthAndHeightSet = props.width != null && props.height != null;
   const sourceOrAspectRatioSet =
     (sourceWidth != null && sourceHeight != null) || aspectRatio != null;
@@ -116,7 +123,15 @@ export function getGatsbyImageData({
     libraryParam: 'gatsbyHook',
   });
 
-  // TODO: use @imgix/js-core breakpoints
+  const breakpointsData = generateBreakpoints({
+    ...(layout === 'fullWidth'
+      ? { layout: 'fullWidth' }
+      : { layout, width: width as number }),
+    srcsetMinWidth,
+    srcsetMaxWidth,
+    widthTolerance,
+    sourceWidth,
+  });
 
   return getImageData({
     baseUrl: parsePath(src),
@@ -126,7 +141,9 @@ export function getGatsbyImageData({
     urlBuilder: urlBuilder(client),
     pluginName: '@imgix/gatsby',
     formats: ['auto'],
+    breakpoints: breakpointsOverride ?? breakpointsData.breakpoints,
     ...props,
+    layout,
     options: {
       imgixParams: props.imgixParams,
     },
