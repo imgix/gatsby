@@ -426,6 +426,33 @@ describe('gatsby-plugin-image hook', () => {
       });
     });
     describe(`layout: 'constrained'`, () => {
+      test(`should generate widths that grow at ~8%`, () => {
+        const actual = generateBreakpoints({
+          layout: 'constrained',
+          width: 300,
+        });
+
+        expect(actual.breakpoints).toEqual([
+          100,
+          116,
+          134,
+          156,
+          182,
+          210,
+          244,
+          282,
+          328,
+          380,
+          442,
+          512,
+          594,
+          688,
+          798,
+          926,
+          1074,
+          1200,
+        ]);
+      });
       test(`should generate widths up to 4x constrained width if no sourceWidth set`, () => {
         const actual = generateBreakpoints({
           layout: 'constrained',
