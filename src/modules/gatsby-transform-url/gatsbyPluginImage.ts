@@ -7,10 +7,13 @@ import {
 } from 'gatsby-plugin-image';
 import { parseHost, parsePath } from '../../common/uri';
 import { ImgixUrlParams } from '../../publicTypes';
-import { generateBreakpoints } from './breakpoints';
+import { BreakpointsWithData, generateBreakpoints } from './breakpoints';
 import { createImgixClient } from './common';
 
-type IUrlBuilderParameters = IUrlBuilderArgs<{ imgixParams?: ImgixUrlParams }>;
+type IUrlBuilderParameters = IUrlBuilderArgs<{
+  imgixParams?: ImgixUrlParams;
+  breakpointsWithData?: BreakpointsWithData;
+}>;
 
 const urlBuilder = (client: ImgixClient) => ({
   baseUrl,
@@ -18,9 +21,16 @@ const urlBuilder = (client: ImgixClient) => ({
   height,
   options = {},
 }: IUrlBuilderParameters): string => {
+  const manualQuality = options.breakpointsWithData
+    ? options.breakpointsWithData.find(
+        (breakpoint) => breakpoint.width === width,
+      )?.quality
+    : undefined;
+
   // TODO: handle default params
   return client.buildURL(baseUrl, {
     fit: 'min',
+    ...(manualQuality && { q: manualQuality }),
     ...options.imgixParams,
     w: width,
     h: height,
@@ -159,6 +169,7 @@ export function getGatsbyImageData({
     layout,
     options: {
       imgixParams: props.imgixParams,
+      breakpointsWithData: breakpointsData.breakpointsWithData,
     },
   });
 }
