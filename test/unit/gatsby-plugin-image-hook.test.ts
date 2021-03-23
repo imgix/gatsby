@@ -579,10 +579,11 @@ describe('gatsby-plugin-image hook', () => {
           8192,
         ]);
       });
-      test(`should generate widths up to sourceWidth`, () => {
+      test(`should generate widths up to sourceWidth, even if srcsetMaxWidth is larger`, () => {
         const actual = generateBreakpoints({
           layout: 'fullWidth',
           sourceWidth: 4000,
+          srcsetMaxWidth: 5000,
         });
 
         actual.breakpoints.map((width) =>
