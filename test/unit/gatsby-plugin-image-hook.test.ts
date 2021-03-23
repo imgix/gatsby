@@ -400,14 +400,14 @@ describe('gatsby-plugin-image hook', () => {
         const actual = generateBreakpoints({
           layout: 'fixed',
           width: 100,
-          sourceWidth: 250,
+          sourceWidth: 300,
         });
 
         actual.breakpoints.map((width) => {
-          expect(width).toBeLessThanOrEqual(250);
+          expect(width).toBeLessThanOrEqual(300);
         });
         actual?.breakpointsWithData?.map(({ width }) => {
-          expect(width).toBeLessThanOrEqual(250);
+          expect(width).toBeLessThanOrEqual(300);
         });
       });
       test(`should not generate widths larger than 8192px, even if source width is larger`, () => {
