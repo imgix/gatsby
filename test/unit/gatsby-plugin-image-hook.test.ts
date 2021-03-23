@@ -355,7 +355,7 @@ describe('gatsby-plugin-image hook', () => {
 
   describe(`breakpoints generation`, () => {
     describe(`layout: 'fixed'`, () => {
-      test(`should generate widths at 1x, 2x, 3x, 3x, and 5x width`, () => {
+      test(`should generate widths at 1x, 2x, 3x, and 4x`, () => {
         const actual = generateBreakpoints({
           layout: 'fixed',
           width: 100,
