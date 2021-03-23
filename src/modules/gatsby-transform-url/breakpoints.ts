@@ -31,7 +31,15 @@ export const generateBreakpoints = (
       },
       [],
     );
-    return { breakpoints };
+
+    const breakpointsWithData = !opts.disableVariableQuality
+      ? breakpoints.map((width, i) => ({
+          width,
+          quality: VARIABLE_QUALITIES[i],
+        }))
+      : [];
+
+    return { breakpoints, breakpointsWithData };
   }
   return {
     breakpoints: [],
