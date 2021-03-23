@@ -21,7 +21,11 @@ export const generateBreakpoints = (
         width?: undefined;
       }
     | {
-        layout: 'fixed' | 'constrained';
+        layout: 'constrained';
+        width?: number;
+      }
+    | {
+        layout: 'fixed';
         width: number;
       }
   ) & {
