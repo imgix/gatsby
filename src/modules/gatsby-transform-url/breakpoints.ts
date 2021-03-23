@@ -61,6 +61,7 @@ export const generateBreakpoints = (
   const maxWidth = min(
     MAX_SIZE,
     opts.width ? opts.width * MAX_DPR : undefined,
+    opts.sourceWidth,
     opts.srcsetMinWidth,
   );
 
