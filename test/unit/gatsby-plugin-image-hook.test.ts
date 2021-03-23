@@ -355,6 +355,14 @@ describe('gatsby-plugin-image hook', () => {
 
   describe(`breakpoints generation`, () => {
     describe(`layout: 'fixed'`, () => {
+      test(`should generate widths at 1x, 2x, 3x, 3x, and 5x width`, () => {
+        const actual = generateBreakpoints({
+          layout: 'fixed',
+          width: 100,
+        });
+
+        expect(actual.breakpoints).toEqual([100, 200, 300, 400, 500]);
+      });
       test.skip(`should not generate widths larger than sourceWidth`, () => {});
     });
     describe(`layout: 'constrained'`, () => {
