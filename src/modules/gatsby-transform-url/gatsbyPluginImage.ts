@@ -109,6 +109,19 @@ export function getGatsbyImageData({
   ...props
 }: IGetGatsbyImageDataOpts): IGatsbyImageData {
   const layout = props.layout;
+  if (layout == null) {
+    throw new Error(
+      `[@imgix/gatsby] A valid 'layout' is required. Valid image layouts are 'fixed', 'fullWidth', and 'constrained'. Found ${layout}`,
+    );
+  }
+  const width = props.width;
+
+  if (layout === 'fixed' && width == null) {
+    throw new Error(
+      `[@imgix/gatsby] a 'width' is required when layout is 'fixed'. Found ${width}`,
+    );
+  }
+
   const bothWidthAndHeightSet = props.width != null && props.height != null;
   const sourceOrAspectRatioSet =
     (sourceWidth != null && sourceHeight != null) || aspectRatio != null;
