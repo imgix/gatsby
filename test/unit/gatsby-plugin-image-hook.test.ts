@@ -363,6 +363,27 @@ describe('gatsby-plugin-image hook', () => {
 
         expect(actual.breakpoints).toEqual([100, 200, 300, 400, 500]);
       });
+      test(`should reduce quality when increasing size`, () => {
+        const actual = generateBreakpoints({
+          layout: 'fixed',
+          width: 100,
+        });
+
+        if (actual.breakpointsWithData == null) {
+          fail('actual.breakpointsWithData not set');
+          return;
+        }
+        expect(actual.breakpointsWithData.length).toBeGreaterThan(1);
+        actual.breakpointsWithData?.map((v, i) => {
+          if (i === 0) {
+            return;
+          }
+
+          expect(v.quality).toBeLessThan(
+            (actual?.breakpointsWithData || [])[i - 1].quality,
+          );
+        });
+      });
       test.skip(`should not generate widths larger than sourceWidth`, () => {});
     });
     describe(`layout: 'constrained'`, () => {
