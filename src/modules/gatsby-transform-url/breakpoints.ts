@@ -12,7 +12,7 @@ export const generateBreakpoints = (
   opts: (
     | {
         layout: 'fullWidth';
-        width?: number;
+        width?: undefined;
       }
     | {
         layout: 'fixed' | 'constrained';
