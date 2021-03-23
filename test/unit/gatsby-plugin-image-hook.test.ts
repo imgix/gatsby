@@ -599,7 +599,16 @@ describe('gatsby-plugin-image hook', () => {
           expect(width).toBeLessThanOrEqual(4200),
         );
       });
-      test.skip(`should not generate widths smaller than srcsetMinWidth`, () => {});
+      test(`should not generate widths smaller than srcsetMinWidth`, () => {
+        const actual = generateBreakpoints({
+          layout: 'fullWidth',
+          srcsetMinWidth: 200,
+        });
+
+        actual.breakpoints.map((width) =>
+          expect(width).toBeGreaterThanOrEqual(200),
+        );
+      });
       test.skip(`should be able to change widthTolerance`, () => {});
     });
   });
