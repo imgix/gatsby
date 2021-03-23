@@ -65,11 +65,22 @@ export const generateBreakpoints = (
     opts.srcsetMaxWidth,
   );
 
+  const fluidBreakpoints = (client as any)._generateTargetWidths(
+    widthTolerance,
+    minWidth,
+    maxWidth,
+  );
+
+  const widthBreakpoints = opts.width
+    ? Array.from({ length: MAX_DPR })
+        .map((_, i) => opts.width * (i + 1))
+        .filter((width) => width <= maxWidth)
+        .filter((width) => fluidBreakpoints.indexOf(width) === -1)
+    : [];
+
   return {
-    breakpoints: (client as any)._generateTargetWidths(
-      widthTolerance,
-      minWidth,
-      maxWidth,
+    breakpoints: [...fluidBreakpoints, ...widthBreakpoints].sort(
+      (a, b) => a - b,
     ),
   };
 };
