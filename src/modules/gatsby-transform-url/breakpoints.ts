@@ -4,7 +4,6 @@ const VARIABLE_QUALITIES = [75, 50, 35, 23, 20];
 const MAX_SIZE = 8192;
 const MAX_DPR = 4;
 
-const clamp = (clamp: number, val?: number) => Math.min(val ?? clamp, clamp);
 const min = (fallback: number, ...rest: (number | undefined)[]) =>
   Math.min(fallback, ...rest.filter<number>(isNotNull));
 
