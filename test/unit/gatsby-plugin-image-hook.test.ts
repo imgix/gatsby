@@ -446,6 +446,7 @@ describe('gatsby-plugin-image hook', () => {
   describe(`layout: 'fullWidth'`, () => {
     test(`should have a valid sizes`, () => {
       const actual = getGatsbyImageData({
+        layout: 'fullWidth',
         src: 'https://test.imgix.net/image.jpg',
         width: 1000,
         aspectRatio: 2,
@@ -761,6 +762,9 @@ const testForLayout = (layout: 'constrained' | 'fullWidth' | 'fixed') => ({
 }: ITestForLayoutOpts) => {
   const result = getGatsbyImageData({
     layout,
+    width:
+      // Set default width
+      layout === 'constrained' || layout == 'fixed' ? 105 : undefined,
     aspectRatio:
       // Set default aspect ratio
       (layout === 'constrained' || layout == 'fullWidth') &&
