@@ -1,3 +1,10 @@
+### [1.3.3](https://github.com/imgix/gatsby/compare/v1.3.2...v1.3.3) (2021-03-24)
+
+
+### Bug Fixes
+
+* update ixlib to be camelCase ([8d831b4](https://github.com/imgix/gatsby/commit/8d831b400cdf44e46418ead4b973e1fa85bb29d4))
+
 ### [1.3.2](https://github.com/imgix/gatsby/compare/v1.3.1...v1.3.2) (2021-03-16)
 
 
