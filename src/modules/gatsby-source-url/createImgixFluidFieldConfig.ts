@@ -66,7 +66,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
     },
     maxWidth: {
       type: GraphQLInt,
-      description: `The maximum px width of the *image* to be *requested*. This does NOT affect the width of the image displayed.`, // TODO: add info about how to constrain width
+      description: `The maximum px width of the *image* to be *requested*. This does NOT affect the width of the image displayed. The width of the image displayed can be controlled by adding a sizes parameter to the GatsbyImage component. For more information, see this project's readme.`,
       defaultValue: DEFAULT_FLUID_MAX_WIDTH,
     },
     maxHeight: {
