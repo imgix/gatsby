@@ -193,7 +193,6 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
     {},
   );
 
-  // TODO: add section to README about deleted args
   // ⚠️ KEEP THESE IN SYNC WITH IImgixGatsbyImageDataArgs!! ⚠️
   const modifiedConfig = {
     ...defaultConfig,

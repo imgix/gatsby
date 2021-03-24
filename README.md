@@ -322,6 +322,10 @@ export const query = gql`
 `;
 ```
 
+##### Shared field params
+
+The `layout`, `width`, `height`, `aspectRatio`, `outputPixelDensities`, `breakpoints`, `sizes`, and `backgroundColor` parameters are identical to the parameters offered by the native `gatsbyImageData` field, and the documentation for those fields can be found in the [Gatsby documentation](https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-plugin-image/#image-options). The other added parameters are specific to imgix and they are documented in the GraphQL type definitions, which can be explored in GraphiQL (usually at [http://localhost:8000/\_\_graphiql](http://localhost:8000/__graphiql))
+
 #### Fluid Images
 
 The following code will render a fluid image with gatsby-image. This code should already be familiar to you if you've used gatsby-image in the past.
@@ -499,6 +503,10 @@ export const query = gql`
   }
 `;
 ```
+
+##### Shared field params
+
+The `layout`, `width`, `height`, `aspectRatio`, `outputPixelDensities`, `breakpoints`, `sizes`, and `backgroundColor` parameters are identical to the parameters offered by the native `gatsbyImageData` field, and the documentation for those fields can be found in the [Gatsby documentation](https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-plugin-image/#image-options). The other added parameters are specific to imgix and they are documented in the GraphQL type definitions, which can be explored in GraphiQL (usually at [http://localhost:8000/\_\_graphiql](http://localhost:8000/__graphiql))
 
 #### Fluid Images
 
