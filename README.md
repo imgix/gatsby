@@ -42,6 +42,7 @@
         + [Generating imgix URLs](#generating-imgix-urls-1)
         + [Using a Web Proxy Source](#using-a-web-proxy-source)
     * [URL Transform Function](#url-transform-function)
+        + [✨ New ✨ Gatsby-plugin-image Component and Hook](#-new--gatsby-plugin-image-component-and-hook)
         + [Basic Fluid Image](#basic-fluid-image)
         + [Basic Fixed Image](#basic-fixed-image)
 - [API](#api)
@@ -648,9 +649,68 @@ export const query = gql`
 
 ### URL Transform Function
 
-This features allows imgix urls to be used with gatsby-image. This feature transforms imgix urls into a format that is compatible with gatsby-image. This can generate either fluid or fixed images. With this feature you can either display images that already exist on imgix, or proxy other images through imgix.
+This features allows imgix urls to be used with gatsby-image or gatsby-plugin-image. imgix urls are transformed into a format that is compatible with gatsby-image. This can generate either fluid, fixed images, or for gatsby-plugin-image, full-width, constrained, or fixed images. With this feature you can either display images that already exist on imgix, or proxy other images through imgix. It is important to note that this feature can **only display images that are already on imgix or an imgix-compatible URL**. To display images that are not using imgix, you will have to use one of the GraphQL APIs above.
 
-Unfortunately, due to limitations of Gatsby, this feature does not support the placeholder/blur-up feature yet. When Gatsby removes this limitation, we plan to implement this for this feature. In the meantime, our other Gatsby plugins will support blur-up/placeholder images, so if this feature is critical to you, please consider using one of those.
+Unfortunately, due to limitations of Gatsby, this feature does not support blurred placeholders. To use placeholders please use one of the other use cases/parts of this library
+
+#### ✨ New ✨ Gatsby-plugin-image Component and Hook
+
+This plugin supports the new frontend Gatsby-plugin-image component. To use the component with this plugin, use the following code
+
+```jsx
+import { ImgixGatsbyImage } from '@imgix/gatsby';
+
+export const MyPageComponent = () => {
+  return <ImgixGatsbyImage
+    // Must be an imgix URL
+    src="https://assets.imgix.net/amsterdam.jpg"
+
+    // This can be used to set imgix params
+    imgixParams={ crop: 'faces' }
+
+    // These are passed through to the gatsby-plugin-image component
+    layout="constrained"
+    width={768}
+
+    // Set either
+    aspectRatio={16 / 9}
+    // or
+    sourceWidth={5000}
+    sourceHeight={4000}
+
+    // Any other props offered by the gatsby-plugin-image component are
+    // supported and passed straight through to the component
+  >
+}
+```
+
+If you would like more control over the data flow, you can also use the hook that this package exports - `getGatsbyImageData` - like so:
+
+```jsx
+import { getGatsbyImageData } from '@imgix/gatsby';
+import { GatsbyImage } from 'gatsby-plugin-image';
+
+export const MyPageComponent = () => {
+  return <GatsbyImage
+    image={getGatsbyImageData({
+      // Must be an imgix URL
+      src: "https://assets.imgix.net/amsterdam.jpg"
+      // This can be used to set imgix params
+      imgixParams: { crop: 'faces' }
+
+      // These are passed through to the gatsby-plugin-image component
+      layout: "constrained"
+      width: 768
+
+      // Set either
+      aspectRatio: 16 / 9
+      // or
+      sourceWidth: 5000
+      sourceHeight: 4000
+    })}
+  >
+}
+```
 
 #### Basic Fluid Image
 
