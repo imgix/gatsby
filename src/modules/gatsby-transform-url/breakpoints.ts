@@ -60,19 +60,14 @@ export const generateBreakpoints = (
 
   const width = opts.width;
 
-  // TODO: replace with static api when released
-  const client = new ImgixClient({
-    domain: 'unused.imgix.net',
-  });
-
   const widthTolerance = opts.widthTolerance ?? 0.08;
-  const minWidth = opts.srcsetMinWidth ?? 100;
   const maxWidth = min(
     MAX_SIZE,
     width ? width * MAX_DPR : undefined,
     opts.sourceWidth,
     opts.srcsetMaxWidth,
   );
+  const minWidth = min(maxWidth, opts.srcsetMinWidth ?? 100);
 
   const fluidBreakpoints = ImgixClient.targetWidths(
     minWidth,
