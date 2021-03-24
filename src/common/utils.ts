@@ -24,7 +24,6 @@ export const taskEitherFromSourceDataResolver = <TSource, TData>(
     (reason) => new Error(String(reason)),
   );
 
-// TODO: maybe better url type here?
 export const resolveUrlFromSourceData = <TSource>(
   resolver: ImgixSourceDataResolver<TSource, string>,
 ) => taskEitherFromSourceDataResolver(resolver, (data: string) => data != null);
