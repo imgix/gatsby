@@ -34,9 +34,7 @@ function buildImageData(
   const client = createImgixClient({
     domain: host,
     libraryParam:
-      options.includeLibraryParam === false
-        ? undefined
-        : 'gatsby-transform-url',
+      options.includeLibraryParam === false ? undefined : 'gatsbyTransformUrl',
   });
 
   const transformedImgixParams = {
@@ -45,13 +43,8 @@ function buildImageData(
     ar: imgixParams.ar != null ? `${imgixParams.ar}:1` : undefined,
   };
 
-  // We have to spread parameters because imgix-core-js builders mutate params. GH issue: https://github.com/imgix/imgix-core-js/issues/158
-  const src = client.buildURL(path, {
-    ...transformedImgixParams,
-  });
-  const srcset = client.buildSrcSet(path, {
-    ...transformedImgixParams,
-  });
+  const src = client.buildURL(path, transformedImgixParams);
+  const srcset = client.buildSrcSet(path, transformedImgixParams);
   const srcWebp = client.buildURL(path, {
     ...transformedImgixParams,
     fm: 'webp',
@@ -174,5 +167,4 @@ export function buildFluidImageData(
   );
 }
 export { getGatsbyImageData } from './gatsbyPluginImage';
-
 export { ImgixGatsbyImage } from './gatsbyPluginImageComponent';

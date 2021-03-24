@@ -1,3 +1,4 @@
+import ImgixClient from '@imgix/js-core';
 import { Do } from 'fp-ts-contrib/lib/Do';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';
@@ -10,7 +11,6 @@ import {
   GraphQLObjectType,
 } from 'gatsby/graphql';
 import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
-import ImgixClient from 'imgix-core-js';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import {
   ImgixSourceDataResolver,

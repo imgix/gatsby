@@ -1,4 +1,5 @@
 // TODO(luis): remove this file, no longer being imported anywhere
+import type ImgixClient from '@imgix/js-core';
 import { GatsbyCache } from 'gatsby';
 import {
   GraphQLFieldConfig,
@@ -6,7 +7,6 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'gatsby/graphql';
-import type ImgixClient from 'imgix-core-js';
 import * as R from 'ramda';
 import { IImgixGatsbyRootArgs, IImgixParams } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from './createImgixFixedFieldConfig';

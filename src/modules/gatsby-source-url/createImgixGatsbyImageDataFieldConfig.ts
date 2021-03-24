@@ -1,3 +1,4 @@
+import ImgixClient from '@imgix/js-core';
 import { stripIndent } from 'common-tags';
 import { Do } from 'fp-ts-contrib/lib/Do';
 import { pipe } from 'fp-ts/lib/function';
@@ -20,7 +21,6 @@ import {
   GraphQLInt,
   GraphQLObjectType,
 } from 'gatsby/graphql';
-import ImgixClient from 'imgix-core-js';
 import R from 'ramda';
 import {
   fetchImgixBase64Image,
@@ -32,7 +32,7 @@ import {
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
-import { IImgixParams } from '../../publicTypes';
+import { IImgixParams, ImgixUrlParams } from '../../publicTypes';
 import { ImgixParamsInputType, ImgixPlaceholderType } from './graphqlTypes';
 import { resolveDimensions } from './resolveDimensions';
 
@@ -68,10 +68,11 @@ const resolveGatsbyImageData = <TSource>({
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
   type?: GraphQLObjectType<FluidObject>;
-}): GraphQLFieldResolver<TSource, unknown, Record<string, unknown>> => async (
-  rootValue,
-  args,
-): Promise<IGatsbyImageData | undefined> => {
+}): GraphQLFieldResolver<
+  TSource,
+  unknown,
+  IImgixGatsbyImageDataArgsResolved
+> => async (rootValue, args): Promise<IGatsbyImageData | undefined> => {
   return pipe(
     Do(TE.taskEither)
       .sequenceSL(() => ({
@@ -104,13 +105,12 @@ const resolveGatsbyImageData = <TSource>({
             pluginName: `@imgix/gatsby`,
             filename: url,
             sourceMetadata: { width, height, format: 'auto' as ImageFormat },
-            // TODO: not a public API, need to replace with public API when implemented
             breakpoints:
               args.breakpoints ??
-              (imgixClient as any)._generateTargetWidths(
-                args.widthTolerance,
+              ImgixClient.targetWidths(
                 args.srcSetMinWidth,
                 args.srcSetMaxWidth,
+                args.widthTolerance,
               ),
             formats: ['auto'] as ImageFormat[],
             generateImageSource: generateImageSource(imgixClient),
@@ -164,13 +164,23 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
   type?: GraphQLObjectType<FluidObject>;
-}): GraphQLFieldConfig<TSource, TContext> => {
+}): GraphQLFieldConfig<
+  TSource,
+  TContext,
+  IImgixGatsbyImageDataArgsResolved
+> => {
   const defaultConfig = getGatsbyImageFieldConfig(
-    resolveGatsbyImageData({ cache, imgixClient, resolveUrl, defaultParams }),
+    resolveGatsbyImageData({
+      cache,
+      imgixClient,
+      resolveUrl,
+      defaultParams,
+    }) as GraphQLFieldResolver<TSource, TContext>, // TODO: remove cast when PR to Gatsby has been merged
     {},
   );
 
   // TODO: add section to README about deleted args
+  // ⚠️ KEEP THESE IN SYNC WITH IImgixGatsbyImageDataArgs!! ⚠️
   const modifiedConfig = {
     ...defaultConfig,
     args: {
@@ -230,7 +240,7 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   return modifiedConfig;
 };
 
-type IImgixGatsbyImageDataArgs = {
+type IImgixGatsbyImageDataArgsResolved = {
   layout: IGatsbyImageHelperArgs['layout'];
   width: IGatsbyImageHelperArgs['width'];
   height: IGatsbyImageHelperArgs['height'];
@@ -239,8 +249,9 @@ type IImgixGatsbyImageDataArgs = {
   breakpoints: IGatsbyImageHelperArgs['breakpoints'];
   sizes: IGatsbyImageHelperArgs['sizes'];
   backgroundColor: IGatsbyImageHelperArgs['backgroundColor'];
+  imgixParams?: ImgixUrlParams;
+  placeholder?: 'dominantColor' | 'blurred' | 'none';
+  widthTolerance?: number;
+  srcSetMinWidth?: number;
+  srcSetMaxWidth?: number;
 };
-
-/**
- * - Set formats to ['auto']
- */

@@ -12,7 +12,7 @@ import { PathReporter } from 'io-ts/PathReporter';
 import * as R from 'ramda';
 import readPkgUp from 'read-pkg-up';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
-import { createImgixClient } from '../../common/imgix-core-js-wrapper';
+import { createImgixClient } from '../../common/imgix-js-core-wrapper';
 import { findPossibleURLsInNode } from '../../common/utils';
 import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';
@@ -120,7 +120,7 @@ const setupImgixClientE = ({
     .doL(({ imgixClient }) => {
       imgixClient.includeLibraryParam = false;
       if (options.disableIxlibParam !== true) {
-        (imgixClient as any).settings.libraryParam = `gatsby-source-url-${packageVersion}`;
+        (imgixClient as any).settings.libraryParam = `gatsbySourceUrl-${packageVersion}`;
       }
       return E.right(imgixClient);
     })
@@ -175,7 +175,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                 resolveUrl: R.prop('rawURL'),
                 defaultParams: defaultImgixParams,
               }) as GraphQLFieldConfig<IRootSource, {}, Record<string, any>>,
-              fixed: createImgixFixedFieldConfig<any, unknown>({
+              fixed: createImgixFixedFieldConfig({
                 type: imgixFixedType,
                 cache: gatsbyContext.cache,
                 imgixClient,
@@ -187,7 +187,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                 imgixClient,
                 resolveUrl: R.prop('rawURL'),
                 defaultParams: defaultImgixParams,
-              }),
+              }) as GraphQLFieldConfig<IRootSource, {}, Record<string, any>>,
             },
           }),
       )

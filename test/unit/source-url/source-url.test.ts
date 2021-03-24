@@ -116,7 +116,7 @@ describe('createResolvers', () => {
           field: 'fluid',
         });
 
-        // Don't need to do too much work here since imgix-core-js handles everything under the hood
+        // Don't need to do too much work here since @imgix/js-core handles everything under the hood
         expect(fluidFieldResult.srcSet).toMatch(/\d*w,/);
         expect(fluidFieldResult.srcSetWebp).toMatch(/\d*w,/);
       });
@@ -196,7 +196,7 @@ describe('createResolvers', () => {
           field: 'fluid',
         });
 
-        // Don't need to do too much work here since imgix-core-js handles everything under the hood
+        // Don't need to do too much work here since @imgix/js-core handles everything under the hood
         expect(fluidFieldResult.src).not.toMatch('ar=');
         expect(fluidFieldResult.srcWebp).not.toMatch('ar=');
         expect(fluidFieldResult.srcSet).not.toMatch('ar=');
@@ -208,7 +208,7 @@ describe('createResolvers', () => {
           fieldParams: { maxWidth: 500 },
         });
 
-        // Don't need to do too much work here since imgix-core-js handles everything under the hood
+        // Don't need to do too much work here since @imgix/js-core handles everything under the hood
         expect(fluidFieldResult.src).toMatch('w=500');
         expect(fluidFieldResult.srcWebp).toMatch('w=500');
       });
@@ -229,7 +229,7 @@ describe('createResolvers', () => {
           );
         };
 
-        // Don't need to do too much work here since imgix-core-js handles everything under the hood
+        // Don't need to do too much work here since @imgix/js-core handles everything under the hood
         expectSrcsetToNotHaveWidthsGT(500)(fluidFieldResult.srcSet);
         expectSrcsetToNotHaveWidthsGT(500)(fluidFieldResult.srcSetWebp);
       });
@@ -362,7 +362,7 @@ describe('createResolvers', () => {
   describe('ixlib param', () => {
     testForEveryFieldSrcAndSrcSet({
       name: 'should be included in src by default',
-      assertion: (url) => expect(url).toMatch('ixlib=gatsby-source-url'),
+      assertion: (url) => expect(url).toMatch('ixlib=gatsbySourceUrl'),
     });
     testForEveryFieldSrcAndSrcSet({
       name: 'should not exist in src when disableIxlibParam is set',
@@ -371,7 +371,7 @@ describe('createResolvers', () => {
           disableIxlibParam: true,
         },
       },
-      assertion: (url) => expect(url).not.toMatch('ixlib=gatsby-source-url'),
+      assertion: (url) => expect(url).not.toMatch('ixlib=gatsbySourceUrl'),
     });
   });
 

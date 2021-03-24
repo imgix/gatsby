@@ -1,10 +1,10 @@
+import ImgixClient from '@imgix/js-core';
 import { sequenceS, sequenceT } from 'fp-ts/lib/Apply';
 import * as O from 'fp-ts/lib/Option';
 import { Option } from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
-import ImgixClient from 'imgix-core-js';
 import { fetchImgixMetadata } from '../../api/fetchImgixMetadata';
 import { createLogger, trace } from '../../common/log';
 

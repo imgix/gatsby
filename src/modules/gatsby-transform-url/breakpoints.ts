@@ -1,4 +1,4 @@
-import ImgixClient from 'imgix-core-js';
+import ImgixClient from '@imgix/js-core';
 
 const VARIABLE_QUALITIES = [75, 50, 35, 23, 20];
 const MAX_SIZE = 8192;
@@ -66,10 +66,10 @@ export const generateBreakpoints = (
     opts.srcsetMaxWidth,
   );
 
-  const fluidBreakpoints = (client as any)._generateTargetWidths(
-    widthTolerance,
+  const fluidBreakpoints = ImgixClient.targetWidths(
     minWidth,
     maxWidth,
+    widthTolerance,
   );
 
   const widthBreakpoints = opts.width

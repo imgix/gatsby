@@ -1,4 +1,4 @@
-import ImgixClient from 'imgix-core-js';
+import ImgixClient from '@imgix/js-core';
 import { VERSION } from '../../common/constants';
 
 export const createImgixClient = ({
@@ -9,7 +9,7 @@ export const createImgixClient = ({
 }): ImgixClient => {
   const client = new ImgixClient({
     ...rest,
-    includeLibraryParam: false, // force false so that imgix-core-js doesn't include its own library param
+    includeLibraryParam: false, // force false so that @imgix/js-core doesn't include its own library param
   });
 
   // This is not a public API, so it is not included in the type definitions for ImgixClient
