@@ -114,8 +114,9 @@ const resolveGatsbyImageData = <TSource>({
               ),
             formats: ['auto'] as ImageFormat[],
             generateImageSource: generateImageSource(imgixClient),
-            // TODO: check if this should be set to imgixParams
-            options: args,
+            options: {
+              imgixParams: args.imgixParams,
+            },
           } as const),
       )
       .bindL('placeholderData', ({ url, baseImageDataArgs }) => {
