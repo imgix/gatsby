@@ -445,6 +445,22 @@ describe('createResolvers', () => {
 
       expect(result.backgroundColor).toMatch(/^#([0-9A-F]{3}){1,2}$/i);
     });
+
+    it('should be able to set custom placeholder parameters in placeholderImgixParams', async () => {
+      const result = await resolveField({
+        field: 'gatsbyImageData',
+        url: 'amsterdam.jpg',
+        fieldParams: {
+          placeholder: 'dominantColor',
+          placeholderImgixParams: {
+            hue: 180,
+          },
+        },
+      });
+
+      // Bit flaky here to hard code a colour value, but I wanted to make sure that it was different to the above test
+      expect(result.backgroundColor).toMatch('#348ff2');
+    });
   });
 });
 
