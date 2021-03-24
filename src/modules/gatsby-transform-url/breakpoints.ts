@@ -11,7 +11,7 @@ const isNotNull = <T>(v: T): v is Exclude<T, undefined | null> => v != null;
 
 /**
  * This function is a helper function which is designed to return a set of breakpoints that can be passed to `getImageData` from gatsby-plugin-image.
- * 
+ *
  * @returns breakpoints and breakpointsWithData. breakpoints can be passed straight to gatsby-plugin-image, and breakpointsWithData should be passed as args to the buildUrl function so that it can apply variable quality for fixed srcsets.
  */
 export const generateBreakpoints = (
