@@ -123,7 +123,16 @@ const resolveGatsbyImageData = <TSource>({
       .bindL('placeholderData', ({ url, baseImageDataArgs }) => {
         if (args.placeholder === 'blurred') {
           return pipe(
-            getLowResolutionImageURL(baseImageDataArgs),
+            getLowResolutionImageURL({
+              ...baseImageDataArgs,
+              options: {
+                ...baseImageDataArgs,
+                imgixParams: {
+                  ...args.imgixParams,
+                  ...args.placeholderImgixParams,
+                },
+              },
+            }),
             fetchImgixBase64Image(cache),
             TE.map((base64Data) => ({
               placeholder: { fallback: base64Data },
@@ -132,9 +141,12 @@ const resolveGatsbyImageData = <TSource>({
         }
         if (args.placeholder === 'dominantColor') {
           return pipe(
-            // TODO: add imgix params
             fetchImgixDominantColor(cache)((params) =>
-              imgixClient.buildURL(url, params),
+              imgixClient.buildURL(url, {
+                ...args.imgixParams,
+                ...args.placeholderImgixParams,
+                ...params,
+              }),
             ),
             TE.map((dominantColor) => ({
               backgroundColor: dominantColor,
@@ -206,6 +218,13 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
         All of imgix's parameters can be found here: https://docs.imgix.com/apis/rendering
         `,
       },
+      placeholderImgixParams: {
+        type: ImgixParamsInputType,
+        description: stripIndent`This argument is used to set parameters to instruct imgix to transform the placeholder image. By default all parameters passed to 'imgixParams' are already set here, but this can be used to override or set extra parameters. 
+        
+        All of imgix's parameters can be found here: https://docs.imgix.com/apis/rendering
+        `,
+      },
       placeholder: {
         type: ImgixPlaceholderType,
         description: stripIndent`
@@ -252,6 +271,7 @@ type IImgixGatsbyImageDataArgsResolved = {
   sizes: IGatsbyImageHelperArgs['sizes'];
   backgroundColor: IGatsbyImageHelperArgs['backgroundColor'];
   imgixParams?: ImgixUrlParams;
+  placeholderImgixParams?: ImgixUrlParams;
   placeholder?: 'dominantColor' | 'blurred' | 'none';
   widthTolerance?: number;
   srcSetMinWidth?: number;
