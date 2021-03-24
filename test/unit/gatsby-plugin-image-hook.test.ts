@@ -340,6 +340,20 @@ describe('gatsby-plugin-image hook', () => {
         },
       });
     });
+    test(`edge case: maxWidth is smaller than minWidth`, () => {
+      testForLayouts(['constrained', 'fullWidth'], {
+        params: {
+          src: 'https://test.imgix.net/image.jpg',
+          aspectRatio: 2,
+          width: 50,
+          sourceWidth: 50,
+          srcsetMinWidth: 100,
+        },
+        assertion: (data) => {
+          expect(data.images?.fallback?.srcSet).toMatch('50w');
+        },
+      });
+    });
     test(`should set width and height in url matching aspect ratio of source width and source height`, () => {
       testForLayouts(['constrained', 'fullWidth'], {
         params: {
