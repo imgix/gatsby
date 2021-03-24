@@ -1,10 +1,10 @@
+import ImgixClient from '@imgix/js-core';
 import {
   getImageData,
   IGatsbyImageData,
   IGetImageDataArgs,
   IUrlBuilderArgs,
 } from 'gatsby-plugin-image';
-import ImgixClient from 'imgix-core-js';
 import { parseHost, parsePath } from '../../common/uri';
 import { ImgixUrlParams } from '../../publicTypes';
 import { createImgixClient } from './common';
