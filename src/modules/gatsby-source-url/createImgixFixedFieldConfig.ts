@@ -64,7 +64,6 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
       type: GraphQLInt,
       description: `The fixed image height to render, in px.`,
     },
-    // TODO: remove?
     quality: {
       type: GraphQLInt,
       description: `The image quality to use for compression. Range: 0-100, with 100 being highest quality. This setting is not recommended as the quality is already optimized by decreasing quality as the dpr increases to reduce image size while retaining visual quality.`,
