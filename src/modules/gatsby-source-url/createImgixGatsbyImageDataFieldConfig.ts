@@ -105,6 +105,7 @@ const resolveGatsbyImageData = <TSource>({
             pluginName: `@imgix/gatsby`,
             filename: url,
             sourceMetadata: { width, height, format: 'auto' as ImageFormat },
+            // TODO: use breakpoints helper from gatsby-plugin-image hook
             breakpoints:
               args.breakpoints ??
               ImgixClient.targetWidths(
