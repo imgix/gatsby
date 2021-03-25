@@ -291,7 +291,7 @@ describe('gatsby-plugin-image hook', () => {
       } = require('../../src/modules/gatsby-transform-url/index');
 
       mockedGenerateBreakpoints.mockImplementation(() => ({
-        breakpoints: [75, 150, 225, 300],
+        outputPixelDensities: [1, 2, 3, 4],
       }));
 
       const generateBreakpointsArgs = {
@@ -496,6 +496,59 @@ describe('gatsby-plugin-image hook', () => {
         aspectRatio: 2,
       });
       expect(actual.images?.fallback?.sizes).toMatch('100vw');
+    });
+  });
+
+  describe(`sourceWidth and sourceHeight override`, () => {
+    test(`should not override sourceWidth`, () => {
+      const actual = getGatsbyImageData({
+        layout: 'fixed',
+        src: 'https://test.imgix.net/image.jpg',
+        sourceWidth: 1000,
+        width: 1000,
+        height: 2000,
+      });
+
+      expect(actual.images?.fallback?.srcSet).not.toMatch('2000w');
+      expect(actual.width).toEqual(1000);
+      expect(actual.height).toEqual(2000);
+    });
+    test(`should not override sourceWidth + sourceHeight`, () => {
+      const actual = getGatsbyImageData({
+        layout: 'fixed',
+        src: 'https://test.imgix.net/image.jpg',
+        sourceWidth: 1000,
+        sourceHeight: 2000,
+        width: 1000,
+      });
+
+      expect(actual.images?.fallback?.srcSet).not.toMatch('2000w');
+      expect(actual.width).toEqual(1000);
+      expect(actual.height).toEqual(2000);
+    });
+    test(`should override when sourceWidth not set (ar set)`, () => {
+      const actual = getGatsbyImageData({
+        layout: 'fixed',
+        src: 'https://test.imgix.net/image.jpg',
+        aspectRatio: 3,
+        width: 1000,
+      });
+
+      expect(actual.images?.fallback?.srcSet).toMatch('5000w');
+      expect(actual.width).toEqual(1000);
+      expect(actual.height).toEqual(333);
+    });
+    test(`should override when sourceWidth not set (width + height set)`, () => {
+      const actual = getGatsbyImageData({
+        layout: 'fixed',
+        src: 'https://test.imgix.net/image.jpg',
+        width: 1000,
+        height: 333,
+      });
+
+      expect(actual.images?.fallback?.srcSet).toMatch('5000w');
+      expect(actual.width).toEqual(1000);
+      expect(actual.height).toEqual(333);
     });
   });
 
