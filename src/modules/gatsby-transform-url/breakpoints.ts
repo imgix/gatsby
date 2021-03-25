@@ -1,8 +1,7 @@
 import ImgixClient from '@imgix/js-core';
+import { MAX_DPR, MAX_WIDTH } from './common';
 
 const VARIABLE_QUALITIES = [75, 50, 35, 23, 20];
-const MAX_SIZE = 8192;
-const MAX_DPR = 4;
 
 const min = (fallback: number, ...rest: (number | undefined)[]) =>
   Math.min(fallback, ...rest.filter<number>(isNotNull));
@@ -62,7 +61,7 @@ export const generateBreakpoints = (
 
   const widthTolerance = opts.widthTolerance ?? 0.08;
   const maxWidth = min(
-    MAX_SIZE,
+    MAX_WIDTH,
     width ? width * MAX_DPR : undefined,
     opts.sourceWidth,
     opts.srcsetMaxWidth,
