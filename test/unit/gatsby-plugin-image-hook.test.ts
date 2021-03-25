@@ -151,7 +151,7 @@ describe('gatsby-plugin-image hook', () => {
         .map((url) => new URL(url).searchParams.get('q'))
         .map((q) => parseInt(q ?? ''));
 
-      expect(qs).toEqual([75, 50, 35, 23]);
+      expect(qs).toEqual([75, 50, 35, 23, 20]);
     });
     test(`should be able to disable variable quality`, () => {
       const actual = getGatsbyImageData({
@@ -507,7 +507,7 @@ describe('gatsby-plugin-image hook', () => {
           width: 100,
         });
 
-        expect(actual.breakpoints).toEqual([100, 200, 300, 400]);
+        expect(actual.outputPixelDensities).toEqual([1, 2, 3, 4, 5]);
       });
       test(`should reduce quality when increasing size`, () => {
         const actual = generateBreakpoints({
@@ -549,8 +549,8 @@ describe('gatsby-plugin-image hook', () => {
           sourceWidth: 300,
         });
 
-        actual.breakpoints.map((width) => {
-          expect(width).toBeLessThanOrEqual(300);
+        actual.outputPixelDensities?.map((dpr) => {
+          expect(dpr).toBeLessThanOrEqual(3);
         });
         actual?.breakpointsWithData?.map(({ width }) => {
           expect(width).toBeLessThanOrEqual(300);
@@ -563,10 +563,10 @@ describe('gatsby-plugin-image hook', () => {
           sourceWidth: 15000,
         });
 
-        actual.breakpoints.map((width) => {
-          expect(width).toBeLessThanOrEqual(8192);
+        actual.outputPixelDensities?.map((dpr) => {
+          expect(dpr).toBeLessThanOrEqual(4);
         });
-        actual?.breakpointsWithData?.map(({ width }) => {
+        actual.breakpointsWithData?.map(({ width }) => {
           expect(width).toBeLessThanOrEqual(8192);
         });
       });
@@ -600,6 +600,9 @@ describe('gatsby-plugin-image hook', () => {
           927,
           1075,
           1200,
+          1247,
+          1446,
+          1500,
         ]);
       });
       test(`should generate widths up to 4x constrained width if no sourceWidth set`, () => {
@@ -608,8 +611,9 @@ describe('gatsby-plugin-image hook', () => {
           width: 1000,
         });
 
-        actual.breakpoints.map((width) => {
-          expect(width).toBeLessThanOrEqual(4000);
+        expect(actual.breakpoints?.length).toBeGreaterThan(0);
+        actual.breakpoints?.map((width) => {
+          expect(width).toBeLessThanOrEqual(5000);
         });
       });
       test(`should generate widths up to 4x constrained width if sourceWidth is larger than width`, () => {
@@ -619,8 +623,9 @@ describe('gatsby-plugin-image hook', () => {
           sourceWidth: 8000,
         });
 
-        actual.breakpoints.map((width) => {
-          expect(width).toBeLessThanOrEqual(4000);
+        expect(actual.breakpoints?.length).toBeGreaterThan(0);
+        actual.breakpoints?.map((width) => {
+          expect(width).toBeLessThanOrEqual(5000);
         });
       });
       test(`should generate widths up to sourceWidth if sourceWidth is smaller than width and srcsetMaxWidth`, () => {
@@ -631,7 +636,8 @@ describe('gatsby-plugin-image hook', () => {
           srcsetMaxWidth: 3000,
         });
 
-        actual.breakpoints.map((width) => {
+        expect(actual.breakpoints?.length).toBeGreaterThan(0);
+        actual.breakpoints?.map((width) => {
           expect(width).toBeLessThanOrEqual(2000);
         });
       });
@@ -643,19 +649,21 @@ describe('gatsby-plugin-image hook', () => {
           srcsetMaxWidth: 1500,
         });
 
-        actual.breakpoints.map((width) => {
+        expect(actual.breakpoints?.length).toBeGreaterThan(0);
+        actual.breakpoints?.map((width) => {
           expect(width).toBeLessThanOrEqual(1500);
         });
       });
       test(`should not generate widths larger than 8192px, even if source width, width, and srcSetMaxWidth are larger`, () => {
         const actual = generateBreakpoints({
-          layout: 'fixed',
+          layout: 'constrained',
           width: 5000,
           sourceWidth: 15000,
           srcsetMaxWidth: 9000,
         });
 
-        actual.breakpoints.map((width) => {
+        expect(actual.breakpoints?.length).toBeGreaterThan(0);
+        actual.breakpoints?.map((width) => {
           expect(width).toBeLessThanOrEqual(8192);
         });
       });
@@ -666,7 +674,8 @@ describe('gatsby-plugin-image hook', () => {
           width: 1000,
         });
 
-        actual.breakpoints.map((width) => {
+        expect(actual.breakpoints?.length).toBeGreaterThan(0);
+        actual.breakpoints?.map((width) => {
           expect(width).toBeGreaterThanOrEqual(500);
         });
       });
@@ -690,6 +699,8 @@ describe('gatsby-plugin-image hook', () => {
           2684,
           3000,
           4000,
+          4295,
+          5000,
         ]);
       });
     });
@@ -740,7 +751,8 @@ describe('gatsby-plugin-image hook', () => {
           srcsetMaxWidth: 5000,
         });
 
-        actual.breakpoints.map((width) =>
+        expect(actual.breakpoints?.length).toBeGreaterThan(0);
+        actual.breakpoints?.map((width) =>
           expect(width).toBeLessThanOrEqual(4000),
         );
       });
@@ -750,7 +762,8 @@ describe('gatsby-plugin-image hook', () => {
           srcsetMaxWidth: 4200,
         });
 
-        actual.breakpoints.map((width) =>
+        expect(actual.breakpoints?.length).toBeGreaterThan(0);
+        actual.breakpoints?.map((width) =>
           expect(width).toBeLessThanOrEqual(4200),
         );
       });
@@ -760,7 +773,8 @@ describe('gatsby-plugin-image hook', () => {
           srcsetMinWidth: 200,
         });
 
-        actual.breakpoints.map((width) =>
+        expect(actual.breakpoints?.length).toBeGreaterThan(0);
+        actual.breakpoints?.map((width) =>
           expect(width).toBeGreaterThanOrEqual(200),
         );
       });
