@@ -208,6 +208,8 @@ const calculateSourceWidthAndHeight = ({
     // If sourceWidth is already defined, just return as is, with sourceHeight (if set)
     return { sourceWidth, sourceHeight };
   }
-  // Now we should "fake" the sourceWidth to the max imgix render size (8192px)
+  // Now we should "fake" the sourceWidth to the max imgix render size (8192px).
+  // We explicitly *don't* pass sourceHeight since that could cause a weird
+  // aspect ratio to be set.
   return { sourceWidth: MAX_WIDTH };
 };
