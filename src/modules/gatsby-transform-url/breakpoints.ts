@@ -37,24 +37,25 @@ export const generateBreakpoints = (
     disableVariableQuality?: boolean;
   },
 ): {
-  breakpoints: number[];
+  breakpoints?: number[];
+  outputPixelDensities?: number[];
   breakpointsWithData?: BreakpointsWithData;
 } => {
   if (opts.layout === 'fixed') {
-    const breakpoints = Array.from({ length: MAX_DPR })
-      .map((_, i) => opts.width * (i + 1))
-      .filter((width) => {
-        return width <= min(MAX_SIZE, opts.sourceWidth);
+    const dprList = Array.from({ length: MAX_DPR })
+      .map((_, i) => i + 1)
+      .filter((dpr) => {
+        return dpr * opts.width <= min(MAX_WIDTH, opts.sourceWidth);
       });
 
     const breakpointsWithData = !opts.disableVariableQuality
-      ? breakpoints.map((width, i) => ({
-          width,
+      ? dprList.map((dpr, i) => ({
+          width: dpr * opts.width,
           quality: VARIABLE_QUALITIES[i],
         }))
       : [];
 
-    return { breakpoints, breakpointsWithData };
+    return { outputPixelDensities: dprList, breakpointsWithData };
   }
 
   const width = opts.width;
