@@ -8,7 +8,7 @@ import {
 import { parseHost, parsePath } from '../../common/uri';
 import { ImgixUrlParams } from '../../publicTypes';
 import { BreakpointsWithData, generateBreakpoints } from './breakpoints';
-import { createImgixClient } from './common';
+import { createImgixClient, MAX_WIDTH } from './common';
 
 type IUrlBuilderParameters = IUrlBuilderArgs<{
   imgixParams?: ImgixUrlParams;
@@ -140,9 +140,9 @@ export function getGatsbyImageData({
   }
 
   const bothWidthAndHeightSet = props.width != null && props.height != null;
-  const sourceOrAspectRatioSet =
+  const bothSourcesOrAspectRatioSet =
     (sourceWidth != null && sourceHeight != null) || aspectRatio != null;
-  if (!bothWidthAndHeightSet && !sourceOrAspectRatioSet) {
+  if (!bothWidthAndHeightSet && !bothSourcesOrAspectRatioSet) {
     throw new Error(
       `[@imgix/gatsby] 'aspectRatio' or 'sourceWidth' and 'sourceHeight' needed when one of width/height are not passed.`,
     );
@@ -164,16 +164,26 @@ export function getGatsbyImageData({
     disableVariableQuality,
   });
 
-  return getImageData({
-    baseUrl: parsePath(src),
+  const {
+    sourceWidth: sourceWidthOverride,
+    sourceHeight: sourceHeightOverride,
+  } = calculateSourceWidthAndHeight({
     sourceWidth,
     sourceHeight,
+  });
+
+  return getImageData({
+    baseUrl: parsePath(src),
+    sourceWidth: sourceWidthOverride,
+    sourceHeight: sourceHeightOverride,
     aspectRatio,
     urlBuilder: urlBuilder(client),
     pluginName: '@imgix/gatsby',
     formats: ['auto'],
     breakpoints: breakpointsOverride ?? breakpointsData.breakpoints,
     ...props,
+    // TODO: remove any when Gatsby type issue is fixed
+    ...({ outputPixelDensities: breakpointsData.outputPixelDensities } as any),
     layout,
     options: {
       imgixParams: props.imgixParams,
@@ -181,3 +191,23 @@ export function getGatsbyImageData({
     },
   });
 }
+
+/**
+ * This function is designed to help override Gatsby's fixed layout logic.
+ * Gatsby will not generate breakpoints above the sourceWidth for fixed images, but we need to force this, since we don't know the source width and we can use fit=min to ensure images are not scaled up.
+ * The result is meant to be passed to `getImageData`
+ */
+const calculateSourceWidthAndHeight = ({
+  sourceWidth,
+  sourceHeight,
+}: {
+  sourceWidth?: number;
+  sourceHeight?: number;
+}): { sourceHeight?: number; sourceWidth?: number } => {
+  if (sourceWidth != null) {
+    // If sourceWidth is already defined, just return as is, with sourceHeight (if set)
+    return { sourceWidth, sourceHeight };
+  }
+  // Now we should "fake" the sourceWidth to the max imgix render size (8192px)
+  return { sourceWidth: MAX_WIDTH };
+};
