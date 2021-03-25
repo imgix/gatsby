@@ -1,10 +1,9 @@
-import ImgixClient from '@imgix/js-core';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
 import { Errors } from 'io-ts';
 import { parseStringARParam, StringAspectRatio } from '../../common/ar';
-import { VERSION } from '../../common/constants';
 import { parseHost, parsePath } from '../../common/uri';
+import { createImgixClient } from './common';
 import {
   IGatsbyImageFixedData,
   IGatsbyImageFluidData,
@@ -32,17 +31,11 @@ function buildImageData(
 ): IGatsbyImageFixedData | IGatsbyImageFluidData {
   const host = parseHost(url);
   const path = parsePath(url);
-  const client = new ImgixClient({
+  const client = createImgixClient({
     domain: host,
-    includeLibraryParam: false, // force false so that @imgix/js-core doesn't include its own library param
+    libraryParam:
+      options.includeLibraryParam === false ? undefined : 'gatsbyTransformUrl',
   });
-
-  const includeLibraryParam = options.includeLibraryParam ?? true;
-  // This is not a public API, so it is not included in the type definitions for ImgixClient
-  if (includeLibraryParam) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (client as any).settings.libraryParam = `gatsbyTransformUrl-${VERSION}`;
-  }
 
   const transformedImgixParams = {
     fit: 'crop', // needed for fluid (ar) and fixed (w&h) cropping, can be overridden
@@ -173,3 +166,5 @@ export function buildFluidImageData(
     { ...options, type: 'fluid' },
   );
 }
+export { getGatsbyImageData } from './gatsbyPluginImage';
+export { ImgixGatsbyImage } from './gatsbyPluginImageComponent';

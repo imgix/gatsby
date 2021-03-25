@@ -1,4 +1,9 @@
-import { buildFixedImageData, buildFluidImageData } from "@imgix/gatsby"
+import {
+  buildFixedImageData,
+  buildFluidImageData,
+  getGatsbyImageData,
+  ImgixGatsbyImage,
+} from "@imgix/gatsby"
 import { graphql, Link } from "gatsby"
 import Img from "gatsby-image"
 import { GatsbyImage } from "gatsby-plugin-image"
@@ -6,7 +11,7 @@ import React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const IndexPage = props => {
+const IndexPage = (props: any) => {
   return (
     <Layout>
       <SEO title="Home" />
@@ -30,7 +35,28 @@ const IndexPage = props => {
       />
       <Link to="/page-2/">Go to page 2</Link> <br />
       <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
-      <GatsbyImage image={props.data.imgixImage.gatsbyImageData}></GatsbyImage>
+      <GatsbyImage
+        image={props.data.imgixImage.gatsbyImageData}
+        alt="Gatsby-plugin-image GraphQL image"
+      ></GatsbyImage>
+      <GatsbyImage
+        image={getGatsbyImageData({
+          src: "https://assets.imgix.net/amsterdam.jpg",
+          sourceWidth: 5000,
+          sourceHeight: 4000,
+          aspectRatio: 2,
+          width: 1000,
+          height: 500,
+          layout: "fixed",
+        })}
+        alt="Gatsby-plugin-image hook image"
+      />
+      <ImgixGatsbyImage
+        src="https://assets.imgix.net/amsterdam.jpg"
+        alt="ImgixGatsbyImage"
+        layout="fullWidth"
+        aspectRatio={2}
+      />
     </Layout>
   )
 }

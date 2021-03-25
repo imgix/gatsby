@@ -2,3 +2,4 @@ dist
 .github
 .vscode
 CHANGELOG.md
+test/dev-and-e2e/.cache

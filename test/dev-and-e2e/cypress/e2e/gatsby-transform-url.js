@@ -20,4 +20,31 @@ describe("gatsby-transform-url", () => {
         expect($img[0].naturalWidth).to.be.greaterThan(0)
       })
   })
+
+  describe("gatsby-plugin-image hook", () => {
+    it("fixed image loads successfully", () => {
+      cy.findByAltText("Gatsby-plugin-image Fixed Image")
+        .should("be.visible")
+        .and($img => {
+          // "naturalWidth" and "naturalHeight" are set when the image loads
+          expect($img[0].naturalWidth).to.be.greaterThan(0)
+        })
+    })
+    it("constrained image loads successfully", () => {
+      cy.findByAltText("Gatsby-plugin-image Constrained Image")
+        .should("be.visible")
+        .and($img => {
+          // "naturalWidth" and "naturalHeight" are set when the image loads
+          expect($img[0].naturalWidth).to.be.greaterThan(0)
+        })
+    })
+  })
+  it("gatsby-plugin-image component", () => {
+    cy.findByAltText("Gatsby-plugin-image Component")
+      .should("be.visible")
+      .and($img => {
+        // "naturalWidth" and "naturalHeight" are set when the image loads
+        expect($img[0].naturalWidth).to.be.greaterThan(0)
+      })
+  })
 })
