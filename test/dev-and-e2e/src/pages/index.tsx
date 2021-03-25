@@ -2,6 +2,7 @@ import {
   buildFixedImageData,
   buildFluidImageData,
   getGatsbyImageData,
+  ImgixGatsbyImage,
 } from "@imgix/gatsby"
 import { graphql, Link } from "gatsby"
 import Img from "gatsby-image"
@@ -40,7 +41,7 @@ const IndexPage = (props: any) => {
       ></GatsbyImage>
       <GatsbyImage
         image={getGatsbyImageData({
-          url: "https://assets.imgix.net/amsterdam.jpg",
+          src: "https://assets.imgix.net/amsterdam.jpg",
           sourceWidth: 5000,
           sourceHeight: 4000,
           aspectRatio: 2,
@@ -49,6 +50,12 @@ const IndexPage = (props: any) => {
           layout: "fixed",
         })}
         alt="Gatsby-plugin-image hook image"
+      />
+      <ImgixGatsbyImage
+        src="https://assets.imgix.net/amsterdam.jpg"
+        alt="ImgixGatsbyImage"
+        layout="fullWidth"
+        aspectRatio={2}
       />
     </Layout>
   )
