@@ -1,3 +1,10 @@
+## [1.5.0](https://github.com/imgix/gatsby/compare/v1.4.0...v1.5.0) (2021-03-26)
+
+
+### Features
+
+* allow placeholder imgix params to be set for graphQL API ([e72d468](https://github.com/imgix/gatsby/commit/e72d46824e2119decce08e01ed04d4ac73234853))
+
 ## [1.4.0](https://github.com/imgix/gatsby/compare/v1.3.3...v1.4.0) (2021-03-25)
 
 
