@@ -27,6 +27,7 @@ import {
   fetchImgixDominantColor,
 } from '../../api/fetchBase64Image';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
+import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
@@ -37,7 +38,7 @@ import { ImgixParamsInputType, ImgixPlaceholderType } from './graphqlTypes';
 import { resolveDimensions } from './resolveDimensions';
 
 const generateImageSource = (
-  client: ImgixClient,
+  client: IImgixURLBuilder,
 ): IGatsbyImageHelperArgs['generateImageSource'] => (
   imageName,
   width,
@@ -61,7 +62,7 @@ const resolveGatsbyImageData = <TSource>({
   resolveHeight = () => undefined,
   cache,
 }: {
-  imgixClient: ImgixClient;
+  imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
   resolveWidth?: ImgixSourceDataResolver<TSource, number>;
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
@@ -171,7 +172,7 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   resolveUrl,
   defaultParams,
 }: {
-  imgixClient: ImgixClient;
+  imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
   resolveWidth?: ImgixSourceDataResolver<TSource, number>;
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;

@@ -1,10 +1,10 @@
-import ImgixClient from '@imgix/js-core';
 import * as E from 'fp-ts/lib/Either';
 import { flow, pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import * as t from 'io-ts';
 import { withCache } from '../common/cache';
+import { IImgixURLBuilder } from '../common/imgix-js-core-wrapper';
 import { createLogger, trace } from '../common/log';
 import { fetchJSON } from '../common/utils';
 
@@ -17,9 +17,10 @@ export const ImgixMetadata = t.type({
 });
 export type IImgixMetadata = t.TypeOf<typeof ImgixMetadata>;
 
-export const fetchImgixMetadata = (cache: GatsbyCache, client: ImgixClient) => (
-  url: string,
-): TE.TaskEither<Error, IImgixMetadata> =>
+export const fetchImgixMetadata = (
+  cache: GatsbyCache,
+  client: IImgixURLBuilder,
+) => (url: string): TE.TaskEither<Error, IImgixMetadata> =>
   withCache(`gatsby-plugin-imgix-metadata-${url}`, cache, () =>
     pipe(
       client.buildURL(url, { fm: 'json' }),

@@ -1,6 +1,7 @@
 import ImgixClient from '@imgix/js-core';
 import { FixedObject, FluidObject } from 'gatsby-image';
 import * as R from 'ramda';
+import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import { log, trace } from '../../common/log';
 import {
   IImgixParams,
@@ -10,7 +11,7 @@ import {
 } from '../../publicTypes';
 import { DEFAULT_FIXED_WIDTH } from './createImgixFixedFieldConfig';
 export type BuildImgixFluidArgs = {
-  client: ImgixClient;
+  client: IImgixURLBuilder;
   url: string;
   sourceWidth: number;
   sourceHeight: number;
@@ -106,7 +107,7 @@ export const buildFluidObject = ({
 };
 
 export type BuildImgixFixedArgs = {
-  client: ImgixClient;
+  client: IImgixURLBuilder;
   url: string;
   sourceWidth: number;
   sourceHeight: number;
