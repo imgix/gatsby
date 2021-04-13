@@ -1,10 +1,10 @@
-import ImgixClient from '@imgix/js-core';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GraphQLFieldConfig } from 'gatsby/graphql';
 import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
 import * as R from 'ramda';
+import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
@@ -17,7 +17,7 @@ import {
 } from './graphqlTypes';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
-  imgixClient: ImgixClient;
+  imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
   defaultParams?: IImgixParams;
 }

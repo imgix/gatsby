@@ -1,4 +1,3 @@
-import ImgixClient from '@imgix/js-core';
 import { Do } from 'fp-ts-contrib/lib/Do';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';
@@ -12,6 +11,7 @@ import {
 } from 'gatsby/graphql';
 import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
+import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
@@ -29,7 +29,7 @@ import { resolveDimensions } from './resolveDimensions';
 export const DEFAULT_FIXED_WIDTH = 8192;
 
 interface CreateImgixFixedFieldConfigArgs<TSource> {
-  imgixClient: ImgixClient;
+  imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
   resolveWidth?: ImgixSourceDataResolver<TSource, number>;
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;

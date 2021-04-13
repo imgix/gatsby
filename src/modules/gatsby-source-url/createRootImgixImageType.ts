@@ -1,5 +1,4 @@
 // TODO(luis): remove this file, no longer being imported anywhere
-import type ImgixClient from '@imgix/js-core';
 import { GatsbyCache } from 'gatsby';
 import {
   GraphQLFieldConfig,
@@ -8,6 +7,7 @@ import {
   GraphQLString,
 } from 'gatsby/graphql';
 import * as R from 'ramda';
+import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import { IImgixGatsbyRootArgs, IImgixParams } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from './createImgixFixedFieldConfig';
 import { createImgixFluidFieldConfig } from './createImgixFluidFieldConfig';
@@ -17,7 +17,7 @@ type IRootSource = {
   rawUrl: string;
 };
 export const createRootImgixImageType = (
-  imgixClient: ImgixClient,
+  imgixClient: IImgixURLBuilder,
   cache: GatsbyCache,
   defaultParams: Partial<IImgixParams>,
 ): GraphQLFieldConfig<IRootSource, {}, IImgixGatsbyRootArgs> => ({

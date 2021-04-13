@@ -12,7 +12,10 @@ import { PathReporter } from 'io-ts/PathReporter';
 import * as R from 'ramda';
 import readPkgUp from 'read-pkg-up';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
-import { createImgixClient } from '../../common/imgix-js-core-wrapper';
+import {
+  createImgixURLBuilder,
+  IImgixURLBuilder,
+} from '../../common/imgix-js-core-wrapper';
 import { findPossibleURLsInNode } from '../../common/utils';
 import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';
@@ -102,29 +105,21 @@ const getPackageVersionE = () =>
     E.fromNullable(new Error('Could not read package version.')),
   );
 
-const setupImgixClientE = ({
+const setupImgixClient = ({
   options,
   packageVersion,
 }: {
   options: IImgixGatsbyOptions;
   packageVersion: string;
-}) =>
-  Do(E.either)
-    .bind(
-      'imgixClient',
-      createImgixClient({
-        domain: options.domain,
-        secureURLToken: options.secureURLToken,
-      }),
-    )
-    .doL(({ imgixClient }) => {
-      imgixClient.includeLibraryParam = false;
-      if (options.disableIxlibParam !== true) {
-        (imgixClient as any).settings.libraryParam = `gatsbySourceUrl-${packageVersion}`;
-      }
-      return E.right(imgixClient);
-    })
-    .return(R.prop('imgixClient'));
+}): IImgixURLBuilder =>
+  createImgixURLBuilder({
+    domain: options.domain,
+    secureURLToken: options.secureURLToken,
+    ixlib:
+      options.disableIxlibParam !== true
+        ? `gatsbySourceUrl-${packageVersion}`
+        : undefined,
+  });
 
 export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGatsbyOptions> = async (
   gatsbyContext,
@@ -135,8 +130,8 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
       .bind('options', decodeOptionsE(_options))
 
       .bind('packageVersion', getPackageVersionE())
-      .bindL('imgixClient', ({ options, packageVersion }) =>
-        setupImgixClientE({ options, packageVersion }),
+      .letL('imgixClient', ({ options, packageVersion }) =>
+        setupImgixClient({ options, packageVersion }),
       )
       .let(
         'imgixFixedType',
