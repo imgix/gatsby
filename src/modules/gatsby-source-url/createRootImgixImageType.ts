@@ -11,7 +11,6 @@ import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import { IImgixGatsbyRootArgs, IImgixParams } from '../../publicTypes';
 import { createImgixFixedFieldConfig } from './createImgixFixedFieldConfig';
 import { createImgixFluidFieldConfig } from './createImgixFluidFieldConfig';
-import { createImgixUrlFieldConfig } from './createImgixUrlFieldConfig';
 
 type IRootSource = {
   rawUrl: string;
@@ -31,11 +30,11 @@ export const createRootImgixImageType = (
   type: new GraphQLObjectType({
     name: 'ImgixImage',
     fields: {
-      url: createImgixUrlFieldConfig({
-        imgixClient,
-        resolveUrl: R.prop('rawUrl'),
-        defaultParams,
-      }),
+      // url: createImgixUrlFieldConfig({
+      //   imgixClient,
+      //   resolveUrl: R.prop('rawUrl'),
+      //   defaultParams,
+      // }),
       fluid: createImgixFluidFieldConfig({
         imgixClient,
         resolveUrl: R.prop('rawUrl'),
