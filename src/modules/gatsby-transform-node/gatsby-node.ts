@@ -2,12 +2,7 @@ import { Do } from 'fp-ts-contrib/lib/Do';
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { ICreateSchemaCustomizationHook, PatchedPluginOptions } from 'gatsby';
-import {
-  GraphQLFieldConfig,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'gatsby/graphql';
+import { GraphQLNonNull, GraphQLString } from 'gatsby/graphql';
 import { PathReporter } from 'io-ts/PathReporter';
 import * as R from 'ramda';
 import readPkgUp from 'read-pkg-up';
@@ -155,7 +150,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
           imgixClient,
           options: { defaultImgixParams },
         }) =>
-          new GraphQLObjectType<IRootSource, {}>({
+          gatsbyContext.schema.buildObjectType({
             name: 'ImgixImage',
             fields: {
               url: createImgixUrlFieldConfig({
@@ -169,20 +164,20 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                 imgixClient,
                 resolveUrl: R.prop('rawURL'),
                 defaultParams: defaultImgixParams,
-              }) as GraphQLFieldConfig<IRootSource, {}, Record<string, any>>,
+              }),
               fixed: createImgixFixedFieldConfig({
                 type: imgixFixedType,
                 cache: gatsbyContext.cache,
                 imgixClient,
                 resolveUrl: R.prop('rawURL'),
                 defaultParams: defaultImgixParams,
-              }) as GraphQLFieldConfig<IRootSource, {}, Record<string, any>>,
+              }),
               gatsbyImageData: createImgixGatsbyImageFieldConfig({
                 cache: gatsbyContext.cache,
                 imgixClient,
                 resolveUrl: R.prop('rawURL'),
                 defaultParams: defaultImgixParams,
-              }) as GraphQLFieldConfig<IRootSource, {}, Record<string, any>>,
+              }),
             },
           }),
       )

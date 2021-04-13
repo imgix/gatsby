@@ -15,17 +15,21 @@ import {
 } from 'gatsby-plugin-image';
 import { getGatsbyImageFieldConfig } from 'gatsby-plugin-image/graphql-utils';
 import {
-  GraphQLFieldConfig,
   GraphQLFieldResolver,
   GraphQLFloat,
   GraphQLInt,
   GraphQLObjectType,
 } from 'gatsby/graphql';
+import {
+  ObjectTypeComposerArgumentConfigMapDefinition,
+  ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
 import R from 'ramda';
 import {
   fetchImgixBase64Image,
   fetchImgixDominantColor,
 } from '../../api/fetchBase64Image';
+import { createExternalHelper } from '../../common/createExternalHelper';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
@@ -179,7 +183,7 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
   type?: GraphQLObjectType<FluidObject>;
-}): GraphQLFieldConfig<
+}): ObjectTypeComposerFieldConfigAsObjectDefinition<
   TSource,
   TContext,
   IImgixGatsbyImageDataArgsResolved
@@ -192,7 +196,13 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
       defaultParams,
     }) as GraphQLFieldResolver<TSource, TContext>, // TODO: remove cast when PR to Gatsby has been merged
     {},
-  );
+  ) as ObjectTypeComposerFieldConfigAsObjectDefinition<
+    TSource,
+    TContext,
+    IBuiltinGatsbyImageDataArgs
+  >;
+
+  const defaultArgs = defaultConfig.args as ObjectTypeComposerArgumentConfigMapDefinition<IBuiltinGatsbyImageDataArgs>;
 
   // ⚠️ KEEP THESE IN SYNC WITH IImgixGatsbyImageDataArgs!! ⚠️
   const modifiedConfig = {
@@ -209,7 +219,7 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
           'sizes',
           'backgroundColor',
         ],
-        defaultConfig.args,
+        defaultArgs,
       ),
       imgixParams: {
         type: ImgixParamsInputType,
@@ -261,6 +271,17 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   return modifiedConfig;
 };
 
+type IBuiltinGatsbyImageDataArgs = {
+  layout: IGatsbyImageHelperArgs['layout'];
+  width: IGatsbyImageHelperArgs['width'];
+  height: IGatsbyImageHelperArgs['height'];
+  aspectRatio: IGatsbyImageHelperArgs['aspectRatio'];
+  // outputPixelDensities: IGatsbyImageHelperArgs['outputPixelDensities'];
+  breakpoints: IGatsbyImageHelperArgs['breakpoints'];
+  sizes: IGatsbyImageHelperArgs['sizes'];
+  backgroundColor: IGatsbyImageHelperArgs['backgroundColor'];
+};
+
 type IImgixGatsbyImageDataArgsResolved = {
   layout: IGatsbyImageHelperArgs['layout'];
   width: IGatsbyImageHelperArgs['width'];
@@ -277,3 +298,8 @@ type IImgixGatsbyImageDataArgsResolved = {
   srcSetMinWidth?: number;
   srcSetMaxWidth?: number;
 };
+
+export const createImgixGatsbyImageSchemaFieldConfig = createExternalHelper<
+  Parameters<typeof createImgixGatsbyImageFieldConfig>[0],
+  typeof createImgixGatsbyImageFieldConfig
+>(createImgixGatsbyImageFieldConfig);

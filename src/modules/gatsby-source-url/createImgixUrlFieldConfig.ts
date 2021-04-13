@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { GraphQLFieldConfig } from 'gatsby/graphql';
-import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
+import { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import * as R from 'ramda';
+import { createExternalHelper } from '../../common/createExternalHelper';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
   ImgixSourceDataResolver,
@@ -26,7 +26,7 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
   imgixClient,
   resolveUrl,
   defaultParams,
-}: CreateImgixUrlFieldConfigArgs<TSource>): GraphQLFieldConfig<
+}: CreateImgixUrlFieldConfigArgs<TSource>): ObjectTypeComposerFieldConfigAsObjectDefinition<
   TSource,
   TContext,
   ImgixUrlArgs
@@ -59,10 +59,26 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
     )(),
 });
 
-export const createImgixUrlSchemaFieldConfig = <TSource, TContext>(
-  args: CreateImgixUrlFieldConfigArgs<TSource>,
-): ObjectTypeComposerAsObjectDefinition<TSource, TContext> =>
-  ({
-    ...createImgixUrlFieldConfig(args),
-    name: 'ImgixGatsbyUrl',
-  } as ObjectTypeComposerAsObjectDefinition<TSource, TContext>);
+// TODO: remove
+// export const createImgixUrlSchemaFieldConfig = <TSource, TContext>({
+//   imgixClientOptions,
+//   ...args
+// }: Omit<CreateImgixUrlFieldConfigArgs<TSource>, 'imgixClient'> & {
+//   imgixClientOptions?: Parameters<typeof createImgixURLBuilder>[0];
+// }): ObjectTypeComposerFieldConfigAsObjectDefinition<
+//   TSource,
+//   TContext,
+//   ImgixUrlArgs
+// > => {
+//   return {
+//     ...createImgixUrlFieldConfig({
+//       ...args,
+//       imgixClient: createImgixURLBuilder(imgixClientOptions),
+//     }),
+//   };
+// };
+
+export const createImgixUrlSchemaFieldConfig = createExternalHelper<
+  Parameters<typeof createImgixUrlFieldConfig>[0],
+  typeof createImgixUrlFieldConfig
+>(createImgixUrlFieldConfig);
