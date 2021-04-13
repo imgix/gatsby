@@ -4,13 +4,9 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
-import {
-  GraphQLFieldConfig,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLObjectType,
-} from 'gatsby/graphql';
-import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
+import { GraphQLInt, GraphQLList, GraphQLObjectType } from 'gatsby/graphql';
+import { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
+import { createExternalHelper } from '../../common/createExternalHelper';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
@@ -47,7 +43,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   cache,
   defaultParams,
   type,
-}: CreateImgixFluidFieldConfigArgs<TSource>): GraphQLFieldConfig<
+}: CreateImgixFluidFieldConfigArgs<TSource>): ObjectTypeComposerFieldConfigAsObjectDefinition<
   TSource,
   TContext,
   ImgixFluidArgsResolved
@@ -132,10 +128,7 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
     )(),
 });
 
-export const createImgixFluidSchemaFieldConfig = <TSource, TContext>(
-  args: CreateImgixFluidFieldConfigArgs<TSource>,
-): ObjectTypeComposerAsObjectDefinition<TSource, TContext> =>
-  ({
-    ...createImgixFluidFieldConfig(args),
-    name: 'ImgixGatsbyFluid',
-  } as ObjectTypeComposerAsObjectDefinition<TSource, TContext>);
+export const createImgixFluidSchemaFieldConfig = createExternalHelper<
+  Parameters<typeof createImgixFluidFieldConfig>[0],
+  typeof createImgixFluidFieldConfig
+>(createImgixFluidFieldConfig);
