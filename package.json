@@ -89,7 +89,7 @@
     "msync": "2.5.10",
     "prettier": "2.2.1",
     "react": "17.0.1",
-    "react-dom": "16",
+    "react-dom": "16.14.0",
     "read-pkg": "5.2.0",
     "semantic-release": "17.4.2",
     "ts-jest": "26.5.3",
