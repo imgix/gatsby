@@ -13,14 +13,7 @@ import {
 } from '../../common/imgix-js-core-wrapper';
 import { findPossibleURLsInNode } from '../../common/utils';
 import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
-import { createImgixFixedFieldConfig } from '../gatsby-source-url/createImgixFixedFieldConfig';
-import { createImgixFluidFieldConfig } from '../gatsby-source-url/createImgixFluidFieldConfig';
-import { createImgixGatsbyImageFieldConfig } from '../gatsby-source-url/createImgixGatsbyImageDataFieldConfig';
-import { createImgixUrlFieldConfig } from '../gatsby-source-url/createImgixUrlFieldConfig';
-import {
-  createImgixFixedType,
-  createImgixFluidType,
-} from '../gatsby-source-url/graphqlTypes';
+import { buildImgixGatsbyTypes } from '../gatsby-source-url/typeBuilder';
 
 function isStringArray(value: unknown): value is string[] {
   return (
@@ -128,58 +121,26 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
       .letL('imgixClient', ({ options, packageVersion }) =>
         setupImgixClient({ options, packageVersion }),
       )
-      .let(
-        'imgixFixedType',
-        createImgixFixedType({
-          name: 'ImgixFixed',
-          cache: gatsbyContext.cache,
-        }),
-      )
-      .let(
-        'imgixFluidType',
-        createImgixFluidType({
-          name: 'ImgixFluid',
-          cache: gatsbyContext.cache,
-        }),
-      )
       .letL(
-        'imgixImageType',
-        ({
-          imgixFluidType,
-          imgixFixedType,
-          imgixClient,
-          options: { defaultImgixParams },
-        }) =>
-          gatsbyContext.schema.buildObjectType({
-            name: 'ImgixImage',
-            fields: {
-              url: createImgixUrlFieldConfig({
-                resolveUrl: R.prop('rawURL'),
-                imgixClient,
-                defaultParams: defaultImgixParams,
-              }),
-              fluid: createImgixFluidFieldConfig({
-                type: imgixFluidType,
-                cache: gatsbyContext.cache,
-                imgixClient,
-                resolveUrl: R.prop('rawURL'),
-                defaultParams: defaultImgixParams,
-              }),
-              fixed: createImgixFixedFieldConfig({
-                type: imgixFixedType,
-                cache: gatsbyContext.cache,
-                imgixClient,
-                resolveUrl: R.prop('rawURL'),
-                defaultParams: defaultImgixParams,
-              }),
-              gatsbyImageData: createImgixGatsbyImageFieldConfig({
-                cache: gatsbyContext.cache,
-                imgixClient,
-                resolveUrl: R.prop('rawURL'),
-                defaultParams: defaultImgixParams,
-              }),
-            },
+        'typesAndFields',
+        ({ imgixClient, options: { defaultImgixParams } }) =>
+          buildImgixGatsbyTypes<{ rawURL: string }>({
+            cache: gatsbyContext.cache,
+            imgixClient,
+            resolveUrl: R.prop('rawURL'),
+            defaultParams: defaultImgixParams,
           }),
+      )
+      .letL('imgixImageType', ({ typesAndFields }) =>
+        gatsbyContext.schema.buildObjectType({
+          name: 'ImgixImage',
+          fields: {
+            url: typesAndFields.fields.url,
+            fluid: typesAndFields.fields.fluid,
+            fixed: typesAndFields.fields.fixed,
+            gatsbyImageData: typesAndFields.fields.gatsbyImageData,
+          },
+        }),
       )
       .letL(
         'fieldTypes',
@@ -191,9 +152,9 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                 [fieldOptions.fieldName]: {
                   type:
                     'getURLs' in fieldOptions
-                      ? `[${imgixImageType.name}]`
-                      : imgixImageType.name,
-                  resolve: (node: unknown) => {
+                      ? `[${imgixImageType.config.name}]`
+                      : imgixImageType.config.name,
+                  resolve: (node: unknown): { rawURL: string | string[] } => {
                     const rawURLE = getFieldValue({
                       fieldOptions,
                       node,
@@ -236,12 +197,12 @@ ${urlPathsFound
             }),
           ),
       )
-      .letL('rootType', ({ imgixImageType }) =>
+      .letL(`rootType`, ({ imgixImageType }) =>
         gatsbyContext.schema.buildObjectType({
           name: 'Query',
           fields: {
             imgixImage: {
-              type: imgixImageType,
+              type: imgixImageType.config.name,
               resolve(
                 _: any,
                 args: Record<string, unknown>,
@@ -262,24 +223,37 @@ ${urlPathsFound
           },
         }),
       )
+      // prettier-ignore
       .doL(
         ({
-          imgixFixedType,
-          imgixFluidType,
+          typesAndFields,
           imgixImageType,
           rootType,
           fieldTypes,
           options: {
-            // TODO: handle
-            // namespace,
-            // TODO: handle
-            // defaultPlaceholderImgixParams,
-          },
+          // TODO: handle
+          // namespace,
+          // TODO: handle
+          // prettier-ignore
+        // defaultPlaceholderImgixParams
+      },
         }) =>
           E.tryCatch(
             () => {
               const { createTypes } = gatsbyContext.actions;
-              createTypes([imgixFixedType, imgixFluidType]);
+              createTypes(
+                typesAndFields.types.map(gatsbyContext.schema.buildObjectType),
+              );
+              createTypes(
+                typesAndFields.enumTypes.map(
+                  gatsbyContext.schema.buildEnumType,
+                ),
+              );
+              createTypes(
+                typesAndFields.inputTypes.map(
+                  gatsbyContext.schema.buildInputObjectType,
+                ),
+              );
               createTypes(fieldTypes);
               createTypes(imgixImageType);
               createTypes(rootType);
