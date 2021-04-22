@@ -6,79 +6,85 @@ import { GatsbyCache } from 'gatsby';
  */
 import { FixedObject, FluidObject } from 'gatsby-image';
 import {
-  GraphQLBoolean,
-  GraphQLEnumType,
-  GraphQLFloat,
-  GraphQLInputFieldConfigMap,
-  GraphQLInputObjectType,
-  GraphQLInt,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'gatsby/graphql';
+  EnumTypeComposerAsObjectDefinition,
+  InputTypeComposerAsObjectDefinition,
+  InputTypeComposerFieldConfigAsObjectDefinition,
+  InputTypeComposerFieldConfigMapDefinition,
+  ObjectTypeComposerAsObjectDefinition,
+} from 'graphql-compose';
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
 import { createImgixBase64FieldConfig } from './createImgixBase64FieldConfig';
 
-export const ImgixParamsInputType = new GraphQLInputObjectType({
-  name: 'ImgixParamsInput',
-  fields: Object.keys(imgixUrlParameters.parameters).reduce((fields, param) => {
-    const spec =
-      imgixUrlParameters.parameters[
-        param as keyof typeof imgixUrlParameters.parameters
-      ];
+export const ImgixParamsInputType = ({
+  name,
+}: {
+  name: string;
+}): InputTypeComposerAsObjectDefinition => ({
+  name,
+  fields: Object.keys(imgixUrlParameters.parameters).reduce(
+    (fields: InputTypeComposerFieldConfigMapDefinition, param) => {
+      const spec =
+        imgixUrlParameters.parameters[
+          param as keyof typeof imgixUrlParameters.parameters
+        ];
 
-    // The param name is camel-cased here to appease the GraphQL field
-    // requirements. This will need to be reversed with param-case when the
-    // URL is constructed in `buildImgixUrl`.
-    const name = camelCase(param);
+      // The param name is camel-cased here to appease the GraphQL field
+      // requirements. This will need to be reversed with param-case when the
+      // URL is constructed in `buildImgixUrl`.
+      const name = camelCase(param);
 
-    const expects = spec.expects as { type: string }[];
-    const expectsTypes = Array.from(
-      new Set(expects.map((expect) => expect.type)),
-    );
+      const expects = spec.expects as { type: string }[];
+      const expectsTypes = Array.from(
+        new Set(expects.map((expect) => expect.type)),
+      );
 
-    // TODO: Clean up this mess.
-    const type = expectsTypes.every((type) => type === 'integer')
-      ? GraphQLInt
-      : expectsTypes.every(
-          (type) =>
-            type === 'integer' || type === 'unit_scalar' || type === 'number',
-        )
-      ? GraphQLFloat
-      : expectsTypes.every((type) => type === 'boolean')
-      ? GraphQLBoolean
-      : GraphQLString;
+      // TODO: Clean up this mess.
+      const type = expectsTypes.every((type) => type === 'integer')
+        ? 'Int'
+        : expectsTypes.every(
+            (type) =>
+              type === 'integer' || type === 'unit_scalar' || type === 'number',
+          )
+        ? 'Float'
+        : expectsTypes.every((type) => type === 'boolean')
+        ? 'Boolean'
+        : 'String';
 
-    fields[name] = {
-      type,
-      description:
-        spec.short_description +
-        // Ensure the description ends with a period.
-        (spec.short_description.slice(-1) === '.' ? '' : '.'),
-    };
+      fields[name] = {
+        type,
+        description:
+          spec.short_description +
+          // Ensure the description ends with a period.
+          (spec.short_description.slice(-1) === '.' ? '' : '.'),
+      };
 
-    // Add the default value as part of the description. Setting it as a
-    // GraphQL default value will automatically assign it in the final URL.
-    // Doing so would result in a huge number of unwanted params.
-    if ('default' in spec)
-      fields[name].description =
-        fields[name].description + ` Default: \`${spec.default}\`.`;
+      const field = fields[
+        name
+      ] as InputTypeComposerFieldConfigAsObjectDefinition;
 
-    // Add Imgix documentation URL as part of the description.
-    if ('url' in spec)
-      fields[name].description =
-        fields[name].description + ` [See docs](${spec.url}).`;
+      // Add the default value as part of the description. Setting it as a
+      // GraphQL default value will automatically assign it in the final URL.
+      // Doing so would result in a huge number of unwanted params.
+      if ('default' in spec)
+        field.description =
+          field.description + ` Default: \`${spec.default}\`.`;
 
-    // Create aliased fields.
-    if ('aliases' in spec)
-      for (const alias of spec.aliases)
-        fields[camelCase(alias)] = {
-          ...fields[name],
-          description: `Alias for \`${name}\`.`,
-        };
+      // Add Imgix documentation URL as part of the description.
+      if ('url' in spec)
+        field.description = field.description + ` [See docs](${spec.url}).`;
 
-    return fields;
-  }, {} as GraphQLInputFieldConfigMap),
+      // Create aliased fields.
+      if ('aliases' in spec)
+        for (const alias of spec.aliases)
+          fields[camelCase(alias)] = {
+            ...field,
+            description: `Alias for \`${name}\`.`,
+          };
+
+      return fields;
+    },
+    {},
+  ),
 });
 
 const createBase64ConfigWithResolver = <T extends FluidObject | FixedObject>(
@@ -93,21 +99,20 @@ export const createImgixFluidType = ({
   cache,
   name,
 }: {
-  name?: string;
+  name: string;
   cache: GatsbyCache;
-}) =>
-  new GraphQLObjectType({
-    name: name ?? 'ImgixFluid',
-    fields: {
-      base64: createBase64ConfigWithResolver<FluidObject>(cache),
-      src: { type: new GraphQLNonNull(GraphQLString) },
-      srcSet: { type: new GraphQLNonNull(GraphQLString) },
-      srcWebp: { type: new GraphQLNonNull(GraphQLString) },
-      srcSetWebp: { type: new GraphQLNonNull(GraphQLString) },
-      sizes: { type: new GraphQLNonNull(GraphQLString) },
-      aspectRatio: { type: new GraphQLNonNull(GraphQLFloat) },
-    },
-  });
+}): ObjectTypeComposerAsObjectDefinition<any, any> => ({
+  name,
+  fields: {
+    base64: createBase64ConfigWithResolver<FluidObject>(cache),
+    src: { type: 'String!' },
+    srcSet: { type: 'String!' },
+    srcWebp: { type: 'String!' },
+    srcSetWebp: { type: 'String!' },
+    sizes: { type: 'String!' },
+    aspectRatio: { type: 'Float!' },
+  },
+});
 
 let fluidType: ReturnType<typeof createImgixFluidType>;
 
@@ -124,22 +129,21 @@ export const createImgixFixedType = ({
   name,
   cache,
 }: {
-  name?: string;
+  name: string;
   cache: GatsbyCache;
-}): GraphQLObjectType<FixedObject> =>
-  new GraphQLObjectType({
-    name: name ?? 'ImgixFixed',
-    fields: {
-      base64: createBase64ConfigWithResolver<FixedObject>(cache),
-      src: { type: new GraphQLNonNull(GraphQLString) },
-      srcSet: { type: new GraphQLNonNull(GraphQLString) },
-      srcWebp: { type: new GraphQLNonNull(GraphQLString) },
-      srcSetWebp: { type: new GraphQLNonNull(GraphQLString) },
-      sizes: { type: new GraphQLNonNull(GraphQLString) },
-      width: { type: new GraphQLNonNull(GraphQLInt) },
-      height: { type: new GraphQLNonNull(GraphQLInt) },
-    },
-  });
+}): ObjectTypeComposerAsObjectDefinition<any, any> => ({
+  name: name,
+  fields: {
+    base64: createBase64ConfigWithResolver<FixedObject>(cache),
+    src: { type: 'String!' },
+    srcSet: { type: 'String!' },
+    srcWebp: { type: 'String!' },
+    srcSetWebp: { type: 'String!' },
+    sizes: { type: 'String!' },
+    width: { type: 'Int!' },
+    height: { type: 'Int!' },
+  },
+});
 
 export const unTransformParams = <T>(
   params: Record<string, T>,
@@ -152,10 +156,12 @@ export const unTransformParams = <T>(
 };
 
 export type IGatsbySourceImgixUrlField = string;
-export const gatsbySourceImgixUrlFieldType = GraphQLString;
+export const gatsbySourceImgixUrlFieldType = 'String';
 
-export const ImgixPlaceholderType = new GraphQLEnumType({
-  name: `ImgixPlaceholder`,
+export const ImgixPlaceholderType = (
+  name: string,
+): EnumTypeComposerAsObjectDefinition => ({
+  name,
   values: {
     DOMINANT_COLOR: { value: `dominantColor` },
     BLURRED: { value: `blurred` },

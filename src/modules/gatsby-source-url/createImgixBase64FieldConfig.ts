@@ -2,11 +2,7 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
-import {
-  GraphQLFieldConfig,
-  GraphQLNonNull,
-  GraphQLString,
-} from 'gatsby/graphql';
+import { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { fetchImgixBase64Image } from '../../api/fetchBase64Image';
 import {
   ImgixSourceDataResolver,
@@ -24,12 +20,12 @@ interface CreateImgixBase64UrlFieldConfigArgs<TSource> {
 export function createImgixBase64FieldConfig<TSource, TContext = unknown>({
   resolveUrl,
   cache,
-}: CreateImgixBase64UrlFieldConfigArgsWithResolver<TSource>): GraphQLFieldConfig<
+}: CreateImgixBase64UrlFieldConfigArgsWithResolver<TSource>): ObjectTypeComposerFieldConfigAsObjectDefinition<
   TSource,
   TContext
 > {
   return {
-    type: new GraphQLNonNull(GraphQLString),
+    type: 'String!',
     resolve: (obj: TSource): Promise<string> =>
       pipe(
         obj,
