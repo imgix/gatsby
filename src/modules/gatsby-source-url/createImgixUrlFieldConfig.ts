@@ -1,31 +1,33 @@
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
+import { ComposeInputTypeDefinition, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import * as R from 'ramda';
 import { createExternalHelper } from '../../common/createExternalHelper';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
   ImgixSourceDataResolver,
-  resolveUrlFromSourceData,
+  resolveUrlFromSourceData
 } from '../../common/utils';
 import { IImgixParams, ImgixUrlArgs } from '../../publicTypes';
 import {
   gatsbySourceImgixUrlFieldType,
-  ImgixParamsInputType,
-  unTransformParams,
+
+  unTransformParams
 } from './graphqlTypes';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
   imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
   defaultParams?: IImgixParams;
+  paramsInputType: ComposeInputTypeDefinition;
 }
 
 export const createImgixUrlFieldConfig = <TSource, TContext>({
   imgixClient,
   resolveUrl,
   defaultParams,
+  paramsInputType,
 }: CreateImgixUrlFieldConfigArgs<TSource>): ObjectTypeComposerFieldConfigAsObjectDefinition<
   TSource,
   TContext,
@@ -35,7 +37,7 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
   description: 'A plain imgix URL with the URL and params applied.',
   args: {
     imgixParams: {
-      type: ImgixParamsInputType,
+      type: paramsInputType,
       defaultValue: {},
     },
   },

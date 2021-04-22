@@ -6,11 +6,8 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'gatsby/graphql';
-import * as R from 'ramda';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import { IImgixGatsbyRootArgs, IImgixParams } from '../../publicTypes';
-import { createImgixFixedFieldConfig } from './createImgixFixedFieldConfig';
-import { createImgixFluidFieldConfig } from './createImgixFluidFieldConfig';
 
 type IRootSource = {
   rawUrl: string;
@@ -35,18 +32,18 @@ export const createRootImgixImageType = (
       //   resolveUrl: R.prop('rawUrl'),
       //   defaultParams,
       // }),
-      fluid: createImgixFluidFieldConfig({
-        imgixClient,
-        resolveUrl: R.prop('rawUrl'),
-        cache,
-        defaultParams,
-      }) as GraphQLFieldConfig<IRootSource, {}, any>,
-      fixed: createImgixFixedFieldConfig<IRootSource, unknown>({
-        imgixClient,
-        resolveUrl: R.prop('rawUrl'),
-        cache,
-        defaultParams,
-      }) as GraphQLFieldConfig<IRootSource, {}, any>,
+      // fluid: createImgixFluidFieldConfig({
+      //   imgixClient,
+      //   resolveUrl: R.prop('rawUrl'),
+      //   cache,
+      //   defaultParams,
+      // }) as GraphQLFieldConfig<IRootSource, {}, any>,
+      // fixed: createImgixFixedFieldConfig<IRootSource, unknown>({
+      //   imgixClient,
+      //   resolveUrl: R.prop('rawUrl'),
+      //   cache,
+      //   defaultParams,
+      // }) as GraphQLFieldConfig<IRootSource, {}, any>,
     },
   }),
   resolve(_: unknown, args: IImgixGatsbyRootArgs): IRootSource {

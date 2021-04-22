@@ -4,8 +4,10 @@ import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
-import { GraphQLInt, GraphQLList, GraphQLObjectType } from 'gatsby/graphql';
-import { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
+import {
+  ComposeInputTypeDefinition,
+  ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
 import { createExternalHelper } from '../../common/createExternalHelper';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
@@ -15,11 +17,7 @@ import {
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
 import { IImgixParams, ImgixFluidArgsResolved } from '../../publicTypes';
-import {
-  createImgixFluidType,
-  ImgixParamsInputType,
-  unTransformParams,
-} from './graphqlTypes';
+import { unTransformParams } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
 import { resolveDimensions } from './resolveDimensions';
 
@@ -32,7 +30,8 @@ interface CreateImgixFluidFieldConfigArgs<TSource> {
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
-  type?: GraphQLObjectType<FluidObject>;
+  type: string;
+  paramsInputType: ComposeInputTypeDefinition;
 }
 
 export const createImgixFluidFieldConfig = <TSource, TContext>({
@@ -43,38 +42,35 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
   cache,
   defaultParams,
   type,
+  paramsInputType,
 }: CreateImgixFluidFieldConfigArgs<TSource>): ObjectTypeComposerFieldConfigAsObjectDefinition<
   TSource,
   TContext,
   ImgixFluidArgsResolved
 > => ({
-  type:
-    type ??
-    createImgixFluidType({
-      cache,
-    }),
+  type: type,
   description: `Should be used to generate fluid-width images (i.e. images that change when the size of the browser changes). Returns data compatible with gatsby-image. Instead of accessing this data directly, the GatsbySourceImgixFluid fragment should be used. See the project's README for more information.`,
   args: {
     imgixParams: {
-      type: ImgixParamsInputType,
+      type: paramsInputType,
       description: `The imgix parameters (transformations) to apply to the image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
     maxWidth: {
-      type: GraphQLInt,
+      type: 'Int',
       description: `The maximum px width of the *image* to be *requested*. This does NOT affect the width of the image displayed. The width of the image displayed can be controlled by adding a sizes parameter to the GatsbyImage component. For more information, see this project's readme.`,
       defaultValue: DEFAULT_FLUID_MAX_WIDTH,
     },
     maxHeight: {
       description: `The maximum px height of the *image* to be *requested*. This does NOT affect the height of the image displayed.`,
-      type: GraphQLInt,
+      type: 'Int',
     },
     srcSetBreakpoints: {
-      type: new GraphQLList(GraphQLInt),
+      type: '[Int]',
       description: `A custom set of widths (in px) to use for the srcset widths. This feature is not recommended as the default widths are optimized for imgix's caching infrastructure.`,
     },
     placeholderImgixParams: {
-      type: ImgixParamsInputType,
+      type: paramsInputType,
       description: `Any imgix parameters to use only for the blur-up/placeholder image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },

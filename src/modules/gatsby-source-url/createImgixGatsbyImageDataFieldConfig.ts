@@ -5,7 +5,6 @@ import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
-import { FluidObject } from 'gatsby-image';
 import {
   generateImageData,
   getLowResolutionImageURL,
@@ -14,16 +13,13 @@ import {
   ImageFormat,
 } from 'gatsby-plugin-image';
 import { getGatsbyImageFieldConfig } from 'gatsby-plugin-image/graphql-utils';
+import { GraphQLFieldResolver } from 'gatsby/graphql';
 import {
-  GraphQLFieldResolver,
-  GraphQLFloat,
-  GraphQLInt,
-  GraphQLObjectType,
-} from 'gatsby/graphql';
-import {
+  ComposeInputTypeDefinition,
   ObjectTypeComposerArgumentConfigMapDefinition,
   ObjectTypeComposerFieldConfigAsObjectDefinition,
 } from 'graphql-compose';
+import { TypeAsString } from 'graphql-compose/lib/TypeMapper';
 import R from 'ramda';
 import {
   fetchImgixBase64Image,
@@ -38,7 +34,6 @@ import {
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
 import { IImgixParams, ImgixUrlParams } from '../../publicTypes';
-import { ImgixParamsInputType, ImgixPlaceholderType } from './graphqlTypes';
 import { resolveDimensions } from './resolveDimensions';
 
 const generateImageSource = (
@@ -72,7 +67,6 @@ const resolveGatsbyImageData = <TSource>({
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
-  type?: GraphQLObjectType<FluidObject>;
 }): GraphQLFieldResolver<
   TSource,
   unknown,
@@ -175,6 +169,8 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   imgixClient,
   resolveUrl,
   defaultParams,
+  paramsInputType,
+  placeholderEnumType,
 }: {
   imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
@@ -182,7 +178,8 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   resolveHeight?: ImgixSourceDataResolver<TSource, number>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
-  type?: GraphQLObjectType<FluidObject>;
+  paramsInputType: ComposeInputTypeDefinition;
+  placeholderEnumType: TypeAsString;
 }): ObjectTypeComposerFieldConfigAsObjectDefinition<
   TSource,
   TContext,
@@ -222,21 +219,21 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
         defaultArgs,
       ),
       imgixParams: {
-        type: ImgixParamsInputType,
+        type: paramsInputType,
         description: stripIndent`This argument is used to set parameters to instruct imgix to transform the image. 
         
         All of imgix's parameters can be found here: https://docs.imgix.com/apis/rendering
         `,
       },
       placeholderImgixParams: {
-        type: ImgixParamsInputType,
+        type: paramsInputType,
         description: stripIndent`This argument is used to set parameters to instruct imgix to transform the placeholder image. By default all parameters passed to 'imgixParams' are already set here, but this can be used to override or set extra parameters. 
         
         All of imgix's parameters can be found here: https://docs.imgix.com/apis/rendering
         `,
       },
       placeholder: {
-        type: ImgixPlaceholderType,
+        type: placeholderEnumType,
         description: stripIndent`
           Format of generated placeholder image, displayed while the main image loads.
           BLURRED: a blurred, low resolution image, encoded as a base64 data URI (default)
@@ -244,7 +241,7 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
           NONE: no placeholder. Set "backgroundColor" to use a fixed background color.`,
       },
       widthTolerance: {
-        type: GraphQLFloat,
+        type: 'Float',
         description: stripIndent`
           This argument affects the breakpoints used for the srcsets, dictates the maximum tolerated size difference between an image's downloaded size and its rendered size. For example: setting this value to 0.1 means that an image will not render more than 10% larger or smaller than its native size. In practice, the image URLs generated for a width-based srcset attribute will grow by twice this rate. A lower tolerance means images will render closer to their native size (thereby increasing perceived image quality), but a large srcset list will be generated and consequently users may experience lower rates of cache-hit for pre-rendered images on your site.
 
@@ -252,14 +249,14 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
         defaultValue: 0.08,
       },
       srcSetMinWidth: {
-        type: GraphQLInt,
+        type: 'Int',
         description: stripIndent`
           This argument determines the minimum srcset width that is generated. The default is 100px.
         `,
         defaultValue: 100,
       },
       srcSetMaxWidth: {
-        type: GraphQLInt,
+        type: 'Int',
         description: stripIndent`
           This argument determines the maximum srcset width that is generated, if the layout type is FULL_WIDTH. If the layout type is CONSTRAINED, the width argument will be used. Furthermore, in every case, the maximum srcset width is constrained by the width of the source image. The default is 8192px, which is the render limit of the imgix service.
         `,
