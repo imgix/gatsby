@@ -3,5 +3,5 @@ export const getTypeName = ({
   typeName,
 }: {
   namespace?: string;
-  typeName: 'Fluid' | 'Fixed' | 'ParamsInput'|'Placeholder';
+  typeName: 'Fluid' | 'Fixed' | 'ParamsInput' | 'Placeholder';
 }) => `${namespace ?? 'Imgix'}${typeName}`;

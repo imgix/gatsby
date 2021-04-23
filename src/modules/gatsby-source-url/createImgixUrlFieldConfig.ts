@@ -1,19 +1,21 @@
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { ComposeInputTypeDefinition, ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
+import {
+  ComposeInputTypeDefinition,
+  ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
 import * as R from 'ramda';
 import { createExternalHelper } from '../../common/createExternalHelper';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
   ImgixSourceDataResolver,
-  resolveUrlFromSourceData
+  resolveUrlFromSourceData,
 } from '../../common/utils';
 import { IImgixParams, ImgixUrlArgs } from '../../publicTypes';
 import {
   gatsbySourceImgixUrlFieldType,
-
-  unTransformParams
+  unTransformParams,
 } from './graphqlTypes';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
