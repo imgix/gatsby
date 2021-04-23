@@ -22,5 +22,3 @@ test('should be able to call createImgixUrlFieldConfig with a domain and resolve
 
   expect(resolved).toMatch(/^https:\/\/assets.imgix.net\/amsterdam.jpg\?/);
 });
-
-
