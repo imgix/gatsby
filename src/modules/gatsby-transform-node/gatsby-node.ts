@@ -1,6 +1,6 @@
 import { Do } from 'fp-ts-contrib/lib/Do';
-import * as E from 'fp-ts/lib/Either';
-import { pipe } from 'fp-ts/lib/pipeable';
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/pipeable';
 import { ICreateSchemaCustomizationHook, PatchedPluginOptions } from 'gatsby';
 import { GraphQLNonNull, GraphQLString } from 'gatsby/graphql';
 import { PathReporter } from 'io-ts/PathReporter';

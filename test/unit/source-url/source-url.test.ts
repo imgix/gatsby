@@ -1,7 +1,7 @@
 /// <reference types="../../../types/gatsby" />
 /// <reference types="jest" />
 
-import { pipe } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/function';
 import { PatchedPluginOptions } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
 import {

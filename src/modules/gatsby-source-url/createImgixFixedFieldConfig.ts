@@ -1,7 +1,7 @@
 import { Do } from 'fp-ts-contrib/lib/Do';
-import { pipe } from 'fp-ts/lib/function';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FixedObject } from 'gatsby-image';
 import {

@@ -1,8 +1,8 @@
 import ImgixClient from '@imgix/js-core';
 import { Do } from 'fp-ts-contrib/lib/Do';
-import { sequenceS } from 'fp-ts/lib/Apply';
-import * as E from 'fp-ts/lib/Either';
-import { pipe } from 'fp-ts/lib/function';
+import { sequenceS } from 'fp-ts/Apply';
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import { parseHostE, parsePathE } from './uri';
 
 /**

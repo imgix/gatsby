@@ -1,6 +1,6 @@
-import { pipe } from 'fp-ts/lib/pipeable';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/pipeable';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import {
   ComposeInputTypeDefinition,
   ObjectTypeComposerFieldConfigAsObjectDefinition,

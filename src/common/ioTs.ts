@@ -1,4 +1,4 @@
-import { pipe } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Optional } from './tsUtils';
 
