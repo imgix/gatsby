@@ -1,7 +1,7 @@
-import { pipe } from 'fp-ts/lib/pipeable';
-import { getObjectSemigroup } from 'fp-ts/lib/Semigroup';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { TaskEither } from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/pipeable';
+import { getObjectSemigroup } from 'fp-ts/Semigroup';
+import * as TE from 'fp-ts/TaskEither';
+import { TaskEither } from 'fp-ts/TaskEither';
 import { Reporter } from 'gatsby';
 import _fetch, { Response } from 'node-fetch';
 import { ImgixUrlParams } from '../publicTypes';
