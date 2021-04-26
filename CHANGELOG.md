@@ -1,3 +1,10 @@
+## [1.6.0-rc.1](https://github.com/imgix/gatsby/compare/v1.5.0...v1.6.0-rc.1) (2021-04-26)
+
+
+### Features
+
+* helper for third-party libraries ([87a4c81](https://github.com/imgix/gatsby/commit/87a4c811de1329a17798c4310afe3982f85ee36b))
+
 ## [1.5.0](https://github.com/imgix/gatsby/compare/v1.4.0...v1.5.0) (2021-03-26)
 
 
