@@ -16,6 +16,7 @@ import { createImgixUrlFieldConfig } from './createImgixUrlFieldConfig';
 import { getTypeName } from './fieldNames';
 import {
   createImgixFixedType,
+  createImgixFluidType,
   ImgixParamsInputType,
   ImgixPlaceholderType,
 } from './graphqlTypes';
@@ -77,7 +78,7 @@ export const buildImgixGatsbyTypes = <TSource>({
   }
 
   if (allowlistFields.includes('fluid')) {
-    const fluidType = createImgixFixedType({
+    const fluidType = createImgixFluidType({
       cache,
       name: getTypeName({ typeName: 'Fluid' }),
     });
