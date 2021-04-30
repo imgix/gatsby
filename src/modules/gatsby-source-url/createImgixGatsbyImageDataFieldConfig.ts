@@ -10,20 +10,20 @@ import {
   getLowResolutionImageURL,
   IGatsbyImageData,
   IGatsbyImageHelperArgs,
-  ImageFormat,
+  ImageFormat
 } from 'gatsby-plugin-image';
 import { getGatsbyImageFieldConfig } from 'gatsby-plugin-image/graphql-utils';
 import { GraphQLFieldResolver } from 'gatsby/graphql';
 import {
   ComposeInputTypeDefinition,
   ObjectTypeComposerArgumentConfigMapDefinition,
-  ObjectTypeComposerFieldConfigAsObjectDefinition,
+  ObjectTypeComposerFieldConfigAsObjectDefinition
 } from 'graphql-compose';
 import { TypeAsString } from 'graphql-compose/lib/TypeMapper';
 import R from 'ramda';
 import {
   fetchImgixBase64Image,
-  fetchImgixDominantColor,
+  fetchImgixDominantColor
 } from '../../api/fetchBase64Image';
 import { createExternalHelper } from '../../common/createExternalHelper';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
@@ -31,7 +31,7 @@ import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
-  taskEitherFromSourceDataResolver,
+  taskEitherFromSourceDataResolver
 } from '../../common/utils';
 import { IImgixParams, ImgixUrlParams } from '../../publicTypes';
 import { resolveDimensions } from './resolveDimensions';
@@ -60,6 +60,7 @@ const resolveGatsbyImageData = <TSource>({
   resolveWidth = () => undefined,
   resolveHeight = () => undefined,
   cache,
+  defaultParams
 }: {
   imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
@@ -115,7 +116,11 @@ const resolveGatsbyImageData = <TSource>({
             formats: ['auto'] as ImageFormat[],
             generateImageSource: generateImageSource(imgixClient),
             options: {
-              imgixParams: args.imgixParams,
+              imgixParams:
+              {
+                ...defaultParams,
+                ...args.imgixParams
+              },
             },
           } as const),
       )
@@ -127,6 +132,7 @@ const resolveGatsbyImageData = <TSource>({
               options: {
                 ...baseImageDataArgs,
                 imgixParams: {
+                  ...defaultParams,
                   ...args.imgixParams,
                   ...args.placeholderImgixParams,
                 },
@@ -142,6 +148,7 @@ const resolveGatsbyImageData = <TSource>({
           return pipe(
             fetchImgixDominantColor(cache)((params) =>
               imgixClient.buildURL(url, {
+                ...defaultParams,
                 ...args.imgixParams,
                 ...args.placeholderImgixParams,
                 ...params,
