@@ -11,10 +11,12 @@ export const createImgixGatsbyTypes = ({
   ...params
 }: Omit<
   Parameters<typeof buildImgixGatsbyTypes>[0],
-  'imgixClient' | 'resolveUrl'
+  'imgixClient' | 'resolveUrl' | 'resolveWidth' | 'resolveHeight'
 > & {
   imgixClientOptions?: Parameters<typeof createImgixURLBuilder>[0];
   resolveUrl: (source: any) => string | null;
+  resolveWidth?: (source: any) => number | undefined;
+  resolveHeight?: (source: any) => number | undefined;
 }) =>
   buildImgixGatsbyTypes({
     ...params,
