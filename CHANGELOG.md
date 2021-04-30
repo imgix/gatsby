@@ -1,3 +1,11 @@
+## [1.6.0-rc.3](https://github.com/imgix/gatsby/compare/v1.6.0-rc.2...v1.6.0-rc.3) (2021-04-30)
+
+
+### Bug Fixes
+
+* correct types for resolveWidth and resolveHeight ([5788045](https://github.com/imgix/gatsby/commit/5788045b34ab3c11750c424d4c1c8833f1c2eadc))
+* use default params in gatsbyImageData ([8b1ff92](https://github.com/imgix/gatsby/commit/8b1ff9239a070a66c0cbd980d568ea985db09957))
+
 ## [1.6.0-rc.2](https://github.com/imgix/gatsby/compare/v1.6.0-rc.1...v1.6.0-rc.2) (2021-04-30)
 
 
