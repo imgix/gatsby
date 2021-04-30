@@ -9,7 +9,6 @@ import {
   buildInputObjectType,
   buildObjectType,
 } from 'gatsby/dist/schema/types/type-builders';
-import { SchemaComposer } from 'graphql-compose';
 import isBase64 from 'is-base64';
 import * as R from 'ramda';
 import { KeyValuePair } from 'ramda';
@@ -473,6 +472,8 @@ describe('createResolvers', () => {
       expect(result.backgroundColor).toMatch('#348ff2');
     });
   });
+
+
 });
 
 const mockGatsbyCache = {
@@ -623,12 +624,6 @@ async function getTypeStoreFromSchemaCustomization({
       (type) => (typeStore[type.config.name] = type),
     );
   };
-  const buildObjectTypeFn = jest.fn((v) => ({
-    kind: 'OBJECT',
-    config: v,
-  }));
-
-  const schemaComposer = new SchemaComposer();
 
   const gatsbyContext = {
     cache: mockGatsbyCache,
