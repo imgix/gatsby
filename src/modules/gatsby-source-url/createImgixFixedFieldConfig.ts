@@ -26,8 +26,8 @@ export const DEFAULT_FIXED_WIDTH = 8192;
 interface CreateImgixFixedFieldConfigArgs<TSource> {
   imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
-  resolveWidth?: ImgixSourceDataResolver<TSource, number>;
-  resolveHeight?: ImgixSourceDataResolver<TSource, number>;
+  resolveWidth?: ImgixSourceDataResolver<TSource, number | undefined>;
+  resolveHeight?: ImgixSourceDataResolver<TSource, number | undefined>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
   type: string;

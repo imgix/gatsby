@@ -28,6 +28,8 @@ export const buildImgixGatsbyTypes = <TSource>({
   allowlistFields = ['url', 'fixed', 'fluid', 'gatsbyImageData'],
   imgixClient,
   resolveUrl,
+  resolveWidth,
+  resolveHeight,
   defaultParams,
   cache,
 }: {
@@ -35,6 +37,8 @@ export const buildImgixGatsbyTypes = <TSource>({
   namespace?: string;
   imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
+  resolveHeight?: ImgixSourceDataResolver<TSource, number | undefined>;
+  resolveWidth?: ImgixSourceDataResolver<TSource, number | undefined>;
   defaultParams?: IImgixParams;
   cache: GatsbyCache;
 }) => {
@@ -72,6 +76,8 @@ export const buildImgixGatsbyTypes = <TSource>({
       imgixClient,
       cache,
       resolveUrl,
+      resolveWidth,
+      resolveHeight,
       defaultParams,
       paramsInputType: paramsInputType.name,
     });
@@ -88,6 +94,8 @@ export const buildImgixGatsbyTypes = <TSource>({
       imgixClient,
       cache,
       resolveUrl,
+      resolveWidth,
+      resolveHeight,
       defaultParams,
       paramsInputType: paramsInputType.name,
     });
@@ -102,6 +110,8 @@ export const buildImgixGatsbyTypes = <TSource>({
       imgixClient,
       cache,
       resolveUrl,
+      resolveWidth,
+      resolveHeight,
       defaultParams,
       paramsInputType: paramsInputType.name,
       placeholderEnumType: placeholderType.name,
