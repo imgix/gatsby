@@ -26,8 +26,8 @@ const DEFAULT_FLUID_MAX_WIDTH = 8192;
 interface CreateImgixFluidFieldConfigArgs<TSource> {
   imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
-  resolveWidth?: ImgixSourceDataResolver<TSource, number>;
-  resolveHeight?: ImgixSourceDataResolver<TSource, number>;
+  resolveWidth?: ImgixSourceDataResolver<TSource, number | undefined>;
+  resolveHeight?: ImgixSourceDataResolver<TSource, number | undefined>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
   type: string;

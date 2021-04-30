@@ -8,17 +8,19 @@ import { ImgixUrlParams } from '../publicTypes';
 export const taskEitherFromSourceDataResolver = <TSource, TData>(
   resolver: ImgixSourceDataResolver<TSource, TData>,
   predicate?: (data: TData) => boolean,
-) => (source: TSource): TaskEither<Error, TData> =>
+) => (source: TSource): TaskEither<Error, Exclude<TData, null | undefined>> =>
   TE.tryCatch(
     () =>
       Promise.resolve(resolver(source)).then((data) => {
         if (data == null)
           return Promise.reject('Resolved data is null or undefined');
 
-        if (!predicate) return data;
+        const safeData = data as Exclude<typeof data, null | undefined>;
 
-        return predicate(data)
-          ? data
+        if (!predicate) return safeData;
+
+        return predicate(safeData)
+          ? safeData
           : Promise.reject('Resolved data is invalid.');
       }),
     (reason) => new Error(String(reason)),

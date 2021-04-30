@@ -63,8 +63,8 @@ const resolveGatsbyImageData = <TSource>({
 }: {
   imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
-  resolveWidth?: ImgixSourceDataResolver<TSource, number>;
-  resolveHeight?: ImgixSourceDataResolver<TSource, number>;
+  resolveWidth?: ImgixSourceDataResolver<TSource, number | undefined>;
+  resolveHeight?: ImgixSourceDataResolver<TSource, number | undefined>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
 }): GraphQLFieldResolver<
@@ -171,11 +171,13 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   defaultParams,
   paramsInputType,
   placeholderEnumType,
+  resolveWidth,
+  resolveHeight,
 }: {
   imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
-  resolveWidth?: ImgixSourceDataResolver<TSource, number>;
-  resolveHeight?: ImgixSourceDataResolver<TSource, number>;
+  resolveWidth?: ImgixSourceDataResolver<TSource, number | undefined>;
+  resolveHeight?: ImgixSourceDataResolver<TSource, number | undefined>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
   paramsInputType: ComposeInputTypeDefinition;
@@ -191,6 +193,8 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
       imgixClient,
       resolveUrl,
       defaultParams,
+      resolveWidth,
+      resolveHeight,
     }) as GraphQLFieldResolver<TSource, TContext>, // TODO: remove cast when PR to Gatsby has been merged
     {},
   ) as ObjectTypeComposerFieldConfigAsObjectDefinition<
