@@ -472,8 +472,6 @@ describe('createResolvers', () => {
       expect(result.backgroundColor).toMatch('#348ff2');
     });
   });
-
-
 });
 
 const mockGatsbyCache = {
