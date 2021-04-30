@@ -1,3 +1,10 @@
+## [1.6.0-rc.2](https://github.com/imgix/gatsby/compare/v1.6.0-rc.1...v1.6.0-rc.2) (2021-04-30)
+
+
+### Features
+
+* allow resolveWidth and resolveHeight to be passed from third party plugins ([f5b5999](https://github.com/imgix/gatsby/commit/f5b5999c07a849be334284903014fdddacbc38d4))
+
 ## [1.6.0-rc.1](https://github.com/imgix/gatsby/compare/v1.5.0...v1.6.0-rc.1) (2021-04-26)
 
 
