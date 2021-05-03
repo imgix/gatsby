@@ -930,6 +930,12 @@ exports.createSchemaCustomization = async (gatsbyContext, options) => {
     resolveHeight: (node) => node.imageSourceHeight,
     defaultParams: { auto: 'compress,format' },
     namespace: 'Imgix',
+    imgixClientOptions: {
+      // domain and secureURLToken are not required if image URLs are already imgix URLs
+      domain: 'my-imgix-domain.imgix.net',
+      // secureURLToken is required if imgix source type is web proxy, or "secure URLs" is enabled in the imgix configuration dashboard
+      secureURLToken: 'my-secure-url-token',
+    }
   });
 
   const myNodeType = gatsbyContext.schema.buildObject({
