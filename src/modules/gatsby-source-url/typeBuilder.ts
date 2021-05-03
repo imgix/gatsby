@@ -32,6 +32,7 @@ export const buildImgixGatsbyTypes = <TSource>({
   resolveHeight,
   defaultParams,
   cache,
+  namespace,
 }: {
   allowlistFields?: ('url' | 'fixed' | 'fluid' | 'gatsbyImageData')[];
   namespace?: string;
@@ -68,7 +69,7 @@ export const buildImgixGatsbyTypes = <TSource>({
   if (allowlistFields.includes('fixed')) {
     const fixedType = createImgixFixedType({
       cache,
-      name: getTypeName({ typeName: 'Fixed' }),
+      name: getTypeName({ typeName: 'Fixed', namespace }),
     });
     types.push(fixedType);
     fields.fixed = createImgixFixedFieldConfig({
@@ -86,7 +87,7 @@ export const buildImgixGatsbyTypes = <TSource>({
   if (allowlistFields.includes('fluid')) {
     const fluidType = createImgixFluidType({
       cache,
-      name: getTypeName({ typeName: 'Fluid' }),
+      name: getTypeName({ typeName: 'Fluid', namespace }),
     });
     types.push(fluidType);
     fields.fluid = createImgixFluidFieldConfig({
@@ -103,7 +104,7 @@ export const buildImgixGatsbyTypes = <TSource>({
 
   if (allowlistFields.includes('gatsbyImageData')) {
     const placeholderType = ImgixPlaceholderType(
-      getTypeName({ typeName: 'Placeholder' }),
+      getTypeName({ typeName: 'Placeholder', namespace }),
     );
     enumTypes.push(placeholderType);
     fields.gatsbyImageData = createImgixGatsbyImageFieldConfig({
