@@ -1,4 +1,3 @@
-import ImgixClient from '@imgix/js-core';
 import { FixedObject, FluidObject } from 'gatsby-image';
 import * as R from 'ramda';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';

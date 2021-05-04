@@ -1,10 +1,7 @@
+import { FixedObject, FluidObject } from 'gatsby-image';
 import { createImgixURLBuilder } from './common/imgix-js-core-wrapper';
+import * as internalObjectBuilders from './modules/gatsby-source-url/objectBuilders';
 import { buildImgixGatsbyTypes } from './modules/gatsby-source-url/typeBuilder';
-
-export { createImgixFixedSchemaFieldConfig } from './modules/gatsby-source-url/createImgixFixedFieldConfig';
-export { createImgixFluidSchemaFieldConfig } from './modules/gatsby-source-url/createImgixFluidFieldConfig';
-export { createImgixGatsbyImageSchemaFieldConfig } from './modules/gatsby-source-url/createImgixGatsbyImageDataFieldConfig';
-export { createImgixUrlSchemaFieldConfig } from './modules/gatsby-source-url/createImgixUrlFieldConfig';
 
 export const createImgixGatsbyTypes = ({
   imgixClientOptions,
@@ -22,3 +19,27 @@ export const createImgixGatsbyTypes = ({
     ...params,
     imgixClient: createImgixURLBuilder(imgixClientOptions),
   });
+
+export const buildFluidObject = ({
+  imgixClientOptions,
+  ...args
+}: Exclude<internalObjectBuilders.BuildImgixFluidArgs, 'client'> & {
+  imgixClientOptions: Parameters<typeof createImgixURLBuilder>[0];
+}): FluidObject => {
+  return internalObjectBuilders.buildFluidObject({
+    ...args,
+    client: createImgixURLBuilder(imgixClientOptions),
+  });
+};
+
+export const buildFixedObject = ({
+  imgixClientOptions,
+  ...args
+}: Exclude<internalObjectBuilders.BuildImgixFixedArgs, 'client'> & {
+  imgixClientOptions: Parameters<typeof createImgixURLBuilder>[0];
+}): FixedObject => {
+  return internalObjectBuilders.buildImgixFixed({
+    ...args,
+    client: createImgixURLBuilder(imgixClientOptions),
+  });
+};
