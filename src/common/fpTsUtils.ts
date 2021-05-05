@@ -1,7 +1,7 @@
-import { flow } from 'fp-ts/lib/function';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
+import { flow } from 'fp-ts/function';
+import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 
 /**
  * Type hole to help which constructing applications.

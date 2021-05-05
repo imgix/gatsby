@@ -1,5 +1,5 @@
-import * as E from 'fp-ts/lib/Either';
-import { pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import { Errors } from 'io-ts';
 import { parseStringARParam, StringAspectRatio } from '../../common/ar';
 import { parseHost, parsePath } from '../../common/uri';

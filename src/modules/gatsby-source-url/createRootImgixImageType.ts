@@ -1,5 +1,4 @@
 // TODO(luis): remove this file, no longer being imported anywhere
-import type ImgixClient from '@imgix/js-core';
 import { GatsbyCache } from 'gatsby';
 import {
   GraphQLFieldConfig,
@@ -7,17 +6,14 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'gatsby/graphql';
-import * as R from 'ramda';
+import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import { IImgixGatsbyRootArgs, IImgixParams } from '../../publicTypes';
-import { createImgixFixedFieldConfig } from './createImgixFixedFieldConfig';
-import { createImgixFluidFieldConfig } from './createImgixFluidFieldConfig';
-import { createImgixUrlFieldConfig } from './createImgixUrlFieldConfig';
 
 type IRootSource = {
   rawUrl: string;
 };
 export const createRootImgixImageType = (
-  imgixClient: ImgixClient,
+  imgixClient: IImgixURLBuilder,
   cache: GatsbyCache,
   defaultParams: Partial<IImgixParams>,
 ): GraphQLFieldConfig<IRootSource, {}, IImgixGatsbyRootArgs> => ({
@@ -31,23 +27,23 @@ export const createRootImgixImageType = (
   type: new GraphQLObjectType({
     name: 'ImgixImage',
     fields: {
-      url: createImgixUrlFieldConfig({
-        imgixClient,
-        resolveUrl: R.prop('rawUrl'),
-        defaultParams,
-      }),
-      fluid: createImgixFluidFieldConfig({
-        imgixClient,
-        resolveUrl: R.prop('rawUrl'),
-        cache,
-        defaultParams,
-      }) as GraphQLFieldConfig<IRootSource, {}, any>,
-      fixed: createImgixFixedFieldConfig<IRootSource, unknown>({
-        imgixClient,
-        resolveUrl: R.prop('rawUrl'),
-        cache,
-        defaultParams,
-      }) as GraphQLFieldConfig<IRootSource, {}, any>,
+      // url: createImgixUrlFieldConfig({
+      //   imgixClient,
+      //   resolveUrl: R.prop('rawUrl'),
+      //   defaultParams,
+      // }),
+      // fluid: createImgixFluidFieldConfig({
+      //   imgixClient,
+      //   resolveUrl: R.prop('rawUrl'),
+      //   cache,
+      //   defaultParams,
+      // }) as GraphQLFieldConfig<IRootSource, {}, any>,
+      // fixed: createImgixFixedFieldConfig<IRootSource, unknown>({
+      //   imgixClient,
+      //   resolveUrl: R.prop('rawUrl'),
+      //   cache,
+      //   defaultParams,
+      // }) as GraphQLFieldConfig<IRootSource, {}, any>,
     },
   }),
   resolve(_: unknown, args: IImgixGatsbyRootArgs): IRootSource {

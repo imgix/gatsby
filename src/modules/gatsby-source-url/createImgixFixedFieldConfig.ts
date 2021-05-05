@@ -1,41 +1,37 @@
-import ImgixClient from '@imgix/js-core';
 import { Do } from 'fp-ts-contrib/lib/Do';
-import { pipe } from 'fp-ts/lib/function';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/function';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FixedObject } from 'gatsby-image';
 import {
-  GraphQLFieldConfig,
-  GraphQLInt,
-  GraphQLObjectType,
-} from 'gatsby/graphql';
-import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
+  ComposeInputTypeDefinition,
+  ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
+import { createExternalHelper } from '../../common/createExternalHelper';
 import { TaskOptionFromTE } from '../../common/fpTsUtils';
+import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
 import { IImgixParams, ImgixFixedArgsResolved } from '../../publicTypes';
-import {
-  createImgixFixedType,
-  ImgixParamsInputType,
-  unTransformParams,
-} from './graphqlTypes';
+import { unTransformParams } from './graphqlTypes';
 import { buildImgixFixed } from './objectBuilders';
 import { resolveDimensions } from './resolveDimensions';
 
 export const DEFAULT_FIXED_WIDTH = 8192;
 
 interface CreateImgixFixedFieldConfigArgs<TSource> {
-  imgixClient: ImgixClient;
+  imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
-  resolveWidth?: ImgixSourceDataResolver<TSource, number>;
-  resolveHeight?: ImgixSourceDataResolver<TSource, number>;
+  resolveWidth?: ImgixSourceDataResolver<TSource, number | undefined>;
+  resolveHeight?: ImgixSourceDataResolver<TSource, number | undefined>;
   cache: GatsbyCache;
   defaultParams?: Partial<IImgixParams>;
-  type?: GraphQLObjectType<FixedObject>;
+  type: string;
+  paramsInputType: ComposeInputTypeDefinition;
 }
 
 export const createImgixFixedFieldConfig = <TSource, TContext>({
@@ -46,35 +42,36 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
   cache,
   defaultParams,
   type,
-}: CreateImgixFixedFieldConfigArgs<TSource>): GraphQLFieldConfig<
+  paramsInputType,
+}: CreateImgixFixedFieldConfigArgs<TSource>): ObjectTypeComposerFieldConfigAsObjectDefinition<
   TSource,
   TContext,
   ImgixFixedArgsResolved
 > => ({
-  type: type ?? createImgixFixedType({ cache }),
+  type,
   description: `Should be used to generate fixed-width images (i.e. the size of the image doesn't change when the size of the browser changes, and are "fixed"). Returns data compatible with gatsby-image. Instead of accessing this data directly, the GatsbySourceImgixFixed fragment should be used. See the project's README for more information.`,
   args: {
     width: {
-      type: GraphQLInt,
+      type: 'Int',
       // TODO: refactor to TS default args for type safety and functionality ()
       description: `The fixed image width to render, in px.`,
       defaultValue: DEFAULT_FIXED_WIDTH, // TODO: use image source width?
     },
     height: {
-      type: GraphQLInt,
+      type: 'Int',
       description: `The fixed image height to render, in px.`,
     },
     quality: {
-      type: GraphQLInt,
+      type: 'Int',
       description: `The image quality to use for compression. Range: 0-100, with 100 being highest quality. This setting is not recommended as the quality is already optimized by decreasing quality as the dpr increases to reduce image size while retaining visual quality.`,
     },
     imgixParams: {
-      type: ImgixParamsInputType,
+      type: paramsInputType,
       description: `The imgix parameters (transformations) to apply to the image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
     placeholderImgixParams: {
-      type: ImgixParamsInputType,
+      type: paramsInputType,
       description: `Any imgix parameters to use only for the blur-up/placeholder image. The full set of imgix params can be explored here: https://docs.imgix.com/apis/url`,
       defaultValue: {},
     },
@@ -129,10 +126,7 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
     )(),
 });
 
-export const createImgixFixedSchemaFieldConfig = <TSource, TContext>(
-  args: CreateImgixFixedFieldConfigArgs<TSource>,
-): ObjectTypeComposerAsObjectDefinition<TSource, TContext> =>
-  ({
-    ...createImgixFixedFieldConfig(args),
-    name: 'ImgixGatsbyFixed',
-  } as ObjectTypeComposerAsObjectDefinition<TSource, TContext>);
+export const createImgixFixedSchemaFieldConfig = createExternalHelper<
+  Parameters<typeof createImgixFixedFieldConfig>[0],
+  typeof createImgixFixedFieldConfig
+>(createImgixFixedFieldConfig);

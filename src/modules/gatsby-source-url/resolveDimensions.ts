@@ -1,11 +1,11 @@
-import ImgixClient from '@imgix/js-core';
-import { sequenceS, sequenceT } from 'fp-ts/lib/Apply';
-import * as O from 'fp-ts/lib/Option';
-import { Option } from 'fp-ts/lib/Option';
-import { pipe } from 'fp-ts/lib/pipeable';
-import * as TE from 'fp-ts/lib/TaskEither';
+import { sequenceS, sequenceT } from 'fp-ts/Apply';
+import * as O from 'fp-ts/Option';
+import { Option } from 'fp-ts/Option';
+import { pipe } from 'fp-ts/pipeable';
+import * as TE from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { fetchImgixMetadata } from '../../api/fetchImgixMetadata';
+import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import { createLogger, trace } from '../../common/log';
 
 const sequenceTTE = sequenceT(TE.taskEither);
@@ -25,7 +25,7 @@ export const resolveDimensions = <TSource>({
   manualWidth: Option<number>;
   cache: GatsbyCache;
   url: string;
-  client: ImgixClient;
+  client: IImgixURLBuilder;
 }): TE.TaskEither<Error, IResolveDimensionsRight> => {
   const WidthHeightTE: TE.TaskEither<
     Error,

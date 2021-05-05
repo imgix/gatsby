@@ -1,3 +1,42 @@
+## [1.6.0-rc.6](https://github.com/imgix/gatsby/compare/v1.6.0-rc.5...v1.6.0-rc.6) (2021-05-05)
+
+
+### Features
+
+* export object builders for third party plugins ([6ae2e48](https://github.com/imgix/gatsby/commit/6ae2e4877b95e36f6fa0ed3e247eb22465c229db))
+* export object helper for gatsbyImageData ([b941e17](https://github.com/imgix/gatsby/commit/b941e17d98d1aaf3898b84f4880575832ef2d5dc))
+
+## [1.6.0-rc.5](https://github.com/imgix/gatsby/compare/v1.6.0-rc.4...v1.6.0-rc.5) (2021-05-05)
+
+
+### Bug Fixes
+
+* use namespace in buildImgixGatsbyTypes ([dd8b5b4](https://github.com/imgix/gatsby/commit/dd8b5b4f6ffd05f6b29c1d62b70347f2f94d3c65))
+
+## [1.6.0-rc.4](https://github.com/imgix/gatsby/compare/v1.6.0-rc.3...v1.6.0-rc.4) (2021-05-05)
+
+## [1.6.0-rc.3](https://github.com/imgix/gatsby/compare/v1.6.0-rc.2...v1.6.0-rc.3) (2021-04-30)
+
+
+### Bug Fixes
+
+* correct types for resolveWidth and resolveHeight ([5788045](https://github.com/imgix/gatsby/commit/5788045b34ab3c11750c424d4c1c8833f1c2eadc))
+* use default params in gatsbyImageData ([8b1ff92](https://github.com/imgix/gatsby/commit/8b1ff9239a070a66c0cbd980d568ea985db09957))
+
+## [1.6.0-rc.2](https://github.com/imgix/gatsby/compare/v1.6.0-rc.1...v1.6.0-rc.2) (2021-04-30)
+
+
+### Features
+
+* allow resolveWidth and resolveHeight to be passed from third party plugins ([f5b5999](https://github.com/imgix/gatsby/commit/f5b5999c07a849be334284903014fdddacbc38d4))
+
+## [1.6.0-rc.1](https://github.com/imgix/gatsby/compare/v1.5.0...v1.6.0-rc.1) (2021-04-26)
+
+
+### Features
+
+* helper for third-party libraries ([87a4c81](https://github.com/imgix/gatsby/commit/87a4c811de1329a17798c4310afe3982f85ee36b))
+
 ## [1.5.0](https://github.com/imgix/gatsby/compare/v1.4.0...v1.5.0) (2021-03-26)
 
 

@@ -1,11 +1,17 @@
 /// <reference types="../../../types/gatsby" />
 /// <reference types="jest" />
 
-import { pipe } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/function';
 import { PatchedPluginOptions } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
+import {
+  buildEnumType,
+  buildInputObjectType,
+  buildObjectType,
+} from 'gatsby/dist/schema/types/type-builders';
 import isBase64 from 'is-base64';
 import * as R from 'ramda';
+import { KeyValuePair } from 'ramda';
 import { createLogger, trace } from '../../../src/common/log';
 import { createSchemaCustomization } from '../../../src/gatsby-node';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../../../src/publicTypes';
@@ -157,12 +163,17 @@ describe('createResolvers', () => {
             imgixParams: { ar: '2:1' },
           },
         });
+        const getType = resolveResult.typeStore.getType;
 
         // Need to resolve base64 again
-        const base64ResolvedValue = await resolveResult.objectTypeConfig.fields.imgixImage.type
-          .getFields()
-          ['fluid'].type.getFields()
-          ?.base64?.resolve(resolveResult.fieldResult, {});
+        const rootType = resolveResult.objectTypeConfig;
+        const imgixImageType = getType(rootType.config.fields.imgixImage.type);
+        const fluidType = getType(imgixImageType.config.fields.fluid.type);
+        const base64Field = fluidType.config.fields.base64;
+        const base64ResolvedValue = await base64Field?.resolve(
+          resolveResult.fieldResult,
+          {},
+        );
 
         expect(base64ResolvedValue).toMatch(/^data:image\/jpeg;base64,.*\//);
       });
@@ -388,8 +399,7 @@ describe('createResolvers', () => {
   describe.skip('web proxy sources', () => {
     it(`should throw an error if app is configured with sourceType: 'webProxy' but no secureURLToken`, async () => {
       const createResolversLazy = () =>
-        getTypeResolverFromSchemaCustomization({
-          modifyTargetTypeName: 'Query',
+        getTypeStoreFromSchemaCustomization({
           appConfig: {
             sourceType: ImgixSourceType.WebProxy,
             domain: 'assets.imgix.net',
@@ -521,47 +531,65 @@ async function resolveFieldInternal({
   url = 'amsterdam.jpg',
 }: {
   appConfig?: Parameters<
-    typeof getTypeResolverFromSchemaCustomization
+    typeof getTypeStoreFromSchemaCustomization
   >[0]['appConfig'];
   field: FieldType;
   fieldParams?: Object;
   url?: string;
 }) {
-  const objectTypeConfig = await getTypeResolverFromSchemaCustomization({
+  const typeStore = await getTypeStoreFromSchemaCustomization({
     appConfig,
-    modifyTargetTypeName: 'Query',
   });
 
-  const fieldParamsWithDefaults = createFieldParamsWithDefaults(
-    objectTypeConfig,
+  const queryConfig = typeStore.getType('Query');
+
+  const fieldParamsWithDefaults = createFieldParamsWithDefaults({
+    objectTypeConfig: queryConfig,
     field,
     fieldParams,
-  );
+    getType: typeStore.getType,
+  });
 
   // Get root value from the root imgixImage resolver. This is passed to child resolvers.
-  const imgixImageRootValue = objectTypeConfig.fields.imgixImage?.resolve?.(
+  const imgixImageRootValue = queryConfig.config.fields.imgixImage?.resolve?.(
     {},
     { url },
   );
 
   // Resolve the field specified in the imgixImage type
-  const fieldResult = await (objectTypeConfig.fields.imgixImage.type as any)
-    .getFields()
-    [field].resolve(imgixImageRootValue, fieldParamsWithDefaults);
-  return { fieldResult, objectTypeConfig: objectTypeConfig };
+  const imgixImageFieldConfig = typeStore.getType(
+    queryConfig.config.fields.imgixImage.type,
+  );
+  const targetFieldConfig = imgixImageFieldConfig.config.fields[field];
+  const fieldResolver =
+    typeof targetFieldConfig === 'string'
+      ? typeStore.getType(targetFieldConfig)
+      : targetFieldConfig.resolve;
+  const fieldResult = await fieldResolver(
+    imgixImageRootValue,
+    fieldParamsWithDefaults,
+  );
+  return { fieldResult, objectTypeConfig: queryConfig, typeStore };
 }
 
-function createFieldParamsWithDefaults(
-  objectTypeConfig: ObjectTypeConfig,
-  field: FieldType,
-  fieldParams: FieldParams,
-) {
+function createFieldParamsWithDefaults({
+  objectTypeConfig,
+  field,
+  fieldParams,
+  getType,
+}: {
+  objectTypeConfig: ObjectTypeConfig;
+  field: FieldType;
+  fieldParams: FieldParams;
+  getType: (name: string) => any;
+}) {
   const defaultParamsForField = pipe(
-    R.chain(
-      (v: any): [string, any][] =>
-        v.defaultValue ? [[v.name, v.defaultValue]] : [],
-      (objectTypeConfig.fields.imgixImage.type as any).getFields()[field]
-        .args ?? [],
+    getType(objectTypeConfig.config.fields.imgixImage.type).config.fields[field]
+      .args ?? {},
+
+    Object.entries,
+    R.chain(([key, config]: [string, any]): KeyValuePair<string, any>[] =>
+      config.defaultValue ? [[key, config.defaultValue]] : [],
     ),
     (v) => R.fromPairs(v),
   );
@@ -576,20 +604,24 @@ const defaultAppConfig = {
   plugins: [],
 } as const;
 
-async function getTypeResolverFromSchemaCustomization({
+async function getTypeStoreFromSchemaCustomization({
   appConfig: _appConfig,
-  modifyTargetTypeName,
 }: {
   appConfig?: Partial<PatchedPluginOptions<IImgixGatsbyOptions>>;
-  modifyTargetTypeName: string;
-}): Promise<ObjectTypeConfig> {
+}): Promise<{ getType: (name: string) => any }> {
   const appConfig = R.mergeDeepRight(
     defaultAppConfig,
     _appConfig ?? {},
   ) as PatchedPluginOptions<IImgixGatsbyOptions>;
 
-  const mockCreateTypesFn = jest.fn();
-  const buildObjectTypeFn = jest.fn((v) => v);
+  const typeStore = {} as any;
+
+  type TypeWithName = { config: { name: string } };
+  const mockCreateTypesFn = (types: TypeWithName | TypeWithName[]) => {
+    (Array.isArray(types) ? types : [types]).map(
+      (type) => (typeStore[type.config.name] = type),
+    );
+  };
 
   const gatsbyContext = {
     cache: mockGatsbyCache,
@@ -598,37 +630,34 @@ async function getTypeResolverFromSchemaCustomization({
       createTypes: mockCreateTypesFn,
     },
     schema: {
-      buildObjectType: buildObjectTypeFn,
+      buildObjectType: buildObjectType,
+      buildEnumType: buildEnumType,
+      buildInputObjectType: buildInputObjectType,
     },
   } as any;
 
   createSchemaCustomization &&
     (await createSchemaCustomization(gatsbyContext, appConfig));
 
-  const createTypesCalls = mockCreateTypesFn.mock.calls;
-
-  const filteredCall = createTypesCalls.find(
-    (parameters) => parameters[0]?.name === modifyTargetTypeName,
-  );
-
-  if (filteredCall == null) {
-    throw new Error('Could not find matching type call.');
-  }
-
-  return filteredCall[0];
+  return {
+    getType: (name: string) => typeStore[name],
+  };
 }
 
 type ObjectTypeConfig = {
-  name: string;
-  fields: Record<
-    string,
-    {
-      type: any;
-      resolve?: (source: unknown, args: Record<string, unknown>) => unknown;
-      args?: Record<
-        string,
-        { type: unknown; description?: string; defaultValue?: unknown }
-      >;
-    }
-  >;
+  kind: 'OBJECT';
+  config: {
+    name: string;
+    fields: Record<
+      string,
+      {
+        type: any;
+        resolve?: (source: unknown, args: Record<string, unknown>) => unknown;
+        args?: Record<
+          string,
+          { type: unknown; description?: string; defaultValue?: unknown }
+        >;
+      }
+    >;
+  };
 };

@@ -1,6 +1,6 @@
-import { pipe } from 'fp-ts/lib/pipeable';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { TaskEither } from 'fp-ts/lib/TaskEither';
+import { pipe } from 'fp-ts/pipeable';
+import * as TE from 'fp-ts/TaskEither';
+import { TaskEither } from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { createLogger, trace } from './log';
 

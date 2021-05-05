@@ -1,10 +1,13 @@
-import ImgixClient from '@imgix/js-core';
-import { pipe } from 'fp-ts/lib/pipeable';
-import * as T from 'fp-ts/lib/Task';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { GraphQLFieldConfig } from 'gatsby/graphql';
-import { ObjectTypeComposerAsObjectDefinition } from 'graphql-compose';
+import { pipe } from 'fp-ts/pipeable';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
+import {
+  ComposeInputTypeDefinition,
+  ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
 import * as R from 'ramda';
+import { createExternalHelper } from '../../common/createExternalHelper';
+import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
   ImgixSourceDataResolver,
   resolveUrlFromSourceData,
@@ -12,21 +15,22 @@ import {
 import { IImgixParams, ImgixUrlArgs } from '../../publicTypes';
 import {
   gatsbySourceImgixUrlFieldType,
-  ImgixParamsInputType,
   unTransformParams,
 } from './graphqlTypes';
 
 interface CreateImgixUrlFieldConfigArgs<TSource> {
-  imgixClient: ImgixClient;
+  imgixClient: IImgixURLBuilder;
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
   defaultParams?: IImgixParams;
+  paramsInputType: ComposeInputTypeDefinition;
 }
 
 export const createImgixUrlFieldConfig = <TSource, TContext>({
   imgixClient,
   resolveUrl,
   defaultParams,
-}: CreateImgixUrlFieldConfigArgs<TSource>): GraphQLFieldConfig<
+  paramsInputType,
+}: CreateImgixUrlFieldConfigArgs<TSource>): ObjectTypeComposerFieldConfigAsObjectDefinition<
   TSource,
   TContext,
   ImgixUrlArgs
@@ -35,7 +39,7 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
   description: 'A plain imgix URL with the URL and params applied.',
   args: {
     imgixParams: {
-      type: ImgixParamsInputType,
+      type: paramsInputType,
       defaultValue: {},
     },
   },
@@ -59,10 +63,26 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
     )(),
 });
 
-export const createImgixUrlSchemaFieldConfig = <TSource, TContext>(
-  args: CreateImgixUrlFieldConfigArgs<TSource>,
-): ObjectTypeComposerAsObjectDefinition<TSource, TContext> =>
-  ({
-    ...createImgixUrlFieldConfig(args),
-    name: 'ImgixGatsbyUrl',
-  } as ObjectTypeComposerAsObjectDefinition<TSource, TContext>);
+// TODO: remove
+// export const createImgixUrlSchemaFieldConfig = <TSource, TContext>({
+//   imgixClientOptions,
+//   ...args
+// }: Omit<CreateImgixUrlFieldConfigArgs<TSource>, 'imgixClient'> & {
+//   imgixClientOptions?: Parameters<typeof createImgixURLBuilder>[0];
+// }): ObjectTypeComposerFieldConfigAsObjectDefinition<
+//   TSource,
+//   TContext,
+//   ImgixUrlArgs
+// > => {
+//   return {
+//     ...createImgixUrlFieldConfig({
+//       ...args,
+//       imgixClient: createImgixURLBuilder(imgixClientOptions),
+//     }),
+//   };
+// };
+
+export const createImgixUrlSchemaFieldConfig = createExternalHelper<
+  Parameters<typeof createImgixUrlFieldConfig>[0],
+  typeof createImgixUrlFieldConfig
+>(createImgixUrlFieldConfig);
