@@ -1,3 +1,11 @@
+## [1.6.0-rc.6](https://github.com/imgix/gatsby/compare/v1.6.0-rc.5...v1.6.0-rc.6) (2021-05-05)
+
+
+### Features
+
+* export object builders for third party plugins ([6ae2e48](https://github.com/imgix/gatsby/commit/6ae2e4877b95e36f6fa0ed3e247eb22465c229db))
+* export object helper for gatsbyImageData ([b941e17](https://github.com/imgix/gatsby/commit/b941e17d98d1aaf3898b84f4880575832ef2d5dc))
+
 ## [1.6.0-rc.5](https://github.com/imgix/gatsby/compare/v1.6.0-rc.4...v1.6.0-rc.5) (2021-05-05)
 
 
