@@ -931,11 +931,11 @@ exports.createSchemaCustomization = async (gatsbyContext, options) => {
     defaultParams: { auto: 'compress,format' },
     namespace: 'Imgix',
     imgixClientOptions: {
-      // domain and secureURLToken are not required if image URLs are already imgix URLs
+      // domain is required if urls are not already imgix urls. If a domain is provided here, and the image urls are not imgix urls, the the imgix source needs to be a web proxy source, and a secureURLToken token is required (see below).
       domain: 'my-imgix-domain.imgix.net',
       // secureURLToken is required if imgix source type is web proxy, or "secure URLs" is enabled in the imgix configuration dashboard
       secureURLToken: 'my-secure-url-token',
-    }
+    },
   });
 
   const myNodeType = gatsbyContext.schema.buildObject({
