@@ -54,6 +54,47 @@ const generateImageSource = (
   return { width, height, format: 'auto', src };
 };
 
+export type IBuildGatsbyImageDataBaseArgs = {
+  resolverArgs: IImgixGatsbyImageDataArgsResolved;
+  url: string;
+  dimensions: {
+    width: number;
+    height: number;
+  };
+  defaultParams?: Partial<IImgixParams>;
+  imgixClient: IImgixURLBuilder;
+};
+
+export const buildGatsbyImageDataBaseArgs = ({
+  resolverArgs,
+  url,
+  dimensions: { width, height },
+  defaultParams,
+  imgixClient,
+}: IBuildGatsbyImageDataBaseArgs) =>
+  ({
+    ...resolverArgs,
+    pluginName: `@imgix/gatsby`,
+    filename: url,
+    sourceMetadata: { width, height, format: 'auto' as ImageFormat },
+    // TODO: use breakpoints helper from gatsby-plugin-image hook
+    breakpoints:
+      resolverArgs.breakpoints ??
+      ImgixClient.targetWidths(
+        resolverArgs.srcSetMinWidth,
+        resolverArgs.srcSetMaxWidth,
+        resolverArgs.widthTolerance,
+      ),
+    formats: ['auto'] as ImageFormat[],
+    generateImageSource: generateImageSource(imgixClient),
+    options: {
+      imgixParams: {
+        ...defaultParams,
+        ...resolverArgs.imgixParams,
+      },
+    },
+  } as const);
+
 const resolveGatsbyImageData = <TSource>({
   resolveUrl,
   imgixClient,
@@ -72,7 +113,7 @@ const resolveGatsbyImageData = <TSource>({
   TSource,
   unknown,
   IImgixGatsbyImageDataArgsResolved
-> => async (rootValue, args): Promise<IGatsbyImageData | undefined> => {
+> => async (rootValue, resolverArgs): Promise<IGatsbyImageData | undefined> => {
   return pipe(
     Do(TE.taskEither)
       .sequenceSL(() => ({
@@ -97,34 +138,17 @@ const resolveGatsbyImageData = <TSource>({
           client: imgixClient,
         }),
       )
-      .letL(
-        'baseImageDataArgs',
-        ({ url, dimensions: { width, height } }) =>
-          ({
-            ...args,
-            pluginName: `@imgix/gatsby`,
-            filename: url,
-            sourceMetadata: { width, height, format: 'auto' as ImageFormat },
-            // TODO: use breakpoints helper from gatsby-plugin-image hook
-            breakpoints:
-              args.breakpoints ??
-              ImgixClient.targetWidths(
-                args.srcSetMinWidth,
-                args.srcSetMaxWidth,
-                args.widthTolerance,
-              ),
-            formats: ['auto'] as ImageFormat[],
-            generateImageSource: generateImageSource(imgixClient),
-            options: {
-              imgixParams: {
-                ...defaultParams,
-                ...args.imgixParams,
-              },
-            },
-          } as const),
+      .letL('baseImageDataArgs', ({ url, dimensions }) =>
+        buildGatsbyImageDataBaseArgs({
+          url,
+          dimensions,
+          resolverArgs,
+          defaultParams,
+          imgixClient,
+        }),
       )
       .bindL('placeholderData', ({ url, baseImageDataArgs }) => {
-        if (args.placeholder === 'blurred') {
+        if (resolverArgs.placeholder === 'blurred') {
           return pipe(
             getLowResolutionImageURL({
               ...baseImageDataArgs,
@@ -132,8 +156,8 @@ const resolveGatsbyImageData = <TSource>({
                 ...baseImageDataArgs,
                 imgixParams: {
                   ...defaultParams,
-                  ...args.imgixParams,
-                  ...args.placeholderImgixParams,
+                  ...resolverArgs.imgixParams,
+                  ...resolverArgs.placeholderImgixParams,
                 },
               },
             }),
@@ -143,13 +167,13 @@ const resolveGatsbyImageData = <TSource>({
             })),
           );
         }
-        if (args.placeholder === 'dominantColor') {
+        if (resolverArgs.placeholder === 'dominantColor') {
           return pipe(
             fetchImgixDominantColor(cache)((params) =>
               imgixClient.buildURL(url, {
                 ...defaultParams,
-                ...args.imgixParams,
-                ...args.placeholderImgixParams,
+                ...resolverArgs.imgixParams,
+                ...resolverArgs.placeholderImgixParams,
                 ...params,
               }),
             ),
@@ -279,25 +303,25 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
 };
 
 type IBuiltinGatsbyImageDataArgs = {
-  layout: IGatsbyImageHelperArgs['layout'];
-  width: IGatsbyImageHelperArgs['width'];
-  height: IGatsbyImageHelperArgs['height'];
-  aspectRatio: IGatsbyImageHelperArgs['aspectRatio'];
+  layout?: IGatsbyImageHelperArgs['layout'];
+  width?: IGatsbyImageHelperArgs['width'];
+  height?: IGatsbyImageHelperArgs['height'];
+  aspectRatio?: IGatsbyImageHelperArgs['aspectRatio'];
   // outputPixelDensities: IGatsbyImageHelperArgs['outputPixelDensities'];
-  breakpoints: IGatsbyImageHelperArgs['breakpoints'];
-  sizes: IGatsbyImageHelperArgs['sizes'];
-  backgroundColor: IGatsbyImageHelperArgs['backgroundColor'];
+  breakpoints?: IGatsbyImageHelperArgs['breakpoints'];
+  sizes?: IGatsbyImageHelperArgs['sizes'];
+  backgroundColor?: IGatsbyImageHelperArgs['backgroundColor'];
 };
 
 type IImgixGatsbyImageDataArgsResolved = {
-  layout: IGatsbyImageHelperArgs['layout'];
-  width: IGatsbyImageHelperArgs['width'];
-  height: IGatsbyImageHelperArgs['height'];
-  aspectRatio: IGatsbyImageHelperArgs['aspectRatio'];
+  layout?: IGatsbyImageHelperArgs['layout'];
+  width?: IGatsbyImageHelperArgs['width'];
+  height?: IGatsbyImageHelperArgs['height'];
+  aspectRatio?: IGatsbyImageHelperArgs['aspectRatio'];
   // outputPixelDensities: IGatsbyImageHelperArgs['outputPixelDensities'];
-  breakpoints: IGatsbyImageHelperArgs['breakpoints'];
-  sizes: IGatsbyImageHelperArgs['sizes'];
-  backgroundColor: IGatsbyImageHelperArgs['backgroundColor'];
+  breakpoints?: IGatsbyImageHelperArgs['breakpoints'];
+  sizes?: IGatsbyImageHelperArgs['sizes'];
+  backgroundColor?: IGatsbyImageHelperArgs['backgroundColor'];
   imgixParams?: ImgixUrlParams;
   placeholderImgixParams?: ImgixUrlParams;
   placeholder?: 'dominantColor' | 'blurred' | 'none';
