@@ -63,25 +63,6 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
     )(),
 });
 
-// TODO: remove
-// export const createImgixUrlSchemaFieldConfig = <TSource, TContext>({
-//   imgixClientOptions,
-//   ...args
-// }: Omit<CreateImgixUrlFieldConfigArgs<TSource>, 'imgixClient'> & {
-//   imgixClientOptions?: Parameters<typeof createImgixURLBuilder>[0];
-// }): ObjectTypeComposerFieldConfigAsObjectDefinition<
-//   TSource,
-//   TContext,
-//   ImgixUrlArgs
-// > => {
-//   return {
-//     ...createImgixUrlFieldConfig({
-//       ...args,
-//       imgixClient: createImgixURLBuilder(imgixClientOptions),
-//     }),
-//   };
-// };
-
 export const createImgixUrlSchemaFieldConfig = createExternalHelper<
   Parameters<typeof createImgixUrlFieldConfig>[0],
   typeof createImgixUrlFieldConfig

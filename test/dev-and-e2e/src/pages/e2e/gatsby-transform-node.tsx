@@ -41,7 +41,6 @@ export const query = graphql`
         imageURL
         imgixImage {
           url(imgixParams: { w: 10, h: 10 })
-          # TODO: use fragments
           fluid {
             aspectRatio
             src
