@@ -1,3 +1,5 @@
+## [1.6.0-rc.4](https://github.com/imgix/gatsby/compare/v1.6.0-rc.3...v1.6.0-rc.4) (2021-05-05)
+
 ## [1.6.0-rc.3](https://github.com/imgix/gatsby/compare/v1.6.0-rc.2...v1.6.0-rc.3) (2021-04-30)
 
 
