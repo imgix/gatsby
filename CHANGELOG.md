@@ -1,3 +1,10 @@
+## [1.6.0-rc.5](https://github.com/imgix/gatsby/compare/v1.6.0-rc.4...v1.6.0-rc.5) (2021-05-05)
+
+
+### Bug Fixes
+
+* use namespace in buildImgixGatsbyTypes ([dd8b5b4](https://github.com/imgix/gatsby/commit/dd8b5b4f6ffd05f6b29c1d62b70347f2f94d3c65))
+
 ## [1.6.0-rc.4](https://github.com/imgix/gatsby/compare/v1.6.0-rc.3...v1.6.0-rc.4) (2021-05-05)
 
 ## [1.6.0-rc.3](https://github.com/imgix/gatsby/compare/v1.6.0-rc.2...v1.6.0-rc.3) (2021-04-30)
