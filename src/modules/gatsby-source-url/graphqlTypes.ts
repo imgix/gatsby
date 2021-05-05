@@ -38,7 +38,6 @@ export const ImgixParamsInputType = ({
         new Set(expects.map((expect) => expect.type)),
       );
 
-      // TODO: Clean up this mess.
       const type = expectsTypes.every((type) => type === 'integer')
         ? 'Int'
         : expectsTypes.every(

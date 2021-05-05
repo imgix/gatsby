@@ -230,13 +230,7 @@ ${urlPathsFound
           imgixImageType,
           rootType,
           fieldTypes,
-          options: {
-          // TODO: handle
-          // namespace,
-          // TODO: handle
-          // prettier-ignore
-        // defaultPlaceholderImgixParams
-      },
+          options: {},
         }) =>
           E.tryCatch(
             () => {

@@ -27,7 +27,6 @@ const urlBuilder = (client: ImgixClient) => ({
       )?.quality
     : undefined;
 
-  // TODO: handle default params
   return client.buildURL(baseUrl, {
     fit: 'min',
     ...(manualQuality && { q: manualQuality }),
@@ -37,7 +36,6 @@ const urlBuilder = (client: ImgixClient) => ({
   });
 };
 
-// TODO: can we pass ar here?
 export type IGetGatsbyImageDataOpts = {
   /**
    * The fully qualified image URL to be transformed. Must be an imgix URL and must start with "http" or "https"
@@ -182,8 +180,7 @@ export function getGatsbyImageData({
     formats: ['auto'],
     breakpoints: breakpointsOverride ?? breakpointsData.breakpoints,
     ...props,
-    // TODO: remove any when Gatsby type issue is fixed
-    ...({ outputPixelDensities: breakpointsData.outputPixelDensities } as any),
+    ...{ outputPixelDensities: breakpointsData.outputPixelDensities },
     layout,
     options: {
       imgixParams: props.imgixParams,
