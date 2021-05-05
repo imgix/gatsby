@@ -54,6 +54,7 @@
         + [`buildFluidImageData`](#buildfluidimagedata)
     * [Third-party integration helpers (e.g. for Gatsby source plugins)](#third-party-integration-helpers-eg-for-gatsby-source-plugins)
         + [createImgixGatsbyTypes](#createimgixgatsbytypes)
+        + [Object builders](#object-builders)
 - [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
 - [Roadmap](#roadmap)
 - [Upgrading from `@imgix/gatsby-transform-url`](#upgrading-from-imgixgatsby-transform-url)
@@ -960,6 +961,150 @@ exports.createSchemaCustomization = async (gatsbyContext, options) => {
   gatsbyContext.actions.createTypes(myNodeType);
 };
 ```
+
+#### Object builders
+
+These low-level functions can be used to build data that can be passed straight to gatsby-image, or gatsby-plugin-image, if necessary. It is recommended to use `createImgixGatsbyTypes` instead of these functions.
+
+##### `buildFluidObject`
+
+```jsx
+import { buildFluidObject } from '@imgix/gatsby/dist/pluginHelpers';
+import Img from 'gatsby-image';
+
+const fluidData = buildFluidObject({
+  // Image url, required. See note in section 'Note about url and imgixClientOptions' about what to do based on what kind of url this is
+  url: 'https://domain.imgix.net/amsterdam.jpg',
+  // Any extra configuration to pass to new ImgixClient from @imgix/js-core (see [here](https://github.com/imgix/js-core#configuration) for more information)
+  imgixClientOptions: {
+    domain: 'domain.imgix.net',
+    secureURLToken: 'secure-token',
+  },
+  // Mimicking GraphQL field args
+  args: {
+    // Imgix params, required (at least {})
+    imgixParams: {},
+    // Imgix params for the placeholder image, required (at least {})
+    placeholderImgixParams: {},
+    // Max image width srcset to generate, required.
+    maxWidth: 8192,
+    // Max image height to generate, optional.
+    maxHeight: 5000,
+    // Custom src set breakpoints to set, optional.
+    srcSetBreakpoints: [100, 200],
+  },
+  // The height in px of the original image, required
+  sourceHeight: 3000,
+  // The width in px of the original image, required
+  sourceWidth: 4000,
+  // Default params to set, required
+  defaultParams: {},
+  // Default placeholder params to set, required
+  defaultPlaceholderParams: {},
+});
+
+// In component later...
+<Img fluid={fluid} />;
+```
+
+##### `buildFixedObject`
+
+```jsx
+import { buildFixedObject } from '@imgix/gatsby/dist/pluginHelpers';
+import Img from 'gatsby-image';
+
+const fixedData = buildFixedObject({
+  // Image url, required. See note in section 'Note about url and imgixClientOptions' about what to do based on what kind of url this is
+  url: 'https://domain.imgix.net/amsterdam.jpg',
+  // Any extra configuration to pass to new ImgixClient from @imgix/js-core (see [here](https://github.com/imgix/js-core#configuration) for more information)
+  imgixClientOptions: {
+    domain: 'domain.imgix.net',
+    secureURLToken: 'secure-token',
+  },
+  // Mimicking GraphQL field args
+  args: {
+    // Imgix params, required (at least {})
+    imgixParams: {},
+    // Imgix params for the placeholder image, required (at least {})
+    placeholderImgixParams: {},
+    // The width of the image in px for the 1x image, required.
+    width: 100,
+    // The height of the image in px for the 1x image, optional
+    height: 200,
+    // The imgix quality param to set, optional.
+    quality: 50,
+  },
+  // The height in px of the original image, required
+  sourceHeight: 3000,
+  // The width in px of the original image, required
+  sourceWidth: 4000,
+  // Default params to set, required
+  defaultParams: {},
+  // Default placeholder params to set, required
+  defaultPlaceholderParams: {},
+});
+
+// In component later...
+<Img fixed={fixed} />;
+```
+
+##### `buildGatsbyImageDataObject`
+
+```jsx
+import { buildGatsbyImageDataObject } from '@imgix/gatsby/dist/pluginHelpers';
+import { GatsbyImage } from 'gatsby-plugin-image';
+
+const gatsbyImageData = buildGatsbyImageDataObject({
+  // Image url, required. See note in section 'Note about url and imgixClientOptions' about what to do based on what kind of url this is
+  url: 'https://domain.imgix.net/amsterdam.jpg',
+  // Any extra configuration to pass to new ImgixClient from @imgix/js-core (see [here](https://github.com/imgix/js-core#configuration) for more information)
+  imgixClientOptions: {
+    domain: 'domain.imgix.net',
+    secureURLToken: 'secure-token',
+  },
+  // Mimicking GraphQL field args
+  resolverArgs: {
+    // The gatsby-plugin-image layout parameter
+    layout: 'fullWidth',
+    // Imgix params, optional
+    imgixParams: {},
+    // Imgix params for the placeholder image, optional
+    placeholderImgixParams: {},
+    // The width or max-width (depending on the layout setting) of the image in px, optional.
+    width: 100,
+    // The height or max-height (depending on the layout setting) of the image in px, optional.
+    height: 200,
+    // The aspect ratio of the srcsets to generate, optional
+    aspectRatio: 2,
+    // Custom srcset breakpoints to use, optional
+    breakpoints: [100, 200],
+    // Custom 'sizes' attribute to set, optional
+    sizes: '100vw',
+    // Custom srcset max width, optional
+    srcSetMaxWidth: 8000,
+    // Custom srcset min width, optional
+    srcSetMinWidth: 100,
+    // The factor used to scale the srcsets up, optional.
+    // E.g. if srcsetMinWidth is 100, then the srcsets are generated as follows
+    // while (width < maxWidth) nextSrcSet = prevSrcSet * (1 + widthTolerance)
+    widthTolerance: 0.08,
+  },
+  // source width and of the uncropped image
+  dimensions: { width: 5000, height: 3000 },
+});
+
+<GatsbyImage image={gatsbyImageData} />;
+```
+
+##### Note about url and imgixClientOptions
+
+Depending on what kind of image URL `url` is set to in the above object helpers, `domain` and `secureURLToken` might have to be passed in `imgixClientOptions`.
+
+If `url` is:
+
+1. an imgix URL, `domain` and `secureURLToken` are likely not required. If `domain` is set, the source must be a Web Proxy Source. If "secure URLs" are enabled on the imgix source, or the source is a Web Proxy Source, `secureURLToken` is required.
+2. a path (e.g. just `/image.jpg`), `domain` is required, and the domain should point to an imgix S3, GCP, Azure, or Web Folder source. `secureURLToken` is only required if "secure URLs" are enabled on the imgix source.
+3. not an imgix URL, `domain` and `secureURLToken` are required, and `domain` should point to a Web Proxy imgix source.
 
 ## What is the `ixlib` Param on Every Request?
 
