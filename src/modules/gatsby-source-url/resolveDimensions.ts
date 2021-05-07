@@ -31,7 +31,7 @@ export const resolveDimensions = <TSource>({
     Error,
     { width: number; height: number }
   > = pipe(
-    sequenceSO({ width: manualHeight, height: manualHeight }),
+    sequenceSO({ width: manualWidth, height: manualHeight }),
     O.fold(
       () => TE.left(new Error(`Couldn't find manual width on obj`)),
       TE.right,
