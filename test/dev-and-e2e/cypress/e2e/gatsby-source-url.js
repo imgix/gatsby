@@ -30,4 +30,8 @@ describe("gatsby-source-url", () => {
         expect($img[0].naturalWidth).to.be.greaterThan(0)
       })
   })
+
+  it(`can import plugin helpers without the browser breaking`, () => {
+    cy.visit("/e2e/plugin-helpers")
+  })
 })
