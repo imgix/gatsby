@@ -1,3 +1,6 @@
+import * as fetchImgixMetadataModule from '../../src/api/fetchImgixMetadata';
+import { createImgixGatsbyTypes } from '../../src/pluginHelpers';
+
 // test('should be able to call createImgixUrlFieldConfig with no domain and resolve a url', async () => {
 //   const config = createImgixUrlSchemaFieldConfig({
 //     resolveUrl: (node) => (node as any).url,
@@ -20,13 +23,11 @@
 
 //   expect(resolved).toMatch(/^https:\/\/assets.imgix.net\/amsterdam.jpg\?/);
 // });
+
 describe('plugin helpers', () => {
   describe('resolveWidth and resolveHeight', () => {
     it('should not make a request to imgix when resolveWidth and resolveHeight passed', async () => {
-      const fetchImgixMetadataModule = require('../../src/api/fetchImgixMetadata');
       const spy = jest.spyOn(fetchImgixMetadataModule, 'fetchImgixMetadata');
-
-      const { createImgixGatsbyTypes } = require('../../src/pluginHelpers');
 
       const types = createImgixGatsbyTypes({
         cache: mockGatsbyCache as any,
@@ -49,11 +50,9 @@ describe('plugin helpers', () => {
 
       jest.resetModules();
     });
-    it('should make a request to imgix when resolveWidth and resolveHeight not passed', async () => {
-      const fetchImgixMetadataModule = require('../../src/api/fetchImgixMetadata');
-      const spy = jest.spyOn(fetchImgixMetadataModule, 'fetchImgixMetadata');
 
-      const { createImgixGatsbyTypes } = require('../../src/pluginHelpers');
+    it('should make a request to imgix when resolveWidth and resolveHeight not passed', async () => {
+      const spy = jest.spyOn(fetchImgixMetadataModule, 'fetchImgixMetadata');
 
       const types = createImgixGatsbyTypes({
         cache: mockGatsbyCache as any,
@@ -73,6 +72,43 @@ describe('plugin helpers', () => {
       expect(spy).toBeCalled();
 
       jest.resetModules();
+    });
+
+    it('should resolve dimensions as given', async () => {
+      const width = 200;
+      const height = 100;
+      const aspectRatio = width / height;
+
+      const types = createImgixGatsbyTypes({
+        cache: mockGatsbyCache as any,
+        resolveUrl: () => 'https://assets.imgix.net/amsterdam.jpg',
+        resolveWidth: () => width,
+        resolveHeight: () => height,
+      });
+
+      const fluid = await types.fields.fluid.resolve?.(
+        {},
+        { imgixParams: {} },
+        {},
+        {} as any,
+      );
+      const fixed = await types.fields.fixed.resolve?.(
+        {},
+        { imgixParams: {} },
+        {},
+        {} as any,
+      );
+      const gatsbyImageData = await types.fields.gatsbyImageData.resolve?.(
+        {},
+        { imgixParams: {} },
+        {},
+        {} as any,
+      );
+
+      expect(fluid.aspectRatio).toBe(aspectRatio);
+      expect(fixed.width / fixed.height).toBe(aspectRatio);
+      expect(gatsbyImageData.width).toBe(width);
+      expect(gatsbyImageData.height).toBe(height);
     });
   });
 });
