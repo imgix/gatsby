@@ -1,4 +1,3 @@
-import ImgixClient from '@imgix/js-core';
 import { stripIndent } from 'common-tags';
 import { Do } from 'fp-ts-contrib/lib/Do';
 import { pipe } from 'fp-ts/function';
@@ -10,7 +9,6 @@ import {
   getLowResolutionImageURL,
   IGatsbyImageData,
   IGatsbyImageHelperArgs,
-  ImageFormat,
 } from 'gatsby-plugin-image';
 import { getGatsbyImageFieldConfig } from 'gatsby-plugin-image/graphql-utils';
 import { GraphQLFieldResolver } from 'gatsby/graphql';
@@ -33,67 +31,10 @@ import {
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
-import { IImgixParams, ImgixUrlParams } from '../../publicTypes';
+import { IImgixParams } from '../../publicTypes';
+import { buildGatsbyImageDataBaseArgs } from './buildGatsbyImageDataBaseArgs';
+import { IImgixGatsbyImageDataArgsResolved } from './privateTypes';
 import { resolveDimensions } from './resolveDimensions';
-
-const generateImageSource = (
-  client: IImgixURLBuilder,
-): IGatsbyImageHelperArgs['generateImageSource'] => (
-  imageName,
-  width,
-  height,
-  format,
-  fit,
-  opts = {},
-) => {
-  const src = client.buildURL(imageName, {
-    w: width,
-    h: height,
-    ...(typeof opts.imgixParams === 'object' && opts.imgixParams),
-  });
-  return { width, height, format: 'auto', src };
-};
-
-export type IBuildGatsbyImageDataBaseArgs = {
-  resolverArgs: IImgixGatsbyImageDataArgsResolved;
-  url: string;
-  dimensions: {
-    width: number;
-    height: number;
-  };
-  defaultParams?: Partial<IImgixParams>;
-  imgixClient: IImgixURLBuilder;
-};
-
-export const buildGatsbyImageDataBaseArgs = ({
-  resolverArgs,
-  url,
-  dimensions: { width, height },
-  defaultParams,
-  imgixClient,
-}: IBuildGatsbyImageDataBaseArgs) =>
-  ({
-    ...resolverArgs,
-    pluginName: `@imgix/gatsby`,
-    filename: url,
-    sourceMetadata: { width, height, format: 'auto' as ImageFormat },
-    // TODO: use breakpoints helper from gatsby-plugin-image hook
-    breakpoints:
-      resolverArgs.breakpoints ??
-      ImgixClient.targetWidths(
-        resolverArgs.srcSetMinWidth,
-        resolverArgs.srcSetMaxWidth,
-        resolverArgs.widthTolerance,
-      ),
-    formats: ['auto'] as ImageFormat[],
-    generateImageSource: generateImageSource(imgixClient),
-    options: {
-      imgixParams: {
-        ...defaultParams,
-        ...resolverArgs.imgixParams,
-      },
-    },
-  } as const);
 
 const resolveGatsbyImageData = <TSource>({
   resolveUrl,
@@ -311,23 +252,6 @@ type IBuiltinGatsbyImageDataArgs = {
   breakpoints?: IGatsbyImageHelperArgs['breakpoints'];
   sizes?: IGatsbyImageHelperArgs['sizes'];
   backgroundColor?: IGatsbyImageHelperArgs['backgroundColor'];
-};
-
-type IImgixGatsbyImageDataArgsResolved = {
-  layout?: IGatsbyImageHelperArgs['layout'];
-  width?: IGatsbyImageHelperArgs['width'];
-  height?: IGatsbyImageHelperArgs['height'];
-  aspectRatio?: IGatsbyImageHelperArgs['aspectRatio'];
-  // outputPixelDensities: IGatsbyImageHelperArgs['outputPixelDensities'];
-  breakpoints?: IGatsbyImageHelperArgs['breakpoints'];
-  sizes?: IGatsbyImageHelperArgs['sizes'];
-  backgroundColor?: IGatsbyImageHelperArgs['backgroundColor'];
-  imgixParams?: ImgixUrlParams;
-  placeholderImgixParams?: ImgixUrlParams;
-  placeholder?: 'dominantColor' | 'blurred' | 'none';
-  widthTolerance?: number;
-  srcSetMinWidth?: number;
-  srcSetMaxWidth?: number;
 };
 
 export const createImgixGatsbyImageSchemaFieldConfig = createExternalHelper<
