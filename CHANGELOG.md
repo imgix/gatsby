@@ -1,3 +1,10 @@
+### [1.6.1](https://github.com/imgix/gatsby/compare/v1.6.0...v1.6.1) (2021-05-07)
+
+
+### Bug Fixes
+
+* allow browser helpers to be loaded from a browser build ([92bef5e](https://github.com/imgix/gatsby/commit/92bef5e183bfb376a2df03e38e5ab7c4c040a25f))
+
 ## [1.6.0](https://github.com/imgix/gatsby/compare/v1.5.0...v1.6.0) (2021-05-05)
 
 
