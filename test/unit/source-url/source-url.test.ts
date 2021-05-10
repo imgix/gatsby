@@ -103,6 +103,26 @@ describe('createResolvers', () => {
         expect(url).toMatch('fp-y=0.5');
       },
     });
+    test(`integer and float parameters are set correctly`, async () => {
+      const result = await resolveField({
+        field: 'gatsbyImageData',
+        url: 'amsterdam.jpg',
+        fieldParams: {
+          imgixParams: {
+            blendH: 0.5, // type has both unit_scalar and integer
+            blendW: 10, // type has both unit_scalar and integer
+            txtSize: 1, // type is integer only
+            fpY: 0.5, // type is unit_scalar only
+          },
+        },
+      });
+
+      const url = result.images.fallback.src;
+      expect(url).toMatch('blend-h=0.5');
+      expect(url).toMatch('blend-w=10');
+      expect(url).toMatch('txt-size=1');
+      expect(url).toMatch('fp-y=0.5');
+    });
   });
   describe('url field', () => {
     it('applies imgixParams correctly', async () => {
