@@ -33,6 +33,7 @@ import {
 } from '../../common/utils';
 import { IImgixParams } from '../../publicTypes';
 import { buildGatsbyImageDataBaseArgs } from './buildGatsbyImageDataBaseArgs';
+import { unTransformParams } from './graphqlTypes';
 import { IImgixGatsbyImageDataArgsResolved } from './privateTypes';
 import { resolveDimensions } from './resolveDimensions';
 
@@ -54,7 +55,10 @@ const resolveGatsbyImageData = <TSource>({
   TSource,
   unknown,
   IImgixGatsbyImageDataArgsResolved
-> => async (rootValue, resolverArgs): Promise<IGatsbyImageData | undefined> => {
+> => async (
+  rootValue,
+  unsafeResolverArgs,
+): Promise<IGatsbyImageData | undefined> => {
   return pipe(
     Do(TE.taskEither)
       .sequenceSL(() => ({
@@ -70,6 +74,13 @@ const resolveGatsbyImageData = <TSource>({
           TE.fromTask,
         ),
       }))
+      .let('safeResolverArgs', {
+        ...unsafeResolverArgs,
+        imgixParams: unTransformParams(unsafeResolverArgs.imgixParams ?? {}),
+        placeholderImgixParams: unTransformParams(
+          unsafeResolverArgs.placeholderImgixParams ?? {},
+        ),
+      })
       .bindL('dimensions', ({ url, manualWidth, manualHeight }) =>
         resolveDimensions({
           url,
@@ -79,52 +90,55 @@ const resolveGatsbyImageData = <TSource>({
           client: imgixClient,
         }),
       )
-      .letL('baseImageDataArgs', ({ url, dimensions }) =>
+      .letL('baseImageDataArgs', ({ url, dimensions, safeResolverArgs }) =>
         buildGatsbyImageDataBaseArgs({
           url,
           dimensions,
-          resolverArgs,
+          resolverArgs: safeResolverArgs,
           defaultParams,
           imgixClient,
         }),
       )
-      .bindL('placeholderData', ({ url, baseImageDataArgs }) => {
-        if (resolverArgs.placeholder === 'blurred') {
-          return pipe(
-            getLowResolutionImageURL({
-              ...baseImageDataArgs,
-              options: {
+      .bindL(
+        'placeholderData',
+        ({ url, baseImageDataArgs, safeResolverArgs }) => {
+          if (safeResolverArgs.placeholder === 'blurred') {
+            return pipe(
+              getLowResolutionImageURL({
                 ...baseImageDataArgs,
-                imgixParams: {
-                  ...defaultParams,
-                  ...resolverArgs.imgixParams,
-                  ...resolverArgs.placeholderImgixParams,
+                options: {
+                  ...baseImageDataArgs,
+                  imgixParams: {
+                    ...defaultParams,
+                    ...safeResolverArgs.imgixParams,
+                    ...safeResolverArgs.placeholderImgixParams,
+                  },
                 },
-              },
-            }),
-            fetchImgixBase64Image(cache),
-            TE.map((base64Data) => ({
-              placeholder: { fallback: base64Data },
-            })),
-          );
-        }
-        if (resolverArgs.placeholder === 'dominantColor') {
-          return pipe(
-            fetchImgixDominantColor(cache)((params) =>
-              imgixClient.buildURL(url, {
-                ...defaultParams,
-                ...resolverArgs.imgixParams,
-                ...resolverArgs.placeholderImgixParams,
-                ...params,
               }),
-            ),
-            TE.map((dominantColor) => ({
-              backgroundColor: dominantColor,
-            })),
-          );
-        }
-        return TE.right({});
-      })
+              fetchImgixBase64Image(cache),
+              TE.map((base64Data) => ({
+                placeholder: { fallback: base64Data },
+              })),
+            );
+          }
+          if (safeResolverArgs.placeholder === 'dominantColor') {
+            return pipe(
+              fetchImgixDominantColor(cache)((params) =>
+                imgixClient.buildURL(url, {
+                  ...defaultParams,
+                  ...safeResolverArgs.imgixParams,
+                  ...safeResolverArgs.placeholderImgixParams,
+                  ...params,
+                }),
+              ),
+              TE.map((dominantColor) => ({
+                backgroundColor: dominantColor,
+              })),
+            );
+          }
+          return TE.right({});
+        },
+      )
       .return(({ baseImageDataArgs, placeholderData }) => ({
         ...generateImageData({
           ...baseImageDataArgs,
