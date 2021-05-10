@@ -1,3 +1,10 @@
+### [1.6.2](https://github.com/imgix/gatsby/compare/v1.6.1...v1.6.2) (2021-05-10)
+
+
+### Bug Fixes
+
+* **gatsby-image-data:** untransform imgix params to fix dash imgix params ([08a05c5](https://github.com/imgix/gatsby/commit/08a05c5d1e7b3f9239ad245ddfe100799f2a509c)), closes [#115](https://github.com/imgix/gatsby/issues/115)
+
 ### [1.6.1](https://github.com/imgix/gatsby/compare/v1.6.0...v1.6.1) (2021-05-07)
 
 
