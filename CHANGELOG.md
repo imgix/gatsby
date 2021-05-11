@@ -1,3 +1,10 @@
+### [1.6.3](https://github.com/imgix/gatsby/compare/v1.6.2...v1.6.3) (2021-05-11)
+
+
+### Bug Fixes
+
+* correctly resolve dimensions from resolveWidth and resolveHeight ([44a8af9](https://github.com/imgix/gatsby/commit/44a8af9a5b387702ec4de98e229d941dac9f1688))
+
 ### [1.6.2](https://github.com/imgix/gatsby/compare/v1.6.1...v1.6.2) (2021-05-10)
 
 
