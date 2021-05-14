@@ -1,7 +1,7 @@
 {
   "version": "1.6.3",
   "name": "@imgix/gatsby",
-  "description": "A Gatsby plugin to integrate with imgix's APIs",
+  "description": "The official imgix plugin to apply imgix transformations and optimisations to images in Gatsby at build-time or request-time",
   "author": "Frederick Fogerty <frederick@imgix.com>",
   "license": "BSD-2-Clause",
   "repository": "https://github.com/imgix/gatsby.git",
