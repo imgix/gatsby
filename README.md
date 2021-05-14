@@ -98,7 +98,7 @@ To find what part of this usage guide you should read, select the use case below
 
 - I have images provided by a **Gatsby source** (e.g. Contentful, Prismic) 👉 [graphql transform node API](#graphql-transform-API)
 - My images are statically defined at build time 👉 [graphql `imgixImage` API](#graphql-imgiximage-api)
-- My images are set dynamically (e.g. loaded from REST API on client) 👉 [url tranform function](#url-transform-function)
+- My images are set dynamically (e.g. loaded from REST API on client) 👉 [url transform function](#url-transform-function)
 
 ### GraphQL transform API
 
