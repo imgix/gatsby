@@ -4,8 +4,8 @@ import { createImgixURLBuilder } from './common/imgix-js-core-wrapper';
 import {
   buildGatsbyImageDataBaseArgs,
   IBuildGatsbyImageDataBaseArgs,
-} from './modules/gatsby-source-url/buildGatsbyImageDataBaseArgs';
-import * as internalObjectBuilders from './modules/gatsby-source-url/objectBuilders';
+} from './modules/gatsby-plugin/buildGatsbyImageDataBaseArgs';
+import * as internalObjectBuilders from './modules/gatsby-plugin/objectBuilders';
 
 export const buildFluidObject = ({
   imgixClientOptions,

@@ -13,7 +13,7 @@ import {
 } from '../../common/imgix-js-core-wrapper';
 import { findPossibleURLsInNode } from '../../common/utils';
 import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
-import { buildImgixGatsbyTypes } from '../gatsby-source-url/typeBuilder';
+import { buildImgixGatsbyTypes } from './typeBuilder';
 
 function isStringArray(value: unknown): value is string[] {
   return (
