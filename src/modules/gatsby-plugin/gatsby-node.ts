@@ -5,8 +5,8 @@ import { ICreateSchemaCustomizationHook, PatchedPluginOptions } from 'gatsby';
 import { GraphQLNonNull, GraphQLString } from 'gatsby/graphql';
 import { PathReporter } from 'io-ts/PathReporter';
 import * as R from 'ramda';
-import readPkgUp from 'read-pkg-up';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
+import { VERSION } from '../../common/constants';
 import {
   createImgixURLBuilder,
   IImgixURLBuilder,
@@ -86,13 +86,6 @@ const decodeOptionsE = (options: PatchedPluginOptions<IImgixGatsbyOptions>) =>
     }),
   );
 
-const getPackageVersionE = () =>
-  pipe(
-    // TODO: remove and use constant
-    readPkgUp.sync({ cwd: __dirname })?.packageJson?.version,
-    E.fromNullable(new Error('Could not read package version.')),
-  );
-
 const setupImgixClient = ({
   options,
   packageVersion,
@@ -117,7 +110,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
     Do(E.either)
       .bind('options', decodeOptionsE(_options))
 
-      .bind('packageVersion', getPackageVersionE())
+      .let('packageVersion', VERSION)
       .letL('imgixClient', ({ options, packageVersion }) =>
         setupImgixClient({ options, packageVersion }),
       )
