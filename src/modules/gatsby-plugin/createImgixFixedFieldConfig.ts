@@ -54,9 +54,8 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
   args: {
     width: {
       type: 'Int',
-      // TODO: refactor to TS default args for type safety and functionality ()
       description: `The fixed image width to render, in px.`,
-      defaultValue: DEFAULT_FIXED_WIDTH, // TODO: use image source width?
+      defaultValue: DEFAULT_FIXED_WIDTH,
     },
     height: {
       type: 'Int',
