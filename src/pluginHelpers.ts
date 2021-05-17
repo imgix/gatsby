@@ -1,5 +1,5 @@
 import { createImgixURLBuilder } from './common/imgix-js-core-wrapper';
-import { buildImgixGatsbyTypes } from './modules/gatsby-source-url/typeBuilder';
+import { buildImgixGatsbyTypes } from './modules/gatsby-plugin/typeBuilder';
 
 export const createImgixGatsbyTypes = ({
   imgixClientOptions,
