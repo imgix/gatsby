@@ -17,3 +17,25 @@ export type IImgixGatsbyImageDataArgsResolved = {
   srcSetMinWidth?: number;
   srcSetMaxWidth?: number;
 };
+
+/**
+ * "Resolved" version of ImgixFluidArgs in publicTypes.ts. "Resolved" here means that the default parameters specified in the GraphQL type have been applied, so we can be certain that some arguments have a specific type.
+ */
+export interface ImgixFluidArgsResolved {
+  maxWidth: number;
+  maxHeight?: number;
+  srcSetBreakpoints?: number[];
+  imgixParams: ImgixUrlParams;
+  placeholderImgixParams: ImgixUrlParams;
+}
+
+/**
+ * "Resolved" version of ImgixFixedArgs in publicTypes.ts. "Resolved" here means that the default parameters specified in the GraphQL type have been applied, so we can be certain that some arguments have a specific type.
+ */
+export interface ImgixFixedArgsResolved {
+  width: number;
+  height?: number;
+  quality?: number;
+  imgixParams: ImgixUrlParams;
+  placeholderImgixParams: ImgixUrlParams;
+}
