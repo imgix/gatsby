@@ -16,9 +16,10 @@ import {
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
-import { IImgixParams, ImgixFluidArgsResolved } from '../../publicTypes';
+import { IImgixParams } from '../../publicTypes';
 import { unTransformParams } from './graphqlTypes';
 import { buildFluidObject } from './objectBuilders';
+import { ImgixFluidArgsResolved } from './privateTypes';
 import { resolveDimensions } from './resolveDimensions';
 
 const DEFAULT_FLUID_MAX_WIDTH = 8192;

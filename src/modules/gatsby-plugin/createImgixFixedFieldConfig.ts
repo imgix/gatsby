@@ -16,9 +16,10 @@ import {
   resolveUrlFromSourceData,
   taskEitherFromSourceDataResolver,
 } from '../../common/utils';
-import { IImgixParams, ImgixFixedArgsResolved } from '../../publicTypes';
+import { IImgixParams } from '../../publicTypes';
 import { unTransformParams } from './graphqlTypes';
 import { buildImgixFixed } from './objectBuilders';
+import { ImgixFixedArgsResolved } from './privateTypes';
 import { resolveDimensions } from './resolveDimensions';
 
 export const DEFAULT_FIXED_WIDTH = 8192;

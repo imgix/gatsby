@@ -2,13 +2,9 @@ import { FixedObject, FluidObject } from 'gatsby-image';
 import * as R from 'ramda';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import { log, trace } from '../../common/log';
-import {
-  IImgixParams,
-  ImgixFixedArgsResolved,
-  ImgixFluidArgsResolved,
-  ImgixUrlParams,
-} from '../../publicTypes';
+import { IImgixParams, ImgixUrlParams } from '../../publicTypes';
 import { DEFAULT_FIXED_WIDTH } from './createImgixFixedFieldConfig';
+import { ImgixFixedArgsResolved, ImgixFluidArgsResolved } from './privateTypes';
 export type BuildImgixFluidArgs = {
   client: IImgixURLBuilder;
   url: string;

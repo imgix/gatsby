@@ -116,31 +116,12 @@ export interface ImgixFluidArgs {
   placeholderImgixParams?: ImgixUrlParams;
 }
 
-// Internal use only
-// TODO: refactor to private types (along with fixed args below)
-export interface ImgixFluidArgsResolved {
-  maxWidth: number;
-  maxHeight?: number;
-  srcSetBreakpoints?: number[];
-  imgixParams: ImgixUrlParams;
-  placeholderImgixParams: ImgixUrlParams;
-}
-
 export interface ImgixFixedArgs {
   width?: number;
   height?: number;
   quality?: number;
   imgixParams?: ImgixUrlParams;
   placeholderImgixParams?: ImgixUrlParams;
-}
-
-// Internal use only
-export interface ImgixFixedArgsResolved {
-  width: number;
-  height?: number;
-  quality?: number;
-  imgixParams: ImgixUrlParams;
-  placeholderImgixParams: ImgixUrlParams;
 }
 
 export type IFieldOption = IFieldOptionsSingleUrl | IFieldOptionsMultipleUrls;
