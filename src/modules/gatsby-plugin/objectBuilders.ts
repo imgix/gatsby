@@ -96,7 +96,6 @@ export const buildFluidObject = ({
     srcWebp: srcWebp,
     srcSet: srcset,
     srcSetWebp: srcsetWebp,
-    // TODO: use max-width here
     sizes: '(min-width: 8192px) 8192px, 100vw',
   };
 };
