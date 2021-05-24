@@ -491,6 +491,21 @@ describe('createResolvers', () => {
       // Bit flaky here to hard code a colour value, but I wanted to make sure that it was different to the above test
       expect(result.backgroundColor).toMatch('#348ff2');
     });
+
+    it('should override w and h from imgixParams argument', async () => {
+      const imgixParams = { w: 2, h: 1 };
+      const result = await resolveField({
+        field: 'gatsbyImageData',
+        url: 'amsterdam.jpg',
+        fieldParams: {
+          imgixParams,
+        },
+      });
+      const src = new URL(result.images.fallback.src);
+
+      expect(src.searchParams.get('w')).not.toBe(imgixParams.w.toString());
+      expect(src.searchParams.get('h')).not.toBe(imgixParams.h.toString());
+    });
   });
 });
 
