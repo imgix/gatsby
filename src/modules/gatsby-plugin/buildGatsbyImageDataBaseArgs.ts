@@ -15,9 +15,9 @@ const generateImageSource = (
   opts = {},
 ) => {
   const src = client.buildURL(imageName, {
+    ...(typeof opts.imgixParams === 'object' && opts.imgixParams),
     w: width,
     h: height,
-    ...(typeof opts.imgixParams === 'object' && opts.imgixParams),
   });
   return { width, height, format: 'auto', src };
 };
