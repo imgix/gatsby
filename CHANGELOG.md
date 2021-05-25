@@ -1,3 +1,10 @@
+### [1.6.6](https://github.com/imgix/gatsby/compare/v1.6.5...v1.6.6) (2021-05-25)
+
+
+### Bug Fixes
+
+* override w and h params in gatsbyImageData ([fbb4878](https://github.com/imgix/gatsby/commit/fbb48786afab7a78906ae0e96d0a2234c2c5c39a))
+
 ### [1.6.5](https://github.com/imgix/gatsby/compare/v1.6.4...v1.6.5) (2021-05-17)
 
 ### [1.6.4](https://github.com/imgix/gatsby/compare/v1.6.3...v1.6.4) (2021-05-14)
