@@ -2,6 +2,7 @@ import readPkg from 'read-pkg';
 import {
   buildFixedImageData,
   buildFluidImageData,
+  getGatsbyImageData,
 } from '../../../src/modules/gatsby-transform-url';
 import {
   IGatsbyImageFixedData,
@@ -341,6 +342,18 @@ describe('gatsby-transform-url', () => {
 
       expect(actual.src).toMatch(`/image.jpg%3Fabc%3Ffoo`);
       expect(actual.srcSet).toMatch(`/image.jpg%3Fabc%3Ffoo`);
+    });
+  });
+  describe('getGatsbyImageData', () => {
+    it('should return a valid URL', () => {
+      const actual = getGatsbyImageData({
+        src: 'https://foo.imgix.com/image.jpg',
+        layout: 'fullWidth',
+        aspectRatio: 1,
+      });
+      expect(actual.images.fallback?.src).toMatch(
+        'https://foo.imgix.com/image.jpg',
+      );
     });
   });
 });
