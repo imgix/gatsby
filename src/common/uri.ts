@@ -14,7 +14,11 @@ export const parseHostE = (uri: string) =>
 /**
  * Parse the path from a URL. Can fail - for an FP type, use parsePathE
  */
-export const parsePath = (uri: string): string => new Uri(uri).path();
+export const parsePath = (_uri: string): string => {
+  const uri = new Uri(_uri);
+  return uri.path() + uri.query();
+};
+
 export const parsePathE = (uri: string) =>
   E.tryCatch(
     () => parsePath(uri),
