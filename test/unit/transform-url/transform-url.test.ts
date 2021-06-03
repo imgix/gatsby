@@ -345,7 +345,7 @@ describe('gatsby-transform-url', () => {
     });
   });
   describe('getGatsbyImageData', () => {
-    it('should return a valid URL', () => {
+    test('should return a valid URL', () => {
       const actual = getGatsbyImageData({
         src: 'https://foo.imgix.com/image.jpg',
         layout: 'fullWidth',
@@ -354,6 +354,16 @@ describe('gatsby-transform-url', () => {
       expect(actual.images.fallback?.src).toMatch(
         'https://foo.imgix.com/image.jpg',
       );
+    });
+
+    test('should not truncate URL after ?', () => {
+      const actual = getGatsbyImageData({
+        src: 'https://test.imgix.net/image.jpg?abc?foo',
+        layout: 'fullWidth',
+        aspectRatio: 1,
+      });
+
+      expect(actual.images.fallback?.src).toMatch(`/image.jpg%3Fabc%3Ffoo`);
     });
   });
 });
