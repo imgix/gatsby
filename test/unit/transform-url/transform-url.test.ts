@@ -135,6 +135,19 @@ describe('gatsby-transform-url', () => {
       expect(actual.src).not.toMatch(`fm=webp`);
       expect(actual.srcSet).not.toMatch(`fm=webp`);
     });
+
+    test('should not truncate URL after ?', () => {
+      const actual = buildFixedImageData(
+        'https://test.imgix.net/image.jpg?abc?foo',
+        {
+          w: 1,
+          h: 1,
+        },
+      );
+
+      expect(actual.src).toMatch(`/image.jpg%3Fabc%3Ffoo`);
+      expect(actual.srcSet).toMatch(`/image.jpg%3Fabc%3Ffoo`);
+    });
   });
   describe('buildFluidImageData', () => {
     test('should return an imgix src', () => {
@@ -316,6 +329,18 @@ describe('gatsby-transform-url', () => {
 
       expect(actual.src).not.toMatch(`fm=webp`);
       expect(actual.srcSet).not.toMatch(`fm=webp`);
+    });
+
+    test('should not truncate URL after ?', () => {
+      const actual = buildFluidImageData(
+        'https://test.imgix.net/image.jpg?abc?foo',
+        {
+          ar: 1,
+        },
+      );
+
+      expect(actual.src).toMatch(`/image.jpg%3Fabc%3Ffoo`);
+      expect(actual.srcSet).toMatch(`/image.jpg%3Fabc%3Ffoo`);
     });
   });
 });
