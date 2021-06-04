@@ -1,3 +1,10 @@
+### [1.6.7](https://github.com/imgix/gatsby/compare/v1.6.6...v1.6.7) (2021-06-04)
+
+
+### Bug Fixes
+
+* don't truncate url at ? ([26c981b](https://github.com/imgix/gatsby/commit/26c981bc755fe492ed135ee17190139d4011a41c))
+
 ### [1.6.6](https://github.com/imgix/gatsby/compare/v1.6.5...v1.6.6) (2021-05-25)
 
 
