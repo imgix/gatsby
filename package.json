@@ -85,7 +85,7 @@
     "graphql-tag": "2.11.0",
     "is-base64": "1.1.0",
     "jest": "26.6.3",
-    "marked": "2.0.1",
+    "marked": "2.0.7",
     "msync": "2.5.10",
     "prettier": "2.2.1",
     "react": "17.0.1",
