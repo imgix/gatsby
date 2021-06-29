@@ -473,14 +473,14 @@ module.exports = {
       resolve: `@imgix/gatsby`,
       options: {
         domain: '<your imgix domain, e.g. acme.imgix.net>',
-        defaultImgixParams: ['auto', 'format'],
+        defaultImgixParams: { auto: ['compress', 'format'] },
       },
     },
   ],
 };
 ```
 
-Setting `auto: ['format', 'compress']` is highly recommended. This will re-format the image to the format that is best optimized for your browser, such as WebP. It will also reduce unnecessary wasted file size, such as transparency on a non-transparent image. More information about the auto parameter can be found [here](https://docs.imgix.com/apis/url/auto/auto).
+Setting `{ auto: ['compress', 'format'] }` is highly recommended. This will re-format the image to the format that is best optimized for your browser, such as WebP. It will also reduce unnecessary wasted file size, such as transparency on a non-transparent image. More information about the auto parameter can be found [here](https://docs.imgix.com/apis/url/auto/auto).
 
 #### ✨ New ✨ GatsbyImage support
 
