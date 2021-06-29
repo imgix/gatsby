@@ -672,27 +672,26 @@ This plugin supports the new frontend Gatsby-plugin-image component. To use the 
 import { ImgixGatsbyImage } from '@imgix/gatsby';
 
 export const MyPageComponent = () => {
-  return <ImgixGatsbyImage
-    // Must be an imgix URL
-    src="https://assets.imgix.net/amsterdam.jpg"
+  return (
+    <ImgixGatsbyImage
+      // Must be an imgix URL
+      src="https://assets.imgix.net/amsterdam.jpg"
+      // This can be used to set imgix params
+      imgixParams={{ crop: 'faces' }}
+      // These are passed through to the gatsby-plugin-image component
+      layout="constrained"
+      width={768}
+      // Set either
+      aspectRatio={16 / 9}
+      // or
+      sourceWidth={5000}
+      sourceHeight={4000}
 
-    // This can be used to set imgix params
-    imgixParams={ crop: 'faces' }
-
-    // These are passed through to the gatsby-plugin-image component
-    layout="constrained"
-    width={768}
-
-    // Set either
-    aspectRatio={16 / 9}
-    // or
-    sourceWidth={5000}
-    sourceHeight={4000}
-
-    // Any other props offered by the gatsby-plugin-image component are
-    // supported and passed straight through to the component
-  >
-}
+      // Any other props offered by the gatsby-plugin-image component are
+      // supported and passed straight through to the component
+    />
+  );
+};
 ```
 
 If you would like more control over the data flow, you can also use the hook that this package exports - `getGatsbyImageData` - like so:
