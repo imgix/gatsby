@@ -56,6 +56,7 @@
         + [createImgixGatsbyTypes](#createimgixgatsbytypes)
         + [Object builders](#object-builders)
 - [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
+- [Customized the GraphQL type warning](#customized-the-graphql-type-warning)
 - [Roadmap](#roadmap)
 - [Upgrading from `@imgix/gatsby-transform-url`](#upgrading-from-imgixgatsby-transform-url)
 - [Contributors](#contributors)
@@ -1125,6 +1126,22 @@ To disable this, set `includeLibraryParam` in the third parameter to `false` whe
   )}
 />
 ```
+
+## Customized the GraphQL type warning
+
+gatsby-imgix customizes existing GraphQl types in order to expose our own types on those same fields. This allows for a more seamless integration with Gatsby. It also means that you might see a warning like this:
+
+```console
+warn Plugin `@imgix/gatsby` has customized the GraphQL type `ShopifyCollectionImage`, which has already been defined by the plugin `gatsby-source-shopify`. This could potentially cause conflicts.
+```
+
+This warning can be safely ignored, ie this should not impact your build in any way.
+
+This warning stems from the fact that [type inference](https://www.gatsbyjs.com/docs/reference/graphql-data-layer/schema-customization/#automatic-type-inference) is "not allowed" in Gatsby plugins. In other words, Gatsby assumes that plugins are not modifying types that they do not own. Therefore it logs a warning whenever types are modified by a plugin that did not create them.
+
+Gatsby does this in an effort to reduce the likelihood installing one plugin can break an entire build. If one plugin can change any plugin's type, it can break any plugin in the build. gatsby-imgix only modifies types that the user explicitly denotes as their image types. So we don't run the risk of overwriting or modifying types outside a source's explicitly denoted image types.
+
+You can read more about this if you’re interested in [this issue](https://github.com/imgix/gatsby/issues/129).
 
 ## Roadmap
 
