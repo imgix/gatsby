@@ -1145,6 +1145,51 @@ Gatsby does this in an effort to reduce the likelihood installing one plugin can
 
 You can read more about this if you’re interested in [this issue](https://github.com/imgix/gatsby/issues/129).
 
+### Multiple imgix Sources
+
+You might find yourself with multiple imgix sources and wondering how you could use them at the same time with this plugin. There are a few possibilities for this, which will be outlined below.
+
+Any number of sources can be used simultaneously with the URL transform API. The caveats with this approach is that you don't get the benefits of the GraphQL APIs (blur-up, etc), and that the sources must not be Web Proxy sources (for these you must use one of the GraphQL APIs).
+
+Example:
+
+```jsx
+import { ImgixGatsbyImage } from '@imgix/gatsby';
+
+export const MyPageComponent = () => (
+  <div>
+    <ImgixGatsbyImage src="https://first-source.imgix.net/image.jpg" />
+    <ImgixGatsbyImage src="https://second-source.imgix.net/image.jpg" />
+  </div>
+);
+```
+
+Then, one additional source can be configured for one of the GraphQL APIs, and this source can be a Web Proxy source. Thus seemingly you could combine one of the GraphQL APIs and the URL transform API together to use multiple sources this way:
+
+```jsx
+import gql from 'graphql-tag';
+import Img from 'gatsby-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
+import { ImgixGatsbyImage } from '@imgix/gatsby';
+
+export default ({ data }) => (
+  <div>
+    <GatsbyImage image={data.imgixImage.gatsbyImageData} />;
+    <ImgixGatsbyImage src="https://second-source.imgix.net/image.jpg" />
+  </div>
+);
+
+export const query = gql`
+  {
+    imgixImage(url: "https://assets.imgix.net/amsterdam.jpg") {
+      gatsbyImageData(width: 400, imgixParams: {})
+    }
+  }
+`;
+```
+
+So, to summarise, it is possible to use multiple sources in this plugin. You have the option to use up to one source of any type with the GraphQL API, and then any number of non-Web Proxy sources with the URL transform API.
+
 ## Roadmap
 
 **📣 Have your say on our roadmap below!**
