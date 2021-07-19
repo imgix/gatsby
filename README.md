@@ -1106,7 +1106,9 @@ If `url` is:
 2. a path (e.g. just `/image.jpg`), `domain` is required, and the domain should point to an imgix S3, GCP, Azure, or Web Folder source. `secureURLToken` is only required if "secure URLs" are enabled on the imgix source.
 3. not an imgix URL, `domain` and `secureURLToken` are required, and `domain` should point to a Web Proxy imgix source.
 
-## What is the `ixlib` Param on Every Request?
+## Miscellaneous
+
+### What is the `ixlib` Param on Every Request?
 
 For security and diagnostic purposes, we tag all requests with the language and version of library used to generate the URL.
 
@@ -1127,9 +1129,9 @@ To disable this, set `includeLibraryParam` in the third parameter to `false` whe
 />
 ```
 
-## Customized the GraphQL type warning
+### GraphQL Type Customization Warning
 
-gatsby-imgix customizes existing GraphQl types in order to expose our own types on those same fields. This allows for a more seamless integration with Gatsby. It also means that you might see a warning like this:
+@imgix/gatsby customizes existing GraphQl types in order to expose our own types on those same fields. This allows for a more seamless integration with Gatsby. It also means that you might see a warning like this:
 
 ```console
 warn Plugin `@imgix/gatsby` has customized the GraphQL type `ShopifyCollectionImage`, which has already been defined by the plugin `gatsby-source-shopify`. This could potentially cause conflicts.
