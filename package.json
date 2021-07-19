@@ -93,7 +93,7 @@
     "read-pkg": "5.2.0",
     "semantic-release": "17.4.4",
     "ts-jest": "26.5.3",
-    "typescript": "4.2.3",
+    "typescript": "4.3.5",
     "webpack": "5.27.1",
     "yarn-run-all": "3.1.1"
   },
