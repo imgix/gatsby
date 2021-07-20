@@ -55,8 +55,10 @@
     * [Third-party integration helpers (e.g. for Gatsby source plugins)](#third-party-integration-helpers-eg-for-gatsby-source-plugins)
         + [createImgixGatsbyTypes](#createimgixgatsbytypes)
         + [Object builders](#object-builders)
-- [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
-- [Customized the GraphQL type warning](#customized-the-graphql-type-warning)
+- [Miscellaneous](#miscellaneous)
+    * [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
+    * [GraphQL Type Customization Warning](#graphql-type-customization-warning)
+    * [Multiple imgix Sources](#multiple-imgix-sources)
 - [Roadmap](#roadmap)
 - [Upgrading from `@imgix/gatsby-transform-url`](#upgrading-from-imgixgatsby-transform-url)
 - [Contributors](#contributors)
@@ -1106,7 +1108,9 @@ If `url` is:
 2. a path (e.g. just `/image.jpg`), `domain` is required, and the domain should point to an imgix S3, GCP, Azure, or Web Folder source. `secureURLToken` is only required if "secure URLs" are enabled on the imgix source.
 3. not an imgix URL, `domain` and `secureURLToken` are required, and `domain` should point to a Web Proxy imgix source.
 
-## What is the `ixlib` Param on Every Request?
+## Miscellaneous
+
+### What is the `ixlib` Param on Every Request?
 
 For security and diagnostic purposes, we tag all requests with the language and version of library used to generate the URL.
 
@@ -1127,9 +1131,9 @@ To disable this, set `includeLibraryParam` in the third parameter to `false` whe
 />
 ```
 
-## Customized the GraphQL type warning
+### GraphQL Type Customization Warning
 
-gatsby-imgix customizes existing GraphQl types in order to expose our own types on those same fields. This allows for a more seamless integration with Gatsby. It also means that you might see a warning like this:
+@imgix/gatsby customizes existing GraphQl types in order to expose our own types on those same fields. This allows for a more seamless integration with Gatsby. It also means that you might see a warning like this:
 
 ```console
 warn Plugin `@imgix/gatsby` has customized the GraphQL type `ShopifyCollectionImage`, which has already been defined by the plugin `gatsby-source-shopify`. This could potentially cause conflicts.
@@ -1142,6 +1146,53 @@ This warning stems from the fact that [type inference](https://www.gatsbyjs.com/
 Gatsby does this in an effort to reduce the likelihood installing one plugin can break an entire build. If one plugin can change any plugin's type, it can break any plugin in the build. gatsby-imgix only modifies types that the user explicitly denotes as their image types. So we don't run the risk of overwriting or modifying types outside a source's explicitly denoted image types.
 
 You can read more about this if you’re interested in [this issue](https://github.com/imgix/gatsby/issues/129).
+
+### Multiple imgix Sources
+
+You might find yourself with multiple imgix sources and wondering how you could use them at the same time with this plugin. There are a few possibilities for this, which will be outlined below.
+
+Any number of sources can be used simultaneously with the URL transform API. 
+
+Example:
+
+```jsx
+import { ImgixGatsbyImage } from '@imgix/gatsby';
+
+export const MyPageComponent = () => (
+  <div>
+    <ImgixGatsbyImage src="https://first-source.imgix.net/image.jpg" />
+    <ImgixGatsbyImage src="https://second-source.imgix.net/image.jpg" />
+  </div>
+);
+```
+
+The caveats with this approach is that you don't get the benefits of the GraphQL APIs (blur-up, etc), and that the sources must not be Web Proxy sources (for these you must use one of the GraphQL APIs).
+
+Additionally, a source can be configured for one of the GraphQL APIs, and this source can be a Web Proxy source. Thus seemingly you could combine one of the GraphQL APIs and the URL transform API together to use multiple sources this way:
+
+```jsx
+import gql from 'graphql-tag';
+import Img from 'gatsby-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
+import { ImgixGatsbyImage } from '@imgix/gatsby';
+
+export default ({ data }) => (
+  <div>
+    <GatsbyImage image={data.imgixImage.gatsbyImageData} />;
+    <ImgixGatsbyImage src="https://second-source.imgix.net/image.jpg" />
+  </div>
+);
+
+export const query = gql`
+  {
+    imgixImage(url: "https://assets.imgix.net/amsterdam.jpg") {
+      gatsbyImageData(width: 400, imgixParams: {})
+    }
+  }
+`;
+```
+
+So, to summarise, it is possible to use multiple sources in this plugin. You have the option to use up to one source of any type with the GraphQL API, and then any number of non-Web Proxy sources with the URL transform API.
 
 ## Roadmap
 
