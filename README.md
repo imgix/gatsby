@@ -1151,7 +1151,7 @@ You can read more about this if you’re interested in [this issue](https://gith
 
 You might find yourself with multiple imgix sources and wondering how you could use them at the same time with this plugin. There are a few possibilities for this, which will be outlined below.
 
-Any number of sources can be used simultaneously with the URL transform API. The caveats with this approach is that you don't get the benefits of the GraphQL APIs (blur-up, etc), and that the sources must not be Web Proxy sources (for these you must use one of the GraphQL APIs).
+Any number of sources can be used simultaneously with the URL transform API. 
 
 Example:
 
@@ -1166,7 +1166,9 @@ export const MyPageComponent = () => (
 );
 ```
 
-Then, one additional source can be configured for one of the GraphQL APIs, and this source can be a Web Proxy source. Thus seemingly you could combine one of the GraphQL APIs and the URL transform API together to use multiple sources this way:
+The caveats with this approach is that you don't get the benefits of the GraphQL APIs (blur-up, etc), and that the sources must not be Web Proxy sources (for these you must use one of the GraphQL APIs).
+
+Additionally, a source can be configured for one of the GraphQL APIs, and this source can be a Web Proxy source. Thus seemingly you could combine one of the GraphQL APIs and the URL transform API together to use multiple sources this way:
 
 ```jsx
 import gql from 'graphql-tag';
