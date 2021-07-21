@@ -1151,7 +1151,7 @@ You can read more about this if you’re interested in [this issue](https://gith
 
 You might find yourself with multiple imgix sources and wondering how you could use them at the same time with this plugin. There are a few possibilities for this, which will be outlined below.
 
-Any number of sources can be used simultaneously with the URL transform API. 
+Any number of sources can be used simultaneously with the URL transform API.
 
 Example:
 
