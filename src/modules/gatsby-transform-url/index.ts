@@ -1,9 +1,9 @@
+import ImgixClient from '@imgix/js-core';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { Errors } from 'io-ts';
 import { parseStringARParam, StringAspectRatio } from '../../common/ar';
-import { parseHost, parsePath } from '../../common/uri';
-import { createImgixClient } from './common';
+import { VERSION } from '../../common/constants';
 import {
   IGatsbyImageFixedData,
   IGatsbyImageFluidData,
@@ -29,30 +29,47 @@ function buildImageData(
     sizes?: string;
   },
 ): IGatsbyImageFixedData | IGatsbyImageFluidData {
-  const host = parseHost(url);
-  const path = parsePath(url);
-  const client = createImgixClient({
-    domain: host,
-    libraryParam:
-      options.includeLibraryParam === false ? undefined : 'gatsbyTransformUrl',
-  });
-
   const transformedImgixParams = {
     fit: 'crop', // needed for fluid (ar) and fixed (w&h) cropping, can be overridden
     ...imgixParams,
     ar: imgixParams.ar != null ? `${imgixParams.ar}:1` : undefined,
   };
 
-  const src = client.buildURL(path, transformedImgixParams);
-  const srcset = client.buildSrcSet(path, transformedImgixParams);
-  const srcWebp = client.buildURL(path, {
-    ...transformedImgixParams,
-    fm: 'webp',
-  });
-  const srcsetWebp = client.buildSrcSet(path, {
-    ...transformedImgixParams,
-    fm: 'webp',
-  });
+  const libraryParamOptions = {
+    includeLibraryParam: false,
+    libraryParam:
+      options.includeLibraryParam === false
+        ? undefined
+        : `gatsbyTransformUrl-${VERSION}`,
+  };
+
+  const src = ImgixClient._buildURL(
+    url,
+    transformedImgixParams,
+    libraryParamOptions,
+  );
+  const srcset = ImgixClient._buildSrcSet(
+    url,
+    transformedImgixParams,
+    {},
+    libraryParamOptions,
+  );
+  const srcWebp = ImgixClient._buildURL(
+    url,
+    {
+      ...transformedImgixParams,
+      fm: 'webp',
+    },
+    libraryParamOptions,
+  );
+  const srcsetWebp = ImgixClient._buildSrcSet(
+    url,
+    {
+      ...transformedImgixParams,
+      fm: 'webp',
+    },
+    libraryParamOptions,
+  );
 
   if (options.type === 'fluid') {
     return {
