@@ -137,7 +137,7 @@ describe('gatsby-transform-url', () => {
       expect(actual.srcSet).not.toMatch(`fm=webp`);
     });
 
-    test('should not truncate URL after ?', () => {
+    test.skip('should not truncate URL after ?', () => {
       const actual = buildFixedImageData(
         'https://test.imgix.net/image.jpg?abc?foo',
         {
@@ -332,7 +332,7 @@ describe('gatsby-transform-url', () => {
       expect(actual.srcSet).not.toMatch(`fm=webp`);
     });
 
-    test('should not truncate URL after ?', () => {
+    test.skip('should not truncate URL after ?', () => {
       const actual = buildFluidImageData(
         'https://test.imgix.net/image.jpg?abc?foo',
         {
@@ -356,7 +356,7 @@ describe('gatsby-transform-url', () => {
       );
     });
 
-    test('should not truncate URL after ?', () => {
+    test.skip('should not truncate URL after ?', () => {
       const actual = getGatsbyImageData({
         src: 'https://test.imgix.net/image.jpg?abc?foo',
         layout: 'fullWidth',
