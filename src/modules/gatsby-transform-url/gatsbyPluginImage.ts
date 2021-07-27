@@ -5,17 +5,17 @@ import {
   IGetImageDataArgs,
   IUrlBuilderArgs,
 } from 'gatsby-plugin-image';
-import { parseHost, parsePath } from '../../common/uri';
+import { VERSION } from '../../common/constants';
 import { ImgixUrlParams } from '../../publicTypes';
 import { BreakpointsWithData, generateBreakpoints } from './breakpoints';
-import { createImgixClient, MAX_WIDTH } from './common';
+import { MAX_WIDTH } from './common';
 
 type IUrlBuilderParameters = IUrlBuilderArgs<{
   imgixParams?: ImgixUrlParams;
   breakpointsWithData?: BreakpointsWithData;
 }>;
 
-const urlBuilder = (client: ImgixClient) => ({
+const urlBuilder = ({
   baseUrl,
   width,
   height,
@@ -27,13 +27,20 @@ const urlBuilder = (client: ImgixClient) => ({
       )?.quality
     : undefined;
 
-  return client.buildURL(baseUrl, {
-    fit: 'min',
-    ...(manualQuality && { q: manualQuality }),
-    ...options.imgixParams,
-    w: width,
-    h: height,
-  });
+  return ImgixClient._buildURL(
+    baseUrl,
+    {
+      fit: 'min',
+      ...(manualQuality && { q: manualQuality }),
+      ...options.imgixParams,
+      w: width,
+      h: height,
+    },
+    {
+      includeLibraryParam: false,
+      libraryParam: `gatsbyHook-${VERSION}`,
+    },
+  );
 };
 
 export type IGetGatsbyImageDataOpts = {
@@ -146,11 +153,6 @@ export function getGatsbyImageData({
     );
   }
 
-  const client = createImgixClient({
-    domain: parseHost(src),
-    libraryParam: 'gatsbyHook',
-  });
-
   const breakpointsData = generateBreakpoints({
     ...(layout === 'fullWidth'
       ? { layout: 'fullWidth' }
@@ -171,11 +173,11 @@ export function getGatsbyImageData({
   });
 
   return getImageData({
-    baseUrl: parsePath(src),
+    baseUrl: src,
     sourceWidth: sourceWidthOverride,
     sourceHeight: sourceHeightOverride,
     aspectRatio,
-    urlBuilder: urlBuilder(client),
+    urlBuilder: urlBuilder,
     pluginName: '@imgix/gatsby',
     formats: ['auto'],
     breakpoints: breakpointsOverride ?? breakpointsData.breakpoints,
