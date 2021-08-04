@@ -141,6 +141,11 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
           fields.map((fieldOptions) =>
             gatsbyContext.schema.buildObjectType({
               name: `${fieldOptions.nodeType}`,
+              // We have to declare that we're extending the Node interface here
+              // This does the same as 'implements Node' does for SDL-defined types.
+              // See here for more info:
+              // https://www.gatsbyjs.com/docs/reference/graphql-data-layer/schema-customization/#:~:text=when%20defining%20top-level%20types%2C%20don%E2%80%99t%20forget%20to%20pass%20interfaces%3A%20%5B'node'%5D%2C%20which%20does%20the%20same%20for%20type%20builders%20as%20adding%20implements%20node%20does%20for%20sdl-defined%20types.%20
+              interfaces: ['Node'],
               fields: {
                 [fieldOptions.fieldName]: {
                   type:
