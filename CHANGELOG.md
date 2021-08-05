@@ -1,3 +1,10 @@
+### [1.6.12-rc.1](https://github.com/imgix/gatsby/compare/v1.6.11...v1.6.12-rc.1) (2021-08-05)
+
+
+### Bug Fixes
+
+* **pe1168:** looks like node but missing interface ([bbee4e4](https://github.com/imgix/gatsby/commit/bbee4e4176f1cc6f80ce677fa0125053430ed921)), closes [#136](https://github.com/imgix/gatsby/issues/136)
+
 ### [1.6.11](https://github.com/imgix/gatsby/compare/v1.6.10...v1.6.11) (2021-07-21)
 
 ### [1.6.10](https://github.com/imgix/gatsby/compare/v1.6.9...v1.6.10) (2021-07-07)
