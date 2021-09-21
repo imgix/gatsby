@@ -18,7 +18,7 @@ import {
   ObjectTypeComposerFieldConfigAsObjectDefinition,
 } from 'graphql-compose';
 import { TypeAsString } from 'graphql-compose/lib/TypeMapper';
-import R from 'ramda';
+import * as R from 'ramda';
 import {
   fetchImgixBase64Image,
   fetchImgixDominantColor,
