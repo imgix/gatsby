@@ -1,3 +1,10 @@
+### [1.6.12](https://github.com/imgix/gatsby/compare/v1.6.11...v1.6.12) (2021-09-23)
+
+
+### Bug Fixes
+
+* use namespace import for Ramda ([dc3606d](https://github.com/imgix/gatsby/commit/dc3606d5521215bdb72141e811433ea0df8bb5e7))
+
 ### [1.6.11](https://github.com/imgix/gatsby/compare/v1.6.10...v1.6.11) (2021-07-21)
 
 ### [1.6.10](https://github.com/imgix/gatsby/compare/v1.6.9...v1.6.10) (2021-07-07)
