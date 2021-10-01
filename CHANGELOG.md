@@ -1,3 +1,10 @@
+### [1.6.13](https://github.com/imgix/gatsby/compare/v1.6.12...v1.6.13) (2021-10-01)
+
+
+### Bug Fixes
+
+* support URLs with hash symbol ([e2a83ee](https://github.com/imgix/gatsby/commit/e2a83ee8da0936ff054ca3ffca92fd20109e3938))
+
 ### [1.6.12](https://github.com/imgix/gatsby/compare/v1.6.11...v1.6.12) (2021-09-23)
 
 
