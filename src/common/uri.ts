@@ -16,7 +16,7 @@ export const parseHostE = (uri: string) =>
  */
 export const parsePath = (_uri: string): string => {
   const uri = new Uri(_uri);
-  return uri.path() + uri.query();
+  return uri.path() + uri.query() + (uri.anchor() ? `#${uri.anchor()}` : '');
 };
 
 export const parsePathE = (uri: string) =>
