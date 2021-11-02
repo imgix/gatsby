@@ -9,31 +9,8 @@ const { GraphQLInt, GraphQLString } = require("gatsby/graphql")
 
 const TEST_NODE_TYPE = "Post"
 
-exports.sourceNodes = async ({
-  actions,
-  createNodeId,
-  createContentDigest,
-  schema,
-}) => {
-  const { createNode, createTypes } = actions
-  // Data can come from anywhere, but for now create it manually
-  const testData = {
-    key: 123,
-    imageURL: "https://assets.imgix.net/amsterdam.jpg",
-  }
-  const nodeContent = JSON.stringify(testData)
-  const node = {
-    ...testData,
-    id: createNodeId(`${TEST_NODE_TYPE}-${testData.key}`),
-    parent: null,
-    children: [],
-    internal: {
-      type: TEST_NODE_TYPE,
-      content: nodeContent,
-      contentDigest: createContentDigest(testData),
-    },
-  }
-
+exports.createSchemaCustomization = ({ actions, schema }) => {
+  const { createTypes } = actions
   createTypes(
     schema.buildObjectType({
       name: TEST_NODE_TYPE,
@@ -51,6 +28,31 @@ exports.sourceNodes = async ({
       },
     })
   )
+}
+
+exports.sourceNodes = async ({
+  actions,
+  createNodeId,
+  createContentDigest,
+}) => {
+  const { createNode } = actions
+  // Data can come from anywhere, but for now create it manually
+  const testData = {
+    key: 123,
+    imageURL: "https://assets.imgix.net/amsterdam.jpg",
+  }
+  const nodeContent = JSON.stringify(testData)
+  const node = {
+    ...testData,
+    id: createNodeId(`${TEST_NODE_TYPE}-${testData.key}`),
+    parent: null,
+    children: [],
+    internal: {
+      type: TEST_NODE_TYPE,
+      content: nodeContent,
+      contentDigest: createContentDigest(testData),
+    },
+  }
 
   createNode(node)
 }
