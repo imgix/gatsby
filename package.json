@@ -34,7 +34,7 @@
     "test": "run-s test:unit test:e2e:ci"
   },
   "peerDependencies": {
-    "gatsby": "^2 || ^3",
+    "gatsby": "^2 || ^3 || ^4",
     "gatsby-image": "^2 || ^3",
     "gatsby-plugin-image": "^1"
   },
