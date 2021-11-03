@@ -1,3 +1,10 @@
+## [1.7.0](https://github.com/imgix/gatsby/compare/v1.6.13...v1.7.0) (2021-11-03)
+
+
+### Features
+
+* support Gatsby 4 ([1202b77](https://github.com/imgix/gatsby/commit/1202b777503fe3ee9d05d849e18fc3cde06a144e))
+
 ### [1.6.13](https://github.com/imgix/gatsby/compare/v1.6.12...v1.6.13) (2021-10-01)
 
 
