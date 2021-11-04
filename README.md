@@ -665,6 +665,8 @@ export const query = gql`
 
 This features allows imgix urls to be used with gatsby-image or gatsby-plugin-image. imgix urls are transformed into a format that is compatible with gatsby-image. This can generate either fluid, fixed images, or for gatsby-plugin-image, full-width, constrained, or fixed images. With this feature you can either display images that already exist on imgix, or proxy other images through imgix. It is important to note that this feature can **only display images that are already on imgix or an imgix-compatible URL**. To display images that are not using imgix, you will have to use one of the GraphQL APIs above.
 
+⚠️ This means that Web Proxy Sources are **not supported** with this API. To use Web Proxy Sources, either of the other two APIs must be used.
+
 Unfortunately, due to limitations of Gatsby, this feature does not support blurred placeholders. To use placeholders please use one of the other use cases/parts of this library
 
 #### ✨ New ✨ Gatsby-plugin-image Component and Hook
