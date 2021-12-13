@@ -39,7 +39,7 @@
     "gatsby-plugin-image": "^1 || ^2"
   },
   "resolutions": {
-    "graphql": "15.5.0",
+    "graphql": "15.8.0",
     "graphql-compose": "^7.25.0",
     "webpack": "5.65.0"
   },
@@ -80,7 +80,7 @@
     "gatsby-plugin-image": "1.14.2",
     "gatsby-plugin-sharp": "3.14.3",
     "gatsby-source-filesystem": "3.14.0",
-    "graphql": "15.5.0",
+    "graphql": "15.8.0",
     "graphql-anywhere": "4.2.7",
     "graphql-tag": "2.12.6",
     "is-base64": "1.1.0",
