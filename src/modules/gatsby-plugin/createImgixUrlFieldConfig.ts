@@ -5,7 +5,7 @@ import {
   ComposeInputTypeDefinition,
   ObjectTypeComposerFieldConfigAsObjectDefinition,
 } from 'graphql-compose';
-import * as R from 'ramda';
+import { mergeRight } from 'ramda';
 import { createExternalHelper } from '../../common/createExternalHelper';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import {
@@ -53,7 +53,7 @@ export const createImgixUrlFieldConfig = <TSource, TContext>({
       TE.map((url) =>
         imgixClient.buildURL(
           url,
-          R.mergeRight(
+          mergeRight(
             defaultParams ?? {},
             unTransformParams(args.imgixParams ?? {}),
           ),

@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/pipeable';
 import { ICreateSchemaCustomizationHook, PatchedPluginOptions } from 'gatsby';
 import { GraphQLNonNull, GraphQLString } from 'gatsby/graphql';
 import { PathReporter } from 'io-ts/PathReporter';
-import * as R from 'ramda';
+import { prop } from 'ramda';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
 import { VERSION } from '../../common/constants';
 import {
@@ -120,7 +120,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
           buildImgixGatsbyTypes<{ rawURL: string }>({
             cache: gatsbyContext.cache,
             imgixClient,
-            resolveUrl: R.prop('rawURL'),
+            resolveUrl: prop('rawURL'),
             defaultParams: defaultImgixParams,
           }),
       )

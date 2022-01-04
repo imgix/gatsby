@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import * as R from 'ramda';
+import { pipe, map } from 'ramda';
 import { roundToDP } from './number';
 interface AspectRatioBrand {
   readonly StringAspectRatio: unique symbol;
@@ -23,9 +23,9 @@ function aspectRatioIsValid(aspectRatio: string): boolean {
   return /^\d+(\.\d+)?:\d+(\.\d+)?$/.test(aspectRatio);
 }
 export const parseStringARParam = (ar: StringAspectRatio): number =>
-  R.pipe(
+  pipe(
     (v: StringAspectRatio) => v.split(':') as [string, string],
-    R.map((part) => parseFloat(part)),
+    map((part) => parseFloat(part)),
     ([width, height]) => width / height,
     (v) => roundToDP(3, v),
   )(ar);
