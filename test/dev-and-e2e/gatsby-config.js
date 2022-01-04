@@ -35,7 +35,7 @@ module.exports = {
     {
       resolve: `@imgix/gatsby`,
       options: {
-        domain: "prismic-angeloashmore.imgix.net",
+        domain: "sdk-proxy-test.imgix.net",
         secureURLToken: process.env.PROXY_DEMO_TOKEN,
         sourceType: ImgixSourceType.WebProxy,
         fields: [
