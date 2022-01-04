@@ -1,5 +1,7 @@
 const { ImgixSourceType } = require("@imgix/gatsby")
 
+require("dotenv").config()
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -33,7 +35,7 @@ module.exports = {
     {
       resolve: `@imgix/gatsby`,
       options: {
-        domain: "sdk-proxy-test.imgix.net",
+        domain: "prismic-angeloashmore.imgix.net",
         secureURLToken: process.env.PROXY_DEMO_TOKEN,
         sourceType: ImgixSourceType.WebProxy,
         fields: [

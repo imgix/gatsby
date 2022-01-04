@@ -1,5 +1,5 @@
 import { FixedObject, FluidObject } from 'gatsby-image';
-import * as R from 'ramda';
+import { pipe, split, head } from 'ramda';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
 import { log, trace } from '../../common/log';
 import { IImgixParams, ImgixUrlParams } from '../../publicTypes';
@@ -15,12 +15,11 @@ export type BuildImgixFluidArgs = {
   defaultPlaceholderParams?: Partial<IImgixParams>;
 };
 
-const parseAspectRatioFloatFromString = R.pipe<
-  string,
-  string[],
-  string,
-  number
->(R.split(':'), R.head, (v) => parseInt(v));
+const parseAspectRatioFloatFromString = pipe<string, string[], string, number>(
+  split(':'),
+  head,
+  (v) => parseInt(v),
+);
 
 const DEFAULT_LQIP_PARAMS: ImgixUrlParams = { w: 20, blur: 15, q: 20 };
 

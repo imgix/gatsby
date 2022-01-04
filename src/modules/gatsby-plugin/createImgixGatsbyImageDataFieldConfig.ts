@@ -18,7 +18,7 @@ import {
   ObjectTypeComposerFieldConfigAsObjectDefinition,
 } from 'graphql-compose';
 import { TypeAsString } from 'graphql-compose/lib/TypeMapper';
-import * as R from 'ramda';
+import { pick } from 'ramda';
 import {
   fetchImgixBase64Image,
   fetchImgixDominantColor,
@@ -194,7 +194,7 @@ export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   const modifiedConfig = {
     ...defaultConfig,
     args: {
-      ...R.pick(
+      ...pick(
         [
           'layout',
           'width',

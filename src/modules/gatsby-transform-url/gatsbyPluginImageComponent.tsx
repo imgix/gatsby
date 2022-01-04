@@ -1,5 +1,5 @@
 import { GatsbyImage, GatsbyImageProps } from 'gatsby-plugin-image';
-import * as R from 'ramda';
+import { pick, omit } from 'ramda';
 import React from 'react';
 import {
   GATSBY_IMAGE_HOOK_OPTS_KEYS,
@@ -8,8 +8,8 @@ import {
 
 export const ImgixGatsbyImage = (props: IImgixGatsbyImageProps) => {
   // split into two groups of props, one for hook and one for comp.
-  const hookProps = R.pick(GATSBY_IMAGE_HOOK_OPTS_KEYS, props);
-  const imageProps = R.omit(GATSBY_IMAGE_HOOK_OPTS_KEYS, props);
+  const hookProps = pick(GATSBY_IMAGE_HOOK_OPTS_KEYS, props);
+  const imageProps = omit(GATSBY_IMAGE_HOOK_OPTS_KEYS, props);
 
   const data = getGatsbyImageData(hookProps);
 

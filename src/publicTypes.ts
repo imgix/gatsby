@@ -1,5 +1,5 @@
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
-import * as R from 'ramda';
+import { mapObjIndexed } from 'ramda';
 import * as t from './common/ioTs';
 
 export enum ImgixSourceType {
@@ -31,7 +31,7 @@ const ImgixParamValueIOTS = t.union(
 const mapToImgixParamValue = <TKey extends string>(
   obj: Record<TKey, unknown>,
 ): Record<TKey, typeof ImgixParamValueIOTS> =>
-  R.mapObjIndexed(() => ImgixParamValueIOTS, obj);
+  mapObjIndexed(() => ImgixParamValueIOTS, obj);
 
 const ImgixParamsIOTS = t.partial(
   {
