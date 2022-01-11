@@ -1,3 +1,16 @@
+### [1.7.5](https://github.com/imgix/gatsby/compare/v1.7.4...v1.7.5) (2022-01-11)
+
+
+### Bug Fixes
+
+* "cannot read properties of undefined (reading 'pick')" error ([788bfcb](https://github.com/imgix/gatsby/commit/788bfcbac446afff2405e1a3f39031390136d4a2))
+
+
+### Reverts
+
+* remove local testing dotenv usage ([fd346ac](https://github.com/imgix/gatsby/commit/fd346ac3b79c0fdec9f864cca029074172999814))
+* remove local testing imgix domain ([526b972](https://github.com/imgix/gatsby/commit/526b9720f85d4c1990036955d9b650229c3d5304))
+
 ### [1.7.4](https://github.com/imgix/gatsby/compare/v1.7.3...v1.7.4) (2021-12-14)
 
 ### [1.7.3](https://github.com/imgix/gatsby/compare/v1.7.2...v1.7.3) (2021-12-08)
