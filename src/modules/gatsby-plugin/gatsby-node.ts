@@ -33,18 +33,18 @@ const getFieldValue = ({
   (() => {
     const prefixURLPrefix = (url: string): string =>
       (fieldOptions.URLPrefix || '') + url;
-    if ('getURL' in fieldOptions) {
-      return pipe(get(node, fieldOptions.getURL), (value: unknown) =>
+    if ('rawURLKey' in fieldOptions) {
+      return pipe(get(node, fieldOptions.rawURLKey), (value: unknown) =>
         value == null || typeof value !== 'string'
-          ? E.left(new Error('getURL must reference a URL string'))
+          ? E.left(new Error('rawURLKey must reference a URL string'))
           : E.right(prefixURLPrefix(value)),
       );
-    } else if ('getURLs' in fieldOptions) {
+    } else if ('rawURLKeys' in fieldOptions) {
       return pipe(
-        fieldOptions.getURLs.map((getURL) => get(node, getURL)),
+        fieldOptions.rawURLKeys.map((rawURLKey) => get(node, rawURLKey)),
         (value: unknown) =>
           !isStringArray(value)
-            ? E.left(new Error('getURLs must reference a list of URL strings'))
+            ? E.left(new Error('rawURLKeys must reference a list of URL strings'))
             : E.right(value.map(prefixURLPrefix)),
       );
     }
@@ -154,7 +154,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
               fields: {
                 [fieldOptions.fieldName]: {
                   type:
-                    'getURLs' in fieldOptions
+                    'rawURLKeys' in fieldOptions
                       ? `[${imgixImageType.config.name}]`
                       : imgixImageType.config.name,
                   resolve: (node: unknown): { rawURL: string | string[] } => {
@@ -170,27 +170,35 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
                             ? findPossibleURLsInNode(node)
                             : [];
 
+                        const potentialImagesString = (() => {
+                          if (urlPathsFound.length === 0) {
+                            return '';
+                          }
+
+                          let output = '';
+                          output +=
+                            'Potential images were found at these paths:\n';
+                          urlPathsFound.map(({ path, value }) => {
+                            output += ` - ${path}\n`;
+
+                            if (value.startsWith('http')) {
+                              output +=
+                                '   Set following configuration options:\n';
+                              output += `     rawURLKey: '${path}'\n`;
+                              output += `     URLPrefix: 'https:'\n`;
+                            } else {
+                              output +=
+                                '   Set following configuration option:\n';
+                              output += `     rawURLKey: '${path}'\n`;
+                            }
+                          });
+                          return output;
+                        })();
+
                         return gatsbyContext.reporter.panic(
-                          `Error when resolving URL value for node type ${
-                            fieldOptions.nodeType
-                          }. This probably means that the getURL function in gatsby-config.js is incorrectly set. Please read this project's README for detailed instructions on how to set this correctly.
+                          `Error when resolving URL value for node type ${fieldOptions.nodeType}. This probably means that the rawURLKey function in gatsby-config.js is incorrectly set. Please read this project's README for detailed instructions on how to set this correctly.
                           
-${
-  urlPathsFound.length > 0
-    ? `Potential images were found at these paths: 
-${urlPathsFound
-  .map(
-    ({ path, value }) =>
-      ` - ${path}
-   Usage: getURL: (node) => ${
-     value.startsWith('http') ? `node.${path}` : `\`https:\${node.${path}}\``
-   }`,
-  )
-  .join('\n')}
-`
-    : ''
-}
-                          `,
+${potentialImagesString}`,
                         );
                       })(rawURLE),
                     };

@@ -507,14 +507,14 @@ describe('createResolvers', () => {
       expect(src.searchParams.get('h')).not.toBe(imgixParams.h.toString());
     });
   });
-  it('should accept string path for getURL', async () => {
+  it('should accept string path for rawURLKey', async () => {
     const result = await getTypeStoreFromSchemaCustomization({
       appConfig: {
         fields: [
           {
             nodeType: 'ImgixImageTest',
             fieldName: 'imgixImage',
-            getURL: 'nested.nonImgixUrl',
+            rawURLKey: 'nested.nonImgixUrl',
           },
         ],
       },
@@ -529,14 +529,14 @@ describe('createResolvers', () => {
 
     expect(resolved.rawURL).toEqual(node.nested.nonImgixUrl);
   });
-  it('should accept string paths for getURL', async () => {
+  it('should accept string paths for rawURLKey', async () => {
     const result = await getTypeStoreFromSchemaCustomization({
       appConfig: {
         fields: [
           {
             nodeType: 'ImgixImageTest',
             fieldName: 'imgixImage',
-            getURLs: ['nested.nonImgixUrl', 'nested.nonImgixUrl2'],
+            rawURLKeys: ['nested.nonImgixUrl', 'nested.nonImgixUrl2'],
           },
         ],
       },
@@ -565,7 +565,7 @@ describe('createResolvers', () => {
           {
             nodeType: 'ImgixImageTest',
             fieldName: 'imgixImage',
-            getURL: 'nested.nonImgixUrl',
+            rawURLKey: 'nested.nonImgixUrl',
             URLPrefix: 'https:'
           },
         ],
@@ -581,14 +581,14 @@ describe('createResolvers', () => {
 
     expect(resolved.rawURL).toEqual('https:'+ node.nested.nonImgixUrl);
   })
-  it('should accept string paths for getURL', async () => {
+  it('should accept string paths for rawURLKey', async () => {
     const result = await getTypeStoreFromSchemaCustomization({
       appConfig: {
         fields: [
           {
             nodeType: 'ImgixImageTest',
             fieldName: 'imgixImage',
-            getURLs: ['nested.nonImgixUrl', 'nested.nonImgixUrl2'],
+            rawURLKeys: ['nested.nonImgixUrl', 'nested.nonImgixUrl2'],
             URLPrefix: 'https:'
           },
         ],
