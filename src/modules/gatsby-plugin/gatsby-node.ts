@@ -44,7 +44,9 @@ const getFieldValue = ({
         fieldOptions.rawURLKeys.map((rawURLKey) => get(node, rawURLKey)),
         (value: unknown) =>
           !isStringArray(value)
-            ? E.left(new Error('rawURLKeys must reference a list of URL strings'))
+            ? E.left(
+                new Error('rawURLKeys must reference a list of URL strings'),
+              )
             : E.right(value.map(prefixURLPrefix)),
       );
     }

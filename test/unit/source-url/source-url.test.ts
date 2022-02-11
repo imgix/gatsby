@@ -7,7 +7,7 @@ import { FixedObject, FluidObject } from 'gatsby-image';
 import {
   buildEnumType,
   buildInputObjectType,
-  buildObjectType
+  buildObjectType,
 } from 'gatsby/dist/schema/types/type-builders';
 import isBase64 from 'is-base64';
 import * as R from 'ramda';
@@ -566,7 +566,7 @@ describe('createResolvers', () => {
             nodeType: 'ImgixImageTest',
             fieldName: 'imgixImage',
             rawURLKey: 'nested.nonImgixUrl',
-            URLPrefix: 'https:'
+            URLPrefix: 'https:',
           },
         ],
       },
@@ -579,8 +579,8 @@ describe('createResolvers', () => {
     };
     const resolved = resolver(node, {});
 
-    expect(resolved.rawURL).toEqual('https:'+ node.nested.nonImgixUrl);
-  })
+    expect(resolved.rawURL).toEqual('https:' + node.nested.nonImgixUrl);
+  });
   it('should accept string paths for rawURLKey', async () => {
     const result = await getTypeStoreFromSchemaCustomization({
       appConfig: {
@@ -589,7 +589,7 @@ describe('createResolvers', () => {
             nodeType: 'ImgixImageTest',
             fieldName: 'imgixImage',
             rawURLKeys: ['nested.nonImgixUrl', 'nested.nonImgixUrl2'],
-            URLPrefix: 'https:'
+            URLPrefix: 'https:',
           },
         ],
       },
@@ -610,7 +610,6 @@ describe('createResolvers', () => {
       'https:' + node.nested.nonImgixUrl2,
     ]);
   });
-
 });
 
 const mockGatsbyCache = {
