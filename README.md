@@ -30,19 +30,19 @@
     * [What section should I read?](#what-section-should-i-read)
     * [GraphQL transform API](#graphql-transform-api)
         + [Configuration](#configuration)
-        + [✨ New ✨ GatsbyImage support](#-new--gatsbyimage-support)
+        + [✨ New ✨ GatsbyImage support](#%E2%9C%A8-new-%E2%9C%A8-gatsbyimage-support)
         + [Fluid Images](#fluid-images)
         + [Fixed Images](#fixed-images)
         + [Generating imgix URLs](#generating-imgix-urls)
     * [GraphQL `imgixImage` API](#graphql-imgiximage-api)
         + [Configuration](#configuration-1)
-        + [✨ New ✨ GatsbyImage support](#-new--gatsbyimage-support-1)
+        + [✨ New ✨ GatsbyImage support](#%E2%9C%A8-new-%E2%9C%A8-gatsbyimage-support-1)
         + [Fluid Images](#fluid-images-1)
         + [Fixed Images](#fixed-images-1)
         + [Generating imgix URLs](#generating-imgix-urls-1)
         + [Using a Web Proxy Source](#using-a-web-proxy-source)
     * [URL Transform Function](#url-transform-function)
-        + [✨ New ✨ Gatsby-plugin-image Component and Hook](#-new--gatsby-plugin-image-component-and-hook)
+        + [✨ New ✨ Gatsby-plugin-image Component and Hook](#%E2%9C%A8-new-%E2%9C%A8-gatsby-plugin-image-component-and-hook)
         + [Basic Fluid Image](#basic-fluid-image)
         + [Basic Fixed Image](#basic-fixed-image)
 - [API](#api)
@@ -60,7 +60,9 @@
     * [GraphQL Type Customization Warning](#graphql-type-customization-warning)
     * [Multiple imgix Sources](#multiple-imgix-sources)
 - [Roadmap](#roadmap)
-- [Upgrading from `@imgix/gatsby-transform-url`](#upgrading-from-imgixgatsby-transform-url)
+- [Upgrade Guides](#upgrade-guides)
+    * [Upgrading from v1.x to v2](#upgrading-from-v1x-to-v2)
+    * [Upgrading from `@imgix/gatsby-transform-url`](#upgrading-from-imgixgatsby-transform-url)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -270,7 +272,7 @@ The steps to setting this value correctly is:
    }
    ```
 
-   Therefore, we need to set the option to `file.url`, to return the url at `node.file.url`.
+   Therefore, we need to set the option to `file.url`, to return the url at `node.file.url`. NB: the value for `rawURLKey` is passed to `lodash.get`, so array indices, etc can also be used if necessary.
 
 3. Set the option to the correct value, **making sure that the URL includes an http or https.** For this example, since the image URL didn't have a `https`, we have to add `https` to the `URLPrefix` option:
 
@@ -1213,7 +1215,43 @@ Other features:
 
 - [I want to have my imgix parameters in my Gatsby/GraphQL query be strongly-typed](https://github.com/imgix/gatsby/issues/5)
 
-## Upgrading from `@imgix/gatsby-transform-url`
+## Upgrade Guides
+
+### Upgrading from v1.x to v2
+
+Between v1 and v2, the method to retrieve the image url in the GraphQL from the raw data was changed. This was done to support Gatsby v4, as function configuration options are no longer possible in Gatsby v4. If you do not use the GraphQL transform API, then you do not have to change anything.
+
+To upgrade from v1 to v2, the following configuration options need to be updated:
+
+```jsx
+// gatsby-config.js
+module.exports = {
+  plugins: {
+    // ...
+    {
+      resolve: `@imgix/gatsby`,
+      options: {
+        // ...
+        fields: [
+          {
+            nodeType: "Post",
+            fieldName: "imgixImage",
+
+            // The follow option needs to be changed...
+            getURL: node => `https:${node.banner.imageURL}`,
+
+            // to this:
+            rawURLKey: "banner.imageURL",
+            URLPrefix: "https:",
+          },
+        ],
+      },
+    },
+  }
+}
+```
+
+### Upgrading from `@imgix/gatsby-transform-url`
 
 `@imgix/gatsby-transform-url` was deprecated in favor of combining these sub-projects into one single project, for simplicity.
 
