@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/pipeable';
 import { ICreateSchemaCustomizationHook, PatchedPluginOptions } from 'gatsby';
 import { GraphQLNonNull, GraphQLString } from 'gatsby/graphql';
 import { PathReporter } from 'io-ts/PathReporter';
+import get from 'lodash.get';
 import { prop } from 'ramda';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
 import { VERSION } from '../../common/constants';
@@ -30,17 +31,21 @@ const getFieldValue = ({
   node: any;
 }): E.Either<Error, string | string[]> =>
   (() => {
+    const prefixURLPrefix = (url: string): string =>
+      (fieldOptions.URLPrefix || '') + url;
     if ('getURL' in fieldOptions) {
-      return pipe(fieldOptions.getURL(node), (value: unknown) =>
+      return pipe(get(node, fieldOptions.getURL), (value: unknown) =>
         value == null || typeof value !== 'string'
-          ? E.left(new Error('getURL must return a URL string'))
-          : E.right(value),
+          ? E.left(new Error('getURL must reference a URL string'))
+          : E.right(prefixURLPrefix(value)),
       );
     } else if ('getURLs' in fieldOptions) {
-      return pipe(fieldOptions.getURLs(node), (value: unknown) =>
-        !isStringArray(value)
-          ? E.left(new Error('getURL must return a URL string'))
-          : E.right(value),
+      return pipe(
+        fieldOptions.getURLs.map((getURL) => get(node, getURL)),
+        (value: unknown) =>
+          !isStringArray(value)
+            ? E.left(new Error('getURLs must reference a list of URL strings'))
+            : E.right(value.map(prefixURLPrefix)),
       );
     }
     const _neverReturn: never = fieldOptions; // Fixes typescript error 'not all code paths return a value'
