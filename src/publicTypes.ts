@@ -55,13 +55,13 @@ const ImgixGatsbyFieldBaseIOTS = t.typeOptional({
 export const ImgixGatsbyFieldMultipleUrlsIOTS = t.intersection([
   ImgixGatsbyFieldBaseIOTS,
   t.type({
-    getURLs: t.array(t.string),
+    rawURLKeys: t.array(t.string),
   }),
 ]);
 export const ImgixGatsbyFieldSingleUrlIOTS = t.intersection([
   ImgixGatsbyFieldBaseIOTS,
   t.type({
-    getURL: t.string,
+    rawURLKey: t.string,
   }),
 ]);
 export const ImgixGatsbyFieldsIOTS = t.array(
