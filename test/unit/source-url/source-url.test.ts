@@ -7,7 +7,7 @@ import { FixedObject, FluidObject } from 'gatsby-image';
 import {
   buildEnumType,
   buildInputObjectType,
-  buildObjectType,
+  buildObjectType
 } from 'gatsby/dist/schema/types/type-builders';
 import isBase64 from 'is-base64';
 import * as R from 'ramda';
@@ -506,6 +506,56 @@ describe('createResolvers', () => {
       expect(src.searchParams.get('w')).not.toBe(imgixParams.w.toString());
       expect(src.searchParams.get('h')).not.toBe(imgixParams.h.toString());
     });
+  });
+  it('should accept string path for getURL', async () => {
+    const result = await getTypeStoreFromSchemaCustomization({
+      appConfig: {
+        fields: [
+          {
+            nodeType: 'ImgixImageTest',
+            fieldName: 'imgixImage',
+            getURL: 'nested.nonImgixUrl',
+          },
+        ],
+      },
+    });
+
+    const ImgixImageTestType = result.getType('ImgixImageTest');
+    const resolver = ImgixImageTestType.config.fields.imgixImage.resolve;
+    const node = {
+      nested: { nonImgixUrl: 'https://test.imgix.net/image.jpg' },
+    };
+    const resolved = resolver(node, {});
+
+    expect(resolved.rawURL).toEqual(node.nested.nonImgixUrl);
+  });
+  it('should accept string paths for getURL', async () => {
+    const result = await getTypeStoreFromSchemaCustomization({
+      appConfig: {
+        fields: [
+          {
+            nodeType: 'ImgixImageTest',
+            fieldName: 'imgixImage',
+            getURLs: ['nested.nonImgixUrl', 'nested.nonImgixUrl2'],
+          },
+        ],
+      },
+    });
+
+    const ImgixImageTestType = result.getType('ImgixImageTest');
+    const resolver = ImgixImageTestType.config.fields.imgixImage.resolve;
+    const node = {
+      nested: {
+        nonImgixUrl: 'https://test.imgix.net/image.jpg',
+        nonImgixUrl2: 'https://test.imgix.net/image.jpg',
+      },
+    };
+    const resolved = resolver(node, {});
+
+    expect(resolved.rawURL).toEqual([
+      node.nested.nonImgixUrl,
+      node.nested.nonImgixUrl2,
+    ]);
   });
 });
 
