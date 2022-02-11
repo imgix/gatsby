@@ -557,6 +557,60 @@ describe('createResolvers', () => {
       node.nested.nonImgixUrl2,
     ]);
   });
+
+  it('should add URLPrefix to single URL retrieved from node', async () => {
+    const result = await getTypeStoreFromSchemaCustomization({
+      appConfig: {
+        fields: [
+          {
+            nodeType: 'ImgixImageTest',
+            fieldName: 'imgixImage',
+            getURL: 'nested.nonImgixUrl',
+            URLPrefix: 'https:'
+          },
+        ],
+      },
+    });
+
+    const ImgixImageTestType = result.getType('ImgixImageTest');
+    const resolver = ImgixImageTestType.config.fields.imgixImage.resolve;
+    const node = {
+      nested: { nonImgixUrl: '//test.imgix.net/image.jpg' },
+    };
+    const resolved = resolver(node, {});
+
+    expect(resolved.rawURL).toEqual('https:'+ node.nested.nonImgixUrl);
+  })
+  it('should accept string paths for getURL', async () => {
+    const result = await getTypeStoreFromSchemaCustomization({
+      appConfig: {
+        fields: [
+          {
+            nodeType: 'ImgixImageTest',
+            fieldName: 'imgixImage',
+            getURLs: ['nested.nonImgixUrl', 'nested.nonImgixUrl2'],
+            URLPrefix: 'https:'
+          },
+        ],
+      },
+    });
+
+    const ImgixImageTestType = result.getType('ImgixImageTest');
+    const resolver = ImgixImageTestType.config.fields.imgixImage.resolve;
+    const node = {
+      nested: {
+        nonImgixUrl: '//test.imgix.net/image.jpg',
+        nonImgixUrl2: '//test.imgix.net/image.jpg',
+      },
+    };
+    const resolved = resolver(node, {});
+
+    expect(resolved.rawURL).toEqual([
+      'https:' + node.nested.nonImgixUrl,
+      'https:' + node.nested.nonImgixUrl2,
+    ]);
+  });
+
 });
 
 const mockGatsbyCache = {
