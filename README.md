@@ -212,7 +212,7 @@ Then, you need to configure a field for this node type. The quickest way to conf
   nodeType: '',
 
   // This is used to pull the raw image URL from the node you want to
-  // transform. The value here should be the path in the node that 
+  // transform. The value here should be the path in the node that
   // contains the image URL to be transformed.
   // See more information below on how to set this.
   rawURLKey: 'imageUrlKey',
@@ -229,7 +229,7 @@ The steps to setting this value correctly is:
 1. Set the option to:
 
    ```js
-   rawURLKey: ''
+   rawURLKey: '';
    ```
 
 2. Inspect the logged output. The plugin will try to find a suitable image url in the node's data for you, and if it successfully finds one, it will output the code to replace the function with in the corresponding error message.
