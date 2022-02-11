@@ -177,7 +177,8 @@ Then, you need to configure a field for this node type. The quickest way to conf
 {
   nodeType: "ContentfulAsset",
   fieldName: "imgixImage",
-  getURL: node => `https:${node.file.url}`
+  rawURLKey: 'file.url',
+  URLPrefix: 'https:',
 },
 ```
 
@@ -186,7 +187,7 @@ Then, you need to configure a field for this node type. The quickest way to conf
 ```js
 {
   nodeType: "DatoCmsAsset",
-  getURL: node => node.entityPayload.attributes.url,
+  rawURLKey: 'entityPayload.attributes.url',
   fieldName: "imgixImage",
 },
 ```
@@ -197,7 +198,7 @@ Then, you need to configure a field for this node type. The quickest way to conf
 // Drupal
 {
   nodeType: 'File',
-  getURL: (node) => node.url,
+  rawURLKey: (node) => node.url,
   fieldName: 'imgixImage',
 },
 ```
@@ -211,26 +212,24 @@ Then, you need to configure a field for this node type. The quickest way to conf
   nodeType: '',
 
   // This is used to pull the raw image URL from the node you want to
-  // transform. It is passed the node to transform as an argument, and
-  // expects a URL to be returned.
+  // transform. The value here should be the path in the node that 
+  // contains the image URL to be transformed.
   // See more information below on how to set this.
-  getURL: (node) => node.imageUrl,
+  rawURLKey: 'imageUrlKey',
 
   // This is the name of imgix field that will be added to the type.
   fieldName: 'imgixImage',
 },
 ```
 
-The `getURL` function needs to return a **fully-qualified URL**.
+The `rawURLKey` value needs to be the path to the raw image URL in the node data that should be transformed.
 
 The steps to setting this value correctly is:
 
-1. Set the function to this:
+1. Set the option to:
 
    ```js
-   getURL: (node) => {
-     console.log(node);
-   };
+   rawURLKey: ''
    ```
 
 2. Inspect the logged output. The plugin will try to find a suitable image url in the node's data for you, and if it successfully finds one, it will output the code to replace the function with in the corresponding error message.
@@ -238,20 +237,22 @@ The steps to setting this value correctly is:
    For example, for `ContentfulAsset`, it will display the following error message:
 
    ```txt
-   Error when resolving URL value for node type ContentfulAsset. This
-   probably means that the getURL function in gatsby-config.js is
-   incorrectly set. Please read this project's README for detailed
-   instructions on how to set this correctly.
+   Error when resolving URL value for node type Post. This probably means that
+   the rawURLKey function in gatsby-config.js is incorrectly set. Please read this
+   project's README for detailed instructions on how to set this correctly.
 
    Potential images were found at these paths:
-    - file.url
-      Usage: getURL: (node) => `https:${node.file.url}`
+     - imageURL
+       Set following configuration options:
+         rawURLKey: 'imageURL'
+         URLPrefix: 'https:'
    ```
 
-   As we can see, the correct value for the function is
+   As we can see, the correct value for the options are
 
    ```js
-   getURL: (node) => `https:${node.file.url}
+   rawURLKey: 'imageURL',
+   URLPrefix: 'https:'
    ```
 
    If no value was suggested, you will need to inspect the logged output to find a suitable image URL that corresponds to the image you want to transform. For example, if we're searching ContentfulAsset's data, we see the following output in the console:
@@ -269,12 +270,13 @@ The steps to setting this value correctly is:
    }
    ```
 
-   Therefore, we need to return `file.url`.
+   Therefore, we need to set the option to `file.url`, to return the url at `node.file.url`.
 
-3. Set the function to the correct value, **making sure that the URL includes an http or https.** For this example, since the image URL didn't have a `https`, we have to add one:
+3. Set the option to the correct value, **making sure that the URL includes an http or https.** For this example, since the image URL didn't have a `https`, we have to add `https` to the `URLPrefix` option:
 
    ```js
-   getURL: (node) => `https:${node.file.url}`;
+   rawURLKey: 'file.url`,
+   URLPrefix: 'https:'
    ```
 
 ##### Finding a node's type
