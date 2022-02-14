@@ -1,3 +1,14 @@
+### [1.7.6-rc.1](https://github.com/imgix/gatsby/compare/v1.7.5...v1.7.6-rc.1) (2022-02-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* change getURL config from function to string
+
+### Features
+
+* change getURL config from function to string ([0844948](https://github.com/imgix/gatsby/commit/0844948c022514926bdef864902d056adb8a5236))
+
 ### [1.7.5](https://github.com/imgix/gatsby/compare/v1.7.4...v1.7.5) (2022-01-11)
 
 
