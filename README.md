@@ -30,19 +30,19 @@
     * [What section should I read?](#what-section-should-i-read)
     * [GraphQL transform API](#graphql-transform-api)
         + [Configuration](#configuration)
-        + [✨ New ✨ GatsbyImage support](#%E2%9C%A8-new-%E2%9C%A8-gatsbyimage-support)
+        + [GatsbyImage support](#gatsbyimage-support)
         + [Fluid Images](#fluid-images)
         + [Fixed Images](#fixed-images)
         + [Generating imgix URLs](#generating-imgix-urls)
     * [GraphQL `imgixImage` API](#graphql-imgiximage-api)
         + [Configuration](#configuration-1)
-        + [✨ New ✨ GatsbyImage support](#%E2%9C%A8-new-%E2%9C%A8-gatsbyimage-support-1)
+        + [GatsbyImage support](#gatsbyimage-support-1)
         + [Fluid Images](#fluid-images-1)
         + [Fixed Images](#fixed-images-1)
         + [Generating imgix URLs](#generating-imgix-urls-1)
         + [Using a Web Proxy Source](#using-a-web-proxy-source)
     * [URL Transform Function](#url-transform-function)
-        + [✨ New ✨ Gatsby-plugin-image Component and Hook](#%E2%9C%A8-new-%E2%9C%A8-gatsby-plugin-image-component-and-hook)
+        + [Gatsby-plugin-image Component and Hook](#gatsby-plugin-image-component-and-hook)
         + [Basic Fluid Image](#basic-fluid-image)
         + [Basic Fixed Image](#basic-fixed-image)
 - [API](#api)
@@ -297,7 +297,7 @@ It's also possible to add `__typeName` to the GraphQL query to find the node typ
 
 Setting `auto: ['format', 'compress']` is highly recommended. This will re-format the image to the format that is best optimized for your browser, such as WebP. It will also reduce unnecessary wasted file size, such as transparency on a non-transparent image. More information about the auto parameter can be found [here](https://docs.imgix.com/apis/url/auto/auto).
 
-#### ✨ New ✨ GatsbyImage support
+#### GatsbyImage support
 
 This plugin now supports the latest `GatsbyImage` component, which delivers better performance and Lighthouse scores, while improving the developer experience.
 
@@ -489,7 +489,7 @@ module.exports = {
 
 Setting `{ auto: ['compress', 'format'] }` is highly recommended. This will re-format the image to the format that is best optimized for your browser, such as WebP. It will also reduce unnecessary wasted file size, such as transparency on a non-transparent image. More information about the auto parameter can be found [here](https://docs.imgix.com/apis/url/auto/auto).
 
-#### ✨ New ✨ GatsbyImage support
+#### GatsbyImage support
 
 This plugin now supports the latest `GatsbyImage` component, which delivers better performance and Lighthouse scores, while improving the developer experience.
 
@@ -673,7 +673,7 @@ This features allows imgix urls to be used with gatsby-image or gatsby-plugin-im
 
 Unfortunately, due to limitations of Gatsby, this feature does not support blurred placeholders. To use placeholders please use one of the other use cases/parts of this library
 
-#### ✨ New ✨ Gatsby-plugin-image Component and Hook
+#### Gatsby-plugin-image Component and Hook
 
 This plugin supports the new frontend Gatsby-plugin-image component. To use the component with this plugin, use the following code
 
