@@ -31,12 +31,11 @@ jobs:
             - run: echo 'export NODE_OPTIONS=--openssl-legacy-provider' >> $BASH_ENV
       - node/install-packages:
           pkg-manager: yarn
-          override-ci-command: yarn install --production=false --frozen-lockfile
       - run:
           command: cd test/dev-and-e2e && yarn install --frozen-lockfile && cd ../../
       - run: yarn build
       - run: yarn lint:ci
-      - run: cross-env-shell DEBUG=imgix:* yarn test
+      - run: ./node_modules/.bin/cross-env-shell DEBUG=imgix:* yarn test
   deploy:
     docker:
       - image: cimg/node:current
