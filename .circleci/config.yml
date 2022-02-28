@@ -48,6 +48,6 @@ workflows:
     jobs:
       - test:
           version: 'current'
-      - deploy:
-          requires:
-            - test
+      # - deploy:
+      #     requires:
+      #       - test
