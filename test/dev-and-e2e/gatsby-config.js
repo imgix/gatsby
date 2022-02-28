@@ -40,7 +40,8 @@ module.exports = {
           {
             nodeType: "Post",
             fieldName: "imgixImage",
-            getURL: node => node.imageURL,
+            rawURLKey: "imageURL",
+            URLPrefix: "https:",
           },
         ],
       },
