@@ -29,7 +29,8 @@ jobs:
           steps:
             # Prevents build error on stable node version
             - run: echo 'export NODE_OPTIONS=--openssl-legacy-provider' >> $BASH_ENV
-      - node/install-packages
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
           command: cd test/dev-and-e2e && yarn install --frozen-lockfile && cd ../../
       - run: yarn build
