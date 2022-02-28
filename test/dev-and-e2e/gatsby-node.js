@@ -39,7 +39,7 @@ exports.sourceNodes = async ({
   // Data can come from anywhere, but for now create it manually
   const testData = {
     key: 123,
-    imageURL: "//assets.imgix.net/amsterdam.jpg",
+    imageURL: "https://assets.imgix.net/amsterdam.jpg",
   }
   const nodeContent = JSON.stringify(testData)
   const node = {

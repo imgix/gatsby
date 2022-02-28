@@ -47,21 +47,28 @@ export interface IBaseFieldOptions {
   fieldName: string;
 }
 
-const ImgixGatsbyFieldBaseIOTS = t.typeOptional({
+export interface IFieldOptionsSingleUrl extends IBaseFieldOptions {
+  getUrl: (node: Node) => string;
+}
+
+export interface IFieldOptionsMultipleUrls extends IBaseFieldOptions {
+  getUrls: (node: Node) => string;
+}
+
+const ImgixGatsbyFieldBaseIOTS = t.type({
   nodeType: t.string,
   fieldName: t.string,
-  URLPrefix: t.optional(t.string),
 });
 export const ImgixGatsbyFieldMultipleUrlsIOTS = t.intersection([
   ImgixGatsbyFieldBaseIOTS,
   t.type({
-    rawURLKeys: t.array(t.string),
+    getURLs: t.Function,
   }),
 ]);
 export const ImgixGatsbyFieldSingleUrlIOTS = t.intersection([
   ImgixGatsbyFieldBaseIOTS,
   t.type({
-    rawURLKey: t.string,
+    getURL: t.Function,
   }),
 ]);
 export const ImgixGatsbyFieldsIOTS = t.array(
@@ -116,3 +123,5 @@ export interface ImgixFixedArgs {
   imgixParams?: ImgixUrlParams;
   placeholderImgixParams?: ImgixUrlParams;
 }
+
+export type IFieldOption = IFieldOptionsSingleUrl | IFieldOptionsMultipleUrls;
