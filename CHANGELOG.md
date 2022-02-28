@@ -1,3 +1,10 @@
+### [1.7.7](https://github.com/imgix/gatsby/compare/v1.7.6...v1.7.7) (2022-02-28)
+
+
+### Bug Fixes
+
+* revert bad version release ([320d2b6](https://github.com/imgix/gatsby/commit/320d2b6b1c300174c083d74afcd4e166d56e1317))
+
 ### [1.7.5](https://github.com/imgix/gatsby/compare/v1.7.4...v1.7.5) (2022-01-11)
 
 
