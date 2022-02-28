@@ -39,6 +39,7 @@
     "gatsby-plugin-image": "^1 || ^2"
   },
   "resolutions": {
+    "chalk": "^4",
     "graphql": "15.8.0",
     "graphql-compose": "^9.0.0",
     "webpack": "5.65.0"
