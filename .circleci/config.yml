@@ -36,7 +36,7 @@ jobs:
       - run: yarn build
       - run: yarn lint:ci
       - run: yarn test:unit
-      - run: cross-env-shell DEBUG=imgix:* yarn run test:e2e:ci
+      - run: $(yarn bin)/cross-env-shell DEBUG=imgix:* yarn run test:e2e:ci
   deploy:
     docker:
       - image: cimg/node:current
