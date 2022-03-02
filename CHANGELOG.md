@@ -1,3 +1,14 @@
+## [2.0.0](https://github.com/imgix/gatsby/compare/v1.7.7...v2.0.0) (2022-03-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release improves support for Gatsby v4. As a result, the configuration for this plugin will need to be updated. This should be in most cases just a simple update. Instructions for this change can be found in the README under ["Upgrading from v1.x to v2"](./README.md#upgrading-from-v1x-to-v2).
+
+### Features
+
+* change getURL config from function to string ([8867811](https://github.com/imgix/gatsby/commit/8867811a9f2481b950550e93214eb5d6afc82d52))
+
 ### [1.7.7](https://github.com/imgix/gatsby/compare/v1.7.6...v1.7.7) (2022-02-28)
 
 
