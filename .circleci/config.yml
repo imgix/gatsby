@@ -31,6 +31,7 @@ jobs:
       - run:
           name: Install e2e dependencies
           command: cd test/dev-and-e2e && yarn install --frozen-lockfile && cd ../../
+      - run: sudo apt install rsync
       - save_cache:
           key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
