@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.0
   browser-tools: circleci/browser-tools@1.2.4
+  cypress: cypress-io/cypress@1
 
 jobs:
   test:
@@ -12,17 +13,10 @@ jobs:
         description: Node.JS version to install
         type: string
     docker:
-      - image: cimg/node:<<parameters.version>>-browsers
-    resource_class: large
+      - image: cimg/node:<<parameters.version>
+    resource_class: medium
     steps:
       - checkout
-      - browser-tools/install-browser-tools:
-          install-geckodriver: false
-      - run:
-          command: |
-            google-chrome --version
-            firefox --version
-          name: Check install
       - when:
           condition:
             equal: ['current', <<parameters.version>>]
@@ -35,7 +29,7 @@ jobs:
           command: cd test/dev-and-e2e && yarn install --frozen-lockfile && cd ../../
       - run: yarn build
       - run: yarn lint:ci
-      - run: ./node_modules/.bin/cross-env-shell DEBUG=imgix:* yarn test
+      - run: yarn test:unit
   deploy:
     docker:
       - image: cimg/node:current
@@ -44,11 +38,24 @@ jobs:
       - node/install-packages
       - run: npx semantic-release
 
+executors:
+  cypress-with-env-var:
+    docker:
+      - image: 'cypress/base'
+    environment:
+      DEBUG: imgix:*
+      BAR: bar
+
 workflows:
   test:
     jobs:
       - test:
           version: 'current'
-      # - deploy:
-      #     requires:
-      #       - test
+      - cypress/run:
+          yarn: true
+          executor: cypress-with-env-var
+          install-command: yarn install --frozen-lockfile && cd test/dev-and-e2e && yarn install --frozen-lockfile
+      - deploy:
+          requires:
+            - test
+            - cypress/run
