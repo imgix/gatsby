@@ -11,7 +11,7 @@ jobs:
         description: Node.JS version to install
         type: string
     docker:
-      - image: cypress/base:14
+      - image: cypress/base:16
         environment:
           ## this enables colors in the output
           TERM: xterm
