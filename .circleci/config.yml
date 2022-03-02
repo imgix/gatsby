@@ -33,7 +33,7 @@ jobs:
           command: cd test/dev-and-e2e && yarn install --frozen-lockfile && cd ../../
       # necessary for syncing to test folder
       - run: apt update
-      - run: apt-get install rsync
+      - run: apt-get install -y rsync
       - save_cache:
           key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
