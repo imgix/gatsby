@@ -15,7 +15,7 @@ jobs:
         environment:
           ## this enables colors in the output
           TERM: xterm
-    resource_class: medium
+    resource_class: large
     steps:
       - checkout
       - restore_cache:
