@@ -32,7 +32,7 @@ jobs:
           name: Install e2e dependencies
           command: cd test/dev-and-e2e && yarn install --frozen-lockfile && cd ../../
       # necessary for syncing to test folder
-      - run: apt-get install rsync
+      - run: apt install rsync
       - save_cache:
           key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
