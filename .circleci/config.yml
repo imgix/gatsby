@@ -54,6 +54,7 @@ workflows:
           yarn: true
           executor: cypress-with-env-var
           install-command: yarn install --frozen-lockfile && cd test/dev-and-e2e && yarn install --frozen-lockfile
+          build: yarn build
       - deploy:
           requires:
             - test
