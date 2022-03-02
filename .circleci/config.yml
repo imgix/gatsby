@@ -20,7 +20,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}-{{ checksum "test/dev-and-e2e/package.json" }}-{{ checksum "test/dev-and-e2e/yarn.lock" }}
             - v1-deps-{{ .Branch }}
             - v1-deps
       - run:
