@@ -1,0 +1,69 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.0
+
+jobs:
+  test:
+    parameters:
+      version:
+        default: 'stable'
+        description: Node.JS version to install
+        type: string
+    docker:
+      - image: cypress/base:16.14.0
+        environment:
+          ## this enables colors in the output
+          TERM: xterm
+    resource_class: large
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}-{{ checksum "yarn.lock" }}-{{ checksum "test/dev-and-e2e/yarn.lock" }}
+            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}
+            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - v1-deps-{{ .Branch }}
+            - v1-deps
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - run:
+          name: Install e2e dependencies
+          command: cd test/dev-and-e2e && yarn install --frozen-lockfile && cd ../../
+      # necessary for syncing to test folder
+      - run: apt update
+      - run: apt-get install -y rsync
+      - save_cache:
+          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}-{{ checksum "yarn.lock" }}-{{ checksum "test/dev-and-e2e/yarn.lock" }}
+          paths:
+            - ~/.cache ## cache both yarn and Cypress!
+      - run: yarn build
+      - run: yarn lint:ci
+      - run: yarn test:unit
+      - run: $(yarn bin)/cross-env-shell DEBUG=imgix:* yarn run test:e2e:ci
+  deploy:
+    docker:
+      - image: cimg/node:current
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run: npx semantic-release
+
+executors:
+  cypress-with-env-var:
+    docker:
+      - image: 'cypress/base'
+    environment:
+      DEBUG: imgix:*
+      BAR: bar
+
+workflows:
+  test:
+    jobs:
+      - test:
+          version: 'current'
+      - deploy:
+          requires:
+            - test
