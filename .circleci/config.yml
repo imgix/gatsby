@@ -48,6 +48,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages
+          pkg-manager: yarn
       - run: npx semantic-release
 
 executors:
