@@ -1,64 +1,65 @@
-import { pipe } from 'fp-ts/pipeable';
-import * as TE from 'fp-ts/TaskEither';
-import { TaskEither } from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
-import { createLogger, trace } from './log';
+import { createLogger, traceJSON } from './log';
 
 const log = createLogger('cache');
 
-export const withCache = <A, B>(
+export const withCache = async <TData>(
   key: string,
   cache: GatsbyCache,
-  f: () => TaskEither<A, B>,
-): TE.TaskEither<A | Error, B> =>
-  pipe(
-    trace(`Trying to retrieve ${key} from cache`, log)(''),
-    () => getFromCache<B>(cache, key),
-    TE.map(trace(`Successfully retrieved ${key} from cache with value`, log)),
-    // If no cache hit, run function and store result in cache
-    TE.orElse(() =>
-      pipe(
-        f(),
-        TE.map(
-          trace(
-            `Couldn't retrieve ${key} from cache, replacing with value`,
-            log,
-          ),
-        ),
-        TE.chainW(setToCache(key, cache)),
-      ),
-    ),
-    TE.mapLeft(trace('Error in withCache', log)),
-  );
+  f: () => Promise<TData>,
+): Promise<TData> => {
+  try {
+    log(`Trying to retrieve ${key} from cache`);
+    const data = await getFromCache<TData>(cache, key);
+    traceJSON(data, `Successfully retrieved ${key} from cache with value`, log);
+    return data;
+  } catch (error) {
+    const newData = await f();
+    traceJSON(
+      newData,
+      `Couldn't retrieve ${key} from cache, replacing with value`,
+    );
 
-export const getFromCache = <A>(
+    try {
+      await setToCache(cache, key, newData);
+    } catch (error) {
+      throw new Error('Error with cache');
+    }
+
+    return newData;
+  }
+};
+
+export const getFromCache = async <A>(
   cache: GatsbyCache,
   key: string,
-): TaskEither<Error, A> =>
-  TE.tryCatch(
-    () =>
-      cache.get(key).then((v: A | undefined | null) => {
-        trace(`Retrieved value from cache for ${key}`, log)(v);
-        if (v == null) {
-          log(`Key ${key} doesn't exist in the cache`);
-          throw new Error(`Key ${key} doesn't exist in the cache`);
-        }
-        return v;
-      }),
-    () => new Error(`Failed to get "${key}" in cache.`),
-  );
+): Promise<A> => {
+  let cacheData;
+  try {
+    cacheData = (await cache.get(key)) as A | undefined | null;
+  } catch (error) {
+    throw new Error(`Failed to get "${key}" in cache.`);
+  }
 
-export const setToCache = <A>(key: string, cache: GatsbyCache) => (
-  value: A,
-): TaskEither<Error, A> =>
-  pipe(
-    TE.tryCatch(
-      () => {
-        trace(`Setting "${key}" in cache to`, log)(value);
-        return cache.set(key, value).then(() => value);
-      },
-      () => new Error(`Failed to set "${key}" in cache to value: ${value}`),
-    ),
-    TE.map(trace(`Cached value`, log)),
-    TE.mapLeft(trace(`Failed to set "${key}" in cache to`, log)),
-  );
+  traceJSON(cacheData, `Retrieved value from cache for ${key}`, log);
+  if (cacheData == null) {
+    log(`Key ${key} doesn't exist in the cache`);
+    throw new Error(`Key ${key} doesn't exist in the cache`);
+  }
+  return cacheData;
+};
+
+export const setToCache = async <TData>(
+  cache: GatsbyCache,
+  key: string,
+  value: TData,
+): Promise<void> => {
+  traceJSON(value, `Setting "${key}" in cache to`, log);
+  try {
+    cache.set(key, value).then(() => value);
+    log(`Cached value`);
+  } catch (error) {
+    traceJSON(value, `Failed to set "${key}" in cache to`, log);
+    throw new Error(`Failed to set "${key}" in cache to value: ${value}`);
+  }
+};
