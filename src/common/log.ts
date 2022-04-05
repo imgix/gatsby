@@ -12,3 +12,14 @@ export const trace = (label?: string, customLogger?: debug.IDebugger) => <T>(
   );
   return v;
 };
+
+export const traceJSON = (
+  rawJSON: any,
+  label?: string | null | undefined,
+  customLogger?: debug.IDebugger,
+) => {
+  const logger = customLogger ?? log;
+  const prefix = label ? `${label}: ` : '';
+  const formattedMessage = JSON.stringify(rawJSON, null, 2);
+  logger(`${prefix}${formattedMessage}`);
+};
