@@ -27,36 +27,47 @@ function isStringArray(value: unknown): value is string[] {
   );
 }
 
+type URL = string;
+/**
+ * Given a GraphQL node (instance of a type), and the plugin options, fetch the
+ * image url to proxy through imgix.
+ * @param fieldOptions The options object from gatsby-config.js
+ * @param node The GraphQL node to search for the image URL in
+ * @returns The image URL(s) if found, or throws an error
+ */
 const getFieldValue = ({
   fieldOptions,
   node,
 }: {
   fieldOptions: Exclude<IImgixGatsbyOptions['fields'], undefined>[0];
   node: any;
-}): E.Either<Error, string | string[]> =>
-  (() => {
-    const prefixURLPrefix = (url: string): string =>
-      (fieldOptions.URLPrefix || '') + url;
-    if ('rawURLKey' in fieldOptions) {
-      return pipe(get(node, fieldOptions.rawURLKey), (value: unknown) =>
-        value == null || typeof value !== 'string'
-          ? E.left(new Error('rawURLKey must reference a URL string'))
-          : E.right(prefixURLPrefix(value)),
-      );
-    } else if ('rawURLKeys' in fieldOptions) {
-      return pipe(
-        fieldOptions.rawURLKeys.map((rawURLKey) => get(node, rawURLKey)),
-        (value: unknown) =>
-          !isStringArray(value)
-            ? E.left(
-                new Error('rawURLKeys must reference a list of URL strings'),
-              )
-            : E.right(value.map(prefixURLPrefix)),
-      );
+}): URL | URL[] => {
+  const prefixWithURLPrefix = (url: string): string =>
+    (fieldOptions.URLPrefix || '') + url;
+
+  if ('rawURLKey' in fieldOptions) {
+    // Here we should be only fetching one url from the node
+    const url = get(node, fieldOptions.rawURLKey);
+
+    if (url == null || typeof url !== 'string') {
+      throw new Error('rawURLKey must reference a URL string');
     }
-    const _neverReturn: never = fieldOptions; // Fixes typescript error 'not all code paths return a value'
-    return _neverReturn;
-  })();
+
+    return prefixWithURLPrefix(url);
+  } else if ('rawURLKeys' in fieldOptions) {
+    // Here we are looking to fetch multiple urls
+    const urls = fieldOptions.rawURLKeys.map((rawURLKey) =>
+      get(node, rawURLKey),
+    );
+
+    if (!isStringArray(urls)) {
+      throw new Error('rawURLKeys must reference a list of URL strings');
+    }
+    return urls.map(prefixWithURLPrefix);
+  }
+  const _neverReturn: never = fieldOptions; // Fixes typescript error 'not all code paths return a value'
+  return _neverReturn;
+};
 
 /**
  * "Decode" the options that the user set in gatsby-config.js, to verify that
@@ -277,47 +288,51 @@ function createFieldTypes(
               ? `[${imgixImageType.config.name}]`
               : imgixImageType.config.name,
           resolve: (node: unknown): { rawURL: string | string[] } => {
-            const rawURLE = getFieldValue({
-              fieldOptions,
-              node,
-            });
+            try {
+              const rawURL = getFieldValue({
+                fieldOptions,
+                node,
+              });
+              return {
+                rawURL,
+              };
+            } catch (error) {
+              // If no urls are found, try to find possible image urls in the
+              // data, and if some are found, try to provide a useful error
+              // message
+              const urlPathsFound =
+                typeof node === 'object' && node != null
+                  ? findPossibleURLsInNode(node)
+                  : [];
 
-            return {
-              rawURL: E.getOrElseW(() => {
-                const urlPathsFound =
-                  typeof node === 'object' && node != null
-                    ? findPossibleURLsInNode(node)
-                    : [];
+              const potentialImagesString = (() => {
+                if (urlPathsFound.length === 0) {
+                  return '';
+                }
 
-                const potentialImagesString = (() => {
-                  if (urlPathsFound.length === 0) {
-                    return '';
+                let output = '';
+                output += 'Potential images were found at these paths:\n';
+                urlPathsFound.map(({ path, value }) => {
+                  output += ` - ${path}\n`;
+
+                  if (value.startsWith('http')) {
+                    output += '   Set following configuration options:\n';
+                    output += `     rawURLKey: '${path}'\n`;
+                    output += `     URLPrefix: 'https:'\n`;
+                  } else {
+                    output += '   Set following configuration option:\n';
+                    output += `     rawURLKey: '${path}'\n`;
                   }
+                });
+                return output;
+              })();
 
-                  let output = '';
-                  output += 'Potential images were found at these paths:\n';
-                  urlPathsFound.map(({ path, value }) => {
-                    output += ` - ${path}\n`;
-
-                    if (value.startsWith('http')) {
-                      output += '   Set following configuration options:\n';
-                      output += `     rawURLKey: '${path}'\n`;
-                      output += `     URLPrefix: 'https:'\n`;
-                    } else {
-                      output += '   Set following configuration option:\n';
-                      output += `     rawURLKey: '${path}'\n`;
-                    }
-                  });
-                  return output;
-                })();
-
-                return gatsbyContext.reporter.panic(
-                  `Error when resolving URL value for node type ${fieldOptions.nodeType}. This probably means that the rawURLKey function in gatsby-config.js is incorrectly set. Please read this project's README for detailed instructions on how to set this correctly.
+              gatsbyContext.reporter.panic(
+                `Error when resolving URL value for node type ${fieldOptions.nodeType}. This probably means that the rawURLKey function in gatsby-config.js is incorrectly set. Please read this project's README for detailed instructions on how to set this correctly.
                       
 ${potentialImagesString}`,
-                );
-              })(rawURLE),
-            };
+              );
+            }
           },
         },
       },
