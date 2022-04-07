@@ -1,3 +1,10 @@
+### [2.0.3](https://github.com/imgix/gatsby/compare/v2.0.2...v2.0.3) (2022-04-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @imgix/js-core to v3.5.1 ([03bbd59](https://github.com/imgix/gatsby/commit/03bbd595e5b305f35232a5fbdc45b530a4df79c5))
+
 ### [2.0.2](https://github.com/imgix/gatsby/compare/v2.0.1...v2.0.2) (2022-04-07)
 
 

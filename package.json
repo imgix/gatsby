@@ -1,5 +1,5 @@
 {
-  "version": "2.0.2",
+  "version": "2.0.3",
   "name": "@imgix/gatsby",
   "description": "The official imgix plugin to apply imgix transformations and optimisations to images in Gatsby at build-time or request-time",
   "author": "Frederick Fogerty <frederick@imgix.com>",
