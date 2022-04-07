@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/pipeable';
 import {
   CreateSchemaCustomizationArgs,
   GatsbyGraphQLObjectType,
@@ -71,50 +70,47 @@ const getFieldValue = ({
 
 /**
  * "Decode" the options that the user set in gatsby-config.js, to verify that
- * they match our expected options schema. If they don't, the Either will
- * contain an error.
+ * they match our expected options schema. If they don't, an error will be
+ * thrown.
  * @param options The options object from gatsby-config.js
- * @returns Either containing the options object if they are valid, or an error
+ * @returns The options object if it is valid, or throws an error
  */
-const decodeOptionsE = (options: PatchedPluginOptions<IImgixGatsbyOptions>) =>
-  pipe(
-    options,
-    ImgixGatsbyOptionsIOTS.decode,
-    E.mapLeft(
-      (errs) =>
-        new Error(
-          `The plugin config is not in the correct format. Errors: ${PathReporter.report(
-            E.left(errs),
-          )}`,
-        ),
-    ),
-    E.chain((options) => {
-      if (
-        options.sourceType === 'webProxy' &&
-        (options.secureURLToken == null || options.secureURLToken.trim() === '')
-      ) {
-        return E.left(
-          new Error(
-            `The plugin option 'secureURLToken' is required when sourceType is 'webProxy'.`,
-          ),
-        );
-      }
-      if (options.fields != null && !Array.isArray(options.fields)) {
-        return E.left(new Error('Fields must be an array of field options'));
-      }
-      if (
-        options.sourceType === ImgixSourceType.WebProxy &&
-        (options.secureURLToken == null || options.secureURLToken.trim() === '')
-      ) {
-        return E.left(
-          new Error(
-            'A secure URL token must be provided if sourceType is webProxy',
-          ),
-        );
-      }
-      return E.right(options);
-    }),
-  );
+const decodeOptions = (options: PatchedPluginOptions<IImgixGatsbyOptions>) => {
+  const decodedOptionsE = ImgixGatsbyOptionsIOTS.decode(options);
+  if (E.isLeft(decodedOptionsE)) {
+    throw new Error(
+      `The plugin config is not in the correct format. Errors: ${PathReporter.report(
+        decodedOptionsE,
+      )}`,
+    );
+  }
+
+  const decodedOptions = decodedOptionsE.right;
+
+  if (
+    decodedOptions.sourceType === 'webProxy' &&
+    (decodedOptions.secureURLToken == null ||
+      decodedOptions.secureURLToken.trim() === '')
+  ) {
+    throw new Error(
+      `The plugin option 'secureURLToken' is required when sourceType is 'webProxy'.`,
+    );
+  }
+  if (decodedOptions.fields != null && !Array.isArray(decodedOptions.fields)) {
+    throw new Error('Fields must be an array of field options');
+  }
+  if (
+    decodedOptions.sourceType === ImgixSourceType.WebProxy &&
+    (decodedOptions.secureURLToken == null ||
+      decodedOptions.secureURLToken.trim() === '')
+  ) {
+    throw new Error(
+      'A secure URL token must be provided if sourceType is webProxy',
+    );
+  }
+
+  return decodedOptions;
+};
 
 const setupImgixClient = ({
   options,
@@ -133,7 +129,7 @@ const setupImgixClient = ({
   });
 
 /**
- * createSchemaCustomaztion is a Gatsby core API hook which can be used to
+ * createSchemaCustomization is a Gatsby core API hook which can be used to
  * update the GraphQL schema.
  * Here, we use it to add our imgix GraphQL types, as well as add fields to the
  * corresponding types, which are the types that the user has specified to
@@ -144,10 +140,12 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
   gatsbyContext,
   _options,
 ): Promise<void> => {
-  const validatedOptions = decodeOptionsE(_options);
-  if (E.isLeft(validatedOptions)) {
+  let validatedOptions;
+  try {
+    validatedOptions = decodeOptions(_options);
+  } catch (error) {
     const errorString = `[@imgix/gatsby] Fatal error during setup, plugin options are not valid: ${String(
-      validatedOptions.left,
+      error,
     )}`;
     gatsbyContext.reporter.panic(errorString);
     throw new Error(errorString);
@@ -157,7 +155,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
   // core imgix client), which will be passed around to be used in the
   // application
   const imgixClient = setupImgixClient({
-    options: validatedOptions.right,
+    options: validatedOptions,
     packageVersion: VERSION,
   });
 
@@ -166,7 +164,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
     cache: gatsbyContext.cache,
     imgixClient,
     resolveUrl: prop('rawURL'),
-    defaultParams: validatedOptions.right.defaultImgixParams,
+    defaultParams: validatedOptions.defaultImgixParams,
   });
 
   // Create the root "imgixImage" type which will exist at the root of the
@@ -182,7 +180,7 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
     },
   });
 
-  const optionsFields = validatedOptions.right.fields ?? [];
+  const optionsFields = validatedOptions.fields ?? [];
 
   const fieldTypes = createFieldTypes(
     optionsFields,
