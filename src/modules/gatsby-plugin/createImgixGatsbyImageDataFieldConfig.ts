@@ -1,8 +1,6 @@
 import { stripIndent } from 'common-tags';
-import { Do } from 'fp-ts-contrib/lib/Do';
-import { pipe } from 'fp-ts/function';
-import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
+import * as O from 'fp-ts/lib/Option';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import {
   generateImageData,
@@ -24,19 +22,28 @@ import {
   fetchImgixDominantColor,
 } from '../../api/fetchBase64Image';
 import { createExternalHelper } from '../../common/createExternalHelper';
-import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
-import {
-  ImgixSourceDataResolver,
-  resolveUrlFromSourceData,
-  taskEitherFromSourceDataResolver,
-} from '../../common/utils';
+import { ImgixSourceDataResolver } from '../../common/utils';
 import { IImgixParams } from '../../publicTypes';
 import { buildGatsbyImageDataBaseArgs } from './buildGatsbyImageDataBaseArgs';
 import { unTransformParams } from './graphqlTypes';
 import { IImgixGatsbyImageDataArgsResolved } from './privateTypes';
-import { resolveDimensions } from './resolveDimensions';
+import {
+  IResolveDimensionsRight,
+  resolveDimensions,
+} from './resolveDimensions';
 
+/**
+ * Resolve gatsby image data for a given node
+ * @param param0
+ * @param param0.resolveUrl Function that returns the url or a Promise containing the url for the given node
+ * @param param0.imgixClient An instance of an imgix client
+ * @param param0.resolveHeight Function that returns the height of the image, if given in the source data, to prevent unnecessary data fetching
+ * @param param0.resolveWidth Function that returns the width of the image, if given in the source data, to prevent unnecessary data fetching
+ * @param param0.cache The Gatsby cache helper
+ * @param param0.defaultParams The default imgix params to set on the image requested
+ * @returns A GraphQL resolver (a function that accepts the node value and args, and returns gatsby image data in a Promise)
+ */
 const resolveGatsbyImageData = <TSource>({
   resolveUrl,
   imgixClient,
@@ -59,94 +66,62 @@ const resolveGatsbyImageData = <TSource>({
   rootValue,
   unsafeResolverArgs,
 ): Promise<IGatsbyImageData | undefined> => {
-  return pipe(
-    Do(TE.taskEither)
-      .sequenceSL(() => ({
-        url: resolveUrlFromSourceData(resolveUrl)(rootValue),
-        manualWidth: pipe(
-          taskEitherFromSourceDataResolver(resolveWidth)(rootValue),
-          TaskOptionFromTE,
-          TE.fromTask,
-        ),
-        manualHeight: pipe(
-          taskEitherFromSourceDataResolver(resolveHeight)(rootValue),
-          TaskOptionFromTE,
-          TE.fromTask,
-        ),
-      }))
-      .let('safeResolverArgs', {
-        ...unsafeResolverArgs,
-        imgixParams: unTransformParams(unsafeResolverArgs.imgixParams ?? {}),
-        placeholderImgixParams: unTransformParams(
-          unsafeResolverArgs.placeholderImgixParams ?? {},
-        ),
-      })
-      .bindL('dimensions', ({ url, manualWidth, manualHeight }) =>
-        resolveDimensions({
-          url,
-          manualHeight,
-          manualWidth,
-          cache,
-          client: imgixClient,
-        }),
-      )
-      .letL('baseImageDataArgs', ({ url, dimensions, safeResolverArgs }) =>
-        buildGatsbyImageDataBaseArgs({
-          url,
-          dimensions,
-          resolverArgs: safeResolverArgs,
-          defaultParams,
-          imgixClient,
-        }),
-      )
-      .bindL(
-        'placeholderData',
-        ({ url, baseImageDataArgs, safeResolverArgs }) => {
-          if (safeResolverArgs.placeholder === 'blurred') {
-            return pipe(
-              getLowResolutionImageURL({
-                ...baseImageDataArgs,
-                options: {
-                  ...baseImageDataArgs,
-                  imgixParams: {
-                    ...defaultParams,
-                    ...safeResolverArgs.imgixParams,
-                    ...safeResolverArgs.placeholderImgixParams,
-                  },
-                },
-              }),
-              fetchImgixBase64Image(cache),
-              TE.map((base64Data) => ({
-                placeholder: { fallback: base64Data },
-              })),
-            );
-          }
-          if (safeResolverArgs.placeholder === 'dominantColor') {
-            return pipe(
-              fetchImgixDominantColor(cache)((params) =>
-                imgixClient.buildURL(url, {
-                  ...defaultParams,
-                  ...safeResolverArgs.imgixParams,
-                  ...safeResolverArgs.placeholderImgixParams,
-                  ...params,
-                }),
-              ),
-              TE.map((dominantColor) => ({
-                backgroundColor: dominantColor,
-              })),
-            );
-          }
-          return TE.right({});
-        },
-      )
-      .return(({ baseImageDataArgs, placeholderData }) => ({
-        ...generateImageData({
-          ...baseImageDataArgs,
-        }),
-        ...placeholderData,
-      })),
-    TE.getOrElseW(() => T.of(undefined)),
-  )();
+  try {
+    const url = await resolveUrl(rootValue);
+    if (!url) {
+      return undefined;
+    }
+    const manualWidth = await resolveWidth(rootValue);
+    const manualHeight = await resolveHeight(rootValue);
+
+    const safeResolverArgs = {
+      ...unsafeResolverArgs,
+      imgixParams: unTransformParams(unsafeResolverArgs.imgixParams ?? {}),
+      placeholderImgixParams: unTransformParams(
+        unsafeResolverArgs.placeholderImgixParams ?? {},
+      ),
+    };
+
+    const dimensions = await TE.getOrElseW<Error, IResolveDimensionsRight>(
+      () => {
+        throw new Error('Something went wrong while resolving dimensions');
+      },
+    )(
+      resolveDimensions({
+        url,
+        manualHeight: O.fromNullable(manualHeight),
+        manualWidth: O.fromNullable(manualWidth),
+        cache,
+        client: imgixClient,
+      }),
+    )();
+
+    const baseImageDataArgs = buildGatsbyImageDataBaseArgs({
+      url,
+      dimensions,
+      resolverArgs: safeResolverArgs,
+      defaultParams,
+      imgixClient,
+    });
+
+    const placeholderData = await generatePlaceHolderData({
+      safeResolverArgs,
+      baseImageDataArgs,
+      cache,
+      defaultParams,
+      imgixClient,
+      url,
+    });
+
+    return {
+      ...generateImageData({
+        ...baseImageDataArgs,
+      }),
+      ...placeholderData,
+    };
+  } catch (error) {
+    return undefined;
+  }
 };
 
 export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
@@ -272,3 +247,64 @@ export const createImgixGatsbyImageSchemaFieldConfig = createExternalHelper<
   Parameters<typeof createImgixGatsbyImageFieldConfig>[0],
   typeof createImgixGatsbyImageFieldConfig
 >(createImgixGatsbyImageFieldConfig);
+
+/**
+ * Create placeholder data which is compatible with the gatsby image data
+ * placeholder format.
+ */
+async function generatePlaceHolderData({
+  safeResolverArgs,
+  baseImageDataArgs,
+  cache,
+  defaultParams,
+  imgixClient,
+  url,
+}: {
+  safeResolverArgs: IImgixGatsbyImageDataArgsResolved;
+  baseImageDataArgs: ReturnType<typeof buildGatsbyImageDataBaseArgs>;
+  cache: GatsbyCache;
+  defaultParams?: Partial<IImgixParams>;
+  imgixClient: IImgixURLBuilder;
+  url: string;
+}): Promise<
+  { placeholder: { fallback: string } } | { backgroundColor: string } | {}
+> {
+  if (safeResolverArgs.placeholder === 'blurred') {
+    const lowResImageUrl = getLowResolutionImageURL({
+      ...baseImageDataArgs,
+      options: {
+        ...baseImageDataArgs,
+        imgixParams: {
+          ...defaultParams,
+          ...safeResolverArgs.imgixParams,
+          ...safeResolverArgs.placeholderImgixParams,
+        },
+      },
+    });
+
+    const base64Data = await TE.getOrElse<Error, string>(() => {
+      throw new Error();
+    })(fetchImgixBase64Image(cache)(lowResImageUrl))();
+
+    return {
+      placeholder: { fallback: base64Data },
+    };
+  } else if (safeResolverArgs.placeholder === 'dominantColor') {
+    const dominantColor = await TE.getOrElse<Error, string>(() => {
+      throw '';
+    })(
+      fetchImgixDominantColor(cache)((params) =>
+        imgixClient.buildURL(url, {
+          ...defaultParams,
+          ...safeResolverArgs.imgixParams,
+          ...safeResolverArgs.placeholderImgixParams,
+          ...params,
+        }),
+      ),
+    )();
+    return {
+      backgroundColor: dominantColor,
+    };
+  }
+  return {};
+}
