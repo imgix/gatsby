@@ -1,3 +1,10 @@
+### [2.0.2](https://github.com/imgix/gatsby/compare/v2.0.1...v2.0.2) (2022-04-07)
+
+
+### Bug Fixes
+
+* build before deploying ([cd31b41](https://github.com/imgix/gatsby/commit/cd31b415e980f719b40eef8c4d375efbbdd04253))
+
 ### [2.0.2-rc.1](https://github.com/imgix/gatsby/compare/v2.0.1...v2.0.2-rc.1) (2022-04-07)
 
 
