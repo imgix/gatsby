@@ -6,20 +6,20 @@ import {
   generateImageData,
   getLowResolutionImageURL,
   IGatsbyImageData,
-  IGatsbyImageHelperArgs,
+  IGatsbyImageHelperArgs
 } from 'gatsby-plugin-image';
 import { getGatsbyImageFieldConfig } from 'gatsby-plugin-image/graphql-utils';
 import { GraphQLFieldResolver } from 'gatsby/graphql';
 import {
   ComposeInputTypeDefinition,
   ObjectTypeComposerArgumentConfigMapDefinition,
-  ObjectTypeComposerFieldConfigAsObjectDefinition,
+  ObjectTypeComposerFieldConfigAsObjectDefinition
 } from 'graphql-compose';
 import { TypeAsString } from 'graphql-compose/lib/TypeMapper';
 import { pick } from 'ramda';
 import {
   fetchImgixBase64Image,
-  fetchImgixDominantColor,
+  fetchImgixDominantColor
 } from '../../api/fetchBase64Image';
 import { createExternalHelper } from '../../common/createExternalHelper';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
@@ -30,7 +30,7 @@ import { unTransformParams } from './graphqlTypes';
 import { IImgixGatsbyImageDataArgsResolved } from './privateTypes';
 import {
   IResolveDimensionsRight,
-  resolveDimensions,
+  resolveDimensions
 } from './resolveDimensions';
 
 /**
@@ -284,9 +284,7 @@ async function generatePlaceHolderData({
       },
     });
 
-    const base64Data = await TE.getOrElse<Error, string>(() => {
-      throw new Error();
-    })(fetchImgixBase64Image(cache)(lowResImageUrl))();
+    const base64Data = await fetchImgixBase64Image(cache)(lowResImageUrl);
 
     return {
       placeholder: { fallback: base64Data },
