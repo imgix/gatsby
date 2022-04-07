@@ -1,4 +1,3 @@
-import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { fetchImgixBase64Image } from '../../api/fetchBase64Image';
@@ -36,12 +35,7 @@ export function createImgixBase64FieldConfig<TSource, TContext = unknown>({
       if (!data) {
         throw new Error('No data found for the image');
       }
-      const base64ImageTE = await fetchImgixBase64Image(cache)(data);
-      return await TE.getOrElseW<Error, string>(() => {
-        throw new Error(
-          'Something went wrong while fetching the base64 placeholder image',
-        );
-      })(base64ImageTE)();
+      return await fetchImgixBase64Image(cache)(data);
     },
   };
 }
