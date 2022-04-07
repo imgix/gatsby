@@ -1,13 +1,8 @@
-import { pipe } from 'fp-ts/pipeable';
-import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { fetchImgixBase64Image } from '../../api/fetchBase64Image';
-import {
-  ImgixSourceDataResolver,
-  taskEitherFromSourceDataResolver,
-} from '../../common/utils';
+import { ImgixSourceDataResolver } from '../../common/utils';
 
 interface CreateImgixBase64UrlFieldConfigArgsWithResolver<TSource> {
   resolveUrl: ImgixSourceDataResolver<TSource, string>;
@@ -17,6 +12,16 @@ interface CreateImgixBase64UrlFieldConfigArgs<TSource> {
   resolveUrl?: ImgixSourceDataResolver<TSource, string>;
   cache: GatsbyCache;
 }
+
+/**
+ * Create the GraphQL field config for the base64 field that will exist inside
+ * the imgixImage field. If this field is resolved, it will return a base64
+ * placeholder image for the requested image.
+ * @param param0
+ * @param param0.resolveUrl Function that returns the url or a Promise containing the url for the given node
+ * @param param0.cache The Gatsby cache helper
+ * @returns GraphQL config object
+ */
 export function createImgixBase64FieldConfig<TSource, TContext = unknown>({
   resolveUrl,
   cache,
@@ -26,16 +31,17 @@ export function createImgixBase64FieldConfig<TSource, TContext = unknown>({
 > {
   return {
     type: 'String!',
-    resolve: (obj: TSource): Promise<string> =>
-      pipe(
-        obj,
-        taskEitherFromSourceDataResolver<TSource, string>(resolveUrl),
-        TE.chain(fetchImgixBase64Image(cache)),
-        TE.getOrElse(
-          (e): T.Task<string> => {
-            throw e;
-          },
-        ),
-      )(),
+    resolve: async (obj: TSource): Promise<string> => {
+      const data = await resolveUrl(obj);
+      if (!data) {
+        throw new Error('No data found for the image');
+      }
+      const base64ImageTE = await fetchImgixBase64Image(cache)(data);
+      return await TE.getOrElseW<Error, string>(() => {
+        throw new Error(
+          'Something went wrong while fetching the base64 placeholder image',
+        );
+      })(base64ImageTE)();
+    },
   };
 }

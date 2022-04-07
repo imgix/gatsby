@@ -69,6 +69,7 @@ export const ImgixGatsbyFieldsIOTS = t.array(
 );
 export type IFieldsOption = t.TypeOf<typeof ImgixGatsbyFieldsIOTS>;
 
+// TODO: replace this with joi
 export const ImgixGatsbyOptionsIOTS = t.typeOptional(
   {
     domain: t.string,
