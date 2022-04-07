@@ -50,7 +50,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run: yarn build
-      - run: npx semantic-release --no-ci
+      - run: npx semantic-release
 
 executors:
   cypress-with-env-var:
