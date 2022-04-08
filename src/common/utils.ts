@@ -1,30 +1,4 @@
-import * as TE from 'fp-ts/TaskEither';
-import { TaskEither } from 'fp-ts/TaskEither';
 import { Reporter } from 'gatsby';
-export const taskEitherFromSourceDataResolver = <TSource, TData>(
-  resolver: ImgixSourceDataResolver<TSource, TData>,
-  predicate?: (data: TData) => boolean,
-) => (source: TSource): TaskEither<Error, Exclude<TData, null | undefined>> =>
-  TE.tryCatch(
-    () =>
-      Promise.resolve(resolver(source)).then((data) => {
-        if (data == null)
-          return Promise.reject('Resolved data is null or undefined');
-
-        const safeData = data as Exclude<typeof data, null | undefined>;
-
-        if (!predicate) return safeData;
-
-        return predicate(safeData)
-          ? safeData
-          : Promise.reject('Resolved data is invalid.');
-      }),
-    (reason) => new Error(String(reason)),
-  );
-
-export const resolveUrlFromSourceData = <TSource>(
-  resolver: ImgixSourceDataResolver<TSource, string>,
-) => taskEitherFromSourceDataResolver(resolver, (data: string) => data != null);
 
 export type ImgixSourceDataResolver<TSource, TData> = (
   obj: TSource,
