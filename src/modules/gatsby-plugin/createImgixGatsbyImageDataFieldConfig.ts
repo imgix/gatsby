@@ -27,10 +27,7 @@ import { IImgixParams } from '../../publicTypes';
 import { buildGatsbyImageDataBaseArgs } from './buildGatsbyImageDataBaseArgs';
 import { unTransformParams } from './graphqlTypes';
 import { IImgixGatsbyImageDataArgsResolved } from './privateTypes';
-import {
-  IResolveDimensionsRight,
-  resolveDimensions,
-} from './resolveDimensions';
+import { resolveDimensions } from './resolveDimensions';
 
 /**
  * Resolve gatsby image data for a given node
@@ -81,19 +78,13 @@ const resolveGatsbyImageData = <TSource>({
       ),
     };
 
-    const dimensions = await TE.getOrElseW<Error, IResolveDimensionsRight>(
-      () => {
-        throw new Error('Something went wrong while resolving dimensions');
-      },
-    )(
-      resolveDimensions({
-        url,
-        manualHeight: manualHeight,
-        manualWidth: manualWidth,
-        cache,
-        client: imgixClient,
-      }),
-    )();
+    const dimensions = await resolveDimensions({
+      url,
+      manualHeight: manualHeight,
+      manualWidth: manualWidth,
+      cache,
+      client: imgixClient,
+    });
 
     const baseImageDataArgs = buildGatsbyImageDataBaseArgs({
       url,
