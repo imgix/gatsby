@@ -1,5 +1,4 @@
 import { stripIndent } from 'common-tags';
-import * as O from 'fp-ts/lib/Option';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import {
@@ -89,8 +88,8 @@ const resolveGatsbyImageData = <TSource>({
     )(
       resolveDimensions({
         url,
-        manualHeight: O.fromNullable(manualHeight),
-        manualWidth: O.fromNullable(manualWidth),
+        manualHeight: manualHeight,
+        manualWidth: manualWidth,
         cache,
         client: imgixClient,
       }),
