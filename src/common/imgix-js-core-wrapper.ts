@@ -1,9 +1,5 @@
 import ImgixClient from '@imgix/js-core';
-import { Do } from 'fp-ts-contrib/lib/Do';
-import { sequenceS } from 'fp-ts/Apply';
-import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
-import { parseHostE, parsePathE } from './uri';
+import { parseHost, parsePath } from './uri';
 
 /**
  * An FP wrapper around new ImgixClient()
@@ -12,21 +8,16 @@ import { parseHostE, parsePathE } from './uri';
 export const createImgixClient = ({
   ixlib,
   ...options
-}: ConstructorParameters<typeof ImgixClient>[0] & { ixlib?: string }): E.Either<
-  Error,
-  ImgixClient
-> =>
-  E.tryCatch(
-    () => {
-      const client = new ImgixClient(options);
-      client.includeLibraryParam = false;
-      if (ixlib) {
-        (client as any).settings.libraryParam = ixlib;
-      }
-      return client;
-    },
-    (e) => (e instanceof Error ? e : new Error('unknown error')),
-  );
+}: ConstructorParameters<typeof ImgixClient>[0] & {
+  ixlib?: string;
+}): ImgixClient => {
+  const client = new ImgixClient(options);
+  client.includeLibraryParam = false;
+  if (ixlib) {
+    (client as any).settings.libraryParam = ixlib;
+  }
+  return client;
+};
 
 /**
  * Used by createImgixURLBuilder, common code extracted here to avoid code duplication.
@@ -35,35 +26,28 @@ export const createURLBuilderFn = <T extends 'buildURL' | 'buildSrcSet'>(
   fn: T,
 ) => (options?: Parameters<typeof createImgixClient>[0]) => (
   ...args: Parameters<InstanceType<typeof ImgixClient>[T]>
-): string =>
-  pipe(
-    Do(E.either)
-      .bindL('urlParts', () => {
-        if (options?.domain) {
-          return E.right({
-            domain: options?.domain,
-            path: args[0],
-          });
-        }
-        return sequenceS(E.either)({
-          domain: parseHostE(args[0]),
-          path: parsePathE(args[0]),
-        });
-      })
-      .bindL('client', ({ urlParts: { domain } }) =>
-        createImgixClient({
-          ixlib: 'gatsbyFP',
-          ...options,
-          domain,
-        }),
-      )
-      .return(({ client, urlParts: { path } }) =>
-        client[fn](path, ...args.slice(1)),
-      ),
-    E.getOrElse<Error, string>((err) => {
-      throw err;
-    }),
-  );
+): string => {
+  const urlParts = (() => {
+    if (options?.domain) {
+      return {
+        domain: options?.domain,
+        path: args[0],
+      };
+    }
+    return {
+      domain: parseHost(args[0]),
+      path: parsePath(args[0]),
+    };
+  })();
+
+  const client = createImgixClient({
+    ixlib: 'gatsbyFP',
+    ...options,
+    domain: urlParts.domain,
+  });
+
+  return client[fn](urlParts.path, ...args.slice(1));
+};
 
 /**
  * Build a functional ImgixClient. Allows this application to use ImgixClient in a functional manner rather than a instance/class-based manner.
