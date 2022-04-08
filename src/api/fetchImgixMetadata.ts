@@ -1,4 +1,3 @@
-import * as TE from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import fetch from 'node-fetch';
 import { withCache } from '../common/cache';
@@ -52,12 +51,8 @@ const fetchImgixMetadataAPI = async (
 export const fetchImgixMetadata = (
   cache: GatsbyCache,
   client: IImgixURLBuilder,
-) => (url: string): TE.TaskEither<Error, IImgixMetadata> => {
-  return TE.tryCatch(
-    () =>
-      withCache(`gatsby-plugin-imgix-metadata-${url}`, cache, () =>
-        fetchImgixMetadataAPI(url, client),
-      ),
-    () => new Error(`Couldn't fetch imgix metadata for ${url}`),
+) => (url: string): Promise<IImgixMetadata> => {
+  return withCache(`gatsby-plugin-imgix-metadata-${url}`, cache, () =>
+    fetchImgixMetadataAPI(url, client),
   );
 };
