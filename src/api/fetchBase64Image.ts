@@ -1,9 +1,7 @@
-import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import fetch from 'node-fetch';
 import { withCache } from '../common/cache';
-import { fetch as fetchFPTS } from '../common/utils';
 
 export const buildBase64URL = (contentType: string, base64: string): string =>
   `data:${contentType};base64,${base64}`;
@@ -57,25 +55,39 @@ type ImgixPaletteResponse = {
   };
 };
 
+const fetchImgixDominantColorAPI = async (url: string): Promise<HexString> => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(
+      'Something went wrong while fetching the dominant color for the placeholder image',
+    );
+  }
+  try {
+    const data = (await res.json()) as ImgixPaletteResponse;
+    return data.dominant_colors.vibrant.hex;
+  } catch (error) {
+    throw new Error(
+      'Something went wrong while decoding the dominant color for the placeholder image: ' +
+        String(error),
+    );
+  }
+};
+
 export const fetchImgixDominantColor = (cache: GatsbyCache) => (
   buildURL: (params: Record<string, unknown>) => string,
-): TE.TaskEither<Error, HexString> =>
-  pipe(buildURL({ palette: 'json' }), (url) =>
-    withCache(`imgix-gatsby-dominant-color-${url}`, cache, () =>
-      pipe(
-        url,
-        fetchFPTS,
-        TE.chain((res) =>
-          TE.tryCatch<Error, ImgixPaletteResponse>(
-            () => res.json(),
-            (err) =>
-              new Error(
-                'Something went wrong while decoding the dominant color for the placeholder image: ' +
-                  String(err),
-              ),
-          ),
-        ),
-        TE.map((data) => data.dominant_colors.vibrant.hex),
+): Promise<HexString> => {
+  const url = buildURL({ palette: 'json' });
+  const withCacheTE = withCache(
+    `imgix-gatsby-dominant-color-${url}`,
+    cache,
+    () =>
+      TE.tryCatch(
+        () => fetchImgixDominantColorAPI(url),
+        (error) => new Error(),
       ),
-    ),
   );
+
+  return TE.getOrElse<Error, string>(() => {
+    throw new Error('Something went wrong while fetching the dominant color');
+  })(withCacheTE)();
+};
