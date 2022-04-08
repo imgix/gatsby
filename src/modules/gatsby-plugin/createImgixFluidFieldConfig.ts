@@ -102,15 +102,21 @@ export const createImgixFluidFieldConfig = <TSource, TContext>({
           ),
         }))
         .bindL('dimensions', ({ url, manualWidth, manualHeight }) =>
-          resolveDimensions({
-            url,
-            manualWidth: O.isSome(manualWidth) ? manualWidth.value : undefined,
-            manualHeight: O.isSome(manualHeight)
-              ? manualHeight.value
-              : undefined,
-            cache,
-            client: imgixClient,
-          }),
+          TE.tryCatch(
+            () =>
+              resolveDimensions({
+                url,
+                manualWidth: O.isSome(manualWidth)
+                  ? manualWidth.value
+                  : undefined,
+                manualHeight: O.isSome(manualHeight)
+                  ? manualHeight.value
+                  : undefined,
+                cache,
+                client: imgixClient,
+              }),
+            String,
+          ),
         )
         .return(({ url, modifiedArgs, dimensions: { width, height } }) =>
           buildFluidObject({
