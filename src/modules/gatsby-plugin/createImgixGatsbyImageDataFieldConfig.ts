@@ -290,18 +290,14 @@ async function generatePlaceHolderData({
       placeholder: { fallback: base64Data },
     };
   } else if (safeResolverArgs.placeholder === 'dominantColor') {
-    const dominantColor = await TE.getOrElse<Error, string>(() => {
-      throw '';
-    })(
-      fetchImgixDominantColor(cache)((params) =>
-        imgixClient.buildURL(url, {
-          ...defaultParams,
-          ...safeResolverArgs.imgixParams,
-          ...safeResolverArgs.placeholderImgixParams,
-          ...params,
-        }),
-      ),
-    )();
+    const dominantColor = await fetchImgixDominantColor(cache)((params) =>
+      imgixClient.buildURL(url, {
+        ...defaultParams,
+        ...safeResolverArgs.imgixParams,
+        ...safeResolverArgs.placeholderImgixParams,
+        ...params,
+      }),
+    );
     return {
       backgroundColor: dominantColor,
     };
