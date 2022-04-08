@@ -1,8 +1,3 @@
-import { Do } from 'fp-ts-contrib/lib/Do';
-import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/lib/Option';
-import * as T from 'fp-ts/Task';
-import * as TE from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import { FixedObject } from 'gatsby-image';
 import {
@@ -10,19 +5,15 @@ import {
   ObjectTypeComposerFieldConfigAsObjectDefinition,
 } from 'graphql-compose';
 import { createExternalHelper } from '../../common/createExternalHelper';
-import { TaskOptionFromTE } from '../../common/fpTsUtils';
 import { IImgixURLBuilder } from '../../common/imgix-js-core-wrapper';
-import {
-  ImgixSourceDataResolver,
-  resolveUrlFromSourceData,
-  taskEitherFromSourceDataResolver,
-} from '../../common/utils';
+import { ImgixSourceDataResolver } from '../../common/utils';
 import { IImgixParams } from '../../publicTypes';
 import { unTransformParams } from './graphqlTypes';
 import { buildImgixFixed } from './objectBuilders';
 import { ImgixFixedArgsResolved } from './privateTypes';
 import { resolveDimensions } from './resolveDimensions';
 
+// This is the max size that imgix can render
 export const DEFAULT_FIXED_WIDTH = 8192;
 
 interface CreateImgixFixedFieldConfigArgs<TSource> {
@@ -36,6 +27,20 @@ interface CreateImgixFixedFieldConfigArgs<TSource> {
   paramsInputType: ComposeInputTypeDefinition;
 }
 
+/**
+ * Create the GraphQL field config for the "fixed" field that will exist on the
+ * imgixImage type
+ * @param param0
+ * @param param0.imgixClient The imgix client to use to build the URL
+ * @param param0.resolveUrl The function to resolve the URL from the source data
+ * @param param0.resolveWidth A function should should resolve the width from the source data. If not provided, the imgix api will be used to find the image width
+ * @param param0.resolveHeight A function should should resolve the height from the source data. If not provided, the imgix api will be used to find the image height
+ * @param param0.cache Gatsby cache
+ * @param param0.defaultParams The default params to use when building the fixed image URL
+ * @param param0.type The GraphQL type to use for the fixed field
+ * @param param0.paramsInputType The GraphQL type to use for the params input
+ * @returns A GraphQL field config for a "fixed" size image
+ */
 export const createImgixFixedFieldConfig = <TSource, TContext>({
   imgixClient,
   resolveUrl,
@@ -77,62 +82,39 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
       defaultValue: {},
     },
   },
-  resolve: (
+  resolve: async (
     rootValue: TSource,
     args: ImgixFixedArgsResolved,
-  ): Promise<FixedObject | undefined> =>
-    pipe(
-      Do(TE.taskEither)
-        .let('rootValue', rootValue)
-        .let('modifiedArgs', {
-          ...args,
-          imgixParams: unTransformParams(args.imgixParams),
-        })
-        .sequenceSL(({ rootValue }) => ({
-          url: resolveUrlFromSourceData(resolveUrl)(rootValue),
-          manualWidth: pipe(
-            rootValue,
-            taskEitherFromSourceDataResolver(resolveWidth),
-            TaskOptionFromTE,
-            TE.fromTask,
-          ),
-          manualHeight: pipe(
-            rootValue,
-            taskEitherFromSourceDataResolver(resolveHeight),
-            TaskOptionFromTE,
-            TE.fromTask,
-          ),
-        }))
-        .bindL('dimensions', ({ url, manualWidth, manualHeight }) =>
-          TE.tryCatch(
-            () =>
-              resolveDimensions({
-                url,
-                manualWidth: O.isSome(manualWidth)
-                  ? manualWidth.value
-                  : undefined,
-                manualHeight: O.isSome(manualHeight)
-                  ? manualHeight.value
-                  : undefined,
-                cache,
-                client: imgixClient,
-              }),
-            String,
-          ),
-        )
-        .return(({ url, modifiedArgs, dimensions: { width, height } }) =>
-          buildImgixFixed({
-            client: imgixClient,
-            url,
-            sourceWidth: width,
-            sourceHeight: height,
-            args: modifiedArgs,
-            defaultParams,
-            defaultPlaceholderParams: {}, // TODO: implement
-          }),
-        ),
-      TE.getOrElseW(() => T.of(undefined)),
-    )(),
+  ): Promise<FixedObject | undefined> => {
+    const modifiedArgs = {
+      ...args,
+      imgixParams: unTransformParams(args.imgixParams),
+    };
+    const url = await resolveUrl(rootValue);
+    if (!url) {
+      return undefined;
+    }
+    const manualWidth = await resolveWidth(rootValue);
+    const manualHeight = await resolveHeight(rootValue);
+
+    const { width, height } = await resolveDimensions({
+      url,
+      manualWidth: manualWidth,
+      manualHeight: manualHeight,
+      cache,
+      client: imgixClient,
+    });
+
+    return buildImgixFixed({
+      client: imgixClient,
+      url,
+      sourceWidth: width,
+      sourceHeight: height,
+      args: modifiedArgs,
+      defaultParams,
+      defaultPlaceholderParams: {}, // TODO: implement
+    });
+  },
 });
 
 export const createImgixFixedSchemaFieldConfig = createExternalHelper<
