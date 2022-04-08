@@ -41,16 +41,18 @@ export const resolveDimensions = <TSource>({
   return pipe(
     WidthHeightTE,
     TE.map(trace('manual width and height', log)),
-    TE.orElse(() =>
-      pipe(
-        url,
-        fetchImgixMetadata(cache, client),
+    TE.orElse(() => {
+      return pipe(
+        TE.tryCatch(
+          () => fetchImgixMetadata(cache, client)(url),
+          () => new Error('Something went wrong fetching the image metadata'),
+        ),
         TE.map(trace('fetchImgixMetadata result', log)),
         TE.map(({ PixelWidth, PixelHeight }) => ({
           width: PixelWidth,
           height: PixelHeight,
         })),
-      ),
-    ),
+      );
+    }),
   );
 };
