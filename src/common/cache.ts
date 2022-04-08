@@ -3,6 +3,15 @@ import { createLogger, traceJSON } from './log';
 
 const log = createLogger('cache');
 
+/**
+ * Use the Gatsby cache to cache information. Use the cache key to search for a
+ * value, and if it doesn't exist, call f to get the value and cache it.
+ * Finally, return the value.
+ * @param key The cache key to use
+ * @param cache The Gatsby cache
+ * @param f The function to call if there is a cache miss. Returns a Promise.
+ * @returns The value in the cache or the resolved value of f.
+ */
 export const withCache = async <TData>(
   key: string,
   cache: GatsbyCache,
@@ -30,10 +39,7 @@ export const withCache = async <TData>(
   }
 };
 
-export const getFromCache = async <A>(
-  cache: GatsbyCache,
-  key: string,
-): Promise<A> => {
+const getFromCache = async <A>(cache: GatsbyCache, key: string): Promise<A> => {
   let cacheData;
   try {
     cacheData = (await cache.get(key)) as A | undefined | null;
@@ -49,7 +55,7 @@ export const getFromCache = async <A>(
   return cacheData;
 };
 
-export const setToCache = async <TData>(
+const setToCache = async <TData>(
   cache: GatsbyCache,
   key: string,
   value: TData,
