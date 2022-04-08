@@ -1,10 +1,6 @@
-import { pipe } from 'fp-ts/pipeable';
-import { getObjectSemigroup } from 'fp-ts/Semigroup';
 import * as TE from 'fp-ts/TaskEither';
 import { TaskEither } from 'fp-ts/TaskEither';
 import { Reporter } from 'gatsby';
-import _fetch, { Response } from 'node-fetch';
-import { ImgixUrlParams } from '../publicTypes';
 export const taskEitherFromSourceDataResolver = <TSource, TData>(
   resolver: ImgixSourceDataResolver<TSource, TData>,
   predicate?: (data: TData) => boolean,
@@ -34,24 +30,9 @@ export type ImgixSourceDataResolver<TSource, TData> = (
   obj: TSource,
 ) => TData | null | undefined | Promise<TData | null | undefined>;
 
-export const semigroupImgixUrlParams = getObjectSemigroup<ImgixUrlParams>();
-
 export const noop = (): void => {
   // noop
 };
-
-export const fetch = (url: string): TaskEither<Error, Response> =>
-  TE.tryCatch(
-    () => _fetch(url),
-    (reason) => new Error(String(reason)),
-  );
-
-export const fetchJSON = <A>(url: string): TaskEither<Error, A> =>
-  pipe(
-    url,
-    fetch,
-    TE.chain((res) => TE.rightTask(() => res.json())),
-  );
 
 export function invariant(
   condition: unknown,
@@ -60,14 +41,6 @@ export function invariant(
 ): asserts condition {
   if (!condition) reporter.panic(`Invariant failed: ${msg}`);
 }
-export const transformUrlForWebProxy = (
-  url: string,
-  domain: string,
-): string => {
-  const instance = new URL(`https://${domain}`);
-  instance.pathname = encodeURIComponent(url);
-  return instance.toString();
-};
 
 function isURL(str: string) {
   var pattern = new RegExp(
