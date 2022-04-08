@@ -1,5 +1,6 @@
 import { Do } from 'fp-ts-contrib/lib/Do';
 import { pipe } from 'fp-ts/function';
+import * as O from 'fp-ts/lib/Option';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
@@ -105,8 +106,10 @@ export const createImgixFixedFieldConfig = <TSource, TContext>({
         .bindL('dimensions', ({ url, manualWidth, manualHeight }) =>
           resolveDimensions({
             url,
-            manualHeight,
-            manualWidth,
+            manualWidth: O.isSome(manualWidth) ? manualWidth.value : undefined,
+            manualHeight: O.isSome(manualHeight)
+              ? manualHeight.value
+              : undefined,
             cache,
             client: imgixClient,
           }),
