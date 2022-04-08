@@ -104,6 +104,8 @@ const resolveGatsbyImageData = <TSource>({
       imgixClient,
     });
 
+    // Here we create our own placeholder data since
+    // buildGatsbyImageDataBaseArgs won't create placeholder information for us
     const placeholderData = await generatePlaceHolderData({
       safeResolverArgs,
       baseImageDataArgs,
