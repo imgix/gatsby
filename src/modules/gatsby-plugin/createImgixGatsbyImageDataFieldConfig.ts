@@ -1,5 +1,4 @@
 import { stripIndent } from 'common-tags';
-import * as TE from 'fp-ts/lib/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import {
   generateImageData,
