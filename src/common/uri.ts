@@ -1,26 +1,14 @@
-import * as E from 'fp-ts/Either';
 import Uri from 'jsuri';
 
 /**
- * Parse the host from a URL. Can fail - for an FP type, use parseHostE
+ * Parse the host from a URL. Can throw an error
  */
 export const parseHost = (uri: string): string => new URL(uri).hostname;
-export const parseHostE = (uri: string) =>
-  E.tryCatch(
-    () => parseHost(uri),
-    () => new Error('Invalid URL'),
-  );
 
 /**
- * Parse the path from a URL. Can fail - for an FP type, use parsePathE
+ * Parse the path from a URL. Can throw an error
  */
 export const parsePath = (_uri: string): string => {
   const uri = new Uri(_uri);
   return uri.path() + uri.query() + (uri.anchor() ? `#${uri.anchor()}` : '');
 };
-
-export const parsePathE = (uri: string) =>
-  E.tryCatch(
-    () => parsePath(uri),
-    () => new Error('Invalid URL'),
-  );
