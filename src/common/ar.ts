@@ -1,31 +1,25 @@
-import * as t from 'io-ts';
-import { pipe, map } from 'ramda';
+import Joi from 'joi';
 import { roundToDP } from './number';
-interface AspectRatioBrand {
-  readonly StringAspectRatio: unique symbol;
-}
 
-export const StringAspectRatio = t.brand(
-  t.string,
-  (v): v is t.Branded<string, AspectRatioBrand> => aspectRatioIsValid(v),
-  'StringAspectRatio',
-);
-export type StringAspectRatio = t.TypeOf<typeof StringAspectRatio>;
+const StringAspectRatioSchema = Joi.string()
+  .pattern(/^\d+(\.\d+)?:\d+(\.\d+)?$/)
+  .required();
+
+export type StringAspectRatio = string;
 
 /**
- * Validates that an aspect ratio is in the format w:h. If false is returned, the aspect ratio is in the wrong format.
+ * Parse a string AR into a float.
  */
-function aspectRatioIsValid(aspectRatio: string): boolean {
-  if (typeof aspectRatio !== 'string') {
-    return false;
+export const parseStringARParam = (ar: StringAspectRatio): number => {
+  const validatedAR = StringAspectRatioSchema.validate(ar);
+  if (validatedAR.error) {
+    throw new Error('AR is not valid');
   }
-
-  return /^\d+(\.\d+)?:\d+(\.\d+)?$/.test(aspectRatio);
-}
-export const parseStringARParam = (ar: StringAspectRatio): number =>
-  pipe(
-    (v: StringAspectRatio) => v.split(':') as [string, string],
-    map((part) => parseFloat(part)),
-    ([width, height]) => width / height,
-    (v) => roundToDP(3, v),
-  )(ar);
+  const splitAR = validatedAR.value.split(':') as [string, string];
+  const [parsedWidth, parsedHeight] = splitAR.map((part) => parseFloat(part));
+  if (Number.isNaN(parsedWidth) || Number.isNaN(parsedHeight)) {
+    throw new Error('AR is not valid');
+  }
+  const arFloat = parsedWidth / parsedHeight;
+  return roundToDP(3, arFloat);
+};
