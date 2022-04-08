@@ -1,7 +1,4 @@
-import * as E from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
-import { Errors } from 'io-ts';
-import { parseStringARParam, StringAspectRatio } from '../../common/ar';
+import { parseStringARParam } from '../../common/ar';
 import { parseHost, parsePath } from '../../common/uri';
 import { createImgixClient } from './common';
 import {
@@ -141,23 +138,23 @@ export function buildFluidImageData(
   } = {},
 ): IGatsbyImageFluidData {
   const aspectRatioFloat = (() => {
-    const throwError = () => {
+    const throwError = (): never => {
       throw new Error(
         'An invalid string ar parameter was provided. Either provide an aspect ratio as a number, or as a string in the format w:h, e.g. 1.61:1.',
       );
     };
-    if (typeof imgixParams.ar === 'number' && isNaN(imgixParams.ar)) {
-      throwError();
-    }
     if (typeof imgixParams.ar === 'number') {
+      if (isNaN(imgixParams.ar)) {
+        return throwError();
+      }
       return imgixParams.ar;
     }
 
-    return pipe(
-      StringAspectRatio.decode(imgixParams.ar),
-      E.map(parseStringARParam),
-      E.getOrElse<Errors, number>(throwError),
-    );
+    try {
+      return parseStringARParam(imgixParams.ar);
+    } catch (err) {
+      return throwError();
+    }
   })();
 
   return buildImageData(
