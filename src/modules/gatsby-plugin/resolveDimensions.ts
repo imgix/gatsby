@@ -31,8 +31,8 @@ export const resolveDimensions = <TSource>({
   cache,
   client,
 }: {
-  manualHeight?: number;
-  manualWidth?: number;
+  manualHeight?: number | null;
+  manualWidth?: number | null;
   cache: GatsbyCache;
   url: string;
   client: IImgixURLBuilder;
