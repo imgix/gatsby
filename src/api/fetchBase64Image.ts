@@ -6,6 +6,9 @@ import { withCache } from '../common/cache';
 export const buildBase64URL = (contentType: string, base64: string): string =>
   `data:${contentType};base64,${base64}`;
 
+/**
+ * Given an imgix url, return the base64 image data for the image
+ */
 const fetchBase64ImageAPI = async (url: string): Promise<string> => {
   const res = await fetch(url);
   if (!res.ok) {
@@ -28,6 +31,10 @@ const fetchBase64ImageAPI = async (url: string): Promise<string> => {
   }
 };
 
+/**
+ * Fetch the base64 image for an imgix url, and cache the request in the Gatsby
+ * cache
+ */
 export const fetchImgixBase64Image = (cache: GatsbyCache) => (
   url: string,
 ): Promise<string> => {
@@ -55,6 +62,9 @@ type ImgixPaletteResponse = {
   };
 };
 
+/**
+ * Given an imgix url, fetch the dominant color
+ */
 const fetchImgixDominantColorAPI = async (url: string): Promise<HexString> => {
   const res = await fetch(url);
   if (!res.ok) {
@@ -73,6 +83,10 @@ const fetchImgixDominantColorAPI = async (url: string): Promise<HexString> => {
   }
 };
 
+/**
+ * Fetch the dominant color for a given imgix url, and cache the request in the
+ * Gatsby cache
+ */
 export const fetchImgixDominantColor = (cache: GatsbyCache) => (
   buildURL: (params: Record<string, unknown>) => string,
 ): Promise<HexString> => {
