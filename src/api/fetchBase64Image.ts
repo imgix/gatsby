@@ -1,4 +1,3 @@
-import * as TE from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
 import fetch from 'node-fetch';
 import { withCache } from '../common/cache';
@@ -38,16 +37,9 @@ const fetchBase64ImageAPI = async (url: string): Promise<string> => {
 export const fetchImgixBase64Image = (cache: GatsbyCache) => (
   url: string,
 ): Promise<string> => {
-  const withCacheTE = withCache(`imgix-gatsby-base64-url-${url}`, cache, () =>
-    TE.tryCatch(
-      () => fetchBase64ImageAPI(url),
-      (error) => new Error(),
-    ),
+  return withCache(`imgix-gatsby-base64-url-${url}`, cache, () =>
+    fetchBase64ImageAPI(url),
   );
-
-  return TE.getOrElse<Error, string>(() => {
-    throw new Error('Something went wrong while fetching the base64 image');
-  })(withCacheTE)();
 };
 
 export type HexString = string;
@@ -91,17 +83,7 @@ export const fetchImgixDominantColor = (cache: GatsbyCache) => (
   buildURL: (params: Record<string, unknown>) => string,
 ): Promise<HexString> => {
   const url = buildURL({ palette: 'json' });
-  const withCacheTE = withCache(
-    `imgix-gatsby-dominant-color-${url}`,
-    cache,
-    () =>
-      TE.tryCatch(
-        () => fetchImgixDominantColorAPI(url),
-        (error) => new Error(),
-      ),
+  return withCache(`imgix-gatsby-dominant-color-${url}`, cache, () =>
+    fetchImgixDominantColorAPI(url),
   );
-
-  return TE.getOrElse<Error, string>(() => {
-    throw new Error('Something went wrong while fetching the dominant color');
-  })(withCacheTE)();
 };
