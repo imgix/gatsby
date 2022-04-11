@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { GatsbyCache } from 'gatsby';
+import fetch from 'node-fetch';
 import { withCache } from '../common/cache';
 import { IImgixURLBuilder } from '../common/imgix-js-core-wrapper';
 import { createLogger, trace } from '../common/log';
