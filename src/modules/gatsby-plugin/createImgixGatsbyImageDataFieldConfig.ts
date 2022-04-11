@@ -115,6 +115,20 @@ const resolveGatsbyImageData = <TSource>({
   }
 };
 
+/**
+ * Create the GraphQL field config for the gatsbyImage field that will exist on
+ * the imgixImage type
+ * @param param0
+ * @param param0.cache Gatsby cache
+ * @param param0.imgixClient The imgix client to use to build the URL
+ * @param param0.resolveUrl The function to resolve the URL from the source data
+ * @param param0.defaultParams The default params to use when building the fixed image URL
+ * @param param0.paramsInputType The GraphQL type to use for the params input
+ * @param param0.placeholderEnumType The GraphQL type to use for the placeholder enum
+ * @param param0.resolveWidth A function should should resolve the width from the source data. If not provided, the imgix api will be used to find the image width
+ * @param param0.resolveHeight A function should should resolve the height from the source data. If not provided, the imgix api will be used to find the image height
+ * @returns A GraphQL field config for a "gatsbyImage" field
+ */
 export const createImgixGatsbyImageFieldConfig = <TSource, TContext = {}>({
   cache,
   imgixClient,
