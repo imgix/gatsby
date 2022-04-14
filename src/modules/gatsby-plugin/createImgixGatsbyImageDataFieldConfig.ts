@@ -79,8 +79,8 @@ const resolveGatsbyImageData = <TSource>({
 
     const dimensions = await resolveDimensions({
       url,
-      manualHeight: manualHeight,
-      manualWidth: manualWidth,
+      manualHeight,
+      manualWidth,
       cache,
       client: imgixClient,
     });
