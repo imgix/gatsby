@@ -76,13 +76,19 @@ export const ImgixGatsbyFieldsJOI = Joi.array().items(
 export type IFieldsOption = (IBaseFieldOptions &
   ({ rawURLKeys: string[] } | { rawURLKey: string }))[];
 
-export const ImgixGatsbyOptionsJOI = Joi.object<IImgixGatsbyOptions>().keys({
+export const ImgixGatsbyOptionsJOI = Joi.object<
+  IImgixGatsbyOptions & { plugins: any }
+>().keys({
   domain: Joi.string().required(),
   defaultImgixParams: ImgixParamsJOI.optional(),
   disableIxlibParam: Joi.boolean().optional(),
   secureURLToken: Joi.string().optional(),
   sourceType: ImgixSourceTypeJOI.optional(),
   fields: ImgixGatsbyFieldsJOI.optional(),
+  // This seems to be added by Gatsby automatically, although it has no
+  // relevance to our plugin. We have to include this otherwise validation
+  // fails
+  plugins: Joi.any(),
 });
 export type IImgixGatsbyOptions = {
   domain: string;
