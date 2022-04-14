@@ -13,12 +13,14 @@ export type StringAspectRatio = string;
 export const parseStringARParam = (ar: StringAspectRatio): number => {
   const validatedAR = StringAspectRatioSchema.validate(ar);
   if (validatedAR.error) {
-    throw new Error('AR is not valid');
+    throw new Error('AR is not valid. ' + validatedAR.error.message);
   }
   const splitAR = validatedAR.value.split(':') as [string, string];
   const [parsedWidth, parsedHeight] = splitAR.map((part) => parseFloat(part));
   if (Number.isNaN(parsedWidth) || Number.isNaN(parsedHeight)) {
-    throw new Error('AR is not valid');
+    throw new Error(
+      'AR is not valid, since the parsed width or height are not numbers.',
+    );
   }
   const arFloat = parsedWidth / parsedHeight;
   return roundToDP(3, arFloat);
