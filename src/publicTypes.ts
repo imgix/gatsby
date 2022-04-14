@@ -61,18 +61,20 @@ export interface IBaseFieldOptions {
   URLPrefix?: string;
 }
 
-export const ImgixGatsbyFieldsJOI = Joi.object()
-  .keys({
-    nodeType: Joi.string().required(),
-    fieldName: Joi.string().required(),
-    URLPrefix: Joi.string().optional(),
-    rawURLKeys: Joi.array().items(Joi.string()).required(),
-    rawURLKey: Joi.string().required(),
-  })
-  .xor('rawURLKeys', 'rawURLKey');
+export const ImgixGatsbyFieldsJOI = Joi.array().items(
+  Joi.object()
+    .keys({
+      nodeType: Joi.string().required(),
+      fieldName: Joi.string().required(),
+      URLPrefix: Joi.string().optional(),
+      rawURLKeys: Joi.array().items(Joi.string()),
+      rawURLKey: Joi.string(),
+    })
+    .xor('rawURLKeys', 'rawURLKey'),
+);
 
-export type IFieldsOption = IBaseFieldOptions &
-  ({ rawURLKeys: string[] } | { rawURLKey: string });
+export type IFieldsOption = (IBaseFieldOptions &
+  ({ rawURLKeys: string[] } | { rawURLKey: string }))[];
 
 export const ImgixGatsbyOptionsJOI = Joi.object<IImgixGatsbyOptions>().keys({
   domain: Joi.string().required(),
@@ -80,7 +82,7 @@ export const ImgixGatsbyOptionsJOI = Joi.object<IImgixGatsbyOptions>().keys({
   disableIxlibParam: Joi.boolean().optional(),
   secureURLToken: Joi.string().optional(),
   sourceType: ImgixSourceTypeJOI.optional(),
-  fields: ImgixGatsbyFieldsJOI.optional,
+  fields: ImgixGatsbyFieldsJOI.optional(),
 });
 export type IImgixGatsbyOptions = {
   domain: string;
@@ -88,7 +90,7 @@ export type IImgixGatsbyOptions = {
   disableIxlibParam?: boolean;
   secureURLToken?: string;
   sourceType?: ImgixSourceType;
-  fields?: IFieldsOption[];
+  fields?: IFieldsOption;
 };
 
 export type IImgixGatsbyRootArgs = {
