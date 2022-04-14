@@ -53,7 +53,7 @@ const ImgixParamsJOI = Joi.object().keys({
   ...mapToImgixParamJOIValue(imgixUrlParameters.parameters),
 });
 
-export type IImgixParams = Record<IImgixParamsKey, ImgixParamValue>;
+export type IImgixParams = Partial<Record<IImgixParamsKey, ImgixParamValue>>;
 
 export interface IBaseFieldOptions {
   nodeType: string;
