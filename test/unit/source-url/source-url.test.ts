@@ -1,7 +1,6 @@
 /// <reference types="../../../types/gatsby" />
 /// <reference types="jest" />
 
-import { pipe } from 'fp-ts/function';
 import { PatchedPluginOptions } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
 import {
@@ -11,7 +10,7 @@ import {
 } from 'gatsby/dist/schema/types/type-builders';
 import isBase64 from 'is-base64';
 import * as R from 'ramda';
-import { KeyValuePair } from 'ramda';
+import { KeyValuePair, pipe } from 'ramda';
 import { createLogger, trace } from '../../../src/common/log';
 import { createSchemaCustomization } from '../../../src/gatsby-node';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../../../src/publicTypes';
@@ -255,9 +254,10 @@ describe('createResolvers', () => {
           if (srcset == null) {
             fail();
           }
-          pipe(srcset, getSrcsetWidths, R.all(R.lte(R.__, maxWidth)), (v) =>
-            expect(v).toBe(true),
-          );
+          const srcsetWidths = getSrcsetWidths(srcset);
+          srcsetWidths.forEach((width) => {
+            expect(width).toBeLessThanOrEqual(maxWidth);
+          });
         };
 
         // Don't need to do too much work here since @imgix/js-core handles everything under the hood
@@ -722,15 +722,16 @@ function createFieldParamsWithDefaults({
   getType: (name: string) => any;
 }) {
   const defaultParamsForField = pipe(
-    getType(objectTypeConfig.config.fields.imgixImage.type).config.fields[field]
-      .args ?? {},
-
+    () =>
+      getType(objectTypeConfig.config.fields.imgixImage.type).config.fields[
+        field
+      ].args ?? {},
     Object.entries,
     R.chain(([key, config]: [string, any]): KeyValuePair<string, any>[] =>
       config.defaultValue ? [[key, config.defaultValue]] : [],
     ),
     (v) => R.fromPairs(v),
-  );
+  )();
   return {
     ...defaultParamsForField,
     ...fieldParams,
