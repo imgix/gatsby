@@ -7,6 +7,13 @@ const log = createLogger('cache');
  * Use the Gatsby cache to cache information. Use the cache key to search for a
  * value, and if it doesn't exist, call f to get the value and cache it.
  * Finally, return the value.
+ *
+ * In this project we cache various things, such as metadata from images. This
+ * reduces the amount of requests that this project has to make to the imgix
+ * API, speeding up the build, and also reduces the loads on imgix's servers.
+ * Furthermore, this cache is persisted across builds (not just during one
+ * build), so this will speed up all subsequent builds.
+ *
  * @param key The cache key to use
  * @param cache The Gatsby cache
  * @param f The function to call if there is a cache miss. Returns a Promise.
