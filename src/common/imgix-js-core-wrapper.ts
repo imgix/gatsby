@@ -2,15 +2,24 @@ import ImgixClient from '@imgix/js-core';
 import { parseHost, parsePath } from './uri';
 
 /**
+ * This type extends the first parameter of the constructor parameters of the
+ * ImgixClient class (i.e. what you would pass to new ImgixClient()), and
+ * explicitly adds ixlib, since we expose a way to set this programatically.
+ */
+export type CreateImgixClientParams = ConstructorParameters<
+  typeof ImgixClient
+>[0] & {
+  ixlib?: string;
+};
+
+/**
  * An FP wrapper around new ImgixClient()
  * @param param0 any options that can be passed to new ImgixClient(), and also allows overriding ixlib.
  */
 export const createImgixClient = ({
   ixlib,
   ...options
-}: ConstructorParameters<typeof ImgixClient>[0] & {
-  ixlib?: string;
-}): ImgixClient => {
+}: CreateImgixClientParams): ImgixClient => {
   const client = new ImgixClient(options);
   client.includeLibraryParam = false;
   if (ixlib) {
