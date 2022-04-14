@@ -739,6 +739,7 @@ function createFieldParamsWithDefaults({
 
 const defaultAppConfig = {
   domain: 'assets.imgix.net',
+  plugins: [],
 } as const;
 
 async function getTypeStoreFromSchemaCustomization({
