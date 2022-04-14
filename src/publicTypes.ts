@@ -1,6 +1,6 @@
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
+import Joi from 'joi';
 import { mapObjIndexed } from 'ramda';
-import * as t from './common/ioTs';
 
 export enum ImgixSourceType {
   AmazonS3 = 's3',
@@ -10,80 +10,86 @@ export enum ImgixSourceType {
   WebProxy = 'webProxy',
 }
 
+const ImgixSourceTypeJOI = Joi.string().valid(
+  's3',
+  'gcs',
+  'azure',
+  'webFolder',
+  'webProxy',
+);
+
 type IImgixParamsKey =
   | keyof ImgixUrlParametersSpec['parameters']
   | keyof ImgixUrlParametersSpec['aliases'];
 
-const ImgixParamValueIOTS = t.union(
-  [
-    t.string,
-    t.number,
-    t.boolean,
-    t.undefined,
-    t.null,
-    t.array(t.string),
-    t.array(t.number),
-    t.array(t.boolean),
-  ],
-  'ImgixParamValue',
-);
+const ImgixParamValueJOI = Joi.alternatives()
+  .try(
+    Joi.string(),
+    Joi.number(),
+    Joi.boolean(),
+    Joi.array().items(Joi.string()),
+    Joi.array().items(Joi.number()),
+    Joi.array().items(Joi.boolean()),
+  )
+  .optional()
+  .allow(null);
+type ImgixParamValue =
+  | string
+  | number
+  | boolean
+  | string[]
+  | number[]
+  | boolean[]
+  | undefined
+  | null;
 
-const mapToImgixParamValue = <TKey extends string>(
+const mapToImgixParamJOIValue = <TKey extends string>(
   obj: Record<TKey, unknown>,
-): Record<TKey, typeof ImgixParamValueIOTS> =>
-  mapObjIndexed(() => ImgixParamValueIOTS, obj);
+): Record<TKey, typeof ImgixParamValueJOI> =>
+  mapObjIndexed(() => ImgixParamValueJOI, obj);
 
-const ImgixParamsIOTS = t.partial(
-  {
-    ...mapToImgixParamValue(imgixUrlParameters.aliases),
-    ...mapToImgixParamValue(imgixUrlParameters.parameters),
-  },
-  'ImgixParams',
-);
-export type IImgixParams = t.TypeOf<typeof ImgixParamsIOTS>;
+const ImgixParamsJOI = Joi.object().keys({
+  ...mapToImgixParamJOIValue(imgixUrlParameters.aliases),
+  ...mapToImgixParamJOIValue(imgixUrlParameters.parameters),
+});
+
+export type IImgixParams = Record<IImgixParamsKey, ImgixParamValue>;
 
 export interface IBaseFieldOptions {
   nodeType: string;
   fieldName: string;
+  URLPrefix?: string;
 }
 
-const ImgixGatsbyFieldBaseIOTS = t.typeOptional({
-  nodeType: t.string,
-  fieldName: t.string,
-  URLPrefix: t.optional(t.string),
-});
-export const ImgixGatsbyFieldMultipleUrlsIOTS = t.intersection([
-  ImgixGatsbyFieldBaseIOTS,
-  t.type({
-    rawURLKeys: t.array(t.string),
-  }),
-]);
-export const ImgixGatsbyFieldSingleUrlIOTS = t.intersection([
-  ImgixGatsbyFieldBaseIOTS,
-  t.type({
-    rawURLKey: t.string,
-  }),
-]);
-export const ImgixGatsbyFieldsIOTS = t.array(
-  t.union([ImgixGatsbyFieldSingleUrlIOTS, ImgixGatsbyFieldMultipleUrlsIOTS]),
-);
-export type IFieldsOption = t.TypeOf<typeof ImgixGatsbyFieldsIOTS>;
+export const ImgixGatsbyFieldsJOI = Joi.object()
+  .keys({
+    nodeType: Joi.string().required(),
+    fieldName: Joi.string().required(),
+    URLPrefix: Joi.string().optional(),
+    rawURLKeys: Joi.array().items(Joi.string()).required(),
+    rawURLKey: Joi.string().required(),
+  })
+  .xor('rawURLKeys', 'rawURLKey');
 
-// TODO: replace this with joi
-export const ImgixGatsbyOptionsIOTS = t.typeOptional(
-  {
-    domain: t.string,
-    defaultImgixParams: t.optional(ImgixParamsIOTS),
-    disableIxlibParam: t.optional(t.boolean),
-    secureURLToken: t.optional(t.string),
-    sourceType: t.optional(
-      t.fromEnum('GatsbySourceUrlSourceType', ImgixSourceType),
-    ),
-    fields: t.optional(ImgixGatsbyFieldsIOTS),
-  },
-  'GatsbySourceUrlOptions',
-);
-export type IImgixGatsbyOptions = t.TypeOf<typeof ImgixGatsbyOptionsIOTS>;
+export type IFieldsOption = IBaseFieldOptions &
+  ({ rawURLKeys: string[] } | { rawURLKey: string });
+
+export const ImgixGatsbyOptionsJOI = Joi.object<IImgixGatsbyOptions>().keys({
+  domain: Joi.string().required(),
+  defaultImgixParams: ImgixParamsJOI.optional(),
+  disableIxlibParam: Joi.boolean().optional(),
+  secureURLToken: Joi.string().optional(),
+  sourceType: ImgixSourceTypeJOI.optional(),
+  fields: ImgixGatsbyFieldsJOI.optional,
+});
+export type IImgixGatsbyOptions = {
+  domain: string;
+  defaultImgixParams?: IImgixParams;
+  disableIxlibParam?: boolean;
+  secureURLToken?: string;
+  sourceType?: ImgixSourceType;
+  fields?: IFieldsOption[];
+};
 
 export type IImgixGatsbyRootArgs = {
   url: string;

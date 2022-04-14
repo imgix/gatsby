@@ -1,4 +1,3 @@
-import * as E from 'fp-ts/Either';
 import {
   CreateSchemaCustomizationArgs,
   GatsbyGraphQLObjectType,
@@ -6,9 +5,10 @@ import {
   PatchedPluginOptions,
 } from 'gatsby';
 import { GraphQLNonNull, GraphQLString } from 'gatsby/graphql';
-import { PathReporter } from 'io-ts/PathReporter';
+import Joi from 'joi';
 import get from 'lodash.get';
 import { prop } from 'ramda';
+import { ImgixGatsbyOptionsJOI } from '.';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
 import { VERSION } from '../../common/constants';
 import {
@@ -16,7 +16,6 @@ import {
   IImgixURLBuilder,
 } from '../../common/imgix-js-core-wrapper';
 import { findPossibleURLsInNode } from '../../common/utils';
-import { ImgixGatsbyOptionsIOTS } from '../../publicTypes';
 import { buildImgixGatsbyTypes } from './typeBuilder';
 
 function isStringArray(value: unknown): value is string[] {
@@ -76,16 +75,18 @@ const getFieldValue = ({
  * @returns The options object if it is valid, or throws an error
  */
 const decodeOptions = (options: PatchedPluginOptions<IImgixGatsbyOptions>) => {
-  const decodedOptionsE = ImgixGatsbyOptionsIOTS.decode(options);
-  if (E.isLeft(decodedOptionsE)) {
+  const validatedOptions = ImgixGatsbyOptionsJOI.validate(options);
+  if (Joi.isError(validatedOptions.error) || !validatedOptions.value) {
     throw new Error(
-      `The plugin config is not in the correct format. Errors: ${PathReporter.report(
-        decodedOptionsE,
-      )}`,
+      `The plugin config is not in the correct format. Errors: ${
+        Joi.isError(validatedOptions.error)
+          ? validatedOptions.error.annotate()
+          : ''
+      }`,
     );
   }
 
-  const decodedOptions = decodedOptionsE.right;
+  const decodedOptions = validatedOptions.value;
 
   if (
     decodedOptions.sourceType === 'webProxy' &&
