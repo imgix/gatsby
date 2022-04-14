@@ -191,6 +191,10 @@ export const createSchemaCustomization: ICreateSchemaCustomizationHook<IImgixGat
   const rootType = createRootObjectType(gatsbyContext, imgixImageType);
 
   // Now, we actually add the types and fields to the schema
+  // For more information refer to the docs at
+  // https://www.gatsbyjs.com/docs/reference/config-files/actions/#createTypes
+  // and
+  // https://www.gatsbyjs.com/docs/reference/graphql-data-layer/schema-customization/
   try {
     const { createTypes } = gatsbyContext.actions;
     createTypes(typesAndFields.types.map(gatsbyContext.schema.buildObjectType));
