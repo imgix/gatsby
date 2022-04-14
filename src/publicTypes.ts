@@ -69,6 +69,10 @@ export const ImgixGatsbyFieldsJOI = Joi.array().items(
       URLPrefix: Joi.string().optional(),
       rawURLKeys: Joi.array().items(Joi.string()),
       rawURLKey: Joi.string(),
+      // This seems to be added by Gatsby automatically, although it has no
+      // relevance to our plugin. We have to include this otherwise validation
+      // fails
+      plugins: Joi.any(),
     })
     .xor('rawURLKeys', 'rawURLKey'),
 );
