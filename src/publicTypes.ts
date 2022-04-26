@@ -1,6 +1,4 @@
 import imgixUrlParameters from 'imgix-url-params/dist/parameters.json';
-import Joi from 'joi';
-import { mapObjIndexed } from 'ramda';
 
 export enum ImgixSourceType {
   AmazonS3 = 's3',
@@ -10,29 +8,10 @@ export enum ImgixSourceType {
   WebProxy = 'webProxy',
 }
 
-const ImgixSourceTypeJOI = Joi.string().valid(
-  's3',
-  'gcs',
-  'azure',
-  'webFolder',
-  'webProxy',
-);
-
 type IImgixParamsKey =
   | keyof ImgixUrlParametersSpec['parameters']
   | keyof ImgixUrlParametersSpec['aliases'];
 
-const ImgixParamValueJOI = Joi.alternatives()
-  .try(
-    Joi.string(),
-    Joi.number(),
-    Joi.boolean(),
-    Joi.array().items(Joi.string()),
-    Joi.array().items(Joi.number()),
-    Joi.array().items(Joi.boolean()),
-  )
-  .optional()
-  .allow(null);
 type ImgixParamValue =
   | string
   | number
@@ -43,16 +22,6 @@ type ImgixParamValue =
   | undefined
   | null;
 
-const mapToImgixParamJOIValue = <TKey extends string>(
-  obj: Record<TKey, unknown>,
-): Record<TKey, typeof ImgixParamValueJOI> =>
-  mapObjIndexed(() => ImgixParamValueJOI, obj);
-
-const ImgixParamsJOI = Joi.object().keys({
-  ...mapToImgixParamJOIValue(imgixUrlParameters.aliases),
-  ...mapToImgixParamJOIValue(imgixUrlParameters.parameters),
-});
-
 export type IImgixParams = Partial<Record<IImgixParamsKey, ImgixParamValue>>;
 
 export interface IBaseFieldOptions {
@@ -61,39 +30,9 @@ export interface IBaseFieldOptions {
   URLPrefix?: string;
 }
 
-export const ImgixGatsbyFieldsJOI = Joi.array().items(
-  Joi.object()
-    .keys({
-      nodeType: Joi.string().required(),
-      fieldName: Joi.string().required(),
-      URLPrefix: Joi.string().optional(),
-      rawURLKeys: Joi.array().items(Joi.string()),
-      rawURLKey: Joi.string(),
-      // This seems to be added by Gatsby automatically, although it has no
-      // relevance to our plugin. We have to include this otherwise validation
-      // fails
-      plugins: Joi.any(),
-    })
-    .xor('rawURLKeys', 'rawURLKey'),
-);
-
 export type IFieldsOption = (IBaseFieldOptions &
   ({ rawURLKeys: string[] } | { rawURLKey: string }))[];
 
-export const ImgixGatsbyOptionsJOI = Joi.object<
-  IImgixGatsbyOptions & { plugins: any }
->().keys({
-  domain: Joi.string().required(),
-  defaultImgixParams: ImgixParamsJOI.optional(),
-  disableIxlibParam: Joi.boolean().optional(),
-  secureURLToken: Joi.string().optional(),
-  sourceType: ImgixSourceTypeJOI.optional(),
-  fields: ImgixGatsbyFieldsJOI.optional(),
-  // This seems to be added by Gatsby automatically, although it has no
-  // relevance to our plugin. We have to include this otherwise validation
-  // fails
-  plugins: Joi.any(),
-});
 export type IImgixGatsbyOptions = {
   domain: string;
   defaultImgixParams?: IImgixParams;
