@@ -5,10 +5,8 @@ import {
   PatchedPluginOptions,
 } from 'gatsby';
 import { GraphQLNonNull, GraphQLString } from 'gatsby/graphql';
-import Joi from 'joi';
 import get from 'lodash.get';
 import { prop } from 'ramda';
-import { ImgixGatsbyOptionsJOI } from '.';
 import { IImgixGatsbyOptions, ImgixSourceType } from '../..';
 import { VERSION } from '../../common/constants';
 import {
@@ -75,42 +73,27 @@ const getFieldValue = ({
  * @returns The options object if it is valid, or throws an error
  */
 const decodeOptions = (options: PatchedPluginOptions<IImgixGatsbyOptions>) => {
-  const validatedOptions = ImgixGatsbyOptionsJOI.validate(options);
-  if (Joi.isError(validatedOptions.error) || !validatedOptions.value) {
-    throw new Error(
-      `The plugin config is not in the correct format. Errors: ${
-        Joi.isError(validatedOptions.error)
-          ? validatedOptions.error.annotate()
-          : ''
-      }`,
-    );
-  }
-
-  const decodedOptions = validatedOptions.value;
-
   if (
-    decodedOptions.sourceType === 'webProxy' &&
-    (decodedOptions.secureURLToken == null ||
-      decodedOptions.secureURLToken.trim() === '')
+    options.sourceType === 'webProxy' &&
+    (options.secureURLToken == null || options.secureURLToken.trim() === '')
   ) {
     throw new Error(
       `The plugin option 'secureURLToken' is required when sourceType is 'webProxy'.`,
     );
   }
-  if (decodedOptions.fields != null && !Array.isArray(decodedOptions.fields)) {
+  if (options.fields != null && !Array.isArray(options.fields)) {
     throw new Error('Fields must be an array of field options');
   }
   if (
-    decodedOptions.sourceType === ImgixSourceType.WebProxy &&
-    (decodedOptions.secureURLToken == null ||
-      decodedOptions.secureURLToken.trim() === '')
+    options.sourceType === ImgixSourceType.WebProxy &&
+    (options.secureURLToken == null || options.secureURLToken.trim() === '')
   ) {
     throw new Error(
       'A secure URL token must be provided if sourceType is webProxy',
     );
   }
 
-  return decodedOptions;
+  return options;
 };
 
 const setupImgixClient = ({
