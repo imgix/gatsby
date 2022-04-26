@@ -17,6 +17,7 @@ export const onPreInit: GatsbyNode['onPreInit'] = ({ reporter }) => {
 };
 
 export { createSchemaCustomization } from './modules/gatsby-plugin/gatsby-node';
+export { pluginOptionsSchema } from './modules/gatsby-plugin/pluginOptionsSchema';
 
 export const onPreExtractQueries: GatsbyNode['onPreExtractQueries'] = ({
   store,
