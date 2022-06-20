@@ -59,7 +59,7 @@
     "read-pkg-up": "^7.0.1"
   },
   "devDependencies": {
-    "@babel/core": "7.18.2",
+    "@babel/core": "7.18.5",
     "@babel/eslint-parser": "7.18.2",
     "@google/semantic-release-replace-plugin": "1.1.0",
     "@semantic-release/changelog": "6.0.1",
