@@ -1,3 +1,10 @@
+### [2.0.4](https://github.com/imgix/gatsby/compare/v2.0.3...v2.0.4) (2022-09-14)
+
+
+### Bug Fixes
+
+* correctly set ixlib and add prePublish script ([#233](https://github.com/imgix/gatsby/issues/233)) ([9399a1d](https://github.com/imgix/gatsby/commit/9399a1da0f8523a7a610c388ff7e784d3c82be7c))
+
 ### [2.0.4-rc.2](https://github.com/imgix/gatsby/compare/v2.0.4-rc.1...v2.0.4-rc.2) (2022-09-14)
 
 
