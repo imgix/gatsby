@@ -1,3 +1,10 @@
+### [2.0.4-rc.1](https://github.com/imgix/gatsby/compare/v2.0.3...v2.0.4-rc.1) (2022-09-14)
+
+
+### Bug Fixes
+
+* **ixlib:** correctly sets includeLibraryParam to false ([b1e59ca](https://github.com/imgix/gatsby/commit/b1e59ca4a9ffb4aa7067c7f4539d7a8bb05aef82))
+
 ### [2.0.3](https://github.com/imgix/gatsby/compare/v2.0.2...v2.0.3) (2022-04-07)
 
 
