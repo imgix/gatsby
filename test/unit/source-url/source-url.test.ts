@@ -402,7 +402,7 @@ describe('createResolvers', () => {
           disableIxlibParam: true,
         },
       },
-      assertion: (url) => expect(url).not.toMatch('ixlib=gatsbySourceUrl'),
+      assertion: (url) => expect(url).not.toMatch('ixlib='),
     });
   });
 
