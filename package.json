@@ -23,6 +23,7 @@
     "load-env": "source .env",
     "nodemon:dev": "nodemon --delay 1 -w dist -x \"yarn run sync:e2e && yarn run dev:start\"",
     "nodemon:e2e": "nodemon --delay 1 -w dist -x \"yarn run test:e2e:ci\"",
+    "prepublishOnly": "yarn build",
     "sync:e2e:watch": "nodemon -w dist -x \"msync s && rm -rf test/dev-and-e2e/node_modules/@imgix/gatsby/test/\"",
     "sync:e2e": "msync s && rm -rf test/dev-and-e2e/node_modules/@imgix/gatsby/test/",
     "tdd:e2e": "echo 'Run \"npm run sync:e2e:watch\" in a separate terminal window' && yarn test:e2e",
