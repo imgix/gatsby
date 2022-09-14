@@ -20,7 +20,7 @@ export const createImgixClient = ({
   ixlib,
   ...options
 }: CreateImgixClientParams): ImgixClient => {
-  const client = new ImgixClient({...options, includeLibraryParam: false});
+  const client = new ImgixClient({ ...options, includeLibraryParam: false });
   if (ixlib) {
     (client as any).settings.libraryParam = ixlib;
   }
