@@ -1120,6 +1120,7 @@ If `url` is:
 For security and diagnostic purposes, we tag all requests with the language and version of library used to generate the URL. To disable this, we provide two options. For disabling the `ixlib` parameter across all requests, we provide `disableIxlibParam` as a plugin option for use in `gatsby-config.js`.
 
 ```js
+// gatsby-config.js
 module.exports = {
   //...
   plugins: [
