@@ -1,3 +1,5 @@
+### [2.0.5](https://github.com/imgix/gatsby/compare/v2.0.4...v2.0.5) (2022-09-21)
+
 ### [2.0.4](https://github.com/imgix/gatsby/compare/v2.0.3...v2.0.4) (2022-09-14)
 
 
