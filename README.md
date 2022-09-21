@@ -1117,9 +1117,29 @@ If `url` is:
 
 ### What is the `ixlib` Param on Every Request?
 
-For security and diagnostic purposes, we tag all requests with the language and version of library used to generate the URL.
+For security and diagnostic purposes, we tag all requests with the language and version of the library used to generate the URL. To disable this, we provide two options.
 
-To disable this, set `includeLibraryParam` in the third parameter to `false` when calling one of the two functions this library exports. For example, for `buildFluidImageData`:
+For disabling the `ixlib` parameter across all requests, we provide `disableIxlibParam` as a plugin option for use in `gatsby-config.js`.
+
+```js
+// gatsby-config.js
+module.exports = {
+  //...
+  plugins: [
+    // your other plugins here
+    {
+      resolve: `@imgix/gatsby`,
+      options: {
+        domain: 'domain.imgix.net>',
+        disableIxlibParam: 'true', // this disables the ixlib parameter
+        defaultImgixParams: { auto: ['compress', 'format'] },
+      },
+    },
+  ],
+};
+```
+
+For disabling `ixlib` on a case by case basis, we provide the `includeLibraryParam` parameter. When calling either of this library's two exported functions, in the third parameter set `includeLibraryParam` to `false`. For example, for `buildFluidImageData`:
 
 ```jsx
 <Img
