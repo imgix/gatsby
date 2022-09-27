@@ -58,7 +58,6 @@
     * [What is the `ixlib` Param on Every Request?](#what-is-the-ixlib-param-on-every-request)
     * [GraphQL Type Customization Warning](#graphql-type-customization-warning)
     * [Multiple imgix Sources](#multiple-imgix-sources)
-- [Roadmap](#roadmap)
 - [Upgrade Guides](#upgrade-guides)
     * [Upgrading from v1.x to v2](#upgrading-from-v1x-to-v2)
     * [Upgrading from `@imgix/gatsby-transform-url`](#upgrading-from-imgixgatsby-transform-url)
@@ -1218,21 +1217,6 @@ export const query = gql`
 ```
 
 So, to summarise, it is possible to use multiple sources in this plugin. You have the option to use up to one source of any type with the GraphQL API, and then any number of non-Web Proxy sources with the URL transform API.
-
-## Roadmap
-
-**📣 Have your say on our roadmap below!**
-
-Hey there! Thanks for checking out this repository. We are currently deciding on the roadmap for this library, and we'd love your help in showing us what to prioritize, and what you'd like us to build. If you're interested, read on!
-
-Below is a list of issues that contain all the high-level use-cases that we thought apply to Gatbsy developers using imgix. Please check out any issues that are interesting, and **help us decide what to build first by voting on those issues that best fit your use case.**
-
-- [I have an image stored in image manager that I want to render](https://github.com/imgix/gatsby/issues/6)
-- [I have an image stored locally that I want to upload to image-manager and render](https://github.com/imgix/gatsby/issues/7)
-
-Other features:
-
-- [I want to have my imgix parameters in my Gatsby/GraphQL query be strongly-typed](https://github.com/imgix/gatsby/issues/5)
 
 ## Upgrade Guides
 
