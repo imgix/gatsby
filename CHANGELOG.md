@@ -1,3 +1,10 @@
+### [2.0.6](https://github.com/imgix/gatsby/compare/v2.0.5...v2.0.6) (2022-09-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency read-pkg-up to v9 ([35311f8](https://github.com/imgix/gatsby/commit/35311f8aba74bf04fc8dd628cc34cdff21123674))
+
 ### [2.0.5](https://github.com/imgix/gatsby/compare/v2.0.4...v2.0.5) (2022-09-21)
 
 ### [2.0.4](https://github.com/imgix/gatsby/compare/v2.0.3...v2.0.4) (2022-09-14)
