@@ -26,13 +26,14 @@ jobs:
       - run: echo 'export NODE_OPTIONS=--openssl-legacy-provider' >> $BASH_ENV
       - node/install-packages:
           override-ci-command: yarn install
+      - run: node --version
+
       - run:
           name: Install e2e dependencies
           command: cd test/dev-and-e2e && yarn install && cd ../../
       # necessary for syncing to test folder
-      - run: apt update
-      - run: apt-get install -y rsync
-      - run: node --version
+      - run: sudo apt update
+      - run: sudo apt-get install -y rsync
       - run: yarn build
       - run: yarn lint:ci
       - run: yarn test:unit
