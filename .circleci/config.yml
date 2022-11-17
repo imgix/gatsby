@@ -18,13 +18,13 @@ jobs:
     resource_class: large
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}-{{ checksum "yarn.lock" }}-{{ checksum "test/dev-and-e2e/yarn.lock" }}
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v1-deps-{{ .Branch }}
-            - v1-deps
+      # - restore_cache:
+      #     keys:
+      #       - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}-{{ checksum "yarn.lock" }}-{{ checksum "test/dev-and-e2e/yarn.lock" }}
+      #       - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}
+      #       - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+      #       - v1-deps-{{ .Branch }}
+      #       - v1-deps
       - run:
           name: Install Dependencies
           command: yarn install --frozen-lockfile
