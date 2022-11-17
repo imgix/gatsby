@@ -34,6 +34,7 @@ jobs:
       # necessary for syncing to test folder
       - run: apt update
       - run: apt-get install -y rsync
+      - run: node --version
       - save_cache:
           key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}-{{ checksum "yarn.lock" }}-{{ checksum "test/dev-and-e2e/yarn.lock" }}
           paths:
