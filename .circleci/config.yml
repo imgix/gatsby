@@ -23,7 +23,6 @@ jobs:
             google-chrome --version
             firefox --version
           name: Check install
-      # - run: echo 'export NODE_OPTIONS=--openssl-legacy-provider' >> $BASH_ENV
       - node/install-packages:
           override-ci-command: yarn install
       - run: node --version
@@ -53,14 +52,12 @@ workflows:
   test:
     jobs:
       - test:
-          version: 'current'
+          matrix:
+            parameters:
+              version:
+                - 'current'
+                - 'lts'
+
       - deploy:
           requires:
             - test
-# executors:
-#   cypress-with-env-var:
-#     docker:
-#       - image: 'cypress/base'
-#     environment:
-#       DEBUG: imgix:*
-#       BAR: bar
