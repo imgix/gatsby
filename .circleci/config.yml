@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.3
+  browser-tools: circleci/browser-tools@1.2.4
 
 jobs:
   test:
@@ -11,38 +12,32 @@ jobs:
         description: Node.JS version to install
         type: string
     docker:
-      - image: cypress/base::<<parameters.version>>
-        environment:
-          ## this enables colors in the output
-          TERM: xterm
+      - image: cimg/node:<<parameters.version>>-browsers
     resource_class: large
     steps:
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}-{{ checksum "yarn.lock" }}-{{ checksum "test/dev-and-e2e/yarn.lock" }}
-      #       - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}
-      #       - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-      #       - v1-deps-{{ .Branch }}
-      #       - v1-deps
+      - browser-tools/install-browser-tools:
+          install-geckodriver: false
       - run:
-          name: Install Dependencies
-          command: yarn install --frozen-lockfile
+          command: |
+            google-chrome --version
+            firefox --version
+          name: Check install
+      - run: echo 'export NODE_OPTIONS=--openssl-legacy-provider' >> $BASH_ENV
+      - node/install-packages:
+          override-ci-command: yarn install
       - run:
           name: Install e2e dependencies
-          command: cd test/dev-and-e2e && yarn install --frozen-lockfile && cd ../../
+          command: cd test/dev-and-e2e && yarn install && cd ../../
       # necessary for syncing to test folder
       - run: apt update
       - run: apt-get install -y rsync
       - run: node --version
-      - save_cache:
-          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "test/dev-and-e2e/package.json" }}-{{ checksum "yarn.lock" }}-{{ checksum "test/dev-and-e2e/yarn.lock" }}
-          paths:
-            - ~/.cache ## cache both yarn and Cypress!
       - run: yarn build
       - run: yarn lint:ci
       - run: yarn test:unit
       - run: $(yarn bin)/cross-env-shell DEBUG=imgix:* yarn run test:e2e:ci
+
   deploy:
     docker:
       - image: cimg/node:current
@@ -53,14 +48,6 @@ jobs:
       - run: yarn build
       - run: npx semantic-release
 
-executors:
-  cypress-with-env-var:
-    docker:
-      - image: 'cypress/base'
-    environment:
-      DEBUG: imgix:*
-      BAR: bar
-
 workflows:
   test:
     jobs:
@@ -69,3 +56,10 @@ workflows:
       - deploy:
           requires:
             - test
+# executors:
+#   cypress-with-env-var:
+#     docker:
+#       - image: 'cypress/base'
+#     environment:
+#       DEBUG: imgix:*
+#       BAR: bar
