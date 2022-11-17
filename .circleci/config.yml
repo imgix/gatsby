@@ -7,11 +7,11 @@ jobs:
   test:
     parameters:
       version:
-        default: 'stable'
+        default: 'current'
         description: Node.JS version to install
         type: string
     docker:
-      - image: cypress/base:16.17.1
+      - image: cimg/node:<<parameters.version>>
         environment:
           ## this enables colors in the output
           TERM: xterm
