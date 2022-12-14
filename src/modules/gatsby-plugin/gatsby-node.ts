@@ -235,7 +235,7 @@ function createRootObjectType(
         },
         args: {
           url: {
-            type: GraphQLNonNull(GraphQLString),
+            type: new GraphQLNonNull(GraphQLString),
             description:
               'The path of the image to render. If using a Web Proxy Source, this must be a fully-qualified URL.',
           },
