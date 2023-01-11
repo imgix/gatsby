@@ -104,10 +104,14 @@ describe('plugin helpers', () => {
         {},
         {} as any,
       );
-
+      // TODO(LHB): remove ts-ignores here
+      // @ts-ignore
       expect(fluid.aspectRatio).toBe(aspectRatio);
+      // @ts-ignore
       expect(fixed.width / fixed.height).toBe(aspectRatio);
+      // @ts-ignore
       expect(gatsbyImageData.width).toBe(width);
+      // @ts-ignore
       expect(gatsbyImageData.height).toBe(height);
     });
   });
