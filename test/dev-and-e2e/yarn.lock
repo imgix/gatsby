@@ -2024,6 +2024,24 @@
     ramda "^0.27.1"
     read-pkg-up "^7.0.1"
 
+"@imgix/gatsby@^2.0.0":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@imgix/gatsby/-/gatsby-2.0.7.tgz#6c36d892ba84d24caa6cc2a7078f870622cae08d"
+  integrity sha512-xnYzmhCiJcqBmvTfZ/oCIwk2HORlnwGtH2laC387n5p0jjf+w7xhc7UnjQPr5FkVWF3EB+jQ0tfIeBBPBcUV/A==
+  dependencies:
+    "@imgix/js-core" "3.6.0"
+    camel-case "^4.1.2"
+    common-tags "^1.8.0"
+    debug "^4.3.1"
+    graphql-compose "^9.0.0"
+    imgix-url-params "^11.11.2"
+    joi "^17.6.0"
+    jsuri "^1.3.1"
+    lodash.get "^4.4.2"
+    node-fetch "^2.6.0"
+    ramda "^0.27.1"
+    read-pkg-up "^9.0.0"
+
 "@imgix/js-core@3.1.3":
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/@imgix/js-core/-/js-core-3.1.3.tgz#9c26366f84f59e6c238c41455f45aacdf04862b7"
@@ -2031,6 +2049,15 @@
   dependencies:
     js-base64 "~2.6.0"
     md5 "^2.2.1"
+
+"@imgix/js-core@3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@imgix/js-core/-/js-core-3.6.0.tgz#fea27da03696264fe0fa4d6f74e928b9e17fc764"
+  integrity sha512-00qsHfyk7HvSj5NJdLA5O2QeBUVPM0khpO0qQvyMBmVP9aZaYJWkMd1IXQm0TUvcI1+Ja2mvdPzRYULFCiQBTg==
+  dependencies:
+    js-base64 "~3.7.0"
+    md5 "^2.2.1"
+    ufo "^0.7.10"
 
 "@jest/types@^27.2.5":
   version "27.2.5"
@@ -2917,6 +2944,13 @@
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.2.tgz#811b84333a335739d3969cfc434736268170cad1"
   integrity sha512-idTz8ibqWFrPU8kMirL0CoPH/A29XOzzAzpyN3zQ4kAWnzmNfFmRaoMNN6VI8ske5M73HZyhIaW4OuSFIdM4oA==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+
+"@sideway/address@^4.1.3":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.4.tgz#03dccebc6ea47fdc226f7d3d1ad512955d4783f0"
+  integrity sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
@@ -7905,6 +7939,13 @@ graphql-compose@^7.25.0:
     graphql-type-json "0.3.2"
     object-path "0.11.5"
 
+graphql-compose@^9.0.0:
+  version "9.0.10"
+  resolved "https://registry.yarnpkg.com/graphql-compose/-/graphql-compose-9.0.10.tgz#1e870166deb1785761865fe742dea0601d2c77f2"
+  integrity sha512-UsVoxfi2+c8WbHl2pEB+teoRRZoY4mbWBoijeLDGpAZBSPChnqtSRjp+T9UcouLCwGr5ooNyOQLoI3OVzU1bPQ==
+  dependencies:
+    graphql-type-json "0.3.2"
+
 graphql-compose@^9.0.7:
   version "9.0.9"
   resolved "https://registry.yarnpkg.com/graphql-compose/-/graphql-compose-9.0.9.tgz#ca919ce61cf5ec0545e5ce123bda2051c7c78a1e"
@@ -8829,6 +8870,17 @@ joi@^17.4.0, joi@^17.4.2:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
+joi@^17.6.0:
+  version "17.7.0"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-17.7.0.tgz#591a33b1fe1aca2bc27f290bcad9b9c1c570a6b3"
+  integrity sha512-1/ugc8djfn93rTE3WRKdCzGGt/EtiYKxITMO4Wiv6q5JL1gl9ePt4kBsl1S499nbosspfctIQTpYIhSmHA3WAg==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+    "@hapi/topo" "^5.0.0"
+    "@sideway/address" "^4.1.3"
+    "@sideway/formula" "^3.0.0"
+    "@sideway/pinpoint" "^2.0.0"
+
 jpeg-js@^0.4.0:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.4.3.tgz#6158e09f1983ad773813704be80680550eff977b"
@@ -8838,6 +8890,11 @@ js-base64@~2.6.0:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.6.4.tgz#f4e686c5de1ea1f867dbcad3d46d969428df98c4"
   integrity sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==
+
+js-base64@~3.7.0:
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.7.4.tgz#af95b20f23efc8034afd2d1cc5b9d0adf7419037"
+  integrity sha512-wpM/wi20Tl+3ifTyi0RdDckS4YTD4Lf953mBRrpG8547T7hInHNPEj8+ck4gB8VDcGyeAWFK++Wb/fU1BeavKQ==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -9227,7 +9284,7 @@ lodash.foreach@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.foreach/-/lodash.foreach-4.5.0.tgz#1a6a35eace401280c7f06dddec35165ab27e3e53"
   integrity sha1-Gmo16s5AEoDH8G3d7DUWWrJ+PlM=
 
-lodash.get@^4:
+lodash.get@^4, lodash.get@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
   integrity sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==
@@ -12848,6 +12905,11 @@ ua-parser-js@^0.7.30:
   version "0.7.31"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.31.tgz#649a656b191dffab4f21d5e053e27ca17cbff5c6"
   integrity sha512-qLK/Xe9E2uzmYI3qLeOmI0tEOt+TBBQyUIAh4aAgU05FVYzeZrKUdkAZfBNVGRaHVgV0TDkdEngJSw/SyQchkQ==
+
+ufo@^0.7.10:
+  version "0.7.11"
+  resolved "https://registry.yarnpkg.com/ufo/-/ufo-0.7.11.tgz#17defad497981290383c5d26357773431fdbadcb"
+  integrity sha512-IT3q0lPvtkqQ8toHQN/BkOi4VIqoqheqM1FnkNWT9y0G8B3xJhwnoKBu5OHx8zHDOvveQzfKuFowJ0VSARiIDg==
 
 unbox-primitive@^1.0.1:
   version "1.0.1"
