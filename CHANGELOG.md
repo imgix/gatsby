@@ -1,3 +1,10 @@
+## [2.1.0](https://github.com/imgix/gatsby/compare/v2.0.7...v2.1.0) (2023-01-20)
+
+
+### Features
+
+* add gatsby v5 support ([#259](https://github.com/imgix/gatsby/issues/259)) ([5c9c2bb](https://github.com/imgix/gatsby/commit/5c9c2bb6ed07207a5f0222c69317251920b052b3))
+
 ### [2.0.8-rc.1](https://github.com/imgix/gatsby/compare/v2.0.7...v2.0.8-rc.1) (2023-01-11)
 
 
