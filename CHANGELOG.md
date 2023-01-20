@@ -1,3 +1,10 @@
+### [2.0.8-rc.1](https://github.com/imgix/gatsby/compare/v2.0.7...v2.0.8-rc.1) (2023-01-11)
+
+
+### Bug Fixes
+
+* update test-e2e deps ([4599f1d](https://github.com/imgix/gatsby/commit/4599f1dc56c1fcdb17a61d298b25956fe9c5e898))
+
 ### [2.0.7](https://github.com/imgix/gatsby/compare/v2.0.6...v2.0.7) (2022-10-03)
 
 
