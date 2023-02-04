@@ -5,7 +5,7 @@
   "version": "0.1.6",
   "author": "",
   "dependencies": {
-    "@imgix/gatsby": "2.1.1-rc.1",
+    "@imgix/gatsby": "^2.0.0",
     "gatsby": "4.21.1",
     "gatsby-image": "3.11.0",
     "gatsby-plugin-image": "2.21.0",
