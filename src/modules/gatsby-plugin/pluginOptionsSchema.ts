@@ -72,7 +72,7 @@ export const pluginOptionsSchema: NonNullable<
 
   const schema = Joi.object<IImgixGatsbyOptions & { plugins: any }>().keys({
     domain: Joi.string()
-      .required()
+      .optional()
       .description(
         "This is the domain of your imgix source, which can be created at https://dashboard.imgix.com/. The source specified must be a 'Web Proxy' source type.",
       ),
