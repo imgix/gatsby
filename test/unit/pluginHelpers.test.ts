@@ -1,18 +1,21 @@
 import * as fetchImgixMetadataModule from '../../src/api/fetchImgixMetadata';
+import { createImgixUrlSchemaFieldConfig } from '../../src/modules/gatsby-plugin/createImgixUrlFieldConfig';
 import { createImgixGatsbyTypes } from '../../src/pluginHelpers';
 
-// test('should be able to call createImgixUrlFieldConfig with no domain and resolve a url', async () => {
-//   const config = createImgixUrlSchemaFieldConfig({
-//     resolveUrl: (node) => (node as any).url,
-//   });
+test('should be able to call createImgixUrlFieldConfig with no domain and resolve a url', async () => {
+  const config = createImgixUrlSchemaFieldConfig({
+    imgixClientOptions: { domain: '' },
+    resolveUrl: () => 'https://assets.imgix.net/amsterdam.jpg',
+    paramsInputType: '',
+  });
 
-//   const resolved = await (config as any).resolve(
-//     { url: 'https://assets.imgix.net/amsterdam.jpg' },
-//     {},
-//   );
+  const resolved = await (config as any).resolve(
+    { url: 'https://assets.imgix.net/amsterdam.jpg' },
+    {},
+  );
 
-//   expect(resolved).toMatch(/^https:\/\/assets.imgix.net\/amsterdam.jpg\?/);
-// });
+  expect(resolved).toMatch(/^https:\/\/assets.imgix.net\/amsterdam.jpg\?/);
+});
 // test('should be able to call createImgixUrlFieldConfig with a domain and resolve a url', async () => {
 //   const config = createImgixUrlSchemaFieldConfig({
 //     resolveUrl: (node) => (node as any).url,
