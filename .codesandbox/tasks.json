@@ -1,0 +1,112 @@
+{
+  // These tasks will run in order when initializing your CodeSandbox project.
+  "setupTasks": [
+    {
+      "name": "Install Dependencies",
+      "command": "yarn install"
+    },
+    {
+      "name": "Install E2E Dependencies",
+      "command": "cd test/dev-and-e2e/; yarn"
+    }
+  ],
+
+  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
+  "tasks": {
+    "build:watch": {
+      "name": "build:watch",
+      "command": "yarn build:watch",
+      "runAtStart": false
+    },
+    "build": {
+      "name": "build",
+      "command": "yarn build",
+      "runAtStart": false
+    },
+    "dev:start": {
+      "name": "dev:start",
+      "command": "yarn dev:start",
+      "runAtStart": true
+    },
+    "lint:ci": {
+      "name": "lint:ci",
+      "command": "yarn lint:ci",
+      "runAtStart": false
+    },
+    "lint": {
+      "name": "lint",
+      "command": "yarn lint",
+      "runAtStart": false
+    },
+    "load-env": {
+      "name": "load-env",
+      "command": "yarn load-env",
+      "runAtStart": false
+    },
+    "nodemon:dev": {
+      "name": "nodemon:dev",
+      "command": "yarn nodemon:dev",
+      "runAtStart": false
+    },
+    "nodemon:e2e": {
+      "name": "nodemon:e2e",
+      "command": "yarn nodemon:e2e",
+      "runAtStart": false
+    },
+    "prepare": {
+      "name": "prepare",
+      "command": "yarn prepare",
+      "runAtStart": false
+    },
+    "prepublishOnly": {
+      "name": "prepublishOnly",
+      "command": "yarn prepublishOnly",
+      "runAtStart": false
+    },
+    "sync:e2e:watch": {
+      "name": "sync:e2e:watch",
+      "command": "yarn sync:e2e:watch",
+      "runAtStart": false
+    },
+    "sync:e2e": {
+      "name": "sync:e2e",
+      "command": "yarn sync:e2e",
+      "runAtStart": false
+    },
+    "tdd:e2e": {
+      "name": "tdd:e2e",
+      "command": "yarn tdd:e2e",
+      "runAtStart": false
+    },
+    "tdd:unit": {
+      "name": "tdd:unit",
+      "command": "yarn tdd:unit",
+      "runAtStart": false
+    },
+    "tdd": {
+      "name": "tdd",
+      "command": "yarn tdd",
+      "runAtStart": false
+    },
+    "test:e2e:ci": {
+      "name": "test:e2e:ci",
+      "command": "yarn test:e2e:ci",
+      "runAtStart": false
+    },
+    "test:e2e": {
+      "name": "test:e2e",
+      "command": "yarn test:e2e",
+      "runAtStart": false
+    },
+    "test:unit": {
+      "name": "test:unit",
+      "command": "yarn test:unit",
+      "runAtStart": false
+    },
+    "test": {
+      "name": "test",
+      "command": "yarn test",
+      "runAtStart": false
+    }
+  }
+}
