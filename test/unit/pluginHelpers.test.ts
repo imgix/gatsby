@@ -5,7 +5,7 @@ import { createImgixGatsbyTypes } from '../../src/pluginHelpers';
 test('should be able to call createImgixUrlFieldConfig with no domain and resolve a url', async () => {
   const config = createImgixUrlSchemaFieldConfig({
     imgixClientOptions: { domain: '' },
-    resolveUrl: () => 'https://assets.imgix.net/amsterdam.jpg',
+    resolveUrl: (node) => (node as any).url,
     paramsInputType: '',
   });
 
