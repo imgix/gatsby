@@ -1,3 +1,10 @@
+### [2.1.1](https://github.com/imgix/gatsby/compare/v2.1.0...v2.1.1) (2023-02-06)
+
+
+### Bug Fixes
+
+* set domain as optional ([99310b1](https://github.com/imgix/gatsby/commit/99310b1681545ecc4a60368156a65d346bd51679))
+
 ### [2.1.1-rc.1](https://github.com/imgix/gatsby/compare/v2.1.0...v2.1.1-rc.1) (2023-02-04)
 
 
