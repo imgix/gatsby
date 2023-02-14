@@ -38,7 +38,7 @@
   "peerDependencies": {
     "gatsby": "^2 || ^3 || ^4 || ^5",
     "gatsby-image": "^2 || ^3",
-    "gatsby-plugin-image": "^1 || ^2"
+    "gatsby-plugin-image": "^1 || ^2 || ^3"
   },
   "resolutions": {
     "chalk": "^4",
