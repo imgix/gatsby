@@ -1,3 +1,10 @@
+### [2.1.2](https://github.com/imgix/gatsby/compare/v2.1.1...v2.1.2) (2023-02-22)
+
+
+### Bug Fixes
+
+* **deps:** update gatsby-plugin-image range ([c6d3ccd](https://github.com/imgix/gatsby/commit/c6d3ccd97135a4357a468020666ad95d2769bd5c))
+
 ### [2.1.2-rc.1](https://github.com/imgix/gatsby/compare/v2.1.1...v2.1.2-rc.1) (2023-02-14)
 
 
