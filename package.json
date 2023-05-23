@@ -52,7 +52,7 @@
     "common-tags": "^1.8.0",
     "debug": "^4.3.1",
     "graphql-compose": "^9.0.0",
-    "imgix-url-params": "^11.11.2",
+    "imgix-url-params": "^11.15.0",
     "joi": "^17.6.0",
     "jsuri": "^1.3.1",
     "lodash.get": "^4.4.2",
