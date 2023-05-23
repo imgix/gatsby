@@ -38,6 +38,8 @@ export const ImgixParamsInputType = ({
         new Set(expects.map((expect) => expect.type)),
       );
 
+      // @ts-expect-error TODO: remove this after short_description is marked as required in imgix-url-params
+      const shortDescription = spec.short_description || spec.display_name;
       const type = expectsTypes.every((type) => type === 'integer')
         ? 'Int'
         : expectsTypes.every(
@@ -52,9 +54,9 @@ export const ImgixParamsInputType = ({
       fields[name] = {
         type,
         description:
-          spec.short_description +
+          shortDescription +
           // Ensure the description ends with a period.
-          (spec.short_description.slice(-1) === '.' ? '' : '.'),
+          (shortDescription.slice(-1) === '.' ? '' : '.'),
       };
 
       const field = fields[
