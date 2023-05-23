@@ -7815,10 +7815,10 @@ ignore@^5.1.8, ignore@^5.2.0:
   resolved "https://registry.npmjs.org/ignore/-/ignore-5.2.0.tgz"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
 
-imgix-url-params@^11.11.2:
-  version "11.12.0"
-  resolved "https://registry.npmjs.org/imgix-url-params/-/imgix-url-params-11.12.0.tgz"
-  integrity sha512-Q/P1vlxu3tKw2FatBTuVPuMvJaAYuso6yFO0UXX7QWWUsguhG2sSuBFnCpywefKPEM8Lw9dbhpSney374lD0Sg==
+imgix-url-params@^11.15.0:
+  version "11.15.0"
+  resolved "https://registry.yarnpkg.com/imgix-url-params/-/imgix-url-params-11.15.0.tgz#fa43b16a7e589bc20f4e646098246a70827de2cb"
+  integrity sha512-W8JprYztwdFTtNLTa/aj2PGh8CJNBaMKrTtgOYlo8OvJrRn3XELRTeZoLyob5C49qW9aFiIYIIqm8zWysRFu8g==
 
 immer@^9.0.7:
   version "9.0.15"
