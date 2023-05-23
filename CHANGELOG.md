@@ -1,3 +1,10 @@
+### [2.1.3](https://github.com/imgix/gatsby/compare/v2.1.2...v2.1.3) (2023-05-23)
+
+
+### Bug Fixes
+
+* **graphql-types:** ensure short-description is defined ([5ad4503](https://github.com/imgix/gatsby/commit/5ad4503c19d0a90e25bd5b05c8bdeb1a57e2588f))
+
 ### [2.1.2](https://github.com/imgix/gatsby/compare/v2.1.1...v2.1.2) (2023-02-22)
 
 
