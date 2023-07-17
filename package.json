@@ -64,7 +64,7 @@
     "@babel/core": "7.19.6",
     "@babel/eslint-parser": "7.19.1",
     "@google/semantic-release-replace-plugin": "1.1.0",
-    "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@types/common-tags": "1.8.1",
     "@types/is-base64": "1.1.1",
