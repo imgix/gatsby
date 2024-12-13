@@ -1,6 +1,6 @@
 <!-- ix-docs-ignore -->
 
-![imgix logo](https://assets.imgix.net/sdk-imgix-logo.svg)
+![imgix logo](https://assets.imgix.net/sdk-imgix-logo-new.svg)
 
 `@imgix/gatsby` is a multi-faceted plugin to help the developer use [imgix](https://www.imgix.com) with Gatsby.
 
