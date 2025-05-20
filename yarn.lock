@@ -2930,10 +2930,10 @@
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
   integrity "sha1-7ihweulOEdK4J7y+UnC86n8+ce4= sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ=="
 
-"@types/jsuri@1.3.30":
-  version "1.3.30"
-  resolved "https://registry.npmjs.org/@types/jsuri/-/jsuri-1.3.30.tgz"
-  integrity sha512-n3RoOl8LHzDX7gmgxVWU09cMiUn1chW0J70N6oOptOoLt8OWvyq8lpW9Mj4xvzHqJEiOMR+J1okPSL1XeBz1uw==
+"@types/jsuri@1.3.35":
+  version "1.3.35"
+  resolved "https://registry.yarnpkg.com/@types/jsuri/-/jsuri-1.3.35.tgz#a52bfdcd13ba74750c8d9ce5cfd536d7a1280f8a"
+  integrity sha512-kaRErZwFnRSpQGdAebfwu8jb5QChcuf9R0U49YFNM2zVmSsbraQgELU+dAWce131Hhs8O8pE/7KOVfav+BFLww==
 
 "@types/keyv@*":
   version "3.1.4"
